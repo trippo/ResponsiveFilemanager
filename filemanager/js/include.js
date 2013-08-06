@@ -257,7 +257,7 @@ function apply_video(file,type_file,external){
 function close_window() {
     if ($('#popup').val()==1) window.close();
     else
-	parent.$.fancybox.close();
+	parent.jQuery.fancybox.close();
 }
 
 
