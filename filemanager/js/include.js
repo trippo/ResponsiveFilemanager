@@ -35,7 +35,8 @@ $(document).ready(function(){
 	    var file_container=$(this).parent().parent().parent();
 	    var file_title=file_container.find('h4');
 	    var name=prompt($(this).attr('title'),$.trim(file_title.text()));
-	    execute_action('rename_file',$(this).data('path'),$(this).data('thumb'),name,file_container,'apply_file_rename');
+	    if(name!=null)
+		execute_action('rename_file',$(this).data('path'),$(this).data('thumb'),name,file_container,'apply_file_rename');
 	    return false;
 	});
 	
@@ -43,7 +44,8 @@ $(document).ready(function(){
 	    var file_container=$(this).parent().parent().parent();
 	    var file_title=file_container.find('h4');
 	    var name=prompt($(this).attr('title'),$.trim(file_title.text()));
-	    execute_action('rename_folder',$(this).data('path'),$(this).data('thumb'),name,file_container,'apply_folder_rename');
+	    if(name!=null)
+		execute_action('rename_folder',$(this).data('path'),$(this).data('thumb'),name,file_container,'apply_folder_rename');
 	    return false;
 	});
 	

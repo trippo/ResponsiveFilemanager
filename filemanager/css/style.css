@@ -107,6 +107,10 @@ h3 {
 .container-fluid {
   padding: 0px 10px !important;
 }
+.alert {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 .uploader {
   position: absolute;
   top: 50px;
@@ -114,6 +118,7 @@ h3 {
   margin: auto;
   width: 100%;
   z-index: 9999;
+  overflow: hidden;
   background: #eeeeee;
   padding-top: 20px;
   border: 1px solid #cccccc;

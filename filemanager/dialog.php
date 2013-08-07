@@ -28,6 +28,7 @@ while($cycle){
 	$cycle=false;
     }
     $parent=dirname($parent);
+    if($parent=="") $cycle=false;
 }
 
 if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
@@ -83,6 +84,7 @@ $get_params = http_build_query(array(
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="noindex,nofollow">
         <title>Responsive FileManager</title>
+	<link rel="shortcut icon" href="ico/favicon.ico">
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
         <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
@@ -253,7 +255,9 @@ $get_params = http_build_query(array(
 	    <div class="alert alert-error">There is an error! The root folder not exist. </div> 
 	    <?php }else{ ?>
 	    <h4 id="help">Swipe the name of file/folder to show options</h4>
-		    
+	    <?php if(isset($folder_message)){ ?>
+		<div class="alert alert-block"><?php echo $folder_message; ?></div>
+	    <?php } ?>
 	    <!--ul class="thumbnails ff-items"-->
 	    <ul class="grid cs-style-2 <?php if($view>=1) echo "list-view"; ?>">
 		<?php
@@ -344,9 +348,10 @@ $get_params = http_build_query(array(
 				$src = $base_url . $cur_dir . $file;
 				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 				//add in thumbs folder if not exist 
-				$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.$subdir.$file);
+				$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+				dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
 				if(!file_exists($thumb_path)){
-				    create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.$subdir.$file, $thumb_path, 122, 91);
+				    create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
 				}
 				$is_img=true;
 				//check if is smaller tha thumb
