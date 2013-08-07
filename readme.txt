@@ -147,8 +147,7 @@ subfolder2
 
 CUSTOMIZE CONFIGURATION IN EACH FOLDER
 
-In new version you can customize the config.php for each folder. Simply create a file .config in the folder where do you need and write inside the php variables which do you want change. (don't change $current_path,$upload_dir,$base_url,$root variables).
-You can also include a html text in a folder page simply inserting in the folder .config file: $folder_message="html message". You can use this to specify the restriction or image resize.
+In FileManager Version 7 you can customize the config.php for each folder. Simply create a .config file inside your desired folder, and add the php variables which you wish to change. (don't change $current_path,$upload_dir,$base_url,$root variables). You can also include a html text file by simply inserting .config file: $folder_message="html message" inside the folder. You can use this to specify the restriction or image resize.
 
 Remember than the configuration of one folder is also reflected in all subdirectories.
 
