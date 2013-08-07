@@ -19,25 +19,7 @@ if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
 else
     $subdir = '';
     
-$parent=$subdir;
-$cycle=true;
-while($cycle){
-    if($parent==".") $parent="";
-    if(file_exists($current_path.$parent.".config")){
-	require_once($current_path.$parent.".config");
-	$cycle=false;
-    }
-    $parent=dirname($parent);
-    if($parent=="") $cycle=false;
-}
-
-if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
-
-//view type
-if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
-if(isset($_GET['view'])){ $view=$_GET['view']; $_SESSION["view_type"] = $view; }
-$view=$_SESSION["view_type"];
-
+    
 /***
  *SUB-DIR CODE
  ***/
@@ -57,6 +39,27 @@ if(isset($_SESSION['subfolder']) && !empty($_SESSION['subfolder']) && strpos($_S
     $cur_path = $current_path . $subdir;
     $thumbs_path = 'thumbs/';
 }
+
+$parent=$subfolder.DIRECTORY_SEPARATOR.$subdir;
+$cycle=true;
+while($cycle){
+    if($parent==".") $parent="";
+    if(file_exists($current_path.$parent.".config")){
+	require_once($current_path.$parent.".config");
+	$cycle=false;
+    }
+    $parent=dirname($parent);
+    if($parent=="") $cycle=false;
+}
+
+if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
+
+//view type
+if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
+if(isset($_GET['view'])){ $view=$_GET['view']; $_SESSION["view_type"] = $view; }
+$view=$_SESSION["view_type"];
+
+
 
 
 if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && is_readable('lang/' . $_GET['lang'] . '.php')) {

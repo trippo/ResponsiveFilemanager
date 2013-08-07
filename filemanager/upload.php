@@ -12,6 +12,19 @@ $ds          = DIRECTORY_SEPARATOR;
 $storeFolder = $_POST['path'];
 $storeFolderThumb = $_POST['path_thumb'];
 
+$path=$storeFolder;
+$cycle=true;
+while($cycle){
+    echo "|||".$path.".config|||";
+    if($path==$current_path)  $cycle=false;
+    
+    if(file_exists($path.".config")){
+	require_once($path.".config");
+	$cycle=false;
+    }
+    $path=dirname($path).$ds;
+}
+
 if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
      
     $tempFile = $_FILES['file']['tmp_name'];   
@@ -30,14 +43,12 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
 
     if($is_img){
 	create_img_gd($targetFile, $targetFileThumb, 122, 91);
-
-	echo "img";
+	
 	$imginfo =getimagesize($targetFile);
 	$srcWidth = $imginfo[0];
 	$srcHeight = $imginfo[1];
 	
 	if($image_resizing){
-		
 	    if($image_width==0){
 		if($image_height==0){
 		    $image_width=$srcWidth;
