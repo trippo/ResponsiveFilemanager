@@ -152,13 +152,13 @@ $get_params = http_build_query(array(
 		<div class="fallback">
 			<?php echo  lang_Upload_file?>:<br/>
 			<input name="file" type="file" />
-			<input type="hidden" name="fldr" value="<?php echo $_GET['fldr']?>"/>
-			<input type="hidden" name="view" value="<?php echo $_GET['view']?>"/>
-			<input type="hidden" name="type" value="<?php echo $_GET['type']?>"/>
-			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']?>"/>
+			<input type="hidden" name="fldr" value="<?php echo $subdir; ?>"/>
+			<input type="hidden" name="view" value="<?php echo $view; ?>"/>
+			<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>"/>
+			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
-			<input type="hidden" name="editor" value="<?php echo $_GET['editor']?>"/>
-			<input type="hidden" name="lang" value="<?php echo $_GET['lang']?>"/>
+			<input type="hidden" name="editor" value="<?php echo $_GET['editor']; ?>"/>
+			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
 			<input type="submit" name="submit" value="OK" />
 		</div>
 	</form>

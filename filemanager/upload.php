@@ -14,7 +14,7 @@ $storeFolderThumb = $_POST['path_thumb'];
 
 $path=$storeFolder;
 $cycle=true;
-while($cycle)
+while($cycle){
     if($path==$current_path)  $cycle=false;
     
     if(file_exists($path.".config")){
