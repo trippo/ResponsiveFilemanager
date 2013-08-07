@@ -105,7 +105,7 @@ $get_params = http_build_query(array(
         <script type="text/javascript" src="js/bootstrap-lightbox.min.js"></script>
 	<script type="text/javascript" src="js/dropzone.min.js"></script>
 	<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
-	<script src="js/modernizr.custom.js"></script>
+	<script type="text/javascript" src="js/modernizr.custom.js"></script>
 	<script>
 	    var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
 	    var allowed_ext=new Array('<?php echo implode("','", $ext)?>');
