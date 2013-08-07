@@ -267,23 +267,6 @@ function close_window() {
 }
 
 
-
-function execute_action(action,file1,file2,name,container,function_name){
-    $.ajax({
-	type: "POST",
-	url: "execute.php?action="+action,
-	data: {path: file1, path_thumb: file2, name: name}
-    }).done(function( msg ) {
-	if (msg!="") {
-	    alert(msg);
-	    return false;
-	}else{
-	    window[function_name](container,name);
-	}
-	return true;
-    });
-}
-
 function apply_file_rename(container,name) {
     container.find('h4').find('a').text(name);
     var link=container.find('a.link');
@@ -305,6 +288,23 @@ function apply_folder_rename(container,name) {
 }
 
 
+
+
+function execute_action(action,file1,file2,name,container,function_name){
+    $.ajax({
+	type: "POST",
+	url: "execute.php?action="+action,
+	data: {path: file1, path_thumb: file2, name: name}
+    }).done(function( msg ) {
+	if (msg!="") {
+	    alert(msg);
+	    return false;
+	}else{
+	    window[function_name](container,name);
+	}
+	return true;
+    });
+}
 
 
 function show_animation()
