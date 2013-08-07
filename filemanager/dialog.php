@@ -413,9 +413,9 @@ $get_params = http_build_query(array(
 						<input type="hidden" name="path" value="<?php echo $root. $cur_dir. $file?>"/>
 						<input type="hidden" name="name" value="<?php echo $file?>"/>
 						
-					    <a title="<?php echo lang_Download?>" class="tip-left " href="javascript:void('');" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
+					    <a title="<?php echo lang_Download?>" class="tip-right " href="javascript:void('');" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
 					    <?php if($is_img){ ?>
-					    <a class="tip-left preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
+					    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 					    <?php }else{ ?>
 					    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 					    <?php } ?>
