@@ -18,8 +18,8 @@ if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
 }
 else
     $subdir = '';
-    
-    
+
+
 /***
  *SUB-DIR CODE
  ***/
@@ -30,9 +30,9 @@ if(isset($_GET['subfolder']) && !empty($_GET['subfolder']) && strpos($_GET['subf
 
 if(isset($_SESSION['subfolder']) && !empty($_SESSION['subfolder']) && strpos($_SESSION['subfolder'],'../')===FALSE) {
     $subfolder=$_SESSION["subfolder"];
-    $cur_dir = $upload_dir . $subfolder . '/' . $subdir;
-    $cur_path = $current_path . $subfolder .'/'. $subdir;
-    $thumbs_path = 'thumbs/' . $subfolder . '/';
+    $cur_dir = $upload_dir . $subfolder . DIRECTORY_SEPARATOR . $subdir;
+    $cur_path = $current_path . $subfolder .DIRECTORY_SEPARATOR. $subdir;
+    $thumbs_path = 'thumbs/' . $subfolder . DIRECTORY_SEPARATOR;
     if (!file_exists($thumbs_path.$subdir)) create_folder(false,$thumbs_path.$subdir);
 }else {
     $cur_dir = $upload_dir . $subdir;
@@ -40,16 +40,18 @@ if(isset($_SESSION['subfolder']) && !empty($_SESSION['subfolder']) && strpos($_S
     $thumbs_path = 'thumbs/';
 }
 
-$parent=$subfolder.DIRECTORY_SEPARATOR.$subdir;
+    
+$parent=$subfolder.$subdir;
 $cycle=true;
 while($cycle){
-    if($parent==".") $parent="";
+    if($parent=="./") $parent="";    
     if(file_exists($current_path.$parent.".config")){
 	require_once($current_path.$parent.".config");
 	$cycle=false;
     }
-    $parent=dirname($parent);
+    
     if($parent=="") $cycle=false;
+    else $parent=dirname($parent).DIRECTORY_SEPARATOR;
 }
 
 if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
@@ -58,7 +60,6 @@ if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
 if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
 if(isset($_GET['view'])){ $view=$_GET['view']; $_SESSION["view_type"] = $view; }
 $view=$_SESSION["view_type"];
-
 
 
 
