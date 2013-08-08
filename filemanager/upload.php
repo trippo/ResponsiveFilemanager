@@ -29,12 +29,14 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
     $tempFile = $_FILES['file']['tmp_name'];   
       
     $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds; 
-    $targetPathThumb = dirname( __FILE__ ) . $ds. $storeFolderThumb . $ds; 
+    $targetPathThumb = dirname( __FILE__ ) . $ds. $storeFolderThumb . $ds;
+    
+    $_FILES['file']['name'] = preg_replace('/[^A-Za-z0-9\.]/','_',$_FILES['file']['name']);
+    $_FILES['file']['name'] = str_replace(array('_____','____','___','__','.jpeg'),array('_','_','_','_','.jpg'),strtolower($_FILES['file']['name']));
      
     $targetFile =  $targetPath. $_FILES['file']['name']; 
     $targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
-    $targetFile=extensions_to_lower($targetFile);
-    $targetFileThumb=extensions_to_lower($targetFileThumb);
+
     move_uploaded_file($tempFile,$targetFile);
     chmod($targetFile, 0755);
     if(in_array(substr(strrchr($_FILES['file']['name'],'.'),1),$ext_img)) $is_img=true;
