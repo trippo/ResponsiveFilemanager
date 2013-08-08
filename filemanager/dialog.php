@@ -79,6 +79,12 @@ $get_params = http_build_query(array(
     'editor'    => $_GET['editor'] ? $_GET['editor'] : 'mce_0',
     'fldr'      => ''
 ));
+
+// Ignored files
+if(!isset($ignored_files) || !is_array($ignored_files)) {
+	//$ignored_files = array('.svn', '.git', '.cvs', '.CVS', '.~', '.DS_Store', 'thumbs.db', 'Thumbs.db', 'desktop.ini');
+	$ignored_files = array();
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -283,7 +289,7 @@ $get_params = http_build_query(array(
 		$files = scandir($root . $cur_dir);
 		
 		foreach ($files as $file) {
-		    if (is_dir($root . $cur_dir . $file) && ($file != '.' && !($file == '..' && $subdir=='')) ) {
+		    if (is_dir($root . $cur_dir . $file) && ($file != '.' && !($file == '..' && $subdir=='')) && !in_array($file, $ignored_files)) {
 			//add in thumbs folder if not exist 
 			if (!file_exists($thumbs_path.$subdir.$file)) create_folder(false,$thumbs_path.$subdir.$file);
 			$class_ext = 3;			
@@ -343,7 +349,7 @@ $get_params = http_build_query(array(
 		    }
 		    }
 		    foreach ($files as $nu=>$file) {
-			if ($file != '.' && $file != '..' && !is_dir($root . $cur_dir . $file)) {
+			if ($file != '.' && $file != '..' && !is_dir($root . $cur_dir . $file) && !in_array($file, $ignored_files)) {
 			    $is_img=false;
 			    $is_video=false;
 			    $show_original=false;
