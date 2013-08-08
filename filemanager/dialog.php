@@ -283,7 +283,10 @@ $get_params = http_build_query(array(
 		$files = scandir($root . $cur_dir);
 		
 		foreach ($files as $file) {
-		    if (is_dir($root . $cur_dir . $file) && ($file != '.' && !($file == '..' && $subdir=='')) ) {
+			
+			if($file == '.' || !is_dir($root . $cur_dir . $file) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders))
+				continue;
+			
 			//add in thumbs folder if not exist 
 			if (!file_exists($thumbs_path.$subdir.$file)) create_folder(false,$thumbs_path.$subdir.$file);
 			$class_ext = 3;			
@@ -295,7 +298,7 @@ $get_params = http_build_query(array(
 			elseif ($file!='..') {
 			    $src = $subdir . $file."/";
 			}
-			if(!isset($hidden_folders) || (isset($hidden_folders) && array_search($file,$hidden_folders)===FALSE ) ){
+			
 			?>
 			<li>
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory">
@@ -332,104 +335,108 @@ $get_params = http_build_query(array(
 			</li>
 			<?php
 			$k++;
-			}
 		    }
-		    }
+			
 		    foreach ($files as $nu=>$file) {
-			if ($file != '.' && $file != '..' && !is_dir($root . $cur_dir . $file)) {
+			
+				$file_ext = substr(strrchr($file,'.'),1);		
+			
+				if($file == '.' || $file == '..' || is_dir($root . $cur_dir . $file) || in_array($file, $hidden_files) || !in_array($file_ext, $ext))
+					continue;
+				
 			    $is_img=false;
 			    $is_video=false;
 			    $show_original=false;
 			    $mini_src="";
-			    $file_ext = substr(strrchr($file,'.'),1);
-			    if(in_array($file_ext, $ext)){
-			    if(in_array($file_ext, $ext_img)){
-				$src = $base_url . $cur_dir . $file;
-				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
-				//add in thumbs folder if not exist 
-				$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
-				dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
-				if(!file_exists($thumb_path)){
-				    create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
-				}
-				$is_img=true;
-				//check if is smaller tha thumb
-				list($img_width, $img_height, $img_type, $attr)=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
-				
-				if($img_width<122 && $img_height<91){
-				    $src_thumb=$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
-				    $show_original=true;
-				}
-			    }elseif(file_exists('ico/'.strtoupper($file_ext).".png")){
-				    $src_thumb ='ico/'.strtoupper($file_ext).".png";
-			    }else{
-				    $src_thumb = "ico/Default.png";
-			    }
-			    if($mini_src==""){
-				if(file_exists('ico/file_extension_'.strtolower($file_ext).".png")){
-				    $mini_src  ='ico/file_extension_'.strtolower($file_ext).".png";
+			   
+					
+				if(in_array($file_ext, $ext_img)){
+					$src = $base_url . $cur_dir . $file;
+					$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
+					//add in thumbs folder if not exist 
+					$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+					dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
+					if(!file_exists($thumb_path)){
+						create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
+					}
+					$is_img=true;
+					//check if is smaller tha thumb
+					list($img_width, $img_height, $img_type, $attr)=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+					
+					if($img_width<122 && $img_height<91){
+						$src_thumb=$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
+						$show_original=true;
+					}
+				}elseif(file_exists('ico/'.strtoupper($file_ext).".png")){
+					$src_thumb ='ico/'.strtoupper($file_ext).".png";
 				}else{
-				    $mini_src ='ico/'.strtolower($file_ext).".png";
+					$src_thumb = "ico/Default.png";
 				}
-			    }
-			    $class_ext=0;
-			    if (in_array($file_ext, $ext_video)) {
-				$class_ext = 4;
-				$is_video=true;
-			    }elseif (in_array($file_ext, $ext_img)) {
-				$class_ext = 2;
-			    }elseif (in_array($file_ext, $ext_music)) {
-				$class_ext = 5;
-			    }elseif (in_array($file_ext, $ext_misc)) {
-				$class_ext = 3;
-			    }else{
-				$class_ext = 1;
-			    }
-
-			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video)) && $class_ext>0){
-?>
-			    <li class="ff-item-type-<?php echo $class_ext; ?>">
-				<figure>
-					<a href="javascript:void('');" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
-					<div class="img-precontainer">
-					<div class="img-container"><span></span>
-					<img data-src="holder.js/122x91" alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $src_thumb; ?>">
-					</div>
-					</div>
-					<div class="img-container-mini <?php if($is_img) echo 'original-thumb' ?>">
-					    <img alt="image" src="<?php echo $mini_src; ?>">
-					</div>
-					</a>	
-					<div class="box">				
-					<h4><a href="javascript:void('');" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
-					<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo $filename; ?></a></h4>
-					</div>
-					<figcaption>
-					    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
-						<input type="hidden" name="path" value="<?php echo $root. $cur_dir. $file?>"/>
-						<input type="hidden" name="name" value="<?php echo $file?>"/>
-						
-					    <a title="<?php echo lang_Download?>" class="tip-right " href="javascript:void('');" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
-					    <?php if($is_img){ ?>
-					    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
-					    <?php }else{ ?>
-					    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
-					    <?php } ?>
-					    <a href="javascript:void('');" class="tip-left edit-button <?php if($rename_files) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-					    <i class="icon-pencil <?php if(!$rename_files) echo 'icon-white'; ?>"></i></a>
-					    
-					    <a href="javascript:void('');" class="tip-left erase-button <?php if($delete_files) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-					    <i class="icon-trash <?php if(!$delete_files) echo 'icon-white'; ?>"></i>
-					    </a>
-					    </form>
-					</figcaption>
-				</figure>
 				
-			</li>
-			    <?php
-			    $i++;
-			    }
-			}
+				if($mini_src==""){
+					if(file_exists('ico/file_extension_'.strtolower($file_ext).".png")){
+						$mini_src  ='ico/file_extension_'.strtolower($file_ext).".png";
+					}else{
+						$mini_src ='ico/'.strtolower($file_ext).".png";
+					}
+				}
+				
+				$class_ext=0;
+				if (in_array($file_ext, $ext_video)) {
+					$class_ext = 4;
+					$is_video=true;
+				}elseif (in_array($file_ext, $ext_img)) {
+					$class_ext = 2;
+				}elseif (in_array($file_ext, $ext_music)) {
+					$class_ext = 5;
+				}elseif (in_array($file_ext, $ext_misc)) {
+					$class_ext = 3;
+				}else{
+					$class_ext = 1;
+				}
+				
+				if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video)) && $class_ext>0){
+?>
+		<li class="ff-item-type-<?php echo $class_ext; ?>">
+			<figure>
+				<a href="javascript:void('');" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
+				<div class="img-precontainer">
+					<div class="img-container">
+						<span></span>
+						<img data-src="holder.js/122x91" alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $src_thumb; ?>">
+					</div>
+				</div>
+				<div class="img-container-mini <?php if($is_img) echo 'original-thumb' ?>">
+				    <img alt="image" src="<?php echo $mini_src; ?>">
+				</div>
+				</a>	
+				<div class="box">				
+				<h4><a href="javascript:void('');" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
+				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo $filename; ?></a></h4>
+				</div>
+				<figcaption>
+				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
+					<input type="hidden" name="path" value="<?php echo $root. $cur_dir. $file?>"/>
+					<input type="hidden" name="name" value="<?php echo $file?>"/>
+					
+				    <a title="<?php echo lang_Download?>" class="tip-right " href="javascript:void('');" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
+				    <?php if($is_img){ ?>
+				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
+				    <?php }else{ ?>
+				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
+				    <?php } ?>
+				    <a href="javascript:void('');" class="tip-left edit-button <?php if($rename_files) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+				    <i class="icon-pencil <?php if(!$rename_files) echo 'icon-white'; ?>"></i></a>
+					    
+				    <a href="javascript:void('');" class="tip-left erase-button <?php if($delete_files) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+				    <i class="icon-trash <?php if(!$delete_files) echo 'icon-white'; ?>"></i>
+				    </a>
+				    </form>
+				</figcaption>
+			</figure>			
+		</li>
+		    <?php
+		    $i++;
 		    }
 		}
 	?></div><?php
