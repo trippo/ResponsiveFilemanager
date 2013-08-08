@@ -166,7 +166,7 @@ Remember than the configuration of one folder is also reflected in all subdirect
 - ENG
 - ESP [Roberto Santamaria]
 - FRA [Mathieu Ducharme]
-- GER [Oliver Beta]
+- GER [Sysix-Coding]
 - HUN [Bende Roland]
 - ITA
 - NLD [johan12]
