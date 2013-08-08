@@ -376,7 +376,7 @@ $get_params = http_build_query(array(
 				    $mini_src ='ico/'.strtolower($file_ext).".png";
 				}
 			    }
-
+			    $class_ext=0;
 			    if (in_array($file_ext, $ext_video)) {
 				$class_ext = 4;
 				$is_video=true;
@@ -390,7 +390,7 @@ $get_params = http_build_query(array(
 				$class_ext = 1;
 			    }
 
-			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video))){
+			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video)) && $class_ext>0){
 ?>
 			    <li class="ff-item-type-<?php echo $class_ext; ?>">
 				<figure>
