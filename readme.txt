@@ -165,7 +165,7 @@ Remember than the configuration of one folder is also reflected in all subdirect
 - CZE [jlusticky]
 - ENG
 - ESP [Roberto Santamaria]
-- FRA [2b3ez]
+- FRA [Mathieu Ducharme]
 - GER [Oliver Beta]
 - HUN [Bende Roland]
 - ITA
