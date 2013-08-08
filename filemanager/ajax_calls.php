@@ -14,6 +14,14 @@ if(isset($_GET['action']))
 	    else
 		die('view type number missing');
 	    break;
+	case 'image_size':
+	    $pos = strpos($_POST['path'],$upload_dir);
+	    if ($pos !== false) {
+		$info=getimagesize(substr_replace($_POST['path'],$current_path,$pos,strlen($upload_dir)));
+		echo json_encode($info);
+	    }
+	    
+	    break;
     }
 else
     die('no action passed')

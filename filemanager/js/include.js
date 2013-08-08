@@ -251,6 +251,15 @@ function apply_none(file,type_file,external){
     return false;
 }
 
+function getImgSize(imgSrc)
+{
+    var newImg = new Image();
+    
+    newImg.src = imgSrc;
+    return new Array(newImg.height,newImg.width);
+
+}
+
 function apply_img(file,type_file,external){
     if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
     var path = $('#cur_dir').val();
@@ -258,9 +267,26 @@ function apply_img(file,type_file,external){
     var track = $('#track').val();	
     if (external=="") {		
 		var target = window_parent.document.getElementsByClassName('mce-img_'+track);
+		var alt = window_parent.document.getElementsByClassName('mce-alt_img_'+track);
+		
 		var closed = window_parent.document.getElementsByClassName('mce-filemanager');
 		$(target).val(base_url+path+file);
-		$(closed).find('.mce-close').trigger('click');		
+		$(alt).val(file.substr(0, file.lastIndexOf('.')));
+		$.ajax({
+		    url: "ajax_calls.php?action=image_size",
+		    type: "POST",
+		    data: {path: path+file}
+		}).done(function( msg ) {
+		    var info=JSON.parse(msg);
+		    if (typeof info[0] != 'undefined') {
+			var width = window_parent.document.getElementsByClassName('mce-width_img_'+track);
+			var height = window_parent.document.getElementsByClassName('mce-height_img_'+track);
+			$(width).val(info[0]);
+			$(height).val(info[1]);
+		    }
+		    $(closed).find('.mce-close').trigger('click');	
+		});
+			
     }else{
 		var target = window_parent.document.getElementById(external);
 		$(target).val(base_url+path+file);
@@ -312,9 +338,6 @@ function apply_folder_rename(container,name) {
     var url=link.attr('href');
     link.attr('href',url.replace('fldr='+old_name,'fldr='+name));
 }
-
-
-
 
 function execute_action(action,file1,file2,name,container,function_name){
     $.ajax({

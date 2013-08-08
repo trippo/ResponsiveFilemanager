@@ -295,20 +295,20 @@ $get_params = http_build_query(array(
 			elseif ($file!='..') {
 			    $src = $subdir . $file."/";
 			}
-			if(isset($hidden_folders) && array_search($file,$hidden_folders)===FALSE){
+			if(!isset($hidden_folders) || (isset($hidden_folders) && array_search($file,$hidden_folders)===FALSE ) ){
 			?>
 			<li>
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory">
 				    <a title="<?php echo lang_Open?>" class="folder-link" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>">
-			<?php if($file==".."){ ?>
 				    <div class="img-precontainer">
-					<div class="img-container"><span></span>
-					<img class="directory-img"  src="ico/folder_return.png" alt="folder" />
+					<div class="img-container directory"><span></span>
+					<img class="directory-img"  src="ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
 					</div>
 				    </div>
-				    <div class="img-container-mini">
-					<img class="directory-img"  src="ico/folder_return.png" alt="folder" />
+				    <div class="img-container-mini directory">
+					<img class="directory-img"  src="ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
 				    </div>
+			<?php if($file==".."){ ?>
 				    <div class="box no-effect">
 					<h4><?php echo lang_Back ?></h4>
 				    </div>
@@ -316,16 +316,9 @@ $get_params = http_build_query(array(
 				    
 			<?php }else{ ?>
 					
-				    <div class="img-precontainer">
-					<div class="img-container directory"><span></span>
-					<img class="directory-img"  src="ico/folder.png" alt="folder" />
-					</div>
-				    </div>
-				    <div class="img-container-mini directory">
-					<img class="directory-img"  src="ico/folder.png" alt="folder" />
-				    </div></a>
+				    </a>
 				    <div class="box">
-					<h4><a title="<?php echo lang_Open?>" class="folder-link"  href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>"><?php echo $file ?></a></h4>
+					<h4><?php if($file==".."){ echo lang_Back; }else{ ?><a title="<?php echo lang_Open?>" class="folder-link"  href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>"><?php echo $file ?></a><?php } ?></h4>
 				    </div>
 				    <figcaption>
 					    <a href="javascript:void('');" class="tip-left edit-button <?php if($rename_folders) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
@@ -361,8 +354,9 @@ $get_params = http_build_query(array(
 				}
 				$is_img=true;
 				//check if is smaller tha thumb
-				$info=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
-				if($info[0]<122 && $info[2]<91){
+				list($img_width, $img_height, $img_type, $attr)=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+				
+				if($img_width<122 && $img_height<91){
 				    $src_thumb=$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
 				    $show_original=true;
 				}
