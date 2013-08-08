@@ -339,6 +339,8 @@ $get_params = http_build_query(array(
 			
 		    foreach ($files as $nu=>$file) {
 			
+				$file_ext = substr(strrchr($file,'.'),1);		
+			
 				if($file == '.' || $file == '..' || is_dir($root . $cur_dir . $file) || in_array($file, $hidden_files) || !in_array($file_ext, $ext))
 					continue;
 				
@@ -346,7 +348,7 @@ $get_params = http_build_query(array(
 			    $is_video=false;
 			    $show_original=false;
 			    $mini_src="";
-			    $file_ext = substr(strrchr($file,'.'),1);
+			   
 					
 				if(in_array($file_ext, $ext_img)){
 					$src = $base_url . $cur_dir . $file;
