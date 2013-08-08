@@ -73,4 +73,7 @@ $ext_misc = array('zip', 'rar','gzip'); //Archives
 
 $ext=array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //allowed extensions
 
+$hidden_folders = array();
+$hidden_files = array();
+
 ?>

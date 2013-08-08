@@ -283,7 +283,10 @@ $get_params = http_build_query(array(
 		$files = scandir($root . $cur_dir);
 		
 		foreach ($files as $file) {
-		    if (is_dir($root . $cur_dir . $file) && ($file != '.' && !($file == '..' && $subdir=='')) ) {
+			
+			if($file == '.' || !is_dir($root . $cur_dir . $file) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders))
+				continue;
+			
 			//add in thumbs folder if not exist 
 			if (!file_exists($thumbs_path.$subdir.$file)) create_folder(false,$thumbs_path.$subdir.$file);
 			$class_ext = 3;			
@@ -295,7 +298,7 @@ $get_params = http_build_query(array(
 			elseif ($file!='..') {
 			    $src = $subdir . $file."/";
 			}
-			if(!isset($hidden_folders) || (isset($hidden_folders) && array_search($file,$hidden_folders)===FALSE ) ){
+			
 			?>
 			<li>
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory">
@@ -332,61 +335,65 @@ $get_params = http_build_query(array(
 			</li>
 			<?php
 			$k++;
-			}
 		    }
-		    }
+			
 		    foreach ($files as $nu=>$file) {
-			if ($file != '.' && $file != '..' && !is_dir($root . $cur_dir . $file)) {
+			
+				if($file == '.' || $file == '..' || is_dir($root . $cur_dir . $file) || in_array($file, $hidden_files))
+					continue;
+				
 			    $is_img=false;
 			    $is_video=false;
 			    $show_original=false;
 			    $mini_src="";
 			    $file_ext = substr(strrchr($file,'.'),1);
 			    if(in_array($file_ext, $ext)){
-			    if(in_array($file_ext, $ext_img)){
-				$src = $base_url . $cur_dir . $file;
-				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
-				//add in thumbs folder if not exist 
-				$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
-				dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
-				if(!file_exists($thumb_path)){
-				    create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
-				}
-				$is_img=true;
-				//check if is smaller tha thumb
-				list($img_width, $img_height, $img_type, $attr)=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
-				
-				if($img_width<122 && $img_height<91){
-				    $src_thumb=$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
-				    $show_original=true;
-				}
-			    }elseif(file_exists('ico/'.strtoupper($file_ext).".png")){
-				    $src_thumb ='ico/'.strtoupper($file_ext).".png";
-			    }else{
-				    $src_thumb = "ico/Default.png";
-			    }
-			    if($mini_src==""){
-				if(file_exists('ico/file_extension_'.strtolower($file_ext).".png")){
-				    $mini_src  ='ico/file_extension_'.strtolower($file_ext).".png";
-				}else{
-				    $mini_src ='ico/'.strtolower($file_ext).".png";
-				}
-			    }
-			    $class_ext=0;
-			    if (in_array($file_ext, $ext_video)) {
-				$class_ext = 4;
-				$is_video=true;
-			    }elseif (in_array($file_ext, $ext_img)) {
-				$class_ext = 2;
-			    }elseif (in_array($file_ext, $ext_music)) {
-				$class_ext = 5;
-			    }elseif (in_array($file_ext, $ext_misc)) {
-				$class_ext = 3;
-			    }else{
-				$class_ext = 1;
-			    }
-
-			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video)) && $class_ext>0){
+					
+					if(in_array($file_ext, $ext_img)){
+						$src = $base_url . $cur_dir . $file;
+						$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
+						//add in thumbs folder if not exist 
+						$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+						dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
+						if(!file_exists($thumb_path)){
+							create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
+						}
+						$is_img=true;
+						//check if is smaller tha thumb
+						list($img_width, $img_height, $img_type, $attr)=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+						
+						if($img_width<122 && $img_height<91){
+							$src_thumb=$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
+							$show_original=true;
+						}
+					}elseif(file_exists('ico/'.strtoupper($file_ext).".png")){
+						$src_thumb ='ico/'.strtoupper($file_ext).".png";
+					}else{
+						$src_thumb = "ico/Default.png";
+					}
+					
+					if($mini_src==""){
+						if(file_exists('ico/file_extension_'.strtolower($file_ext).".png")){
+							$mini_src  ='ico/file_extension_'.strtolower($file_ext).".png";
+						}else{
+							$mini_src ='ico/'.strtolower($file_ext).".png";
+						}
+					}
+					$class_ext=0;
+					if (in_array($file_ext, $ext_video)) {
+					$class_ext = 4;
+					$is_video=true;
+					}elseif (in_array($file_ext, $ext_img)) {
+					$class_ext = 2;
+					}elseif (in_array($file_ext, $ext_music)) {
+					$class_ext = 5;
+					}elseif (in_array($file_ext, $ext_misc)) {
+					$class_ext = 3;
+					}else{
+					$class_ext = 1;
+					}
+	
+					if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video)) && $class_ext>0){
 ?>
 			    <li class="ff-item-type-<?php echo $class_ext; ?>">
 				<figure>
@@ -430,7 +437,6 @@ $get_params = http_build_query(array(
 			    $i++;
 			    }
 			}
-		    }
 		}
 	?></div><?php
 		closedir($dir);
