@@ -1,4 +1,5 @@
 <?php
+
 if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbidden');
 
 $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
@@ -40,7 +41,7 @@ $image_width=600;
 $image_height=0;
 
 //******************
-//Default view setting
+//Default layout setting
 //
 // 0 => boxes
 // 1 => list (1 column)
@@ -69,11 +70,14 @@ $ext_file = array('doc', 'docx', 'pdf', 'xls', 'xlsx', 'txt', 'csv','html','psd'
 $ext_video = array('mov', 'mpeg', 'mp4', 'avi', 'mpg','wma'); //Videos
 $ext_music = array('mp3', 'm4a', 'ac3', 'aiff', 'mid'); //Music
 $ext_misc = array('zip', 'rar','gzip'); //Archives
-
-
 $ext=array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //allowed extensions
 
+//**********************
+//Hidden file and folder
+//**********************
+//set the name of hidden folders... remember than this name will be hidden in all folders (you can change in .config file if have exceptions)
 $hidden_folders = array();
+//set the name of hidden files...  remember than this name will be hidden in all folders (ex: "document.pdf", "image.jpg" )
 $hidden_files = array();
 
 ?>
