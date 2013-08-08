@@ -295,6 +295,7 @@ $get_params = http_build_query(array(
 			elseif ($file!='..') {
 			    $src = $subdir . $file."/";
 			}
+			if(isset($hidden_folders) && array_search($file,$hidden_folders)===FALSE){
 			?>
 			<li>
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory">
@@ -338,6 +339,7 @@ $get_params = http_build_query(array(
 			</li>
 			<?php
 			$k++;
+			}
 		    }
 		    }
 		    foreach ($files as $nu=>$file) {
