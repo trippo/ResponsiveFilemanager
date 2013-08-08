@@ -64,7 +64,7 @@ $rename_folders=true;
 //**********************
 //Allowed extensions
 //**********************
-$ext_img = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'); //Images
+$ext_img = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg', 'svgz'); //Images
 $ext_file = array('doc', 'docx', 'pdf', 'xls', 'xlsx', 'txt', 'csv','html','psd','sql','log','fla','xml','ade','adp','ppt','pptx'); //Files
 $ext_video = array('mov', 'mpeg', 'mp4', 'avi', 'mpg','wma'); //Videos
 $ext_music = array('mp3', 'm4a', 'ac3', 'aiff', 'mid'); //Music
