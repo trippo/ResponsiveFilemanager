@@ -278,12 +278,12 @@ function apply_img(file,type_file,external){
 		    data: {path: path+file}
 		}).done(function( msg ) {
 		    var info=JSON.parse(msg);
-		    if (typeof info[0] != 'undefined') {
-			var width = window_parent.document.getElementsByClassName('mce-width_img_'+track);
-			var height = window_parent.document.getElementsByClassName('mce-height_img_'+track);
-			$(width).val(info[0]);
-			$(height).val(info[1]);
-		    }
+		    //if (typeof info[0] != 'undefined') {
+		//	var width = window_parent.document.getElementsByClassName('mce-width_img_'+track);
+		//	var height = window_parent.document.getElementsByClassName('mce-height_img_'+track);
+		//	$(width).val(info[0]);
+		//	$(height).val(info[1]);
+		  //  }
 		    $(closed).find('.mce-close').trigger('click');	
 		});
 			
