@@ -21,7 +21,7 @@ $(document).ready(function(){
 	var val=$(this).val();
 	$('ul.grid li').each(function(){
 	    var _this = $(this);
-	    if (val!="" && _this.data('name').toLowerCase().indexOf(val.toLowerCase())==-1) {
+	    if (val!="" && _this.data('name').toString().toLowerCase().indexOf(val.toLowerCase())==-1) {
 		_this.hide(100);
 	    }else{
 		_this.show(100);
@@ -112,7 +112,6 @@ $(document).ready(function(){
 	    folder_name=clean_filename(folder_name);
 	    if(folder_name){
 		    folder_path=$('#root').val()+$('#cur_dir').val()+ folder_name;
-		    folder_path_thumb=$('#cur_dir_thumb').val()+ folder_name;
 		    $.ajax({
 			      type: "POST",
 			      url: "execute.php?action=create_folder",
