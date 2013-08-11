@@ -22,6 +22,7 @@ version 7.1.0
 - Add file and folder exlusion list in config.php and .config files
 - Fix rename real-time bug
 - Fix all existing bugs
+- Customization of FileManager window title
 
 version 7.0.0
 - Renamimg of folders and files
