@@ -50,7 +50,8 @@ function makeSize($size) {
 }
 
 function create_folder($path=false,$path_thumbs=false){
-    $oldumask = umask(0); 
+    $oldumask = umask(0);
+    echo $path;
     if ($path && !file_exists($path))
         mkdir($path, 0777, true); // or even 01777 so you get the sticky bit set 
     if($path_thumbs && !file_exists($path_thumbs)) 
@@ -64,14 +65,14 @@ function fix_filename($str){
     return $str;
 }
 
-function fix_filename1($path){
+function fix_path($path){
     $info=pathinfo($path);
     $tmp_path=$info['dirname'];
     $str=$info['filename'];
-    $str=strtr($str,'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ','aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
-    $clean = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
+    $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
+    $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
     if($tmp_path!="")
-	return $tmp_path.DIRECTORY_SEPARATOR.$clean;
+	return $tmp_path.DIRECTORY_SEPARATOR.$str;
     else
 	return $clean;
 }

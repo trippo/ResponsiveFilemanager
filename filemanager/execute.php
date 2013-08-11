@@ -38,7 +38,7 @@ if(isset($_GET['action'])){
             deleteDir($path_thumb);
             break;
         case 'create_folder':
-            create_folder(fix_filename($path),fix_filename($path_thumb));
+            create_folder(fix_path($path),fix_path($path_thumb));
             break;
         case 'rename_folder':
             $name=fix_filename($name);
