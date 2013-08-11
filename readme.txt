@@ -1,5 +1,5 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 7.0.1
+! Responsive FileManager for TinyMCE Version 7.1.0
 *********************************************************
 
 Responsive FileManager for TinyMCE is a tool make with jQuery library, CSS3, PHP and html5 that offers a nice and elegant way to upload and insert files, images and videos with tinyMCE version 4.x.
@@ -13,8 +13,14 @@ You can set a subfolder as root and change the configuration for every user, pag
 
 CHANGES 
 
-version 7.0.1
-- Fixing youth bugs
+version 7.1.0
+- text filter in real-time
+- new upload method through java applet without size limitation
+- parsing special characters in all files/folders name
+- incremental name for equal files uploaded
+- all plugin.min.js file non-minified for customization
+- fix rename real-time bug
+- fix all existing bugs
 
 version 7.0.0
 - Rename of folders and files
