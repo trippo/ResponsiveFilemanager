@@ -112,6 +112,7 @@ $(document).ready(function(){
 	    folder_name=clean_filename(folder_name);
 	    if(folder_name){
 		    folder_path=$('#root').val()+$('#cur_dir').val()+ folder_name;
+		    folder_path_thumb=$('#cur_dir_thumb').val()+ folder_name;
 		    $.ajax({
 			      type: "POST",
 			      url: "execute.php?action=create_folder",
