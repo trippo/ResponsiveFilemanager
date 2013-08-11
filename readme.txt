@@ -233,4 +233,5 @@ Fancybox => http://fancybox.net/
 TouchSwipe => http://labs.rampinteractive.co.uk/touchSwipe/demos/
 PHP Image Magician => http://phpimagemagician.jarrodoberto.com/
 Mini icons => http://www.fatcow.com/free-icons‎
+Jupload => http://jupload.sourceforge.net/
 *********************************************************
