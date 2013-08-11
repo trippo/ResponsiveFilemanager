@@ -14,6 +14,7 @@ $storeFolderThumb = $_POST['path_thumb'];
 
 $path=$storeFolder;
 $cycle=true;
+
 while($cycle){
     if($path==$current_path)  $cycle=false;
     
@@ -30,14 +31,21 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
       
     $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds; 
     $targetPathThumb = dirname( __FILE__ ) . $ds. $storeFolderThumb . $ds;
-    
-    $_FILES['file']['name'] = preg_replace('/[^A-Za-z0-9\.]/','_',$_FILES['file']['name']);
-    $_FILES['file']['name'] = str_replace(array('_____','____','___','__','.jpeg'),array('_','_','_','_','.jpg'),strtolower($_FILES['file']['name']));
+    $_FILES['file']['name'] = fix_filename($_FILES['file']['name']);
      
-    $targetFile =  $targetPath. $_FILES['file']['name']; 
+    if(file_exists($targetPath.$_FILES['file']['name'])){
+	$i = 1;
+	$info=pathinfo($_FILES['file']['name']);
+	while(file_exists($targetPath.$info['filename'].".[".$i."].".$info['extension'])) {
+		$i++;
+	}
+	$_FILES['file']['name']=$info['filename'].".[".$i."].".$info['extension'];
+    }
+    
+    echo $targetFile =  $targetPath. $_FILES['file']['name']; 
     $targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
 
-    move_uploaded_file($tempFile,$targetFile);
+    echo move_uploaded_file($tempFile,$targetFile);
     chmod($targetFile, 0755);
     if(in_array(substr(strrchr($_FILES['file']['name'],'.'),1),$ext_img)) $is_img=true;
     else $is_img=false;

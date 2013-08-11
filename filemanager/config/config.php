@@ -1,6 +1,10 @@
 <?php
-
 if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbidden');
+
+
+//------------------------------------------------------------------------------
+// DON'T COPY THIS VARIABLES IN .config FILES
+//------------------------------------------------------------------------------
 
 $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
 
@@ -21,11 +25,21 @@ $base_url="http://localhost"; //url base of site if you want only relative url l
 $upload_dir = '/site/source/'; // path from base_url to upload base dir
 $current_path = '../../../../source/'; // relative path from filemanager folder to upload files folder
 
+
+
+//------------------------------------------------------------------------------
+// YOU CAN COPY AND CHANGE THIS VARIABLES IN .config FILES
+//------------------------------------------------------------------------------
+
 $MaxSizeUpload=100; //Mb
 
 //**********************
 //Image config
 //**********************
+
+//parameter passed on editor
+$image_dimension_passing=1; //1 mean than filemanager pass on editor also the pixel dimension of image else 0
+
 //set max width pixel or the max height pixel for all images
 //If you set dimension limit, automatically the images that exceed this limit are convert to limit, instead
 //if the images are lower the dimension is maintained
@@ -36,8 +50,8 @@ $image_max_height=0;
 //Automatic resizing //
 //If you set true $image_resizing the script convert all images uploaded in image_width x image_height resolution
 //If you set width or height to 0 the script calcolate automatically the other size
-$image_resizing=true;
-$image_width=600;
+$image_resizing=false;
+$image_width=0;
 $image_height=0;
 
 //******************
@@ -80,4 +94,9 @@ $hidden_folders = array();
 //set the name of hidden files...  remember than this name will be hidden in all folders (ex: "document.pdf", "image.jpg" )
 $hidden_files = array();
 
+/*******************
+ * JAVA upload 
+ *******************/
+$java_upload=true;
+$MaxJAVASizeUpload=200; //Gb
 ?>

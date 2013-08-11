@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 $_SESSION["verify"] = "FileManager4TinyMCE";
 
 if(isset($_POST['submit'])){
@@ -14,7 +15,7 @@ include('include/utils.php');
 
 
 if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
-    $subdir = trim($_GET['fldr'],'/') . '/';
+    $subdir = trim($_GET['fldr'],DIRECTORY_SEPARATOR) .DIRECTORY_SEPARATOR;
 }
 else
     $subdir = '';
@@ -24,27 +25,34 @@ else
  *SUB-DIR CODE
  ***/
 $subfolder = '';
-if(isset($_GET['subfolder']) && !empty($_GET['subfolder']) && strpos($_GET['subfolder'],'../')===FALSE
-   && strpos($_GET['subfolder'],'./')===FALSE && strpos($_GET['subfolder'],'/')!==0
+if(isset($_GET['subfolder']) && !empty($_GET['subfolder']) && strpos($_GET['subfolder'],'..'.DIRECTORY_SEPARATOR)===FALSE
+   && strpos($_GET['subfolder'],'.'.DIRECTORY_SEPARATOR)===FALSE && strpos($_GET['subfolder'],DIRECTORY_SEPARATOR)!==0
     && strpos($_GET['subfolder'],'.')===FALSE && $_GET['subfolder'] != "undefined") $_SESSION["subfolder"] = $_GET['subfolder'];
 
-if(isset($_SESSION['subfolder']) && !empty($_SESSION['subfolder']) && strpos($_SESSION['subfolder'],'../')===FALSE) {
+if(isset($_SESSION['subfolder']) && !empty($_SESSION['subfolder']) && strpos($_SESSION['subfolder'],'..'.DIRECTORY_SEPARATOR)===FALSE) {
     $subfolder=$_SESSION["subfolder"];
-    $cur_dir = $upload_dir . $subfolder . DIRECTORY_SEPARATOR . $subdir;
-    $cur_path = $current_path . $subfolder .DIRECTORY_SEPARATOR. $subdir;
-    $thumbs_path = 'thumbs/' . $subfolder . DIRECTORY_SEPARATOR;
+    if(trim($subfolder)==""){
+	$cur_dir = $upload_dir . $subdir;
+	$cur_path = $current_path . $subdir;
+    }else{
+	$cur_dir = $upload_dir . $subfolder . DIRECTORY_SEPARATOR . $subdir;
+	$cur_path = $current_path . $subfolder .DIRECTORY_SEPARATOR. $subdir;
+    }
+    $thumbs_path = 'thumbs'.DIRECTORY_SEPARATOR . $subfolder . DIRECTORY_SEPARATOR;
     if (!file_exists($thumbs_path.$subdir)) create_folder(false,$thumbs_path.$subdir);
 }else {
     $cur_dir = $upload_dir . $subdir;
     $cur_path = $current_path . $subdir;
-    $thumbs_path = 'thumbs/';
+    $thumbs_path = 'thumbs'.DIRECTORY_SEPARATOR;
 }
 
-    
-$parent=$subfolder.$subdir;
+
+if(trim($subfolder)=="") $parent=$subdir;
+else $parent=$subfolder.DIRECTORY_SEPARATOR.$subdir;
+
 $cycle=true;
 while($cycle){
-    if($parent=="./") $parent="";    
+    if($parent==".".DIRECTORY_SEPARATOR) $parent="";    
     if(file_exists($current_path.$parent.".config")){
 	require_once($current_path.$parent.".config");
 	$cycle=false;
@@ -60,8 +68,6 @@ if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
 if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
 if(isset($_GET['view'])){ $view=$_GET['view']; $_SESSION["view_type"] = $view; }
 $view=$_SESSION["view_type"];
-
-
 
 if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && is_readable('lang/' . $_GET['lang'] . '.php')) {
     require_once 'lang/' . $_GET['lang'] . '.php';
@@ -140,16 +146,26 @@ $get_params = http_build_query(array(
 		<input type="hidden" id="insert_folder_name" value="<?php echo lang_Insert_Folder_Name; ?>" />
 		<input type="hidden" id="new_folder" value="<?php echo lang_New_Folder; ?>" />
 		<input type="hidden" id="base_url" value="<?php echo $base_url?>"/>
+		<input type="hidden" id="image_dimension_passing" value="<?php echo $image_dimension_passing; ?>" />
 		
 <?php if($upload_files){ ?>
 <!----- uploader div start ------->
 <div class="uploader">
     <center><button class="btn btn-inverse close-uploader"><i class="icon-backward icon-white"></i> <?php echo lang_Return_Files_List?></button></center>
 	<div class="space10"></div><div class="space10"></div>
-	<form action="dialog.php" method="post" enctype="multipart/form-data" id="myAwesomeDropzone" class="dropzone">
-		<input type="hidden" name="path" value="<?php echo $cur_path?>"/>
-		<input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
-		<div class="fallback">
+	<?php if($java_upload){ ?>
+	<div class="tabbable upload-tabbable"> <!-- Only required for left/right tabs -->
+	    <ul class="nav nav-tabs">
+		<li class="active"><a href="#tab1" data-toggle="tab"><?php echo lang_Upload_base; ?></a></li>
+		<li><a href="#tab2" id="uploader-btn" data-toggle="tab"><?php echo lang_Upload_java; ?></a></li>
+	    </ul>
+	    <div class="tab-content">
+		<div class="tab-pane active" id="tab1">
+		    <?php } ?>
+		<form action="dialog.php" method="post" enctype="multipart/form-data" id="myAwesomeDropzone" class="dropzone">
+		    <input type="hidden" name="path" value="<?php echo $cur_path?>"/>
+		    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
+		    <div class="fallback">
 			<?php echo  lang_Upload_file?>:<br/>
 			<input name="file" type="file" />
 			<input type="hidden" name="fldr" value="<?php echo $subdir; ?>"/>
@@ -160,8 +176,20 @@ $get_params = http_build_query(array(
 			<input type="hidden" name="editor" value="<?php echo $_GET['editor']; ?>"/>
 			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
 			<input type="submit" name="submit" value="OK" />
+		    </div>
+		</form>
+		<?php if($java_upload){ ?>
 		</div>
-	</form>
+		<div class="tab-pane" id="tab2">
+		    <div id="iframe-container">
+			
+		    </div>
+		    <div class="java-help"><?php echo lang_Upload_java_help; ?></div>
+		</div>
+		<?php } ?>
+	    </div>
+	</div>
+	
 </div>
 <!----- uploader div start ------->
 
@@ -200,8 +228,7 @@ $get_params = http_build_query(array(
 			<div class="span6 types">
 			    <?php if($_GET['type']==2 || $_GET['type']==0){ ?>
 			    <span><?php echo lang_Filters; ?>:</span>
-			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide" />
-			    <label id="ff-item-type-all" title="<?php echo lang_All; ?>" for="select-type-all" class="tip btn btn-inverse ff-label-type-all"><i class="icon-stop icon-white"></i></label>
+			    
 			    <input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
 			    <label id="ff-item-type-1" title="<?php echo lang_Files; ?>" for="select-type-1" class="tip btn ff-label-type-1"><i class="icon-file"></i></label>
 			    <input id="select-type-2" name="radio-sort" type="radio" data-item="ff-item-type-2" class="hide"  />
@@ -212,7 +239,11 @@ $get_params = http_build_query(array(
 			    <label id="ff-item-type-4" title="<?php echo lang_Videos; ?>" for="select-type-4" class="tip btn ff-label-type-4"><i class="icon-film"></i></label>
 			    <input id="select-type-5" name="radio-sort" type="radio" data-item="ff-item-type-5" class="hide"  />
 			    <label id="ff-item-type-5" title="<?php echo lang_Music; ?>" for="select-type-5" class="tip btn ff-label-type-5"><i class="icon-music"></i></label>
-			    
+			    <?php } ?>
+			    <input accesskey="f" type="text" class="filter-input" id="filter-input" name="filter" placeholder="<?php echo strtolower(lang_Text_filter); ?>..." value=""/>
+			    <?php if($_GET['type']==2 || $_GET['type']==0){ ?>
+			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide" />
+			    <label id="ff-item-type-all" title="<?php echo lang_All; ?>" for="select-type-all" class="tip btn btn-inverse ff-label-type-all"><i class="icon-align-justify icon-white"></i></label>
 			    <?php } ?>
 			</div>
 		    </div>
@@ -234,15 +265,15 @@ $get_params = http_build_query(array(
 	<ul class="breadcrumb">
 	<li class="pull-left"><a href="<?php echo $link?>"><i class="icon-home"></i></a></li><li><span class="divider">/</span></li>
 	<?php
-	$bc=explode('/',$subdir);
+	$bc=explode(DIRECTORY_SEPARATOR,$subdir);
 	$tmp_path='';
 	if(!empty($bc))
 	foreach($bc as $k=>$b){ 
-		$tmp_path.=$b."/";
+		$tmp_path.=$b.DIRECTORY_SEPARATOR;
 		if($k==count($bc)-2){
 	?> <li class="active"><?php echo $b?></li><?php
 		}elseif($b!=""){ ?>
-		<li><a href="<?php echo $link.$tmp_path?>"><?php echo $b?></a></li><li><span class="divider">/</span></li>
+		<li><a href="<?php echo $link.$tmp_path?>"><?php echo $b?></a></li><li><span class="divider"><?php echo DIRECTORY_SEPARATOR; ?></span></li>
 	<?php }
 	}
 	?>
@@ -258,7 +289,7 @@ $get_params = http_build_query(array(
 	    <br/>
 	    <div class="alert alert-error">There is an error! The root folder not exist. </div> 
 	    <?php }else{ ?>
-	    <h4 id="help">Swipe the name of file/folder to show options</h4>
+	    <h4 id="help"><?php echo lang_Swipe_help; ?></h4>
 	    <?php if(isset($folder_message)){ ?>
 		<div class="alert alert-block"><?php echo $folder_message; ?></div>
 	    <?php } ?>
@@ -291,16 +322,16 @@ $get_params = http_build_query(array(
 			if (!file_exists($thumbs_path.$subdir.$file)) create_folder(false,$thumbs_path.$subdir.$file);
 			$class_ext = 3;			
 			if($file=='..' && trim($subdir) != '' ){
-			    $src = explode('/',$subdir);
+			    $src = explode(DIRECTORY_SEPARATOR,$subdir);
 			    unset($src[count($src)-2]);
-			    $src=implode('/',$src);
+			    $src=implode(DIRECTORY_SEPARATOR,$src);
 			}
 			elseif ($file!='..') {
-			    $src = $subdir . $file."/";
+			    $src = $subdir . $file.DIRECTORY_SEPARATOR;
 			}
 			
 			?>
-			<li>
+			<li data-name="<?php echo $file ?>">
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory">
 				    <a title="<?php echo lang_Open?>" class="folder-link" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>">
 				    <div class="img-precontainer">
@@ -326,7 +357,7 @@ $get_params = http_build_query(array(
 				    <figcaption>
 					    <a href="javascript:void('');" class="tip-left edit-button <?php if($rename_folders) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
 					    <i class="icon-pencil <?php if(!$rename_folders) echo 'icon-white'; ?>"></i></a>
-					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders) echo "delete-folder"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_Folder_del; ?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders) echo "delete-folder"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_Folder_del; ?>" data-path="<?php echo $root. $cur_dir .$file; ?>"  data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
 					    <i class="icon-trash <?php if(!$delete_folders) echo 'icon-white'; ?>"></i>
 					    </a>
 				    </figcaption>
@@ -354,7 +385,7 @@ $get_params = http_build_query(array(
 					$src = $base_url . $cur_dir . $file;
 					$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 					//add in thumbs folder if not exist 
-					$thumb_path=str_replace('//','/',dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+					$thumb_path=str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR,dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
 					dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
 					if(!file_exists($thumb_path)){
 						create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
@@ -397,7 +428,7 @@ $get_params = http_build_query(array(
 				
 				if((!($_GET['type']==1 && !$is_img) && !($_GET['type']>=3 && !$is_video)) && $class_ext>0){
 ?>
-		<li class="ff-item-type-<?php echo $class_ext; ?>">
+		<li class="ff-item-type-<?php echo $class_ext; ?>"  data-name="<?php echo $file ?>">
 			<figure>
 				<a href="javascript:void('');" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">

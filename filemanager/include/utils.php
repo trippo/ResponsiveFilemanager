@@ -58,10 +58,22 @@ function create_folder($path=false,$path_thumbs=false){
     umask($oldumask);
 }
 
-function extensions_to_lower($path){
+function fix_filename($str){
+    $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
+    $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
+    return $str;
+}
+
+function fix_filename1($path){
     $info=pathinfo($path);
-    $extension=strtolower($info['extension']);
-    return $info['dirname'].DIRECTORY_SEPARATOR.$info['filename'].".".$extension;
+    $tmp_path=$info['dirname'];
+    $str=$info['filename'];
+    $str=strtr($str,'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ','aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+    $clean = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
+    if($tmp_path!="")
+	return $tmp_path.DIRECTORY_SEPARATOR.$clean;
+    else
+	return $clean;
 }
 
 function config_loading($current_path,$fld){

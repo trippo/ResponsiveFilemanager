@@ -33,4 +33,9 @@ define('lang_Actions','Actions');
 define('lang_Rename_existing_file','Ce fichier existe déjà');
 define('lang_Rename_existing_folder','Ce dossier existe déjà');
 define('lang_Empty_name','Le nom est vide');
+define('lang_Text_filter','texte de filtrage');
+define('lang_Swipe_help','Swipe the name of file/folder to show options');
+define('lang_Upload_base','Base upload');
+define('lang_Upload_java','JAVA upload (big size files)');
+define('lang_Upload_java_help',"If the Java Applet don't load 1. make sure you have Java installed otherwise <a href='http://java.com/en/download/'>[download link]</a> 2. make sure nothing is blocked from firewall");
 ?>
