@@ -185,6 +185,7 @@ If you want use filemanager in a multiuser cms you can simply create a folder fo
 - POL [Michell Hoduń]
 - POR [Sérgio Lima]
 - RUS [vasromand]
+- TUR [Ahmed Faruk Bora]
 
 *********************************************************
 ! Old version CHANGES
