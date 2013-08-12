@@ -75,6 +75,12 @@ $appletParameters = array(
         'debugLevel' => 0 // 100 disables redirect after upload, so we keep it below. This still gives a lot of information, in case of problem.
     );
 
+// for htaccess protected folders 
+if($_SERVER['PHP_AUTH_USER'] != '' && $_SERVER['PHP_AUTH_USER'] != '') 
+{
+	$appletParameters['specificHeaders'] = 'Authorization: Basic '.base64_encode($_SERVER['PHP_AUTH_USER'].":".$_SERVER['PHP_AUTH_PW']);
+}
+
 //
 //Then: the jupload PHP class parameters
 $classParameters = array(

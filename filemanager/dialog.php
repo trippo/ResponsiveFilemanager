@@ -24,31 +24,23 @@ else
 /***
  *SUB-DIR CODE
  ***/
+if(!isset($_SESSION["subfolder"])) $_SESSION["subfolder"]='';
 $subfolder = '';
-if(isset($_GET['subfolder']) && !empty($_GET['subfolder']) && strpos($_GET['subfolder'],'..'.DIRECTORY_SEPARATOR)===FALSE
-   && strpos($_GET['subfolder'],'.'.DIRECTORY_SEPARATOR)===FALSE && strpos($_GET['subfolder'],DIRECTORY_SEPARATOR)!==0
-    && strpos($_GET['subfolder'],'.')===FALSE && $_GET['subfolder'] != "undefined") $_SESSION["subfolder"] = $_GET['subfolder'];
+if(!empty($_SESSION["subfolder"]) && strpos($_SESSION["subfolder"],'..'.DIRECTORY_SEPARATOR)===FALSE
+   && strpos($_SESSION["subfolder"],'.'.DIRECTORY_SEPARATOR)===FALSE && strpos($_SESSION["subfolder"],DIRECTORY_SEPARATOR)!==0
+    && strpos($_SESSION["subfolder"],'.')===FALSE) $subfolder= $_SESSION['subfolder'];
 
-if(isset($_SESSION['subfolder']) && !empty($_SESSION['subfolder']) && strpos($_SESSION['subfolder'],'..'.DIRECTORY_SEPARATOR)===FALSE) {
-    $subfolder=$_SESSION["subfolder"];
-    if(trim($subfolder)==""){
-	$cur_dir = $upload_dir . $subdir;
-	$cur_path = $current_path . $subdir;
-    }else{
-	$cur_dir = $upload_dir . $subfolder . DIRECTORY_SEPARATOR . $subdir;
-	$cur_path = $current_path . $subfolder .DIRECTORY_SEPARATOR. $subdir;
-    }
-    $thumbs_path = 'thumbs'.DIRECTORY_SEPARATOR . $subfolder . DIRECTORY_SEPARATOR;
-    if (!file_exists($thumbs_path.$subdir)) create_folder(false,$thumbs_path.$subdir);
-}else {
+if(trim($subfolder)==""){
     $cur_dir = $upload_dir . $subdir;
     $cur_path = $current_path . $subdir;
     $thumbs_path = 'thumbs'.DIRECTORY_SEPARATOR;
+    $parent=$subdir;
+}else{
+    $cur_dir = $upload_dir . $subfolder . DIRECTORY_SEPARATOR . $subdir;
+    $cur_path = $current_path . $subfolder .DIRECTORY_SEPARATOR. $subdir;
+    $thumbs_path = 'thumbs'.DIRECTORY_SEPARATOR . $subfolder . DIRECTORY_SEPARATOR;
+    $parent=$subfolder.DIRECTORY_SEPARATOR.$subdir;
 }
-
-
-if(trim($subfolder)=="") $parent=$subdir;
-else $parent=$subfolder.DIRECTORY_SEPARATOR.$subdir;
 
 $cycle=true;
 while($cycle){
