@@ -61,19 +61,18 @@ function create_folder($path=false,$path_thumbs=false){
 function fix_filename($str){
     $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
     $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
+    $str = str_replace(' ','_',$str);
     return $str;
 }
 
 function fix_path($path){
     $info=pathinfo($path);
     $tmp_path=$info['dirname'];
-    $str=$info['filename'];
-    $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
-    $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
+    $str=fix_filename($info['filename']);
     if($tmp_path!="")
 	return $tmp_path.DIRECTORY_SEPARATOR.$str;
     else
-	return $clean;
+	return $str;
 }
 
 function config_loading($current_path,$fld){
