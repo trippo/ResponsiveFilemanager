@@ -42,10 +42,10 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
 	$_FILES['file']['name']=$info['filename'].".[".$i."].".$info['extension'];
     }
     
-    echo $targetFile =  $targetPath. $_FILES['file']['name']; 
+    $targetFile =  $targetPath. $_FILES['file']['name']; 
     $targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
 
-    echo move_uploaded_file($tempFile,$targetFile);
+    move_uploaded_file($tempFile,$targetFile);
     chmod($targetFile, 0755);
     if(in_array(substr(strrchr($_FILES['file']['name'],'.'),1),$ext_img)) $is_img=true;
     else $is_img=false;
