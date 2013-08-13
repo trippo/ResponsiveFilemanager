@@ -265,12 +265,11 @@ function apply_link(file,type_file,external){
     if (external=="") {
 		$('.mce-link_'+track, window_parent.document).val(base_url+path+file);
 		var closed = $('.mce-filemanager', window_parent.document);
-		$('.mce-text_'+track, window_parent.document).val(file.replace(/\..+$/, ''));
+		//$('.mce-text_'+track, window_parent.document).val(file.replace(/\..+$/, ''));
 		$(closed).find('.mce-close').trigger('click');
     }else{
 		var target = $('#'+external,window_parent.document);
 		$(target).val(base_url+path+file);
-		$('.mce-text_'+track, window_parent.document).val(file.replace(/\..+$/, ''));
 		close_window();
     }
 }
