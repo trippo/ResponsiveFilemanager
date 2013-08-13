@@ -37,5 +37,12 @@ define('lang_Text_filter','filtro di testo');
 define('lang_Swipe_help','Esegui uno Swipe sul nome del file/cartella per mostrare le opzioni');
 define('lang_Upload_base','Upload Base');
 define('lang_Upload_java','JAVA upload (file di grosse dimensioni)');
-define('lang_Upload_java_help',"Se non si carica l'applet java 1. assicurati di aver installato java nel computer altrimenti <a href='http://java.com/en/download/'>[download link]</a> 2. asscurati di non essere bloccato da un firewall");
+define('lang_Upload_java_help',"Se non si carica l'applet java 1. assicurati di aver installato java nel computer altrimenti <a href='http://java.com/en/download/'>[download link]</a> 2. asscurati di non essere bloccato da un firewall
+define('lang_Type_dir','dir');
+define('lang_Type','Tipo');
+define('lang_Dimension','Dimensione');
+define('lang_Size','Peso');
+define('lang_Date','Data');
+define('lang_Name','Nome');
+define('lang_Date_type','d/m/y');");
 ?>

@@ -46,7 +46,29 @@ function makeSize($size) {
      $size = $size / 1024;
      $u++;
    }
-   return (number_format($size, 1, ',', '') . " " . $units[$u]);
+   return (number_format($size, 0) . " " . $units[$u]);
+}
+
+function foldersize($path) {
+    $total_size = 0;
+    $files = scandir($path);
+    $cleanPath = rtrim($path, '/'). '/';
+
+    foreach($files as $t) {
+        if ($t<>"." && $t<>"..") {
+            $currentFile = $cleanPath . $t;
+            if (is_dir($currentFile)) {
+                $size = foldersize($currentFile);
+                $total_size += $size;
+            }
+            else {
+                $size = filesize($currentFile);
+                $total_size += $size;
+            }
+        }   
+    }
+
+    return $total_size;
 }
 
 function create_folder($path=false,$path_thumbs=false){

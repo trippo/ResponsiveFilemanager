@@ -5,12 +5,14 @@ if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbiden');
 include('config/config.php');
 include('include/utils.php');
 
-
-if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && is_readable('lang/' . $_GET['lang'] . '.php')) {
-    require_once 'lang/' . $_GET['lang'] . '.php';
-} else {
-    require_once 'lang/en_EN.php';
+$language_file = 'lang/en_EN.php'; 
+if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
+    $path_parts = pathinfo($_GET['lang']);
+    if(is_readable('lang/' .$path_parts['basename']. '.php')){ 
+        $language_file = 'lang/' .$path_parts['basename']. '.php';
+    }
 }
+require_once $language_file;
 
 $path=$_POST['path'];
 $path_thumb=$_POST['path_thumb'];

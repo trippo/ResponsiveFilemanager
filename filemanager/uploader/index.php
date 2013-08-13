@@ -76,7 +76,7 @@ $appletParameters = array(
     );
 
 // for htaccess protected folders 
-if($_SERVER['PHP_AUTH_USER'] != '' && $_SERVER['PHP_AUTH_USER'] != '') 
+if((isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] != '') && $_SERVER['PHP_AUTH_USER'] != '' && $_SERVER['PHP_AUTH_USER'] != '') 
 {
 	$appletParameters['specificHeaders'] = 'Authorization: Basic '.base64_encode($_SERVER['PHP_AUTH_USER'].":".$_SERVER['PHP_AUTH_PW']);
 }

@@ -1,5 +1,5 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 7.1.1
+! Responsive FileManager for TinyMCE Version 7.2.0
 *********************************************************
 Responsive FileManager for TinyMCE is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos with TinyMCE version 4.x.
 You can also use it as a stand-alone file manager to manage and select files.
@@ -10,7 +10,13 @@ You can set a subfolder as the root and change the configuration for each user, 
 
 
 
-CHANGES 
+CHANGES LOG
+
+version 7.2.0
+- improve layout and security
+- add files informations on list view (size,images dimensions,modification date, file type)
+- add real-time sorting on list view
+- fix minor bugs
 
 version 7.1.1
 - some bugs fixing
@@ -55,7 +61,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 PS If you don't see the preview images you need to give write permission to the thumbs folder in filemanager/thumbs.
 If you are updating from a previous version of FileManager delete the contents of thumbs folder; the script will automatically re-create the thumbnails.
-
+!IMPORTANT: if you are using htaccess protection, make sure your $GLOBALS PHP_AUTH_USER/PHP_AUTH_USER are defined in your webserver config
 
 USE AS TINYMCE 4 FILEMANGER
 

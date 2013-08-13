@@ -61,11 +61,17 @@ if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] 
 if(isset($_GET['view'])){ $view=$_GET['view']; $_SESSION["view_type"] = $view; }
 $view=$_SESSION["view_type"];
 
-if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && is_readable('lang/' . $_GET['lang'] . '.php')) {
-    require_once 'lang/' . $_GET['lang'] . '.php';
-} else {
-    require_once 'lang/en_EN.php';
+
+$language_file = 'lang/en_EN.php'; 
+if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
+    $path_parts = pathinfo($_GET['lang']);
+    if(is_readable('lang/' .$path_parts['basename']. '.php')){ 
+        $language_file = 'lang/' .$path_parts['basename']. '.php';
+    }
 }
+
+require_once $language_file;
+
 if(!isset($_GET['type'])) $_GET['type']=0;
 if(!isset($_GET['field_id'])) $_GET['field_id']='';
 
@@ -213,9 +219,9 @@ $get_params = http_build_query(array(
 			</div>
 			<div class="span3 half view-controller">
 			    <span><?php echo lang_View; ?>:</span>
-				<button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
-				<button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
-				<button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
+				<button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
+				<button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
+				<button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
 			</div>
 			<div class="span6 types">
 			    <span><?php echo lang_Filters; ?>:</span>
@@ -274,8 +280,10 @@ $get_params = http_build_query(array(
     <!----- breadcrumb div end ------->
 
 
+
+
     <div class="row-fluid ff-container">
-	<div class="span12">
+	<div class="span12">	    
 	    <?php if(@opendir($root . $cur_dir)===FALSE){ ?>
 	    <br/>
 	    <div class="alert alert-error">There is an error! The root folder not exist. </div> 
@@ -284,8 +292,20 @@ $get_params = http_build_query(array(
 	    <?php if(isset($folder_message)){ ?>
 		<div class="alert alert-block"><?php echo $folder_message; ?></div>
 	    <?php } ?>
+	    <?php if($show_sorting_bar){ ?>
+	    <!-- sorter -->
+	    <div class="sorter-container <?php echo "list-view".$view; ?>">
+		<div class="file-name"><a class="sorter" href="javascript:void('')" data-sort="name"><?php echo lang_Name; ?></a></div>
+		<div class="file-date"><a class="sorter" href="javascript:void('')" data-sort="date"><?php echo lang_Date; ?></a></div>
+		<div class="file-size"><a class="sorter" href="javascript:void('')" data-sort="size"><?php echo lang_Size; ?></a></div>
+		<div class='img-dimension'><?php echo lang_Dimension; ?></div>
+		<div class='file-extension'><a class="sorter" href="javascript:void('')" data-sort="extension"><?php echo lang_Type; ?></a></div>
+		<div class='file-operations'>Operations</div>
+	    </div>
+	    <?php } ?>
+	    
 	    <!--ul class="thumbnails ff-items"-->
-	    <ul class="grid cs-style-2 <?php if($view>=1) echo "list-view"; ?>">
+	    <ul class="grid cs-style-2 <?php echo "list-view".$view; ?>">
 		<?php
 		$class_ext = '';
 		$src = '';
@@ -322,7 +342,7 @@ $get_params = http_build_query(array(
 			}
 			
 			?>
-			<li data-name="<?php echo $file ?>">
+			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; ?>>
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory">
 				    <a title="<?php echo lang_Open?>" class="folder-link" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>">
 				    <div class="img-precontainer">
@@ -343,8 +363,18 @@ $get_params = http_build_query(array(
 					
 				    </a>
 				    <div class="box">
-					<h4><?php if($file==".."){ echo lang_Back; }else{ ?><a title="<?php echo lang_Open?>" class="folder-link"  href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>"><?php echo $file ?></a><?php } ?></h4>
+					<h4><a title="<?php echo lang_Open?>" class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>"><?php echo $file ?></a></h4>
 				    </div>
+				    <?php $date=filemtime($root . $cur_dir . $file);
+				    $size=foldersize($root . $cur_dir . $file);
+				    ?>
+				    <input type="hidden" class="name" value=""/>
+				    <input type="hidden" class="date" value="<?php echo date('Y-mdHis',$date); ?>"/>
+				    <input type="hidden" class="size" value="<?php echo $size ?>"/>
+				    <input type="hidden" class="extension" value="<?php echo lang_Type_dir; ?>"/>
+				    <div class="file-date"><?php echo date(lang_Date_type,$date)?></div>
+				    <?php if($show_folder_size){ ?><div class="file-size"><?php echo makeSize($size)?></div><?php } ?>
+				    <div class='file-extension'><?php echo lang_Type_dir; ?></div>
 				    <figcaption>
 					    <a href="javascript:void('');" class="tip-left edit-button <?php if($rename_folders) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
 					    <i class="icon-pencil <?php if(!$rename_folders) echo 'icon-white'; ?>"></i></a>
@@ -377,13 +407,13 @@ $get_params = http_build_query(array(
 					$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 					//add in thumbs folder if not exist 
 					$thumb_path=str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR,dirname( __FILE__ ).DIRECTORY_SEPARATOR."thumbs".DIRECTORY_SEPARATOR.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
-					dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
+					$file_path=dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
 					if(!file_exists($thumb_path)){
-						create_img_gd(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file, $thumb_path, 122, 91);
+						create_img_gd($file_path, $thumb_path, 122, 91);
 					}
 					$is_img=true;
 					//check if is smaller tha thumb
-					list($img_width, $img_height, $img_type, $attr)=getimagesize(dirname( __FILE__ ). DIRECTORY_SEPARATOR.$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file);
+					list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
 					
 					if($img_width<122 && $img_height<91){
 						$src_thumb=$current_path.$subfolder.DIRECTORY_SEPARATOR.$subdir.$file;
@@ -434,8 +464,19 @@ $get_params = http_build_query(array(
 				</a>	
 				<div class="box">				
 				<h4><a href="javascript:void('');" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
-				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo $filename; ?></a></h4>
+				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo $filename; ?></a> </h4>
 				</div>
+				<?php $date=filemtime($file_path);
+				$size=filesize($file_path);
+				?>
+				<input type="hidden" class="date" value="<?php echo date('Y-mdHis',$date); ?>"/>
+				<input type="hidden" class="size" value="<?php echo $size ?>"/>
+				<input type="hidden" class="extension" value="<?php echo $file_ext; ?>"/>
+				<input type="hidden" class="name" value=""/>
+				<div class="file-date"><?php echo date(lang_Date_type,$date)?></div>
+				<div class="file-size"><?php echo makeSize($size)?></div>
+				<div class='img-dimension'><?php if($is_img){ echo $img_width."x".$img_height; } ?></div>
+				<div class='file-extension'><?php echo $file_ext; ?></div>
 				<figcaption>
 				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
 					<input type="hidden" name="path" value="<?php echo $root. $cur_dir. $file?>"/>

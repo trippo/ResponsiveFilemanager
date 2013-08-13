@@ -51,9 +51,21 @@ $(document).ready(function(){
 	    $('.uploader').show(500);
     });
     
+    var sortDescending=true;
+    $('.sorter').click(function(){
+	_this=$(this);
+	sortUnorderedList('ul.grid',sortDescending,"."+_this.data('sort'));
+	$('.sorter-container a.sorter').removeClass('descending').removeClass('ascending');
+	if (sortDescending)
+	    _this.addClass("descending");
+	else
+	    _this.addClass("ascending");
+	sortDescending=!sortDescending;
+    });
+    
     $('.close-uploader').click(function(){
 	    $('.uploader').hide(500);
-	    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();;
+	    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
     });
     
     $('.preview').click(function(){
@@ -138,15 +150,16 @@ $(document).ready(function(){
 			    alert(msg);
 		}   
 	    });
-	    
+	    $('ul.grid')[0].className = $('ul.grid')[0].className.replace(/\blist-view.*?\b/g, '');
+	    $('.sorter-container')[0].className = $('.sorter-container')[0].className.replace(/\blist-view.*?\b/g, '');
+	    var value=_this.data('value');
+	    $('#view').val(value);
+	    $('ul.grid').addClass('list-view'+value);
+	    $('.sorter-container').addClass('list-view'+value);
 	    if (_this.data('value')>=1){
-		$('ul.grid').addClass('list-view');
-		$('#view').val(_this.data('value'));
 		fix_colums();
 	    }
 	    else{
-		$('ul.grid').removeClass('list-view');
-		$('#view').val(0);
 		$('ul.grid li').css( "width",126);
 		$('ul.grid figure').css( "width",122);
 	    }
@@ -452,6 +465,48 @@ function execute_action(action,file1,file2,name,container,function_name){
     });
 }
 
+
+function sortUnorderedList(ul, sortDescending,sort_field) {
+    if(typeof ul == "string")
+      ul = $(ul);
+    
+    var lis = ul.find("li:not(.back)");
+    var vals = [];
+    var values = [];
+    
+    $.each(lis,function(index){
+	var _this=$(this);
+	var value=_this.find(sort_field).val();
+	console.log(index+" "+value);
+	if ($.isNumeric(value)) {
+	    value=parseFloat(value);
+	    while (typeof vals[value] !== "undefined" &&  vals[value] ) {
+		value=value+0.0001;
+	    }
+	}else{
+	    value=value+_this.find('h4 a').data('file');
+	}
+	vals[value]=_this.html();
+	values.push(value);
+	});
+    if ($.isNumeric(values[0])) {
+	values.sort(function(a,b){return a-b});
+    }else{
+	values.sort();
+    }
+    
+    
+    if(sortDescending)
+	values.reverse();
+    console.log(values);
+    
+    
+    $.each(lis,function(index){
+	var _this=$(this);
+	_this.html(vals[values[index]]);
+    });
+    
+}
 
 function show_animation()
 {

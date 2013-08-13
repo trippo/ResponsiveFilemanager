@@ -13,7 +13,7 @@ $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
 //**********************
 // In this configuration the folder tree is
 // root
-//   |- site
+//   |- responsivefm
 //   |    |- source <- upload folder
 //   |    |- js
 //   |    |   |- tinymce
@@ -22,7 +22,7 @@ $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
 //   |    |   |    |-   |-      |- thumbs <- folder of thumbs [must have the write permission]
 
 $base_url="http://localhost"; //url base of site if you want only relative url leave empty
-$upload_dir = '/site/source/'; // path from base_url to upload base dir
+$upload_dir = '/responsivefm/source/'; // path from base_url to upload base dir
 $current_path = '../../../../source/'; // relative path from filemanager folder to upload files folder
 
 
@@ -32,6 +32,9 @@ $current_path = '../../../../source/'; // relative path from filemanager folder 
 //------------------------------------------------------------------------------
 
 $MaxSizeUpload=100; //Mb
+
+$show_folder_size=true;
+$show_sorting_bar=true;
 
 //**********************
 //Image config
@@ -50,8 +53,8 @@ $image_max_height=0;
 //Automatic resizing //
 //If you set true $image_resizing the script convert all images uploaded in image_width x image_height resolution
 //If you set width or height to 0 the script calcolate automatically the other size
-$image_resizing=false;
-$image_width=0;
+$image_resizing=true;
+$image_width=600;
 $image_height=0;
 
 //******************
