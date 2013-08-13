@@ -3,7 +3,7 @@ if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbidden');
 
 
 //------------------------------------------------------------------------------
-// DON'T COPY THIS VARIABLES IN .config FILES
+// DON'T COPY THESE VARIABLES IN .config FILES
 //------------------------------------------------------------------------------
 
 $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
@@ -28,7 +28,7 @@ $current_path = '../../../../source/'; // relative path from filemanager folder 
 
 
 //------------------------------------------------------------------------------
-// YOU CAN COPY AND CHANGE THIS VARIABLES IN .config FILES
+// YOU CAN COPY AND CHANGE THESE VARIABLES IN .config FILES
 //------------------------------------------------------------------------------
 
 $MaxSizeUpload=100; //Mb
@@ -64,7 +64,7 @@ $image_height=0;
 // 1 => list (1 column)
 // 2 => columns list (multiple columns depending on the width of the page)
 //
-// YOU CAN ALSO PASS THIS PARAMETERS USING SESSION VAR => $_SESSION["VIEW"]=
+// YOU CAN ALSO PASS THESE PARAMETERS USING SESSION VAR => $_SESSION["VIEW"]=
 //
 //******************
 $default_view=0;
