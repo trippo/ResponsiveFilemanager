@@ -13,9 +13,9 @@ You can set a subfolder as the root and change the configuration for each user, 
 CHANGES LOG
 
 version 7.2.0
-- improve layout and security
-- add files informations on list view (size,images dimensions,modification date, file type)
-- add real-time sorting on list view
+- improved layout and security
+- add file information in List view (size, image dimensions, modification date, file type)
+- add real-time sorting in List view
 - fix minor bugs
 
 version 7.1.1
@@ -25,10 +25,10 @@ version 7.1.1
 
 version 7.1.0
 - Text filter in real-time
-- New upload method through java applet without size limitation (Java Multiple File Upload Applet (JUpload) takes care of the limitation posed by traditional HTML upload forms by allowing you to upload a whole directory and the files within it with a single click)
-- Parsing special characters in all files/folders name
-- Incremental name for equal files uploaded
-- Automatic passing of images height and width in tinymce form (configurable on config.ph)
+- New upload method through Java applet without size limitation (Java Multiple File Upload Applet (JUpload) takes care of the limitation posed by traditional HTML upload forms by allowing you to upload a whole directory and the files within it with a single click)
+- Parsing special characters in all file/folder name
+- Incremental naming when identical files are uploaded
+- Automatic passing of images height and width to TinyMCE form (configurable in config.ph)
 - All plugin.min.js file non-minified for customization
 - Add file and folder exlusion list in config.php and .config files
 - Fix rename real-time bug
