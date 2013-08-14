@@ -44,7 +44,7 @@ $show_sorting_bar=true;
 $image_dimension_passing=1; // if 1 filemanager passes the the pixel dimension to TinyMCE, else 0
 
 // set maximum pixel width and/or maximum pixel height for all images
-// If you set a maximum width or height, oversized images are convert to those limits. Images smaller than the limit(s) are unaffected
+// If you set a maximum width or height, oversized images are converted to those limits. Images smaller than the limit(s) are unaffected
 // if you don't need a limit set both to 0
 $image_max_width=0;
 $image_max_height=0;
