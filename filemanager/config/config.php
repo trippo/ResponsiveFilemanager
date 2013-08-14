@@ -3,7 +3,7 @@ if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbidden');
 
 
 //------------------------------------------------------------------------------
-// DON'T COPY THESE VARIABLES IN .config FILES
+// DON'T COPY THIS VARIABLES IN .config FILES
 //------------------------------------------------------------------------------
 
 $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
@@ -19,11 +19,11 @@ $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this configuration
 //   |    |   |- tinymce
 //   |    |   |    |- plugins
 //   |    |   |    |-   |- filemanager
-//   |    |   |    |-   |-      |- thumbs <- folder of thumbs [must have the write permission]
+//   |    |   |    |-   |-      |- thumbs <- thumbnail folder [must have write permission (755)]
 
-$base_url="http://localhost"; //url base of site if you want only relative url leave empty
-$upload_dir = '/responsivefm/source/'; // path from base_url to upload base dir
-$current_path = '../../../../source/'; // relative path from filemanager folder to upload files folder
+$base_url="http://localhost";  // base url of site. If you prefer relative urls leave empty
+$upload_dir = '/responsivefm/source/'; // path from base_url to base of upload folder
+$current_path = '../../../../source/'; // relative path from filemanager folder to upload folder
 
 
 
@@ -41,18 +41,17 @@ $show_sorting_bar=true;
 //**********************
 
 //parameter passed on editor
-$image_dimension_passing=1; //1 mean than filemanager pass on editor also the pixel dimension of image else 0
+$image_dimension_passing=1; // if 1 filemanager passes the the pixel dimension to TinyMCE, else 0
 
-//set max width pixel or the max height pixel for all images
-//If you set dimension limit, automatically the images that exceed this limit are convert to limit, instead
-//if the images are lower the dimension is maintained
-//if you don't have limit set both to 0
+// set maximum pixel width and/or maximum pixel height for all images
+// If you set a maximum width or height, oversized images are convert to those limits. Images smaller than the limit(s) are unaffected
+// if you don't need a limit set both to 0
 $image_max_width=0;
 $image_max_height=0;
 
 //Automatic resizing //
-//If you set true $image_resizing the script convert all images uploaded in image_width x image_height resolution
-//If you set width or height to 0 the script calcolate automatically the other size
+// If you set $image_resizing to true the script converts all uploaded images to image_width x image_height 
+// If you set width or height to 0 the script automatically calculates the other dimension
 $image_resizing=true;
 $image_width=600;
 $image_height=0;
@@ -64,13 +63,13 @@ $image_height=0;
 // 1 => list (1 column)
 // 2 => columns list (multiple columns depending on the width of the page)
 //
-// YOU CAN ALSO PASS THESE PARAMETERS USING SESSION VAR => $_SESSION["VIEW"]=
+// YOU CAN ALSO PASS THIS PARAMETERS USING SESSION VAR => $_SESSION["VIEW"]=
 //
 //******************
 $default_view=0;
 
 //******************
-//Permits config
+//Permissions config
 //******************
 $delete_files=true;
 $create_folders=true;
@@ -90,11 +89,11 @@ $ext_misc = array('zip', 'rar','gzip'); //Archives
 $ext=array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //allowed extensions
 
 //**********************
-//Hidden file and folder
+// Hidden files and folders
 //**********************
-//set the name of hidden folders... remember than this name will be hidden in all folders (you can change in .config file if have exceptions)
+// set the names of any folders you want hidden (eg "hidden_folder1", "hidden_folder2" ) Remember all folders with these names will be hidden (you can set any exceptions in .config file)
 $hidden_folders = array();
-//set the name of hidden files...  remember than this name will be hidden in all folders (ex: "document.pdf", "image.jpg" )
+// set the names of any files you want hidden. Remember these names will be hidden in all folders (eg "this_document.pdf", "that_image.jpg" )
 $hidden_files = array();
 
 /*******************
