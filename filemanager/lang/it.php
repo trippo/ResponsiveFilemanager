@@ -43,6 +43,6 @@ define('lang_Type','Tipo');
 define('lang_Dimension','Dimensione');
 define('lang_Size','Peso');
 define('lang_Date','Data');
-define('lang_Name','Nome');
+define('lang_Filename','Nome');
 define('lang_Date_type','d/m/y');");
 ?>

@@ -295,7 +295,7 @@ $get_params = http_build_query(array(
 	    <?php if($show_sorting_bar){ ?>
 	    <!-- sorter -->
 	    <div class="sorter-container <?php echo "list-view".$view; ?>">
-		<div class="file-name"><a class="sorter" href="javascript:void('')" data-sort="name"><?php echo lang_Name; ?></a></div>
+		<div class="file-name"><a class="sorter" href="javascript:void('')" data-sort="name"><?php echo lang_Filename; ?></a></div>
 		<div class="file-date"><a class="sorter" href="javascript:void('')" data-sort="date"><?php echo lang_Date; ?></a></div>
 		<div class="file-size"><a class="sorter" href="javascript:void('')" data-sort="size"><?php echo lang_Size; ?></a></div>
 		<div class='img-dimension'><?php echo lang_Dimension; ?></div>
