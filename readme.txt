@@ -71,7 +71,6 @@ tinymce.init({
     theme: "modern",
     width: 680,
     height: 300,
-    subfolder:"",
     plugins: [
          "advlist autolink link image lists charmap print preview hr anchor pagebreak",
          "searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking",

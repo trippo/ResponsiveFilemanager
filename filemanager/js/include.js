@@ -273,7 +273,7 @@ function apply_link(file,type_file,external){
     if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
     var path = $('#cur_dir').val();
     var base_url = $('#base_url').val();
-    var track = $('#track').val();
+    var track = $('#track').val().replace('[','').replace(']','');
     
     if (external=="") {
 		$('.mce-link_'+track, window_parent.document).val(base_url+path+file);
@@ -304,7 +304,7 @@ function apply_img(file,type_file,external){
     if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
     var path = $('#cur_dir').val();
     var base_url = $('#base_url').val();
-    var track = $('#track').val();
+    var track = $('#track').val().replace('[','').replace(']','');
     if (external=="") {		
 		var target = $('.mce-img_'+track, window_parent.document);
 		var alt = $('.mce-alt_img_'+track, window_parent.document);
@@ -343,7 +343,7 @@ function apply_video(file,type_file,external){
     if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
     var path = $('#cur_dir').val();
     var base_url = $('#base_url').val();
-    var track = $('#track').val();
+    var track = $('#track').val().replace('[','').replace(']','');
     
     if (external=="") {
 		var target = $('.mce-video'+ type_file +'_'+track,window_parent.document);
