@@ -150,8 +150,11 @@ $(document).ready(function(){
 			    alert(msg);
 		}   
 	    });
-	    $('ul.grid')[0].className = $('ul.grid')[0].className.replace(/\blist-view.*?\b/g, '');
-	    $('.sorter-container')[0].className = $('.sorter-container')[0].className.replace(/\blist-view.*?\b/g, '');
+	    if (typeof  $('ul.grid')[0] !== "undefined" &&  $('ul.grid')[0])
+		$('ul.grid')[0].className = $('ul.grid')[0].className.replace(/\blist-view.*?\b/g, '');
+	    if (typeof $('.sorter-container')[0] !== "undefined" && $('.sorter-container')[0])
+		$('.sorter-container')[0].className = $('.sorter-container')[0].className.replace(/\blist-view.*?\b/g, '');
+	    
 	    var value=_this.data('value');
 	    $('#view').val(value);
 	    $('ul.grid').addClass('list-view'+value);
