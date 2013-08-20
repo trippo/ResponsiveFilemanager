@@ -45,4 +45,6 @@ define('lang_Size','Size');
 define('lang_Date','Date');
 define('lang_Filename','Name');
 define('lang_Date_type','y-m-d');
+define('lang_OK','OK');
+define('lang_Cancel','Cancel');
 ?>

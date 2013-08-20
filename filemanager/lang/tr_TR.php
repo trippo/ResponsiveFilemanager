@@ -45,4 +45,6 @@ define('lang_Size','Boyut');
 define('lang_Date','Tarih');
 define('lang_Filename','Dosya adı');
 define('lang_Date_type','d-m-Y');
+define('lang_OK','OK');
+define('lang_Cancel','Cancel');
 ?>

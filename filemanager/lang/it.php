@@ -45,4 +45,6 @@ define('lang_Size','Peso');
 define('lang_Date','Data');
 define('lang_Filename','Nome');
 define('lang_Date_type','d/m/y');");
+define('lang_OK','OK');
+define('lang_Cancel','Annulla');
 ?>

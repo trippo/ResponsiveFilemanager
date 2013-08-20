@@ -12,11 +12,16 @@ You can set a subfolder as the root and change the configuration for each user, 
 
 CHANGES LOG
 
+version 7.3.0
+- all windows prompt and confirm change to bootbox modal
+- add info button
+- minor bugs fix
+
 version 7.2.0
 - improved layout and security
 - add file information in List view (size, image dimensions, modification date, file type)
 - add real-time sorting in List view
-- fix minor bugs
+- minor bugs fix
 
 version 7.1.1
 - some bugs fixing
@@ -251,4 +256,5 @@ TouchSwipe => http://labs.rampinteractive.co.uk/touchSwipe/demos/
 PHP Image Magician => http://phpimagemagician.jarrodoberto.com/
 Mini icons => http://www.fatcow.com/free-icons‎
 Jupload => http://jupload.sourceforge.net/
+Bootbox => http://bootboxjs.com/
 *********************************************************

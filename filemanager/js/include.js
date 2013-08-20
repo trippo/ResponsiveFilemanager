@@ -1,3 +1,5 @@
+var version="7.3.0";
+
 $(document).ready(function(){	    
     
     $('input[name=radio-sort]').click(function(){
@@ -28,6 +30,10 @@ $(document).ready(function(){
 	    }
 	});
     });
+    
+    $('#info').on('click',function(){
+	bootbox.alert('<center><img src="images/logo.jpg" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
+	});
     
     $('#uploader-btn').click(function(){
 	    var path=$('#root').val()+$('#cur_dir').val();
@@ -78,61 +84,70 @@ $(document).ready(function(){
     });
     
     $('.rename-file').click(function(){
-	    var _this = $(this);
-	    
+	var _this = $(this);
+
 	var file_container=_this.parent().parent().parent();
 	var file_title=file_container.find('h4');
-	var name=prompt(_this.attr('title'),$.trim(file_title.text()));
-	if(name!=null)
-	    execute_action('rename_file',_this.data('path'),_this.data('thumb'),name,file_container,'apply_file_rename');
-	return false;
+	var old_name=$.trim(file_title.text());
+	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+	    name=clean_filename(name);
+	    if (name !== null && name!=old_name) {                                             
+		execute_action('rename_file',_this.data('path'),_this.data('thumb'),name,file_container,'apply_file_rename');
+	    }
+	},old_name);
     });
     
     $('.rename-folder').click(function(){
-	    var _this = $(this);
+	var _this = $(this);
 	    
 	var file_container=_this.parent().parent().parent();
 	var file_title=file_container.find('h4');
-	var name=prompt(_this.attr('title'),$.trim(file_title.text()));
-	if(name!=null)
-	    execute_action('rename_folder',_this.data('path'),_this.data('thumb'),name,file_container,'apply_folder_rename');
-	return false;
+	var old_name=$.trim(file_title.text());
+	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+	    name=clean_filename(name);
+	    if (name !== null && name!=old_name) {                                             
+		execute_action('rename_folder',_this.data('path'),_this.data('thumb'),name,file_container,'apply_folder_rename');
+	    }
+	},old_name);
     });
     
     $('.delete-file').click(function(){
-	    var _this = $(this);
-	    
-	if(confirm(_this.data('confirm'))){
-		    execute_action('delete_file',_this.data('path'),_this.data('thumb'),'','','');
-		    _this.parent().parent().parent().parent().remove();
-	}
-	return false;
+	var _this = $(this);
+	
+	bootbox.confirm(_this.data('confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
+	    if (result==true) {
+		execute_action('delete_file',_this.data('path'),_this.data('thumb'),'','','');
+		_this.parent().parent().parent().parent().remove();
+	    }
+	});
     });
     
     $('.delete-folder').click(function(){
-	    var _this = $(this);
-	    
-	if(confirm(_this.data('confirm'))){
-		    execute_action('delete_folder',_this.data('path'),_this.data('thumb'),'','','');
-		    _this.parent().parent().parent().remove();
-	}
-	return false;
+	var _this = $(this);
+	
+	bootbox.confirm(_this.data('confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
+	    if (result==true) {
+		execute_action('delete_folder',_this.data('path'),_this.data('thumb'),'','','');
+		_this.parent().parent().parent().remove();
+	    }
+	});
     });	
 
     $('.new-folder').click(function(){
-	    folder_name=window.prompt($('#insert_folder_name').val(),$('#new_folder').val());
-	    folder_name=clean_filename(folder_name);
-	    if(folder_name){
-		    folder_path=$('#root').val()+$('#cur_dir').val()+ folder_name;
-		    folder_path_thumb=$('#cur_dir_thumb').val()+ folder_name;
-		    $.ajax({
-			      type: "POST",
-			      url: "execute.php?action=create_folder",
-			      data: {path: folder_path, path_thumb: folder_path_thumb}
-			    }).done(function( msg ) {
-			    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
-		    });
+	bootbox.prompt($('#insert_folder_name').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+	    if (name !== null) {
+		name=clean_filename(name);
+		var folder_path=$('#root').val()+$('#cur_dir').val()+ name;
+		var folder_path_thumb=$('#cur_dir_thumb').val()+ name;
+		$.ajax({
+			  type: "POST",
+			  url: "execute.php?action=create_folder",
+			  data: {path: folder_path, path_thumb: folder_path_thumb}
+			}).done(function( msg ) {
+			window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+		});
 	    }
+	},$('#new_folder').val());
     });
     
     $('.view-controller button').click(function(){
@@ -213,6 +228,7 @@ $(document).ready(function(){
 	
 });
 
+
 function fix_colums() {
 	
     var width=$('.ff-container').width()-2;
@@ -291,7 +307,7 @@ function apply_link(file,type_file,external){
 }
 
 function apply_none(file,type_file,external){
-    return false;
+    return;
 }
 
 function getImgSize(imgSrc)
@@ -384,8 +400,10 @@ function apply_file_rename(container,name) {
     //preview link
     var link2=container.find('a.preview');
     var file= link2.data('url');
-    var old_name=file.substring(file.lastIndexOf('/') + 1);
-    link2.data('url',file.replace(old_name,name+"."+extension));
+    if (typeof file !=="undefined" && file) {
+	var old_name=file.substring(file.lastIndexOf('/') + 1);
+	link2.data('url',file.replace(old_name,name+"."+extension));
+    }
     
     //rename link && delete link
     var link3=container.find('a.rename-file');
@@ -443,10 +461,13 @@ function RemoveAccents(strAccents) {
 
 
 function clean_filename(stri) {
-    strii=RemoveAccents(stri);
-    strii=strii.replace(/[^A-Za-z0-9\.\-\ \_]+/g, '');
-    
-    return strii.toLowerCase();
+    if (stri!=null) {
+	strii=RemoveAccents(stri);
+	strii=strii.replace(/[^A-Za-z0-9\.\-\ \_]+/g, '');
+	
+	return strii.toLowerCase();	
+    }
+    return null;
 }
 
 function execute_action(action,file1,file2,name,container,function_name){
