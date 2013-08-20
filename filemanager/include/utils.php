@@ -83,7 +83,8 @@ function create_folder($path=false,$path_thumbs=false){
 function fix_filename($str){
     $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
     $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
-    $str = str_replace(' ','_',$str);
+    $str = strtolower(str_replace(' ','_',$str));
+    
     return $str;
 }
 
