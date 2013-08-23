@@ -54,6 +54,9 @@ while($cycle){
     else $parent=dirname($parent).DIRECTORY_SEPARATOR;
 }
 
+if(!is_dir($thumbs_path.$subdir))
+    create_folder(false, $thumbs_path.$subdir);
+
 if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
 
 //view type
