@@ -9,6 +9,12 @@ You can personalise the configuration for each folder.
 You can set a subfolder as the root and change the configuration for each user, page or FileManager call.
 
 
+DEMO: http://www.responsivefilemanager.com/
+
+Released under Creative Commons Attribution-NonCommercial 3.0 Unported License.
+
+Creator : info@albertoperipolli.com - tr1pp0
+
 
 CHANGES LOG
 
@@ -52,13 +58,6 @@ version 7.0.0
 - New license
 - Improved, completely responsive design
 - All bugs fixed (upload file with uppercase extension, folder creation,...)
-
-
-DEMO: http://www.responsivefilemanager.com/
-
-Released under Creative Commons Attribution-NonCommercial 3.0 Unported License.
-
-Creator : info@albertoperipolli.com - tr1pp0
 
 *********************************************************
 ! Installation
