@@ -1,5 +1,5 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 7.2.0
+! Responsive FileManager for TinyMCE Version 7.3.1
 *********************************************************
 Responsive FileManager for TinyMCE is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos with TinyMCE version 4.x.
 You can also use it as a stand-alone file manager to manage and select files.
@@ -11,6 +11,10 @@ You can set a subfolder as the root and change the configuration for each user, 
 
 
 CHANGES LOG
+
+version 7.3.1
+- update plugins for TinyMCE 4.04
+- minified plugin.min.js
 
 version 7.3.0
 - all windows prompt and confirm change to bootbox modal
@@ -194,7 +198,7 @@ If you want use filemanager in a multiuser cms you can simply create a folder fo
 - ESP [Roberto Santamaria]
 - FRA [Mathieu Ducharme]
 - GER [Sysix-Coding]
-- HUN [Bende Roland]
+- HUN [Novák Szabolcs]
 - ITA
 - NLD [johan12]
 - POL [Michell Hoduń]
