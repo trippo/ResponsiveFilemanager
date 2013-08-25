@@ -36,7 +36,7 @@ function create_img_gd($imgfile, $imgthumb, $newwidth, $newheight="") {
     $magicianObj -> resizeImage($newwidth, $newheight, 'crop');  
 
     // *** Save resized image as a PNG
-    $magicianObj -> saveImage($imgthumb);
+    $magicianObj -> saveImage($imgthumb, 82);
 }
 
 function makeSize($size) {
