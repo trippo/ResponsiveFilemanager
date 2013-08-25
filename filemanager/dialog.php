@@ -86,6 +86,11 @@ $get_params = http_build_query(array(
     'editor'    => $_GET['editor'] ? $_GET['editor'] : 'mce_0',
     'fldr'      => ''
 ));
+
+$checked = '';
+if($image_resizing == true) {
+  $checked = "checked=\"checked\"";
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -168,6 +173,12 @@ $get_params = http_build_query(array(
 		<div class="tab-pane active" id="tab1">
 		    <?php } ?>
 		<form action="dialog.php" method="post" enctype="multipart/form-data" id="myAwesomeDropzone" class="dropzone">
+            		<label class="checkbox inline">
+            		<?php if($_GET['type']==1) {?>
+            		<label class="btn  btn-toggle inline">
+			<input type="checkbox" name="upload_resize" value="1" <?php echo $checked?> /> Resized
+			</label>
+            		<?php } ?>
 		    <input type="hidden" name="path" value="<?php echo $cur_path?>"/>
 		    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
 		    <div class="fallback">
