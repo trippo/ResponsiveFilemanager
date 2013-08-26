@@ -2,6 +2,17 @@
 
 if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbiden');
 
+//alternative substr
+function truncate($string, $length = '', $replacement = ' ..', $start = 16) {
+    if  (strlen ($string) <= $start)
+        return  $string;
+    if  ($length) {
+        return  substr_replace ($string, $replacement, $start, $length);
+    } else  {
+        return  substr_replace ($string, $replacement, $start);
+    }
+}
+
 function deleteDir($dir) {
     if (!file_exists($dir)) return true;
     if (!is_dir($dir)) return unlink($dir);
