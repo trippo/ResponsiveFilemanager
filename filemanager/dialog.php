@@ -481,7 +481,7 @@ if($image_resizing == true) {
 				</a>	
 				<div class="box">				
 				<h4><a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
-				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo $filename; ?></a> </h4>
+				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo truncate($filename); ?></a> </h4>
 				</div>
 				<?php $date=filemtime($file_path);
 				$size=filesize($file_path);
