@@ -1,4 +1,4 @@
-var version="7.3.1";
+var version="7.3.2";
 
 $(document).ready(function(){	    
     
@@ -200,17 +200,16 @@ $(document).ready(function(){
 	    });
 	}
 	
-	if(!Modernizr.csstransitions) { // Test if CSS transitions are supported
-            
-		$('figure').bind('mouseover',function(){
+	if(!Modernizr.csstransforms) { // Test if CSS transforms are supported
+		$('.list-view0 figure').bind('mouseover',function(){
 			if ($('#view').val()==0) {
-				$(this).find('.box').animate({top: "-30px"} ,{queue:false,duration:300});
+				$(this).find('.box:not(.no-effect)').animate({top: "-30px"} ,{queue:false,duration:300});
 			}
 		});
 		
-		$('figure').mouseout(function(){
+		$('.list-view0 figure').mouseout(function(){
 			if ($('#view').val()==0) {
-				$(this).find('.box').animate({top: "0px"} ,{queue:false,duration:300});
+				$(this).find('.box:not(.no-effect)').animate({top: "0px"} ,{queue:false,duration:300});
 			}
 		});
 
