@@ -57,7 +57,7 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
 	$srcWidth = $imginfo[0];
 	$srcHeight = $imginfo[1];
 	
-	if($image_resizing){
+	if($image_resizing == true && isset($_POST["upload_resize"]) && $_POST["upload_resize"] == 1){
 	    if($image_width==0){
 		if($image_height==0){
 		    $image_width=$srcWidth;

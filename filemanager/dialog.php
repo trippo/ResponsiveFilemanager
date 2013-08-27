@@ -86,6 +86,11 @@ $get_params = http_build_query(array(
     'editor'    => $_GET['editor'] ? $_GET['editor'] : 'mce_0',
     'fldr'      => ''
 ));
+
+$checked = '';
+if($image_resizing == true) {
+  $checked = "checked=\"checked\"";
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -168,6 +173,12 @@ $get_params = http_build_query(array(
 		<div class="tab-pane active" id="tab1">
 		    <?php } ?>
 		<form action="dialog.php" method="post" enctype="multipart/form-data" id="myAwesomeDropzone" class="dropzone">
+            		<label class="checkbox inline">
+            		<?php if($_GET['type']==1) {?>
+            		<label class="btn  btn-toggle inline">
+			<input type="checkbox" name="upload_resize" value="1" <?php echo $checked?> /> Resized
+			</label>
+            		<?php } ?>
 		    <input type="hidden" name="path" value="<?php echo $cur_path?>"/>
 		    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
 		    <div class="fallback">
@@ -470,7 +481,7 @@ $get_params = http_build_query(array(
 				</a>	
 				<div class="box">				
 				<h4><a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-type="<?php echo $_GET['type']; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
-				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo $filename; ?></a> </h4>
+				<?php $filename=substr($file, 0, '-' . (strlen($file_ext) + 1)); echo truncate($filename); ?></a> </h4>
 				</div>
 				<?php $date=filemtime($file_path);
 				$size=filesize($file_path);
