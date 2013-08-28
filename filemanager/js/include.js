@@ -1,4 +1,4 @@
-var version="7.3.2";
+var version="7.3.1";
 
 $(document).ready(function(){	    
     
@@ -200,16 +200,17 @@ $(document).ready(function(){
 	    });
 	}
 	
-	if(!Modernizr.csstransforms) { // Test if CSS transforms are supported
-		$('.list-view0 figure').bind('mouseover',function(){
+	if(!Modernizr.csstransitions) { // Test if CSS transitions are supported
+            
+		$('figure').bind('mouseover',function(){
 			if ($('#view').val()==0) {
-				$(this).find('.box:not(.no-effect)').animate({top: "-30px"} ,{queue:false,duration:300});
+				$(this).find('.box').animate({top: "-30px"} ,{queue:false,duration:300});
 			}
 		});
 		
-		$('.list-view0 figure').mouseout(function(){
+		$('figure').mouseout(function(){
 			if ($('#view').val()==0) {
-				$(this).find('.box:not(.no-effect)').animate({top: "0px"} ,{queue:false,duration:300});
+				$(this).find('.box').animate({top: "0px"} ,{queue:false,duration:300});
 			}
 		});
 
@@ -267,7 +268,7 @@ function swipe_reaction(event, direction, distance, duration, fingerCount) {
 }
 
 function apply(file){
-    if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
+	if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
     var path = $('#cur_dir').val();
     var base_url = $('#base_url').val();
     var track = $('#track').val();
@@ -275,14 +276,8 @@ function apply(file){
     var closed = $('.mce-filemanager', window_parent.document);
     var ext=file.split('.').pop();
     var fill='';
-    if($.inArray(ext, ext_img) > -1){
-    	
-        fill=$("<img />",{"src":path+file});
-    }else{
-        fill=$("<a />").attr("href", path+file).text(file.replace(/\..+$/, ''));
-    }
-    $(target).contents().find('#tinymce').append(fill);
-    $(closed).find('.mce-close').trigger('click');
+    
+	apply_any(path, file);
 }
 
 
@@ -292,22 +287,11 @@ function apply_link(file,type_file,external){
     var path = $('#cur_dir').val();
     var base_url = $('#base_url').val();
     var track = $('#track').val().replace('[','').replace(']','');
+	console.log(base_url);
     
-    if (external=="") {
-		$('.mce-link_'+track, window_parent.document).val(base_url+path+file);
-		var closed = $('.mce-filemanager', window_parent.document);
-		//$('.mce-text_'+track, window_parent.document).val(file.replace(/\..+$/, ''));
-		$(closed).find('.mce-close').trigger('click');
-    }else{
-		var target = $('#'+external,window_parent.document);
-		$(target).val(base_url+path+file);
-		close_window();
-    }
+	apply_any(path, file);
 }
 
-function apply_none(file,type_file,external){
-    return;
-}
 
 function getImgSize(imgSrc)
 {
@@ -323,38 +307,8 @@ function apply_img(file,type_file,external){
     var path = $('#cur_dir').val();
     var base_url = $('#base_url').val();
     var track = $('#track').val().replace('[','').replace(']','');
-    if (external=="") {		
-		var target = $('.mce-img_'+track, window_parent.document);
-		var alt = $('.mce-alt_img_'+track, window_parent.document);
-		
-		var closed = $('.mce-filemanager', window_parent.document);
-		$(target).val(base_url+path+file);
-		$(alt).val(file.substr(0, file.lastIndexOf('.')));
-		
-		if($('#image_dimension_passing').val()==1){
-		    $.ajax({
-			async: true,
-			url: "ajax_calls.php?action=image_size",
-			type: "POST",
-			data: {path: path+file}
-		    }).done(function( msg ) {
-			var info=JSON.parse(msg);
-			if (typeof info[0] != 'undefined') {
-			    var width = $('.mce-width_img_'+track, window_parent.document);
-			    var height = $('.mce-height_img_'+track, window_parent.document);
-			    $(width).val(info[0]);
-			    $(height).val(info[1]);
-			$(closed).find('.mce-close').trigger('click');
-			}
-		    });
-		}else{
-		    $(closed).find('.mce-close').trigger('click');
-		}
-    }else{
-		var target = $('#'+external, window_parent.document);
-		$(target).val(base_url+path+file);
-		close_window();
-    }
+    
+    apply_any(path, file);
 }
 
 function apply_video(file,type_file,external){
@@ -363,16 +317,19 @@ function apply_video(file,type_file,external){
     var base_url = $('#base_url').val();
     var track = $('#track').val().replace('[','').replace(']','');
     
-    if (external=="") {
-		var target = $('.mce-video'+ type_file +'_'+track,window_parent.document);
-		var closed = $('.mce-filemanager',window_parent.document);
-		$(target).val(base_url+path+file);
-		$(closed).find('.mce-close').trigger('click');
-    }else{
-		var target = $('#'+external,window_parent.document);
-		$(target).val(base_url+path+file);
-		close_window();
-    }
+   apply_any(path, file);
+}
+
+function apply_none(file,type_file,external){
+	// FALLBACK TO APPLY ANYWAY
+	apply_any(file);
+}
+
+function apply_any(path, file) {
+	path = path.replace('\\', '/');
+	parent.tinymce.activeEditor.windowManager.getParams().setUrl(path+file);
+	parent.tinymce.activeEditor.windowManager.close();
+	return false;	
 }
 
 function close_window() {
@@ -500,7 +457,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
     $.each(lis,function(index){
 	var _this=$(this);
 	var value=_this.find(sort_field).val();
-	console.log(index+" "+value);
+	// console.log(index+" "+value);
 	if ($.isNumeric(value)) {
 	    value=parseFloat(value);
 	    while (typeof vals[value] !== "undefined" &&  vals[value] ) {
@@ -521,7 +478,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
     
     if(sortDescending)
 	values.reverse();
-    console.log(values);
+    //console.log(values);
     
     
     $.each(lis,function(index){

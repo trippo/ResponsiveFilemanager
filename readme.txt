@@ -1,7 +1,8 @@
 *********************************************************
 ! Responsive FileManager for TinyMCE Version 7.3.2
 *********************************************************
-Responsive FileManager for TinyMCE is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos with TinyMCE version 4.x.
+
+Responsive FileManager for TinyMCE is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos with TinyMCE version 4.x.
 You can also use it as a stand-alone file manager to manage and select files.
 The script automatically creates thumbnails of images for the preview list.
 It can be configured for automatic resizing of uploaded images or to automatically limit the size.
@@ -65,9 +66,10 @@ version 7.0.0
 *********************************************************
 ! Installation
 *********************************************************
-1. Upload each folder (images, link, media and filemanager) to the TinyMCE plugins folder (if you want use only FileManager copy only filemanager folder).
+1. Upload the 'filemanager' folder just outside of the tinyMCE 4 installaion
 2. Create a folder for your uploaded files and give it write permission (755).
-3. Open filemanager/config/config.php and edit the settings for base_url, upload_dir, type extensions allowed, max file size, permits etcSave file.
+3. Open filemanager/config/config.php and edit the settings for base_url, upload_dir, type extensions allowed, max file size, permits etc
+Save file.
 4. Great! Your work is finished!
 
 PS If you don't see the preview images you need to give write permission to the thumbs folder in filemanager/thumbs.
@@ -85,8 +87,9 @@ tinymce.init({
     plugins: [
          "advlist autolink link image lists charmap print preview hr anchor pagebreak",
          "searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking",
-         "table contextmenu directionality emoticons paste textcolor filemanager"
+         "table contextmenu directionality emoticons paste textcolor"
    ],
+   external_plugins: { "filemanager" : "/path-to-tinymce-external_plugins/filemanager/plugin.min.js" },
    image_advtab: true,
    toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect forecolor backcolor | link unlink anchor | image media | print preview code"
  }); 
