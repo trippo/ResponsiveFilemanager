@@ -327,8 +327,8 @@ function apply_none(file,type_file,external){
 
 function apply_any(path, file) {
 	path = path.replace('\\', '/');
-	top.tinymce.activeEditor.windowManager.getParams().setUrl(path+file);
-	top.tinymce.activeEditor.windowManager.close();
+	parent.tinymce.activeEditor.windowManager.getParams().setUrl(path+file);
+	parent.tinymce.activeEditor.windowManager.close();
 	return false;	
 }
 
