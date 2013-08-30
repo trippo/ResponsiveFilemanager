@@ -6,8 +6,6 @@ if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbidden');
 // DON'T COPY THIS VARIABLES IN FOLDERS config.php FILES
 //------------------------------------------------------------------------------
 
-$root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this parameter
-
 //**********************
 //Path configuration
 //**********************
@@ -21,7 +19,7 @@ $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this parameter
 //   |    |   |    |-   |- filemanager
 //   |    |   |    |-   |-      |- thumbs <- thumbnail folder [must have write permission (755)]
 
-$base_url="http://localhost";  // base url of site (without final /). If you prefer relative urls leave empty
+$base_url="http://rfm";  // base url of site (without final /). If you prefer relative urls leave empty
 $upload_dir = '/source/'; // path from base_url to base of upload folder (with start and final /)
 $current_path = '../source/'; // relative path from filemanager folder to upload folder (with final /)
 

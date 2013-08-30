@@ -12,7 +12,7 @@ $ds = '/';
 $storeFolder = fix_realpath($_POST['path']).$ds;
 $storeFolderThumb = fix_realpath($_POST['path_thumb']).$ds;
 
-$base=fix_realpath($current_path).$ds;
+$base=$root.$upload_dir;
 $base_thumb=fix_realpath($thumbs_base_path).$ds;
 $path=$storeFolder;
 $cycle=true;

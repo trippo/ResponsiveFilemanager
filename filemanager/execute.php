@@ -14,7 +14,7 @@ if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
 }
 require_once $language_file;
 
-$base=fix_realpath($current_path)."/";
+$base=$root.$upload_dir;
 $base_thumb=$thumbs_base_path;
 $path=fix_dirname($_POST['path'])."/";
 $cycle=true;
@@ -27,6 +27,7 @@ while($cycle){
 	$cycle=false;
     }
     $path=fix_dirname($path)."/";
+    $cycle=false;
 }
 
 $path=$_POST['path'];
@@ -44,7 +45,7 @@ if($path_pos!=0
    || strpos($path,'../',strlen($base)+$path_pos)!==FALSE
    || strpos($path_thumb,'../',strlen($base_thumb)+$thumb_pos)!==FALSE)
     die('wrong path');
-
+    
 if(isset($_GET['action'])){
     
     switch($_GET['action']){

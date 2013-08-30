@@ -386,7 +386,6 @@ function apply_video(file,external){
     var path = $('#cur_dir').val();
     path = path.replace('\\', '/');
     var base_url = $('#base_url').val();
-    var track = $('#track').val().replace('[','').replace(']','');
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
 	$(target).val(base_url+path+file);

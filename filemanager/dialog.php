@@ -14,6 +14,8 @@ include('config/config.php');
 include('include/utils.php');
 
 
+$root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this parameter
+
 if (isset($_GET['fldr']) && !empty($_GET['fldr']) )
     $subdir = trim($_GET['fldr'],"/") ."/";
 else
@@ -102,7 +104,6 @@ $get_params = http_build_query(array(
     'lang'      => isset($_GET['lang']) ? $_GET['lang'] : 'en_EN',
     'popup'     => $popup,
     'field_id'  => isset($_GET['field_id']) ? $_GET['field_id'] : '',
-    'editor'    => isset($_GET['editor']) ? $_GET['editor'] : 'mce_0',
     'fldr'      => ''
 ));
 ?>
@@ -171,7 +172,6 @@ $get_params = http_build_query(array(
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
-	<input type="hidden" id="track" value="<?php echo isset($_GET['editor'])?$_GET['editor']:"" ?>" />
 	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
 	<input type="hidden" id="root" value="<?php echo $root; ?>" />
@@ -212,7 +212,6 @@ $get_params = http_build_query(array(
 			<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>"/>
 			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
-			<input type="hidden" name="editor" value="<?php echo $_GET['editor']; ?>"/>
 			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
 			<input type="hidden" name="filter" value="<?php echo $_GET['filter']; ?>"/>
 			<input type="submit" name="submit" value="<?php echo lang_OK?>" />
@@ -439,6 +438,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $src = explode("/",$subdir);
 			    unset($src[count($src)-2]);
 			    $src=implode("/",$src);
+			    if($src=='') $src="/";
 			}
 			elseif ($file!='..') {
 			    $src = $subdir . $file."/";

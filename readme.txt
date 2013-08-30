@@ -96,8 +96,9 @@ fldr: the folder where i enter (the root folder remains the same). default=""
 lang: the language code (es: &lang=en_EN). default="en_EN"
 subfolder: the subfolder use as root. default="" (ex: subfolder/)
 
-
 If you want use popup add in the address &popup=1
+
+PS If you want to force loading at root set fldr to /
 
 In demo page i use FancyBox with this configuration:
 
