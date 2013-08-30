@@ -51,7 +51,7 @@ If you are updating from a previous version of FileManager delete the contents o
 USE AS TINYMCE 4 FILEMANGER
 
 1. Copy tinymce/plugins/responsivefilemanager folder to tinymce/plugins/ in your server
-2. Change the path inside plugins/responsivefilemanager/plugin.min.js and filemanager/plugin.min.js with the correct absolute serve path to your filemanager folder
+2. Change the path inside plugins/responsivefilemanager/plugin.min.js and filemanager/plugin.min.js with the correct absolute serve path to your filemanager folder (the path must be a absolute path from base_url of your site and must start with / so in this example i have the filemanager folder in www.site.com/filemanager/)
 3. Settings of tinymce should be like this: (remember to add responsivefilemanager in plugins list and change the path in external_plugins)
 
 tinymce.init({
@@ -65,14 +65,16 @@ tinymce.init({
          "table contextmenu directionality emoticons paste textcolor responsivefilemanager"
    ],
    filemanager_title:"Responsive Filemanager",
-   external_plugins: { "filemanager" : "/responsivefm/filemanager/plugin.min.js"},
+   external_plugins: { "filemanager" : "/filemanager/plugin.min.js"},
    image_advtab: true,
    toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
    toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code "
  });
 
 You can pass filemanager_title on TinyMCE init
-
+**********************
+If you are updating from older version (from 1 to 7) substitute your tinyMCE with new or download only the image/media/link originals folders and copy in your tinyMCE plugin folder
+**********************
 
 USE AS STAND-ALONE FILE MANAGER
 
