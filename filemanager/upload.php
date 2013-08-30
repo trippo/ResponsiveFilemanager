@@ -109,7 +109,6 @@ if(isset($_POST['submit'])){
         'lang'      => $_POST['lang'],
         'popup'     => $_POST['popup'],
         'field_id'  => $_POST['field_id'],
-        'editor'    => $_POST['editor'],
         'fldr'      => $_POST['fldr'],
     ));
     header("location: dialog.php?" . $query);
