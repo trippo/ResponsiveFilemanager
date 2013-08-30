@@ -1,13 +1,13 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 7.3.2
+! Responsive FileManager for TinyMCE Version 8.0.0
 *********************************************************
-Responsive FileManager for TinyMCE is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos with TinyMCE version 4.x.
-You can also use it as a stand-alone file manager to manage and select files.
+Responsive FileManager is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos.
+You can use it as external plugin for TinyMCE version 4.x. and you can also use it as a stand-alone file manager to manage and select files.
 The script automatically creates thumbnails of images for the preview list.
 It can be configured for automatic resizing of uploaded images or to automatically limit the size.
-You can personalise the configuration for each folder.
+You can personalize the configuration for each folder.
 You can set a subfolder as the root and change the configuration for each user, page or FileManager call.
-
+Is compatible with multi-user mode.
 
 DEMO: http://www.responsivefilemanager.com/
 
@@ -17,6 +17,230 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 
 CHANGES LOG
+
+version 8.0
+- set responsive filemanager as external plugin (so you can install more simply and update tinymce externally and never changing plugin.min.js files) Special Thanks to Jules Gravinese
+- new amazing direct button (tinymce plugin) to include directly a file o image in the document 
+- change .config files in config.php to windows server compatibility
+- add PHP sorting and filter script for the huge folders. (the script automatically choose which script to use)
+- context menu to show files details
+- sorting features in all layouts
+- add in config.php the possibility to truncate the overflow file name with ...
+- now the filemanager remember for 1 day the last opened position using cookie
+- alert change to bootbox alert
+- thumbs folder path customization
+- block of right click out of files boxes
+- tested in windows apache server
+- fix a lot of bugs and bad codes
+- improve security
+
+*********************************************************
+! Installation
+*********************************************************
+
+1. Upload the 'filemanager' folder where you want in your server.
+2. Create a folder for your uploaded files and give it write permission (755).
+3. Open filemanager/config/config.php and edit the settings (read config.php parameters setting paragraph). Save file.
+4. Great! Your work is finished!
+
+PS If you don't see the preview images you need to give write permission to the thumbs folder in filemanager/thumbs.
+If you are updating from a previous version of FileManager delete the contents of thumbs folder, the script will automatically re-create the thumbnails.
+
+!IMPORTANT: if you are using htaccess protection, make sure your $GLOBALS PHP_AUTH_USER/PHP_AUTH_USER are defined in your webserver config
+
+USE AS TINYMCE 4 FILEMANGER
+
+1. Copy tinymce/plugins/responsivefilemanager folder to tinymce/plugins/ in your server
+2. Change the path inside plugins/responsivefilemanager/plugin.min.js and filemanager/plugin.min.js with the correct absolute serve path to your filemanager folder
+3. Settings of tinymce should be like this: (remember to add responsivefilemanager in plugins list and change the path in external_plugins)
+
+tinymce.init({
+    selector: "textarea",
+    theme: "modern",
+    width: 680,
+    height: 300,
+    plugins: [
+         "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+         "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
+         "table contextmenu directionality emoticons paste textcolor responsivefilemanager"
+   ],
+   filemanager_title:"Responsive Filemanager",
+   external_plugins: { "filemanager" : "/responsivefm/filemanager/plugin.min.js"},
+   image_advtab: true,
+   toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
+   toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code "
+ });
+
+You can pass filemanager_title on TinyMCE init
+
+
+USE AS STAND-ALONE FILE MANAGER
+
+You can use normal pop-up, Bootstrap modal, iframe, FancyBox iframe, Lightbox iframe to open the FileManager with these paths:
+
+Only open filemanager(type=0 and not set field_id): 
+path to filemanager../filemanager/dialog.php?type=0&fldr=
+
+Select Image: (type=1 and set id of input text in field_id variable): 
+path to filemanager../filemanager/dialog.php?type=1&field_id=fieldID
+
+Select Video: (type=3 and set id of input text in field_id variable): 
+path to filemanager../filemanager/dialog.php?type=3&field_id=fieldID
+
+Select File: (type=2 and set id of input text in field_id variable): 
+path to filemanager../filemanager/dialog.php?type=2&field_id=fieldID
+
+Get Variables list
+type: the type of filemanager (1:images files 2:all files 3:video files)
+fldr: the folder where i enter (the root folder remains the same). default=""
+lang: the language code (es: &lang=en_EN). default="en_EN"
+subfolder: the subfolder use as root. default="" (ex: subfolder/)
+
+
+If you want use popup add in the address &popup=1
+
+In demo page i use FancyBox with this configuration:
+
+    $('.iframe-btn').fancybox({	
+	'width'		: 900,
+	'height'	: 600,
+	'type'		: 'iframe',
+        'autoScale'    	: false
+    });
+
+and the button has this code to open FileManager:
+
+<a href="filemanager/dialog.php?type=0" class="btn iframe-btn" type="button">Open Filemanager</a>
+
+Remember to include FancyBox, file in head section:
+
+<link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+If you not use FancyBox,, you must change the function to close the windows after file selection in filemanager/js/include.js:
+
+function close_window() {
+    parent.$.fancybox.close();
+}
+
+
+
+SET SUBFOLDER AS ROOT AND MULTI-USER USE
+
+You can set a subfolder as root.
+So you can have a root folder for each user or use.
+The way to implement this is set the session variable $_SESSION["subfolder"] ="subfolder/name/"
+
+Remember that subfolder value must not have ../ ./ . inside and can't begin with /
+
+Folder Example:
+
+root
+- folder1
+  - subfolder1
+  - subfolder2
+- folder2
+  -subfolder3
+
+User1 subfolder=""
+View:
+folder1
+  - subfolder1
+  - subfolder2
+folder2
+  -subfolder3
+
+User 2 subfolder="folder1"
+View:
+subfolder1
+subfolder2
+
+So if you want use filemanager in a multiuser cms you can simply create a folder for each users and set the session variable ($_SESSION['subfolder']) with the name of the user folder
+
+
+CUSTOMISE CONFIGURATION FOR EACH FOLDER
+
+In FileManager Version you can customise the config.php for each folder. 
+Simply create a config.php file inside your desired folder, and add the php variables that you wish to change. (Don't change $current_path,$upload_dir,$base_url,$root variables). 
+You can also include an HTML text in the display folder page by simply inserting: $folder_message="html message". You can use this to specify the restriction or image resize in a particular folder.
+
+Remember that the configuration of one folder is reflected in all its subdirectories.
+
+
+CONFIG.PHP PARAMETERS SETTING
+
+This is all parameters that you can change in config.php files
+
+Parameters stored only in config/config.php file
+
+Parameter	Example Value	Description
+
+root		don't touch this parameter.
+base_url	http://site.com	base url of site (without final /). if you prefer relative urls leave empty.
+upload_dir	/uploads/	address path from base_url to base of upload folder (with start and final /).
+current_path	../uploads/	relative path from filemanager folder to upload folder (with final /).
+thumbs_base_path	thumbs/	relative path from filemanager folder to thumbs folder (with final /).thumbs folder can't put inside upload folder.
+
+
+Parameters that you can override in all config.php files inside folders
+
+Parameter	Example Value	Description
+
+MaxSizeUpload	100	Max size upload limit in Mb.
+default_language	en_EN	default language file name.
+file_number_limit_js	500	the filter and sorter are managed through both javascript and php scripts because if you have a lot of file in a folder the javascript script can't sort all or filter all, so the filemanager switch to php script. the plugin automatic swich javascript to php when the current folder exceeds the below limit of files number.
+show_sorting_bar	true	show or not show sorting feature in filemanager.
+show_folder_size	true	show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations).
+Images configuration
+image_max_width, image_max_height	800	these parameters set maximum pixel width and/or maximum pixel height for all images. if you set a maximum width or height, oversized images are converted to those limits. Images smaller than the limit(s) are unaffected. if you don't need a limit set both to 0.
+image_resizing	false	activate or not Automatic resizing. if you set image_resizing to true the script converts all uploaded images exactly to image_resizing_width x image_resizing_height dimension.
+image_resizing_width, image_resizing_height	800	these parameters set the dimension of image resized. if you set width or height to 0 the script automatically calculates the other dimension. is possible that if you upload very big images the script not work to overcome this increase the php configuration of memory and time limit.
+Layout configuration
+default_view	0	set the Default layout setting. ( 0 => boxes, 1 => detailed list (1 column) , 2 => columns list (multiple columns depending on the width of the page)).
+ellipsis_title_after_first_row	true	set if the filename is truncated when overflow first row.
+Permissions configuration
+delete_files	true	set if the user can or not delete files.
+create_folders	true	set if the user can or not create folders.
+delete_folders	true	set if the user can or not delete folders.
+upload_files	true	set if the user can or not upload files.
+rename_files	true	set if the user can or not rename files.
+rename_folders	true	set if the user can or not rename folders.
+Allowed extensions (this differentiation corresponds to the type filter)
+ext_file	'pdf', 'doc'	allowed files extensions
+ext_img	'jpg', 'jpeg'	allowed images file extensions.
+ext_video	'mov', 'mpeg'	allowed videos file extensions.
+ext_music	'mp3', 'm4a'	allowed musics file extensions.
+ext_misc	'zip', 'rar'	allowed archive file extensions.
+Hidden files and folders
+hidden_folders	"hidden_folder1", "hidden_folder2"	set the names of any folders you want hidden. remember all folders with these names will be hidden (you can set any exceptions in config.php files on folders).
+hidden_files	"this_document.pdf", "that_image.jpg"	set the names of any files you want hidden. remember these names will be hidden in all folders.
+JAVA upload
+java_upload	true	enable or disable java applets uploads
+JAVAMaxSizeUpload	200	donparameter
+
+
+*********************************************************
+! Localization
+*********************************************************
+- BGR [Stanislav Panev]
+- BRA [paulomanrique]
+- CZE [jlusticky]
+- ENG
+- ESP [Roberto Santamaria]
+- FRA [Mathieu Ducharme]
+- GER [Sysix-Coding]
+- HUN [Novák Szabolcs]
+- ITA
+- NOR [Pål Schroeder]
+- NLD [johan12]
+- POL [Michell Hoduń]
+- POR [Sérgio Lima]
+- RUS [vasromand]
+- TUR [Ahmed Faruk Bora]
+
+*********************************************************
+! Old version CHANGES
+*********************************************************
 
 version 7.3.2
 - fix bug in internet explore 9/10 and old browser
@@ -48,7 +272,7 @@ version 7.1.0
 - Incremental naming when identical files are uploaded
 - Automatic passing of images height and width to TinyMCE form (configurable in config.ph)
 - All plugin.min.js file non-minified for customization
-- Add file and folder exlusion list in config.php and .config files
+- Add file and folder exlusion list in config.php files
 - Fix rename real-time bug
 - Fix all existing bugs
 - Customization of FileManager window title
@@ -62,155 +286,6 @@ version 7.0.0
 - Improved, completely responsive design
 - All bugs fixed (upload file with uppercase extension, folder creation,...)
 
-*********************************************************
-! Installation
-*********************************************************
-1. Upload each folder (images, link, media and filemanager) to the TinyMCE plugins folder (if you want use only FileManager copy only filemanager folder).
-2. Create a folder for your uploaded files and give it write permission (755).
-3. Open filemanager/config/config.php and edit the settings for base_url, upload_dir, type extensions allowed, max file size, permits etcSave file.
-4. Great! Your work is finished!
-
-PS If you don't see the preview images you need to give write permission to the thumbs folder in filemanager/thumbs.
-If you are updating from a previous version of FileManager delete the contents of thumbs folder; the script will automatically re-create the thumbnails.
-!IMPORTANT: if you are using htaccess protection, make sure your $GLOBALS PHP_AUTH_USER/PHP_AUTH_USER are defined in your webserver config
-
-USE AS TINYMCE 4 FILEMANGER
-
-Settings of tinymce should be like this: (remember to add filemanager in plugins list)
-tinymce.init({
-    selector: "textarea",
-    theme: "modern",
-    width: 680,
-    height: 300,
-    plugins: [
-         "advlist autolink link image lists charmap print preview hr anchor pagebreak",
-         "searchreplace wordcount visualblocks visualchars code insertdatetime media nonbreaking",
-         "table contextmenu directionality emoticons paste textcolor filemanager"
-   ],
-   image_advtab: true,
-   toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect forecolor backcolor | link unlink anchor | image media | print preview code"
- }); 
-You can pass subfolder and filemanager title on TinyMCE init.
-
-
-USE AS STAND-ALONE FILE MANAGER
-
-You can use normal pop-up, Bootstrap modal, iframe, FancyBox iframe, Lightbox iframe to open the FileManager with these paths:
-
-Only open filemanager(type=0 and not set field_id): 
-path to filemanager../filemanager/dialog.php?type=0&fldr=
-
-Select Image: (type=1 and set id of input text in field_id variable): 
-path to filemanager../filemanager/dialog.php?type=1&field_id=fieldID
-
-Select Video: (type=3 and set id of input text in field_id variable): 
-path to filemanager../filemanager/dialog.php?type=3&field_id=fieldID
-
-Select File: (type=2 and set id of input text in field_id variable): 
-path to filemanager../filemanager/dialog.php?type=2&field_id=fieldID
-
-Get Variables list
-type: the type of filemanager (1:images files 2:all files 3:video files)
-fldr: the folder where i enter (the root folder remains the same). default=""
-lang: the language code (es: &lang=en_EN). default="en_EN"
-subfolder: the subfolder use as root. default=""
-
-
-If you want use popup add in the address &popup=1
-
-In demo page i use FancyBox with this configuration:
-
-    $('.iframe-btn').fancybox({	
-	'width'		: 900,
-	'height'	: 600,
-	'type'		: 'iframe',
-        'autoScale'    	: false
-    });
-
-and the button has this code to open FileManager:
-
-<a href="filemanager/dialog.php?type=0" class="btn iframe-btn" type="button">Open Filemanager</a>
-
-Remember to include FancyBox, file in head section:
-
-<link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-<script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-
-If you not use FancyBox,, you must change the function to close the windows after file selection in filemanager/js/include.js:
-
-function close_window() {
-    parent.$.fancybox.close();
-}
-
-
-
-SET SUBFOLDER AS ROOT
-
-You can set a subfolder as root and change this parameter in tinymce init or in external-link  through the subfolder variables.
-So you can have a root folder for every user or use.
-Remember to create the subfolder in your source folder first :)
-
-In tinymce editor you must set the variable
-    subfolder:"folder",
-while in external link you can add in get parameters
-    &subfolder=folder
-
-The best way is with the session variable $_SESSION["subfolder"] =
-
-Folder Example:
-
-root
-- folder1
-  - subfolder1
-  - subfolder2
-- folder2
-  -subfolder3
-
-User1 subfolder=""
-View:
-folder1
-  - subfolder1
-  - subfolder2
-folder2
-  -subfolder3
-
-User 2 subfolder="folder1"
-View:
-subfolder1
-subfolder2
-
-
-CUSTOMISE CONFIGURATION FOR EACH FOLDER
-
-In FileManager Version 7 you can customise the config.php for each folder. Simply create a .config file inside your desired folder, and add the php variables that you wish to change. (Don't change $current_path,$upload_dir,$base_url,$root variables). You can also include an HTML text file by simply inserting .config file: $folder_message="html message" inside the folder. You can use this to specify the restriction or image resize.
-
-Remember that the configuration of one folder is reflected in all its subdirectories.
-
-MULTI-USER USE
-If you want use filemanager in a multiuser cms you can simply create a folder for each users and set the session variable ($_SESSION['subfolder']) with the name of the user folder
-
-
-*********************************************************
-! Localization
-*********************************************************
-- BGR [Stanislav Panev]
-- BRA [paulomanrique]
-- CZE [jlusticky]
-- ENG
-- ESP [Roberto Santamaria]
-- FRA [Mathieu Ducharme]
-- GER [Sysix-Coding]
-- HUN [Novák Szabolcs]
-- ITA
-- NLD [johan12]
-- POL [Michell Hoduń]
-- POR [Sérgio Lima]
-- RUS [vasromand]
-- TUR [Ahmed Faruk Bora]
-
-*********************************************************
-! Old version CHANGES
-*********************************************************
 
 Version 6:
 - Improve quality of images resizing using PHP Image Magician
@@ -263,4 +338,5 @@ PHP Image Magician => http://phpimagemagician.jarrodoberto.com/
 Mini icons => http://www.fatcow.com/free-icons‎
 Jupload => http://jupload.sourceforge.net/
 Bootbox => http://bootboxjs.com/
+jQuery contextMenu => http://medialize.github.io/jQuery-contextMenu/
 *********************************************************

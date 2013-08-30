@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbiden');
+if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 
 include('config/config.php');
 include('include/utils.php');

@@ -2094,7 +2094,7 @@ class imageLib
     
     
     // *** The below is/may be needed depending on your version (see ref)
-    putenv('GDFONTPATH=' . realpath('.'));
+    putenv('GDFONTPATH=' . fix_realpath('.'));
 
     // *** Check if the passed in font exsits...
     if ($font == null || !file_exists($font)) {
@@ -2434,7 +2434,7 @@ class imageLib
     {
 
     // *** Perform a check or two.
-    if (!is_resource($this->imageResized)) { if ($this->debug) { die('saveImage: This is not a resource.'); }else{ die(); }}      
+    if (!is_resource($this->imageResized)) { if ($this->debug) { die('saveImage: This is not a resource.'); }else{ die(); }}
     $fileInfoArray = pathInfo($savePath);
     clearstatcache();
     if (!is_writable($fileInfoArray['dirname'])) {  if ($this->debug) { die('The path is not writable. Please check your permissions.'); }else{ die(); }} 
@@ -2516,7 +2516,7 @@ class imageLib
             case 'jpg':
             case 'jpeg':
         header('Content-type: image/jpeg');
-        imagejpeg($this->imageResized, '', $imageQuality);
+        imagejpeg($this->imageResized, NULL , $imageQuality);
                 break;
             case 'gif':
         header('Content-type: image/gif');

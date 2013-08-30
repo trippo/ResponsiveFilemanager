@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * This class manage upload, with use of the JUpload applet. It's both a sample to show how to use the applet, and
  * a class you can use directly into your own application.
@@ -149,6 +148,8 @@ class JUpload {
 			$classparams['destdir'] = $obd;
 			else
 			$classparams['destdir'] = '/var/tmp/jupload_test';
+		}else{
+			$classparams['destdir']=str_replace('~',' ',$classparams['destdir']);
 		}
 		if ($classparams['create_destdir']) {
 			$_umask = umask(0); 	// override the system mask
@@ -670,7 +671,7 @@ if ($jupart) {
 			umask($_umask);
 			$files_data['size']		= filesize($dstfinal);
 			$files_data['fullName']	= $dstfinal;
-			$files_data['path']	= dirname($dstfinal);
+			$files_data['path']	= fix_dirname($dstfinal);
 			array_push($this->files, $files_data);
 		} else {
 			unlink($dstname);
@@ -693,7 +694,7 @@ if ($jupart) {
 	umask($_umask);
 	$files_data['size']		= filesize($dstfinal);
 	$files_data['fullName']	= $dstfinal;
-	$files_data['path']	= dirname($dstfinal);
+	$files_data['path']	= fix_dirname($dstfinal);
 	array_push($this->files, $files_data);
 }
 $cnt++;

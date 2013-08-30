@@ -38,13 +38,15 @@ define('lang_Swipe_help','Seçenekleri görüntülemek için dosya/klasör ismin
 define('lang_Upload_base','Normal Yükleme');
 define('lang_Upload_java','JAVA Yükleme (Büyük dosyalar için)');
 define('lang_Upload_java_help',"Eğer Java uygulaması yüklenmediyse; 1- Bilgisayarınızda Java yüklü olduğundan emin olun yada <a href='http://java.com/en/download/'>[Java'yı Buradan İndirin]</a> 2- Güvenlik duvarının hiçbir şeye engel olmadığından emin olun.");
+define('lang_Upload_base_help',"Drag & Drop file/s inside above area or click in it (for modern browsers) otherwise select the file and click on button. When the upload end, click on upper return button.");
 define('lang_Type_dir','dizin');
 define('lang_Type','Tür');
 define('lang_Dimension','Ebat');
 define('lang_Size','Boyut');
 define('lang_Date','Tarih');
 define('lang_Filename','Dosya adı');
+define('lang_Operations','Operations');
 define('lang_Date_type','d-m-Y');
-define('lang_OK','OK');
-define('lang_Cancel','Cancel');
+define('lang_OK','Tamam');
+define('lang_Cancel','İptal');
 ?>

@@ -1,6 +1,6 @@
 <?php 
 
-if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbiden');
+if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 
 function deleteDir($dir) {
     if (!file_exists($dir)) return true;
@@ -22,8 +22,9 @@ function rename_file($old_path,$name){
 }
 
 function rename_folder($old_path,$name){
+    $name=fix_filename($name);
     if(file_exists($old_path)){
-	$new_path=dirname($old_path)."/".$name;
+	$new_path=fix_dirname($old_path)."/".$name;
 	if(file_exists($new_path)) return false;
 	return rename($old_path,$new_path);
     }
@@ -34,9 +35,7 @@ function create_img_gd($imgfile, $imgthumb, $newwidth, $newheight="") {
     $magicianObj = new imageLib($imgfile);
     // *** Resize to best fit then crop
     $magicianObj -> resizeImage($newwidth, $newheight, 'crop');  
-
-    // *** Save resized image as a PNG
-    $magicianObj -> saveImage($imgthumb);
+    $magicianObj -> saveImage($imgthumb,80);
 }
 
 function makeSize($size) {
@@ -83,9 +82,17 @@ function create_folder($path=false,$path_thumbs=false){
 function fix_filename($str){
     $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
     $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
-    $str = strtolower(str_replace(' ','_',$str));
+    $str = strtolower(trim($str));
     
     return $str;
+}
+
+function fix_dirname($str){
+    return str_replace('~',' ',dirname(str_replace(' ','~',$str)));
+}
+
+function fix_realpath($str){
+    return str_replace('\\','/',realpath($str));
 }
 
 function fix_path($path){
@@ -103,7 +110,7 @@ function config_loading($current_path,$fld){
 	require_once($current_path.$fld.".config");
 	return true;
     }
-    echo "!!!!".$parent=dirname($fld);
+    echo "!!!!".$parent=fix_dirname($fld);
     if($parent!="." && !empty($parent)){
 	config_loading($current_path,$parent);
     }

@@ -2,16 +2,28 @@
 //We need a session !
 session_start();
 
-if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbidden');
+if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbidden');
 
 //Let's load the 'interesting' stuff ...  ;-)
 include 'jupload.php';
 include '../config/config.php';
+include '../include/utils.php';
 
+$path=$_GET['path']."/";
+$cycle=true;
+
+while($cycle){
+    if($path==$root.$upload_dir)  $cycle=false;
+    
+    if(file_exists($path."config.php")){
+	require_once($path."config.php");
+	$cycle=false;
+    }
+    $path=fix_dirname($path)."/";
+}
 if(strpos($root.$upload_dir,$_GET['path'])!=0 && strpos($_GET['path'],'../')!==FALSE) die ('path error');
 
-
-
+$path=str_replace(' ','~',$_GET['path']);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////   The user callback function, that can be called after upload   ////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,14 +62,14 @@ function handle_uploaded_files($juploadPhpSupportClass, $files) {
 //
 $appletParameters = array(
 		//Default value is ... maximum size for a file on the current FS. 2G is problably too much already.
-        'maxFileSize' => $MaxJAVASizeUpload.'G',
+        'maxFileSize' => $JAVAMaxSizeUpload.'G',
         //
         //In the sourceforge project structure, the applet jar file is one folder below. Default
         //configuration is ok, if wjhk.jupload.jar is in the same folder as the script containing this call.
         'archive' => 'wjhk.jupload.jar',
 	'showLogWindow' => 'false',
 	'width' => '100%',
-	'height' =>'344px',
+	'height' =>'358px',
 	'name' => 'No limit Uploader',
 	'allowedFileExtensions' => implode('/',$ext),
         //To manage, other jar files, like the ftp jar files if postURL is an FTP URL:
@@ -65,7 +77,7 @@ $appletParameters = array(
         //
         //Default afterUploadURL displays the list of uploaded files above the applet (in the <!--JUPLOAD_FILES--> markers, see below)
         //You can use any page you want, to manage the uploaded files. Here is a sample, that also only shows the list of files.
-        'afterUploadURL' => 'index.php?path='.$_GET['path'],
+        'afterUploadURL' => 'success.php?path='.$path,
         //
         //This demo expects the md5sum to be sent by the applet. But the parameter is not mandatory
         //This value should be set to false (or the line commented), for big files, as md5 calculation
@@ -95,7 +107,7 @@ $classParameters = array(
         //'callbackAfterUploadManagement' => 'handle_uploaded_files',
         //
         //I work on windows. The default configuration is /var/tmp/jupload_test
-        'destdir' => $_GET['path']  //Where to store the files on the web
+        'destdir' => $path  //Where to store the files on the web
         //'errormail' => 'me@my.domain.org',
     );
 
@@ -114,7 +126,10 @@ $juploadPhpSupportClass = new JUpload($appletParameters, $classParameters);
 <html>
   <head>
     <!--JUPLOAD_JSCRIPT-->
-    <title>JUpload PHP</title>
+    <title>JUpload RESPONSIVE filemanager</title>
+    <style>
+	body{padding:0px; margin:0px;}
+    </style>
   </head>
   <body>
     <div align="center"><!--JUPLOAD_FILES--></div>

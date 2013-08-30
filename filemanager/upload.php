@@ -1,36 +1,47 @@
 <?php
 
 session_start();
-if($_SESSION["verify"] != "FileManager4TinyMCE") die('forbiden');
+if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 
 include('config/config.php');
 include('include/utils.php');
 
 
-$ds          = DIRECTORY_SEPARATOR; 
+$ds = '/'; 
  
-$storeFolder = $_POST['path'];
-$storeFolderThumb = $_POST['path_thumb'];
+$storeFolder = fix_realpath($_POST['path']).$ds;
+$storeFolderThumb = fix_realpath($_POST['path_thumb']).$ds;
 
+$base=fix_realpath($current_path).$ds;
+$base_thumb=fix_realpath($thumbs_base_path).$ds;
 $path=$storeFolder;
 $cycle=true;
 
 while($cycle){
-    if($path==$current_path)  $cycle=false;
-    
-    if(file_exists($path.".config")){
-	require_once($path.".config");
+    if($path==$base)  $cycle=false;
+    if(file_exists($path."config.php")){
+	require_once($path."config.php");
 	$cycle=false;
     }
-    $path=dirname($path).$ds;
+    $path=fix_dirname($path).$ds;
 }
 
-if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
+
+$path_pos=strpos($storeFolder,$base);
+$thumb_pos=strpos($storeFolderThumb,$base_thumb);
+if($path_pos!=0
+   || $thumb_pos !=0
+   || strpos($storeFolder,'../',strlen($base)+$path_pos)!==FALSE
+   || strpos($storeFolderThumb,'../',strlen($base_thumb)+$thumb_pos)!==FALSE)
+    die('wrong path');
+    
+
+if (!empty($_FILES)) {
      
     $tempFile = $_FILES['file']['tmp_name'];   
       
-    $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds; 
-    $targetPathThumb = dirname( __FILE__ ) . $ds. $storeFolderThumb . $ds;
+    $targetPath = $storeFolder;
+    $targetPathThumb = $storeFolderThumb;
     $_FILES['file']['name'] = fix_filename($_FILES['file']['name']);
      
     if(file_exists($targetPath.$_FILES['file']['name'])){
@@ -41,7 +52,6 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
 	}
 	$_FILES['file']['name']=$info['filename'].".[".$i."].".$info['extension'];
     }
-    
     $targetFile =  $targetPath. $_FILES['file']['name']; 
     $targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
 
@@ -58,19 +68,19 @@ if (!empty($_FILES) && $upload_files && strpos($storeFolder,$current_path)==0) {
 	$srcHeight = $imginfo[1];
 	
 	if($image_resizing){
-	    if($image_width==0){
-		if($image_height==0){
-		    $image_width=$srcWidth;
-		    $image_height =$srcHeight;
+	    if($image_resizing_width==0){
+		if($image_resizing_height==0){
+		    $image_resizing_width=$srcWidth;
+		    $image_resizing_height =$srcHeight;
 		}else{
-		    $image_width=$image_height*$srcWidth/$srcHeight;
+		    $image_resizing_width=$image_resizing_height*$srcWidth/$srcHeight;
 	    }
-	    }elseif($image_height==0){
-		$image_height =$image_width*$srcHeight/$srcWidth;
+	    }elseif($image_resizing_height==0){
+		$image_resizing_height =$image_resizing_width*$srcHeight/$srcWidth;
 	    }
-	    $srcWidth=$image_width;
-	    $srcHeight=$image_height;
-	    create_img_gd($targetFile, $targetFile, $image_width, $image_height);
+	    $srcWidth=$image_resizing_width;
+	    $srcHeight=$image_resizing_height;
+	    create_img_gd($targetFile, $targetFile, $image_resizing_width, $image_resizing_height);
 	}
 	
 	//max resizing limit control
