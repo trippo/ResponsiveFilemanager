@@ -47,7 +47,6 @@ if(!file_exists($current_path . $subfolder.$subdir)){
     $subdir='';
     if(!file_exists($current_path . $subfolder.$subdir)){
 	$subfolder="";
-	echo "dddd";
     }
 }
     
