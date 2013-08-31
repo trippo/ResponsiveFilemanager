@@ -41,11 +41,14 @@ $subfolder = '';
 if(!empty($_SESSION["subfolder"]) && strpos($_SESSION["subfolder"],'../')===FALSE
    && strpos($_SESSION["subfolder"],'./')===FALSE && strpos($_SESSION["subfolder"],"/")!==0
     && strpos($_SESSION["subfolder"],'.')===FALSE) $subfolder= $_SESSION['subfolder'];
+   
 
-if(!file_exists($upload_dir . $subfolder.$subdir)){
+if(!file_exists($current_path . $subfolder.$subdir)){
     $subdir='';
-    if(!file_exists($upload_dir . $subfolder.$subdir))
+    if(!file_exists($current_path . $subfolder.$subdir)){
 	$subfolder="";
+	echo "dddd";
+    }
 }
     
 if(trim($subfolder)==""){
