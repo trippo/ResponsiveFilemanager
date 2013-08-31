@@ -241,8 +241,9 @@ JAVAMaxSizeUpload	200	donparameter
 - NLD [johan12]
 - POL [Michell Hoduń]
 - POR [Sérgio Lima]
-- RUS [vasromand]
+- RUS [Sergey]
 - TUR [Ahmed Faruk Bora]
+- UKR [Sergey]
 
 *********************************************************
 ! Old version CHANGES
