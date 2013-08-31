@@ -182,7 +182,6 @@ Parameters stored only in config/config.php file
 
 Parameter	Example Value	Description
 
-root		don't touch this parameter.
 base_url	http://site.com	base url of site (without final /). if you prefer relative urls leave empty.
 upload_dir	/uploads/	address path from base_url to base of upload folder (with start and final /).
 current_path	../uploads/	relative path from filemanager folder to upload folder (with final /).
