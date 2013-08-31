@@ -1,5 +1,5 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 8.0.0
+! Responsive FileManager for TinyMCE Version 8.0.1
 *********************************************************
 Responsive FileManager is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos.
 You can use it as external plugin for TinyMCE version 4.x. and you can also use it as a stand-alone file manager to manage and select files.
@@ -17,6 +17,10 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 
 CHANGES LOG
+version 8.0.1
+- simplification of the installation procedure
+- compatibility with PHP version < 5.3
+- fix in use of subfolder session variable
 
 version 8.0
 - set responsive filemanager as external plugin (so you can install more simply and update tinymce externally and never changing plugin.min.js files) Special Thanks to Jules Gravinese
@@ -51,25 +55,25 @@ If you are updating from a previous version of FileManager delete the contents o
 USE AS TINYMCE 4 FILEMANGER
 
 1. Copy tinymce/plugins/responsivefilemanager folder to tinymce/plugins/ in your server
-2. Change the path inside plugins/responsivefilemanager/plugin.min.js and filemanager/plugin.min.js with the correct absolute serve path to your filemanager folder (the path must be a absolute path from base_url of your site and must start with / so in this example i have the filemanager folder in www.site.com/filemanager/)
-3. Settings of tinymce should be like this: (remember to add responsivefilemanager in plugins list and change the path in external_plugins)
+2. Settings of tinymce should be like this: (remember to add responsivefilemanager in plugins list)
 
 tinymce.init({
-    selector: "textarea",
-    theme: "modern",
-    width: 680,
-    height: 300,
+    selector: "textarea",theme: "modern",width: 680,height: 300,
     plugins: [
          "advlist autolink link image lists charmap print preview hr anchor pagebreak",
          "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
          "table contextmenu directionality emoticons paste textcolor responsivefilemanager"
    ],
-   filemanager_title:"Responsive Filemanager",
-   external_plugins: { "filemanager" : "/filemanager/plugin.min.js"},
-   image_advtab: true,
    toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-   toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code "
+   toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
+   image_advtab: true ,
+   
+   external_filemanager_path:"/filemanager/",
+   filemanager_title:"Responsive Filemanager" ,
+   external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
  });
+
+3. Change the path in your tinymce init function in external_filemanager_path and external_plugins  (the path must be a absolute path from base_url of your site and must start with / so in this example i have the filemanager folder in www.site.com/filemanager/)
 
 You can pass filemanager_title on TinyMCE init
 **********************

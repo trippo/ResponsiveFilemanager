@@ -13,7 +13,6 @@ include('upload.php');
 include('config/config.php');
 include('include/utils.php');
 
-
 $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this parameter
 
 if (isset($_GET['fldr']) && !empty($_GET['fldr']) )
@@ -43,6 +42,12 @@ if(!empty($_SESSION["subfolder"]) && strpos($_SESSION["subfolder"],'../')===FALS
    && strpos($_SESSION["subfolder"],'./')===FALSE && strpos($_SESSION["subfolder"],"/")!==0
     && strpos($_SESSION["subfolder"],'.')===FALSE) $subfolder= $_SESSION['subfolder'];
 
+if(!file_exists($upload_dir . $subfolder.$subdir)){
+    $subdir='';
+    if(!file_exists($upload_dir . $subfolder.$subdir))
+	$subfolder="";
+}
+    
 if(trim($subfolder)==""){
     $cur_dir = $upload_dir . $subdir;
     $cur_path = $current_path . $subdir;
@@ -52,7 +57,7 @@ if(trim($subfolder)==""){
     $cur_dir = $upload_dir . $subfolder.$subdir;
     $cur_path = $current_path . $subfolder.$subdir;
     $thumbs_path = $thumbs_base_path. $subfolder;
-    $parent=$subfolder."/".$subdir;
+    $parent=$subfolder.$subdir;
 }
 
 $cycle=true;
@@ -127,7 +132,7 @@ $get_params = http_build_query(array(
 	    height: 100%;
 	}
 	</style><![endif]-->
-        <script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-contextmenu.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-lightbox.min.js"></script>
@@ -271,26 +276,31 @@ foreach($files as $k=>$file){
 	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
     }
 }
+
+function filenameSort($x, $y) {
+    return $x['file'] <  $y['file'];
+}
+function dateSort($x, $y) {
+    return $x['date'] <  $y['date'];
+}
+function sizeSort($x, $y) {
+    return $x['size'] <  $y['size'];
+}
+function extensionSort($x, $y) {
+    return $x['extension'] <  $y['extension'];
+}
+
 switch($sort_by){
     case 'name':
-	usort($sorted, function($a, $b) {
-	    return $a['file'] < $b['file'];
-	});
+	usort($sorted, 'filenameSort');
 	break;
     case 'date':
-	usort($sorted, function($a, $b) {
-	    return $a['date'] < $b['date'];
-	});
+	usort($sorted, 'dateSort');
 	break;
     case 'size':
-	usort($sorted, function($a, $b) {
-	    return $a['size'] < $b['size'];
-	});
-	break;
+	usort($sorted, 'sizeSort');
     case 'extension':
-	usort($sorted, function($a, $b) {
-	    return $a['extension'] < $b['extension'];
-	});
+	usort($sorted, 'extensionSort');
 	break;
     default:
 	break;
@@ -300,6 +310,7 @@ switch($sort_by){
 if($descending){
     $sorted=array_reverse($sorted);
 }
+
 $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 ?>          
 <!----- header div start ------->

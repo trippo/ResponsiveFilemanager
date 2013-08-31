@@ -1,4 +1,4 @@
-var version="8.0.0";
+var version="8.0.1";
 
 $(document).ready(function(){	    
     
