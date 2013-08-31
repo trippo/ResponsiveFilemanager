@@ -42,7 +42,8 @@ if(!empty($_SESSION["subfolder"]) && strpos($_SESSION["subfolder"],'../')===FALS
    && strpos($_SESSION["subfolder"],'./')===FALSE && strpos($_SESSION["subfolder"],"/")!==0
     && strpos($_SESSION["subfolder"],'.')===FALSE) $subfolder= $_SESSION['subfolder'];
    
-
+if($subfolder!="" && $subfolder[strlen($subfolder)-1]!="/") $subfolder.="/";
+   
 if(!file_exists($current_path . $subfolder.$subdir)){
     $subdir='';
     if(!file_exists($current_path . $subfolder.$subdir)){
