@@ -13,8 +13,6 @@ include('upload.php');
 include('config/config.php');
 include('include/utils.php');
 
-$root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this parameter
-
 if (isset($_GET['fldr']) && !empty($_GET['fldr']) )
     $subdir = trim($_GET['fldr'],"/") ."/";
 else
