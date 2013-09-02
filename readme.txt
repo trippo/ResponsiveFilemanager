@@ -17,6 +17,12 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 
 CHANGES LOG
+version 8.0.2
+- fix a 8.0.1 upload bug
+- default sorting option
+- minification of all file and filemanager folder cleaning
+- js sorting split between folders and files
+
 version 8.0.1
 - simplification of the installation procedure
 - compatibility with PHP version < 5.3
@@ -75,7 +81,12 @@ tinymce.init({
 
 3. Change the path in your tinymce init function in external_filemanager_path and external_plugins  (the path must be a absolute path from base_url of your site and must start with / so in this example i have the filemanager folder in www.site.com/filemanager/)
 
-You can pass filemanager_title on TinyMCE init
+You can pass this variables on TinyMCE init.
+
+- filemanager_title the title of filemanager window default="Responsive filemanager"
+- filemanager_sort_by: the element to sorting (values: name,size,extension,date) default=""
+- filemanager_descending: descending ? or ascending (values=true or false) default="false" 
+
 **********************
 If you are updating from older version (from 1 to 7) substitute your tinyMCE with new or download only the image/media/link originals folders and copy in your tinyMCE plugin folder
 **********************
@@ -100,6 +111,8 @@ Get Variables list
 type: the type of filemanager (1:images files 2:all files 3:video files)
 fldr: the folder where i enter (the root folder remains the same). default=""
 lang: the language code (es: &lang=en_EN). default="en_EN"
+sort_by: the element to sorting (values: name,size,extension,date)
+descending: descending? or ascending (values=true or false)
 subfolder: the subfolder use as root. default="" (ex: subfolder/)
 
 If you want use popup add in the address &popup=1

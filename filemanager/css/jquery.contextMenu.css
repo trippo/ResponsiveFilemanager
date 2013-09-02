@@ -96,20 +96,20 @@
     .context-menu-item.icon:before {}
  */
 .context-menu-item.icon { min-height: 18px; vertical-align: middle; background-repeat: no-repeat; background-position: 4px 5px;  width: auto; display: list-item;}
-.context-menu-item.icon-edit { background-image: url(images/page_white_edit.png); }
-.context-menu-item.icon-cut { background-image: url(images/cut.png); }
-.context-menu-item.icon-copy { background-image: url(images/page_white_copy.png); }
-.context-menu-item.icon-rename { background-image: url(images/rename.png); }
-.context-menu-item.icon-preview { background-image: url(images/preview.png); }
-.context-menu-item.icon-dimension { background-image: url(images/dimension.png); }
-.context-menu-item.icon-date { background-image: url(images/date.png); }
-.context-menu-item.icon-label { background-image: url(images/label.png); }
-.context-menu-item.icon-size { background-image: url(images/size.png); }
-.context-menu-item.icon-download { background-image: url(images/download.png); }
-.context-menu-item.icon-paste { background-image: url(images/page_white_paste.png); }
-.context-menu-item.icon-delete { background-image: url(images/page_white_delete.png); }
-.context-menu-item.icon-add { background-image: url(images/page_white_add.png); }
-.context-menu-item.icon-quit { background-image: url(images/door.png); }
+.context-menu-item.icon-edit { background-image: url(../img/page_white_edit.png); }
+.context-menu-item.icon-cut { background-image: url(../img/cut.png); }
+.context-menu-item.icon-copy { background-image: url(../img/page_white_copy.png); }
+.context-menu-item.icon-rename { background-image: url(../img/rename.png); }
+.context-menu-item.icon-preview { background-image: url(../img/preview.png); }
+.context-menu-item.icon-dimension { background-image: url(../img/dimension.png); }
+.context-menu-item.icon-date { background-image: url(../img/date.png); }
+.context-menu-item.icon-label { background-image: url(../img/label.png); }
+.context-menu-item.icon-size { background-image: url(../img/size.png); }
+.context-menu-item.icon-download { background-image: url(../img/download.png); }
+.context-menu-item.icon-paste { background-image: url(../img/page_white_paste.png); }
+.context-menu-item.icon-delete { background-image: url(../img/page_white_delete.png); }
+.context-menu-item.icon-add { background-image: url(../img/page_white_add.png); }
+.context-menu-item.icon-quit { background-image: url(../img/door.png); }
 
 /* vertically align inside labels */
 .context-menu-input > label > * { vertical-align: top; }

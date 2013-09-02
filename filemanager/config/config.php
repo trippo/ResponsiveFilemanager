@@ -12,11 +12,13 @@ if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbidden');
 // In this configuration the folder tree is
 // root
 //    |- source <- upload folder
+//    |- thumbs <- thumbnail folder [must have write permission (755)]
+//    |- filemanager
 //    |- js
 //    |   |- tinymce
-//    |   |    |- plugins
-//    |- filemanager
-//          |- thumbs <- thumbnail folder [must have write permission (755)]
+//    |   |   |- plugins
+//    |   |   |   |- responsivefilemanager
+//    |   |   |   |   |- plugin.min.js
 
 $root = rtrim($_SERVER['DOCUMENT_ROOT'],'/'); // don't touch this parameter
 $base_url="http://rfm";  // base url of site (without final /). If you prefer relative urls leave empty
@@ -24,7 +26,7 @@ $upload_dir = '/source/'; // path from base_url to base of upload folder (with s
 $current_path = '../source/'; // relative path from filemanager folder to upload folder (with final /)
 
 //thumbs folder can't put inside upload folder
-$thumbs_base_path = 'thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
+$thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
 
 
 

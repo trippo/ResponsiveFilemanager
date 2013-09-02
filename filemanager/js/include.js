@@ -1,4 +1,4 @@
-var version="8.0.1";
+var version="8.0.2";
 
 $(document).ready(function(){	    
     
@@ -91,7 +91,7 @@ $(document).ready(function(){
     });
     
     $('#info').on('click',function(){
-	bootbox.alert('<center><img src="images/logo.jpg" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
+	bootbox.alert('<center><img src="img/logo.jpg" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
 	});
     
     $('#uploader-btn').click(function(){
@@ -345,7 +345,7 @@ function apply(file,external){
     }else{
 	fill='<a href="'+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
     }
-    console.log(fill);
+    
     parent.tinymce.activeEditor.insertContent(fill);
     parent.tinymce.activeEditor.windowManager.close();
 }
@@ -529,36 +529,68 @@ function execute_action(action,file1,file2,name,container,function_name){
 function sortUnorderedList(ul, sortDescending,sort_field) {
     if(typeof ul == "string")
       ul = $(ul);
-    var lis = ul.find("li:not(.back)");
-    var vals = [];
-    var values = [];
+    var lis_dir = ul.find("li.dir");
+    var lis_file = ul.find("li.file");
+    var vals_dir = [];
+    var values_dir = [];
+    var vals_file = [];
+    var values_file = [];
     
-    $.each(lis,function(index){
+    $.each(lis_dir,function(index){
 	var _this=$(this);
 	var value=_this.find(sort_field).val();
 	if ($.isNumeric(value)) {
 	    value=parseFloat(value);
-	    while (typeof vals[value] !== "undefined" &&  vals[value] ) {
+	    while (typeof vals_dir[value] !== "undefined" &&  vals_dir[value] ) {
 		value=value+0.0001;
 	    }
 	}else{
 	    value=value+"a"+_this.find('h4 a').data('file');
 	}
-	vals[value]=_this.html();
-	values.push(value);
+	vals_dir[value]=_this.html();
+	values_dir.push(value);
 	});
-    if ($.isNumeric(values[0])) {
-	values.sort(function(a,b){return a-b});
+    
+    $.each(lis_file,function(index){
+	var _this=$(this);
+	var value=_this.find(sort_field).val();
+	if ($.isNumeric(value)) {
+	    value=parseFloat(value);
+	    while (typeof vals_file[value] !== "undefined" &&  vals_file[value] ) {
+		value=value+0.0001;
+	    }
+	}else{
+	    value=value+"a"+_this.find('h4 a').data('file');
+	}
+	vals_file[value]=_this.html();
+	values_file.push(value);
+	});
+    
+    if ($.isNumeric(values_dir[0])) {
+	values_dir.sort(function(a,b){return a-b});
     }else{
-	values.sort();
+	values_dir.sort();
     }
     
-    if(sortDescending)
-	values.reverse();
+    if ($.isNumeric(values_file[0])) {
+	values_file.sort(function(a,b){return a-b});
+    }else{
+	values_file.sort();
+    }
     
-    $.each(lis,function(index){
+    if(sortDescending){
+	values_dir.reverse();
+	values_file.reverse();
+    }
+    
+    $.each(lis_dir,function(index){
 	var _this=$(this);
-	_this.html(vals[values[index]]);
+	_this.html(vals_dir[values_dir[index]]);
+    });
+    
+    $.each(lis_file,function(index){
+	var _this=$(this);
+	_this.html(vals_file[values_file[index]]);
     });
     
 }

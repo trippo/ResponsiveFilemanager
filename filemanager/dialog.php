@@ -109,6 +109,8 @@ $get_params = http_build_query(array(
     'type'      => $_GET['type'],
     'lang'      => isset($_GET['lang']) ? $_GET['lang'] : 'en_EN',
     'popup'     => $popup,
+    'sort_by'   => $sort_by,
+    'descending'     => $descending?'true':'false',
     'field_id'  => isset($_GET['field_id']) ? $_GET['field_id'] : '',
     'fldr'      => ''
 ));
@@ -121,12 +123,13 @@ $get_params = http_build_query(array(
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="noindex,nofollow">
         <title>Responsive FileManager</title>
-	<link rel="shortcut icon" href="ico/favicon.ico">
+	<link rel="shortcut icon" href="img/ico/favicon.ico">
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
         <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
-	<link href="css/dropzone.css" type="text/css" rel="stylesheet" />
+	<link href="css/dropzone.min.css" type="text/css" rel="stylesheet" />
+	<link href="css/jquery.contextMenu.min.css" rel="stylesheet" type="text/css" />
 	<!--[if lt IE 8]><style>
 	.img-container span {
 	    display: inline-block;
@@ -135,7 +138,6 @@ $get_params = http_build_query(array(
 	</style><![endif]-->
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap-contextmenu.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-lightbox.min.js"></script>
 	<script type="text/javascript" src="js/dropzone.min.js"></script>
 	<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
@@ -147,9 +149,8 @@ $get_params = http_build_query(array(
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	
-	<script src="contextmenu/jquery.ui.position.js" type="text/javascript"></script>
-	<script src="contextmenu/jquery.contextMenu.js" type="text/javascript"></script>    
-	<link href="contextmenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+	<script src="js/jquery.ui.position.min.js" type="text/javascript"></script>
+	<script src="js/jquery.contextMenu.min.js" type="text/javascript"></script>    
 	
 	<script>
 	    var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
@@ -218,6 +219,8 @@ $get_params = http_build_query(array(
 			<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>"/>
 			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
+			<input type="hidden" name="sort_by" value="<?php echo $sort_by; ?>"/>
+			<input type="hidden" name="descending" value="<?php echo $descending; ?>"/>
 			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
 			<input type="hidden" name="filter" value="<?php echo $_GET['filter']; ?>"/>
 			<input type="submit" name="submit" value="<?php echo lang_OK?>" />
@@ -457,16 +460,16 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			}
 			
 			?>
-			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; ?>>
+			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>>
 				<figure class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
 				    <a title="<?php echo lang_Open?>" class="folder-link" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>">
 				    <div class="img-precontainer">
 					<div class="img-container directory"><span></span>
-					<img class="directory-img"  src="ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
+					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
 					</div>
 				    </div>
 				    <div class="img-container-mini directory">
-					<img class="directory-img"  src="ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
+					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
 				    </div>
 			<?php if($file==".."){ ?>
 				    <div class="box no-effect">
@@ -526,17 +529,17 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					$src_thumb=$current_path.$subfolder.$subdir.$file;
 					$show_original=true;
 				}
-			    }elseif(file_exists('ico/'.strtoupper($file_array['extension']).".png")){
-				    $src_thumb ='ico/'.strtoupper($file_array['extension']).".png";
+			    }elseif(file_exists('img/ico/'.strtoupper($file_array['extension']).".png")){
+				    $src_thumb ='img/ico/'.strtoupper($file_array['extension']).".png";
 			    }else{
-				    $src_thumb = "ico/Default.png";
+				    $src_thumb = "img/ico/Default.png";
 			    }
 			    
 			    if($mini_src==""){
-				    if(file_exists('ico/file_extension_'.strtolower($file_array['extension']).".png")){
-					    $mini_src  ='ico/file_extension_'.strtolower($file_array['extension']).".png";
+				    if(file_exists('img/ico/file_extension_'.strtolower($file_array['extension']).".png")){
+					    $mini_src  ='img/ico/file_extension_'.strtolower($file_array['extension']).".png";
 				    }else{
-					    $mini_src ='ico/'.strtoupper($file_array['extension']).".png";
+					    $mini_src ='img/ico/'.strtoupper($file_array['extension']).".png";
 				    }
 			    }
 			    
@@ -556,7 +559,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    
 			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']==3 && !$is_video)) && $class_ext>0){
 ?>
-		<li class="ff-item-type-<?php echo $class_ext; ?>"  data-name="<?php echo $file ?>">
+		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file ?>">
 			<figure  data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
 				<a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
