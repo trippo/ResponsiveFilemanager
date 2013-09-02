@@ -288,7 +288,7 @@ function dateSort($x, $y) {
     return $x['date'] <  $y['date'];
 }
 function sizeSort($x, $y) {
-    return $x['size'] <  $y['size'];
+    return $x['size'] -  $y['size'];
 }
 function extensionSort($x, $y) {
     return $x['extension'] <  $y['extension'];
@@ -303,6 +303,7 @@ switch($sort_by){
 	break;
     case 'size':
 	usort($sorted, 'sizeSort');
+	break;
     case 'extension':
 	usort($sorted, 'extensionSort');
 	break;
