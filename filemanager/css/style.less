@@ -157,7 +157,6 @@ text-align: center;}
 	text-align: left;
 	position: relative;
 	border: none;
-	border-bottom: 1px solid #cccccc;
 	box-shadow: none;
 	min-height: 30px;
 	z-index: 100;
@@ -558,6 +557,7 @@ form{
 	
 	li figure{
 		width:425px;
+		border-bottom: 1px solid #cccccc;
 		background: white;
 		&.back-directory{
 			background: #bbbbbb;
@@ -578,7 +578,7 @@ form{
 				font-size: 13px;
 				text-align: left;
 			}
-			padding-left: 50px;
+			margin-left: 50px;
 			padding-right: 115px;
 			-webkit-transition: none;
 			-moz-transition: none;
@@ -586,24 +586,24 @@ form{
 		}
 	}
 	.img-container-mini{
-		display: block;
+		display: inline;
 		position: absolute;
-		max-width: 45px;
-		max-height: 34px;
+		width: 45px;
+		height: 38px;
 		overflow: hidden;
 		text-align: center;
-		z-index:2;
 		img{
 			margin: 2px;
-			height: 30px;
+			height: 32px;
+			margin-top:4px;
 		}
 	}
 	.img-container-mini.original-thumb{
 		padding: 0px;
 		img{
-			height: auto;
+			width: auto;
 			margin: 0px;
-			width: 45px;
+			height: 38px;
 		}
 	}
 	

@@ -22,6 +22,7 @@ version 8.0.2
 - default sorting option
 - minification of all file and filemanager folder cleaning
 - js sorting split between folders and files
+- other sorting fix
 
 version 8.0.1
 - simplification of the installation procedure
