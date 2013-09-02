@@ -2,16 +2,12 @@ var version="8.0.2";
 
 $(document).ready(function(){	    
     
-     $(document.body).on("contextmenu:focus", ".context-menu-item", 
-    function(e){ console.log("focus:", this); });
     $.contextMenu({
         selector: 'figure:not(.back-directory), .list-view2 figure:not(.back-directory) ',
 	autoHide:true,
 	build: function($trigger) {
 	    var options = {
 	      callback: function(key, options) {
-		var m = "clicked: " + key;
-		window.console && console.log(m) || alert(m);
 	      },
 	      items: {}
 	    };
@@ -30,11 +26,11 @@ $(document).ready(function(){
 	    return options;
 	  }
     });
-    /*
+    
     $(document).on('contextmenu', function(e) {
 	if (!$(e.target).is("figure"))
 	   return false;
-    });*/
+    });
     
     $('input[name=radio-sort]').click(function(){
         var li=$(this).data('item');
@@ -542,7 +538,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 	if ($.isNumeric(value)) {
 	    value=parseFloat(value);
 	    while (typeof vals_dir[value] !== "undefined" &&  vals_dir[value] ) {
-		value=value+0.0001;
+		value=parseFloat(parseFloat(value)+parseFloat(0.001));
 	    }
 	}else{
 	    value=value+"a"+_this.find('h4 a').data('file');
@@ -557,7 +553,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 	if ($.isNumeric(value)) {
 	    value=parseFloat(value);
 	    while (typeof vals_file[value] !== "undefined" &&  vals_file[value] ) {
-		value=value+0.0001;
+		value=parseFloat(parseFloat(value)+parseFloat(0.001));
 	    }
 	}else{
 	    value=value+"a"+_this.find('h4 a').data('file');
@@ -567,13 +563,13 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 	});
     
     if ($.isNumeric(values_dir[0])) {
-	values_dir.sort(function(a,b){return a-b});
+	values_dir.sort(function(a,b){return parseFloat(a)-parseFloat(b);});
     }else{
 	values_dir.sort();
     }
     
     if ($.isNumeric(values_file[0])) {
-	values_file.sort(function(a,b){return a-b});
+	values_file.sort(function(a,b){return  parseFloat(a)-parseFloat(b); });
     }else{
 	values_file.sort();
     }
