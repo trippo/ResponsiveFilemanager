@@ -9,10 +9,12 @@ include 'jupload.php';
 include '../config/config.php';
 include '../include/utils.php';
 
-$path=$_GET['path']."/";
+$path=$_GET['path'];
 $cycle=true;
-
-while($cycle){
+$max_cycles=50;
+$i=0;
+while($cycle && $i<$max_cycles){
+    $i++;
     if($path==$root.$upload_dir)  $cycle=false;
     
     if(file_exists($path."config.php")){
@@ -21,6 +23,12 @@ while($cycle){
     }
     $path=fix_dirname($path)."/";
 }
+
+
+
+
+
+
 if(strpos($root.$upload_dir,$_GET['path'])!=0 && strpos($_GET['path'],'../')!==FALSE) die ('path error');
 
 $path=str_replace(' ','~',$_GET['path']);

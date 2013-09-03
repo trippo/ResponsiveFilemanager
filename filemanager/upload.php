@@ -16,8 +16,10 @@ $base=$current_path;
 $base_thumb=fix_realpath($thumbs_base_path).$ds;
 $path=$storeFolder;
 $cycle=true;
-
-while($cycle){
+$max_cycles=50;
+$i=0;
+while($cycle && $i<$max_cycles){
+    $i++;
     if($path==$base)  $cycle=false;
     if(file_exists($path."config.php")){
 	require_once($path."config.php");
