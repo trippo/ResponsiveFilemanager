@@ -28,8 +28,6 @@ $current_path = '../source/'; // relative path from filemanager folder to upload
 //thumbs folder can't put inside upload folder
 $thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
 
-
-
 //------------------------------------------------------------------------------
 // YOU CAN COPY AND CHANGE THESE VARIABLES IN FOLDERS config.php FILES
 //------------------------------------------------------------------------------

@@ -2,9 +2,30 @@
 body, html {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 100%; padding: 0; margin: 0;}
-body{ background:url(../img/fabric_plaid.jpg); padding-top: 32px; 
-	font-weight:200; }
-
+body{ 	background:url(../img/fabric_plaid.jpg);
+	padding-top: 32px; 
+	font-weight:200;
+}
+#qLpercentage{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 40px;
+	line-height: 40px;
+	color:#bbbbbb;
+	font-weight: 200;
+	height: 60px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px;
+	text-shadow: 1px 1px 2px #ffffff;
+	filter: dropshadow(color=#ffffff, offx=1, offy=1);
+}
+#qLbar{
+	background: #aaaaaa;
+	background: rgba(100,100,100,0.2);
+	z-index:200;
+	margin-left: 10px;
+	margin-right: 10px;
+}
 .btn{
 	-webkit-border-radius: 0px;
     border-radius: 0px;
@@ -53,7 +74,7 @@ ul.breadcrumb{
 	-webkit-border-radius: 0px;
 	border-radius: 0px;
 }
-.img-container * {
+.img-container * ,.img-container-mini * {
     vertical-align: middle;
 }
 #help{
@@ -61,10 +82,10 @@ ul.breadcrumb{
 }
 
 /*\*//*/
-.img-container {
+.img-container,.img-container-mini {
     display: block;
 }
-.img-container span {
+.img-container span, .img-container-mini span {
     display: inline-block;
     height: 100%;
     width: 1px;
@@ -224,12 +245,12 @@ ul.sorting.dropdown-menu>li>a{
 	font-size: 12px;
 	text-shadow: none;
 	&.ascending{
-		background-image: url(../img/up.png);
+		background-image: url(../img/down.png);
 		background-repeat: no-repeat;
 		background-position: 6px 8px;
 	}
 	&.descending{
-		background-image: url(../img/down.png);
+		background-image: url(../img/up.png);
 		background-repeat: no-repeat;
 		background-position: 6px 8px;
 	}
@@ -493,7 +514,7 @@ ul.sorting.dropdown-menu>li>a{
 }
 
 
-.list-view0 .img-container-mini{
+.list-view0 .img-precontainer-mini{
 	display: none;
 }
 a,a:hover{
@@ -502,7 +523,7 @@ a,a:hover{
 }
 
 .back-directory{
-	.img-precontainer,.img-container-mini,.box{
+	.img-precontainer,.img-precontainer-mini,.box{
 		background: none;
 	}
 }
@@ -585,8 +606,8 @@ form{
 			transition: none;
 		}
 	}
-	.img-container-mini{
-		display: inline;
+	.img-precontainer-mini{
+		display: block;
 		position: absolute;
 		width: 45px;
 		height: 38px;
@@ -598,12 +619,28 @@ form{
 			margin-top:4px;
 		}
 	}
-	.img-container-mini.original-thumb{
+	.img-container-mini{
+		width: 45px;
+		height: 38px;
+		border:none;
+		overflow: hidden;
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+		margin: auto;
+	}
+	.img-precontainer-mini.original-thumb{
 		padding: 0px;
 		img{
 			width: auto;
 			margin: 0px;
 			height: 38px;
+		}
+		
+		img.original{
+			width: auto;
+			width: auto;
+			height: auto;
 		}
 	}
 	

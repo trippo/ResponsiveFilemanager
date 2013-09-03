@@ -14,12 +14,14 @@ if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
 }
 require_once $language_file;
 
-$base=$root.$upload_dir;
+$base=$current_path;
 $base_thumb=$thumbs_base_path;
-$path=fix_dirname($_POST['path'])."/";
+$path=$_POST['path'];
 $cycle=true;
-
-while($cycle){
+$max_cycles=50;
+$i=0;
+while($cycle && $i<$max_cycles){
+    $i++;
     if($path==$base)  $cycle=false;
     
     if(file_exists($path."config.php")){

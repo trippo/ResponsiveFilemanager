@@ -1,5 +1,5 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 8.0.1
+! Responsive FileManager for TinyMCE Version 8.1.0
 *********************************************************
 Responsive FileManager is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos.
 You can use it as external plugin for TinyMCE version 4.x. and you can also use it as a stand-alone file manager to manage and select files.
@@ -17,6 +17,12 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 
 CHANGES LOG
+version 8.1.0
+- audio e video preview [thanks to Aniello Martuscelli for contribution]
+- pre-loading bar until all image loaded
+- remember sorting selection
+- other layout and uploading bug fixed
+
 version 8.0.2
 - fix a 8.0.1 upload bug
 - default sorting option
@@ -54,7 +60,7 @@ version 8.0
 3. Open filemanager/config/config.php and edit the settings (read config.php parameters setting paragraph). Save file.
 4. Great! Your work is finished!
 
-PS If you don't see the preview images you need to give write permission to the thumbs folder in filemanager/thumbs.
+PS If you don't see the preview images you need to give write permission to the thumbs folder.
 If you are updating from a previous version of FileManager delete the contents of thumbs folder, the script will automatically re-create the thumbnails.
 
 !IMPORTANT: if you are using htaccess protection, make sure your $GLOBALS PHP_AUTH_USER/PHP_AUTH_USER are defined in your webserver config
@@ -360,4 +366,7 @@ Mini icons => http://www.fatcow.com/free-icons‎
 Jupload => http://jupload.sourceforge.net/
 Bootbox => http://bootboxjs.com/
 jQuery contextMenu => http://medialize.github.io/jQuery-contextMenu/
+Bootstrap-modal => https://github.com/jschr/bootstrap-modal
+jPlayer => http://jplayer.org/
+QueryLoader2 => http://www.gayadesign.com/diy/queryloader2-preload-your-images-with-ease/
 *********************************************************

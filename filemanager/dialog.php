@@ -62,7 +62,10 @@ if(trim($subfolder)==""){
 }
 
 $cycle=true;
-while($cycle){
+$max_cycles=50;
+$i=0;
+while($cycle && $i<$max_cycles){
+    $i++;
     if($parent=="./") $parent="";    
     if(file_exists($current_path.$parent."config.php")){
 	require_once($current_path.$parent."config.php");
@@ -86,11 +89,13 @@ $view=$_SESSION["view_type"];
 if(isset($_GET["filter"])) $filter=fix_filename($_GET["filter"]);
 else $filter='';
 
-if(isset($_GET["sort_by"])) $sort_by=fix_filename($_GET["sort_by"]);
-else $sort_by='';
+if(!isset($_SESSION['sort_by'])) $_SESSION['sort_by']='';
+if(isset($_GET["sort_by"])) $sort_by=$_SESSION['sort_by']=fix_filename($_GET["sort_by"]);
+else $sort_by=$_SESSION['sort_by'];
 
-if(isset($_GET["descending"])) $descending=fix_filename($_GET["descending"])==="true";
-else $descending=false;
+if(!isset($_SESSION['descending'])) $_SESSION['descending']=false;
+if(isset($_GET["descending"])) $descending=$_SESSION['descending']=fix_filename($_GET["descending"])==="true";
+else $descending=$_SESSION['descending'];
 
 $language_file = 'lang/'.$default_language.'.php'; 
 if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
@@ -109,8 +114,6 @@ $get_params = http_build_query(array(
     'type'      => $_GET['type'],
     'lang'      => isset($_GET['lang']) ? $_GET['lang'] : 'en_EN',
     'popup'     => $popup,
-    'sort_by'   => $sort_by,
-    'descending'     => $descending?'true':'false',
     'field_id'  => isset($_GET['field_id']) ? $_GET['field_id'] : '',
     'fldr'      => ''
 ));
@@ -129,9 +132,11 @@ $get_params = http_build_query(array(
         <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
 	<link href="css/dropzone.min.css" type="text/css" rel="stylesheet" />
-	<link href="css/jquery.contextMenu.min.css" rel="stylesheet" type="text/css" />
+	<link href="css/jquery.contextMenu.min.css" rel="stylesheet" type="text/css" />	
+	<link href="css/bootstrap-modal.min.css" rel="stylesheet" type="text/css" />
+	<link href="jPlayer/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css">
 	<!--[if lt IE 8]><style>
-	.img-container span {
+	.img-container span, .img-container-mini span {
 	    display: inline-block;
 	    height: 100%;
 	}
@@ -143,12 +148,15 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
 	<script type="text/javascript" src="js/modernizr.custom.js"></script>
 	<script type="text/javascript" src="js/bootbox.min.js"></script>
-	
+	<script type="text/javascript" src="js/bootstrap-modal.min.js"></script>   
+	<script type="text/javascript" src="js/bootstrap-modalmanager.min.js"></script>
+	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
+	<script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
+	<script type="text/javascript" src="js/jquery.queryloader2.min.js"></script>
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	
 	<script src="js/jquery.ui.position.min.js" type="text/javascript"></script>
 	<script src="js/jquery.contextMenu.min.js" type="text/javascript"></script>    
 	
@@ -173,6 +181,7 @@ $get_params = http_build_query(array(
 		      else { done("<?php echo lang_Error_extension;?>"); }
 		    }
 	    };
+
 	</script>
 	<script type="text/javascript" src="js/include.min.js"></script>
     </head>
@@ -192,7 +201,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
 	<?php $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https'; ?>
-	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter,'&sort_by='.$sort_by,'&descending='.($descending?"true":"false")),array('','',''),$protocol."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']); ?>" />
+	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter),array(''),$protocol."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']); ?>" />
 		
 <?php if($upload_files){ ?>
 <!----- uploader div start ------->
@@ -219,8 +228,6 @@ $get_params = http_build_query(array(
 			<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>"/>
 			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
-			<input type="hidden" name="sort_by" value="<?php echo $sort_by; ?>"/>
-			<input type="hidden" name="descending" value="<?php echo $descending; ?>"/>
 			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
 			<input type="hidden" name="filter" value="<?php echo $_GET['filter']; ?>"/>
 			<input type="submit" name="submit" value="<?php echo lang_OK?>" />
@@ -342,9 +349,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			</div>
 			<div class="span3 half view-controller">
 			    <span><?php echo lang_View; ?>:</span>
-				<button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
-				<button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
-				<button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
+			    <button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
+			    <button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
+			    <button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
 			</div>
 			<div class="span6 types">
 			    <span><?php echo lang_Filters; ?>:</span>
@@ -399,6 +406,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	?>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
 	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
+	
 	<li class="pull-right">
 	    <div class="btn-group">
 		<a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
@@ -442,7 +450,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	    <input type="hidden" id="file_number" value="<?php echo $n_files; ?>" />
 	    <!--ul class="thumbnails ff-items"-->
 	    <ul class="grid cs-style-2 <?php echo "list-view".$view; ?>">
-		<?php		
+		<?php
+		
+		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 		foreach ($files as $file_array) {
 		    $file=$file_array['file'];
 			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=lang_Type_dir) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $file!=".." && strpos($file,$filter)===false))
@@ -469,8 +479,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
 					</div>
 				    </div>
-				    <div class="img-container-mini directory">
-					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
+				    <div class="img-precontainer-mini directory">
+					<div class="img-container-mini">
+					    <span></span>
+					    <img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
+					</div>
 				    </div>
 			<?php if($file==".."){ ?>
 				    <div class="box no-effect">
@@ -512,6 +525,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				
 			    $is_img=false;
 			    $is_video=false;
+			    $is_audio=false;
 			    $show_original=false;
 			    $mini_src="";
 			    $file_path=fix_realpath($current_path.$subfolder.$subdir.$file);
@@ -525,9 +539,8 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				$is_img=true;
 				//check if is smaller tha thumb
 				list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
-				
-				if($img_width<122 && $img_height<91){
-					$src_thumb=$current_path.$subfolder.$subdir.$file;
+				if(($view==0 && $img_width<122 && $img_height<91) || ($view>0 && $img_width<45 && $img_height<38)){
+					$mini_src=$src_thumb=$current_path.$subfolder.$subdir.$file;
 					$show_original=true;
 				}
 			    }elseif(file_exists('img/ico/'.strtoupper($file_array['extension']).".png")){
@@ -552,12 +565,12 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    $class_ext = 2;
 			    }elseif (in_array($file_array['extension'], $ext_music)) {
 				    $class_ext = 5;
+				    $is_audio=true;
 			    }elseif (in_array($file_array['extension'], $ext_misc)) {
 				    $class_ext = 3;
 			    }else{
 				    $class_ext = 1;
 			    }
-			    
 			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']==3 && !$is_video)) && $class_ext>0){
 ?>
 		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file ?>">
@@ -566,11 +579,14 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<div class="img-precontainer">
 					<div class="img-container">
 						<span></span>
-						<img data-src="holder.js/122x91" alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $src_thumb; ?>">
+						<img alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $src_thumb; ?>">
 					</div>
 				</div>
-				<div class="img-container-mini <?php if($is_img) echo 'original-thumb' ?>">
-				    <img alt="image" src="<?php echo $mini_src; ?>">
+				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
+				    <div class="img-container-mini">
+					<span></span>
+					<img alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $mini_src; ?>">
+				    </div>
 				</div>
 				</a>	
 				<div class="box">				
@@ -593,6 +609,8 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <a title="<?php echo lang_Download?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
 				    <?php if($is_img){ ?>
 				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
+				    <?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$jplayer_ext)){ ?>
+				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$subfolder.$subdir.$file;; ?>" href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 				    <?php } ?>
@@ -633,6 +651,20 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	    <img id="loading_animation" src="img/storing_animation.gif" alt="loading" style="z-index:10001; margin-left:-32px; margin-top:-32px; position:fixed; left:50%; top:50%"/>
     </div>
     <!----- loading div end ------->
+    
+    <!----- player div start ------->
+    <div class="modal hide fade" id="previewAV">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3><?php echo lang_Preview; ?></h3>
+      </div>
+      <div class="modal-body">
+      	<div class="row-fluid body-preview">
+	</div>
+      </div>
+      
+    </div>
+    <!----- player div end ------->
     
 </body>
 </html>

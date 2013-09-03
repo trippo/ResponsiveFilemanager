@@ -9,10 +9,10 @@ include('include/utils.php');
 
 $ds = '/'; 
  
-$storeFolder = fix_realpath($_POST['path']).$ds;
+$storeFolder = $_POST['path'];
 $storeFolderThumb = fix_realpath($_POST['path_thumb']).$ds;
 
-$base=$root.$upload_dir;
+$base=$current_path;
 $base_thumb=fix_realpath($thumbs_base_path).$ds;
 $path=$storeFolder;
 $cycle=true;

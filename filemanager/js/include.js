@@ -1,7 +1,15 @@
-var version="8.0.2";
+var version="8.1.0";
 
-$(document).ready(function(){	    
-    
+if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
+    window.addEventListener('DOMContentLoaded', function() {
+        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
+    });
+}else{
+    $(document).ready(function () {
+        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
+    });
+}
+$(document).ready(function(){    
     $.contextMenu({
         selector: 'figure:not(.back-directory), .list-view2 figure:not(.back-directory) ',
 	autoHide:true,
@@ -26,10 +34,34 @@ $(document).ready(function(){
 	    return options;
 	  }
     });
-    
+
     $(document).on('contextmenu', function(e) {
 	if (!$(e.target).is("figure"))
 	   return false;
+    });
+    
+    $(".modalAV").on("click", function() {
+	_this=$(this);
+        event.preventDefault();
+
+        $('#previewAV').removeData("modal");
+        $('#previewAV').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+	if (_this.hasClass('audio')) {
+	    $(".body-preview").css('height','80px');
+	}else{
+	    $(".body-preview").css('height','345px');
+	}
+	
+        $.ajax({
+            url: _this.data("url"),
+            success: function(data) {
+		
+		$(".body-preview").html(data);
+	    }
+        });
     });
     
     $('input[name=radio-sort]').click(function(){
@@ -115,8 +147,14 @@ $(document).ready(function(){
     var sortDescending=$('#descending').val()=== 'true';
     $('.sorter').click(function(){
 	_this=$(this);
+	
 	sortDescending=!sortDescending;
 	if (js_script) {
+	    $.ajax({
+		url: "ajax_calls.php?action=sort&sort_by="+_this.data('sort')+"&descending="+sortDescending
+	    }).done(function( msg ) {
+		    
+	    });
 	    sortUnorderedList('ul.grid',sortDescending,"."+_this.data('sort'));
 	    $(' a.sorter').removeClass('descending').removeClass('ascending');
 	    if (sortDescending)
@@ -289,7 +327,6 @@ $(document).ready(function(){
 	
 });
 
-
 function fix_colums() {
 	
     var width=$('.ff-container').width()-2;
@@ -316,7 +353,6 @@ function swipe_reaction(event, direction, distance, duration, fingerCount) {
 	var _this = $(this);
 	
     if ($('#view').val()==0) {
-		
 		if (_this.attr('toggle')==1) {
 			_this.attr('toggle',0);
 			_this.animate({top: "0px"} ,{queue:false,duration:300});
@@ -601,5 +637,3 @@ function hide_animation()
 {
 	$('#loading_container').fadeOut();
 }
-
-	
