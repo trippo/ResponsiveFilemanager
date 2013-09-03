@@ -299,17 +299,17 @@ $(document).ready(function(){
 	    });
 	}
 	
-	if(!Modernizr.csstransitions) { // Test if CSS transitions are supported
+	if(!Modernizr.csstransitions || !Modernizr.csstransform) { // Test if CSS transform are supported
             
 		$('figure').bind('mouseover',function(){
 			if ($('#view').val()==0) {
-				$(this).find('.box').animate({top: "-30px"} ,{queue:false,duration:300});
+				$(this).find('.box:not(.no-effect)').animate({top: "-30px"} ,{queue:false,duration:300});
 			}
 		});
 		
 		$('figure').mouseout(function(){
 			if ($('#view').val()==0) {
-				$(this).find('.box').animate({top: "0px"} ,{queue:false,duration:300});
+				$(this).find('.box:not(.no-effect)').animate({top: "0px"} ,{queue:false,duration:300});
 			}
 		});
 

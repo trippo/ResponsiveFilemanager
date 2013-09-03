@@ -20,12 +20,21 @@ body{ 	background:url(../img/fabric_plaid.jpg);
 	filter: dropshadow(color=#ffffff, offx=1, offy=1);
 }
 #qLbar{
-	background: #aaaaaa;
-	background: rgba(100,100,100,0.2);
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdhN2E3YSIgc3RvcC1vcGFjaXR5PSIwLjQiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzdhN2E3YSIgc3RvcC1vcGFjaXR5PSIwLjQiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+	background: -moz-linear-gradient(top,  rgba(122,122,122,0.4) 0%, rgba(122,122,122,0.4) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122,122,122,0.4)), color-stop(100%,rgba(122,122,122,0.4))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(122,122,122,0.4) 0%,rgba(122,122,122,0.4) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(122,122,122,0.4) 0%,rgba(122,122,122,0.4) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(122,122,122,0.4) 0%,rgba(122,122,122,0.4) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(122,122,122,0.4) 0%,rgba(122,122,122,0.4) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#667a7a7a', endColorstr='#667a7a7a',GradientType=0 ); /* IE6-8 */
+
 	z-index:200;
 	margin-left: 10px;
 	margin-right: 10px;
 	overflow: hidden;
+	
 }
 .btn{
 	-webkit-border-radius: 0px;
@@ -504,7 +513,7 @@ ul.sorting.dropdown-menu>li>a{
 	transform: translateY(-26px);
 }
 .list-view0 figure:hover .box.no-effect,
-.list-view0 figure.cs-hover .box.no-effect,.box.no-effect{
+.list-view0 figure.cs-hover .box.no-effect,.no-effect{
 	
 	-webkit-box-shadow: none;
         box-shadow: none;
