@@ -19,7 +19,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 CHANGES LOG
 version 8.1.0
 - audio e video preview [thanks to Aniello Martuscelli for contribution]
-- pre-loading bar until all image loaded
+- pre-loading bar and percentage until all image loaded
 - remember sorting selection
 - other layout and uploading bug fixed
 
