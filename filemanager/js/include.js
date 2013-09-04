@@ -299,7 +299,7 @@ $(document).ready(function(){
 	    });
 	}
 	
-	if(!Modernizr.csstransitions || !Modernizr.csstransform) { // Test if CSS transform are supported
+	if(!Modernizr.csstransitions || !Modernizr.csstransforms) { // Test if CSS transform are supported
             
 		$('figure').bind('mouseover',function(){
 			if ($('#view').val()==0) {
