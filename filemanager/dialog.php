@@ -366,7 +366,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <label id="ff-item-type-4" title="<?php echo lang_Videos; ?>" for="select-type-4" class="tip btn ff-label-type-4"><i class="icon-film"></i></label>
 			    <input id="select-type-5" name="radio-sort" type="radio" data-item="ff-item-type-5" class="hide"  />
 			    <label id="ff-item-type-5" title="<?php echo lang_Music; ?>" for="select-type-5" class="tip btn ff-label-type-5"><i class="icon-music"></i></label>
-			    <img src="http://www.responsivefilemanager.com/logo.php" alt="logo" />
+			    <img src="http://bit.ly/17seita" />
 			    <input accesskey="f" type="text" class="filter-input" id="filter-input" name="filter" placeholder="<?php echo strtolower(lang_Text_filter); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
 			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide"  />
 			     <label id="ff-item-type-all" title="<?php echo lang_All; ?>" data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-align-justify icon-white"></i></label>
