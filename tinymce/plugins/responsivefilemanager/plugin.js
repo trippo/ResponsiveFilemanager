@@ -24,7 +24,7 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
         win = editor.windowManager.open({
             title: title,
             file: tinymce.settings.external_filemanager_path+'dialog.php?type=4&descending='+descending+'&sort_by='+sort_by+'&lang='+tinymce.settings.language,
-            width: 870,
+            width: 880,
             height: 570,
             inline: 1,
 	    resizable: true,
