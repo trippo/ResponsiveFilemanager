@@ -64,7 +64,7 @@ $(document).ready(function(){
         });
     });
     
-    $('input[name=radio-sort]').click(function(){
+    $('input[name=radio-sort]').on('click',function(){
         var li=$(this).data('item');
 	$('.filters label').removeClass("btn-inverse");
 	$('.filters label').find('i').removeClass('icon-white');
@@ -122,7 +122,7 @@ $(document).ready(function(){
 	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
 	});
     
-    $('#uploader-btn').click(function(){
+    $('#uploader-btn').on('click',function(){
 	    var path=$('#root').val()+$('#cur_dir').val()+"/";
 	    path=path.substring(0, path.length - 1);
 	    
@@ -136,16 +136,16 @@ $(document).ready(function(){
 	    }));
 	});
     
-    $('#full-img').click(function(){
+    $('#full-img').on('click',function(){
 	    $('#previewLightbox').lightbox('hide');
     });
     
-    $('.upload-btn').click(function(){
+    $('.upload-btn').on('click',function(){
 	    $('.uploader').show(500);
     });
     
     var sortDescending=$('#descending').val()=== 'true';
-    $('.sorter').click(function(){
+    $('.sorter').on('click',function(){
 	_this=$(this);
 	
 	sortDescending=!sortDescending;
@@ -166,12 +166,12 @@ $(document).ready(function(){
 	}
     });
     
-    $('.close-uploader').click(function(){
+    $('.close-uploader').on('click',function(){
 	    $('.uploader').hide(500);
 	    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
     });
     
-    $('.preview').click(function(){
+    $('ul.grid').on('click','.preview',function(){
 	    var _this = $(this);
 	    
 	    $('#full-img').attr('src',_this.data('url'));
@@ -180,9 +180,9 @@ $(document).ready(function(){
 	    return true;
     });
     
-    $('.rename-file').click(function(){
+    $('ul.grid').on('click','.rename-file',function(){
 	var _this = $(this);
-
+	
 	var file_container=_this.parent().parent().parent();
 	var file_title=file_container.find('h4');
 	var old_name=$.trim(file_title.text());
@@ -194,7 +194,8 @@ $(document).ready(function(){
 	},old_name);
     });
     
-    $('.rename-folder').click(function(){
+    $('ul.grid').on('click','.rename-folder',function(){
+	
 	var _this = $(this);
 	    
 	var file_container=_this.parent().parent().parent();
@@ -208,7 +209,7 @@ $(document).ready(function(){
 	},old_name);
     });
     
-    $('.delete-file').click(function(){
+    $('ul.grid').on('click','.delete-file',function(){
 	var _this = $(this);
 	
 	bootbox.confirm(_this.data('confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
@@ -219,7 +220,7 @@ $(document).ready(function(){
 	});
     });
     
-    $('.delete-folder').click(function(){
+    $('ul.grid').on('click','.delete-folder',function(){
 	var _this = $(this);
 	
 	bootbox.confirm(_this.data('confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
@@ -230,7 +231,7 @@ $(document).ready(function(){
 	});
     });	
 
-    $('.new-folder').click(function(){
+    $('.new-folder').on('click',function(){
 	bootbox.prompt($('#insert_folder_name').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    if (name !== null) {
 		name=clean_filename(name);
@@ -247,7 +248,7 @@ $(document).ready(function(){
 	},$('#new_folder').val());
     });
     
-    $('.view-controller button').click(function(){
+    $('.view-controller button').on('click',function(){
 	    var _this = $(this);
 	    
 	    $('.view-controller button').removeClass('btn-inverse');
@@ -318,7 +319,7 @@ $(document).ready(function(){
 	$(window).resize(function(){fix_colums(); });
 	fix_colums();
 	
-	$('.link').click(function(){
+	$('.link').on('click',function(){
 		var _this = $(this);
 		
 		window[_this.data('function')](_this.data('file'),_this.data('field_id'));
@@ -439,14 +440,15 @@ function apply_any(path, file) {
 }
 
 function close_window() {
-    if ($('#popup').val()==1) window.close();
-    else{
+   if ( window.frameElement.parentNode.id) parent.$('#' + window.frameElement.parentNode.id).dialog("close");
+   else if ($('#popup').val()==1) window.close();
+   else{
 	if ( typeof parent.$ !== "undefined" && parent.$) {
 	    parent.$.fancybox.close();
 	}else{
 	    parent.jQuery.fancybox.close();
 	}
-    }
+   }
 }
 
 
