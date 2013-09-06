@@ -49,5 +49,6 @@ define('lang_Operations','Operations');
 define('lang_Date_type','d.m.y');
 define('lang_OK','OK');
 define('lang_Cancel','Avbryt');
+define('lang_Sorting','sıralama');
 
 ?>

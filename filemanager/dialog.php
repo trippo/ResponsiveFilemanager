@@ -183,7 +183,7 @@ $get_params = http_build_query(array(
 	    };
 
 	</script>
-	<script type="text/javascript" src="js/include.min.js"></script>
+	<script type="text/javascript" src="js/include.js"></script>
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
@@ -229,7 +229,7 @@ $get_params = http_build_query(array(
 			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
 			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
-			<input type="hidden" name="filter" value="<?php echo $_GET['filter']; ?>"/>
+			<input type="hidden" name="filter" value="<?php echo $filter; ?>"/>
 			<input type="submit" name="submit" value="<?php echo lang_OK?>" />
 		    </div>
 		</form>

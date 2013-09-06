@@ -49,4 +49,5 @@ define('lang_Operations','Operations');
 define('lang_Date_type','y-m-d');
 define('lang_OK','OK');
 define('lang_Cancel','Cancel');
+define('lang_Sorting','sorting');
 ?>
