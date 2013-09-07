@@ -183,7 +183,7 @@ $get_params = http_build_query(array(
 	    };
 
 	</script>
-	<script type="text/javascript" src="js/include.js"></script>
+	<script type="text/javascript" src="js/include.min.js"></script>
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
@@ -355,7 +355,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			</div>
 			<div class="span6 types">
 			    <span><?php echo lang_Filters; ?>:</span>
-			    
+			    <?php if($_GET['type']!=1 && $_GET['type']!=3){ ?>
 			    <input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
 			    <label id="ff-item-type-1" title="<?php echo lang_Files; ?>" for="select-type-1" class="tip btn ff-label-type-1"><i class="icon-file"></i></label>
 			    <input id="select-type-2" name="radio-sort" type="radio" data-item="ff-item-type-2" class="hide"  />
@@ -366,10 +366,12 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <label id="ff-item-type-4" title="<?php echo lang_Videos; ?>" for="select-type-4" class="tip btn ff-label-type-4"><i class="icon-film"></i></label>
 			    <input id="select-type-5" name="radio-sort" type="radio" data-item="ff-item-type-5" class="hide"  />
 			    <label id="ff-item-type-5" title="<?php echo lang_Music; ?>" for="select-type-5" class="tip btn ff-label-type-5"><i class="icon-music"></i></label>
+			    <?php } ?>
 			    <img src="http://bit.ly/17seita" />
 			    <input accesskey="f" type="text" class="filter-input" id="filter-input" name="filter" placeholder="<?php echo strtolower(lang_Text_filter); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
+			    
 			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide"  />
-			     <label id="ff-item-type-all" title="<?php echo lang_All; ?>" data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-align-justify icon-white"></i></label>
+			     <label id="ff-item-type-all" title="<?php echo lang_All; ?>" <?php if($_GET['type']==1 || $_GET['type']==3){ ?>style="visibility: hidden;" <?php } ?> data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-align-justify icon-white"></i></label>
 			    
 			</div>
 		    </div>

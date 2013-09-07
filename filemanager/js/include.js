@@ -1,4 +1,4 @@
-var version="8.1.0";
+var version="8.1.1";
 
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
     window.addEventListener('DOMContentLoaded', function() {
@@ -40,9 +40,9 @@ $(document).ready(function(){
 	   return false;
     });
     
-    $(".modalAV").on("click", function() {
+    $(".modalAV").on("click", function(e) {
 	_this=$(this);
-        event.preventDefault();
+        e.preventDefault();
 
         $('#previewAV').removeData("modal");
         $('#previewAV').modal({
@@ -93,6 +93,10 @@ $(document).ready(function(){
     else var js_script=true;
 	
     $('#filter-input').on('keyup',function(){
+	$('.filters label').removeClass("btn-inverse");
+	$('.filters label').find('i').removeClass('icon-white');
+	$('#ff-item-type-all').addClass("btn-inverse");
+	$('#ff-item-type-all').find('i').addClass('icon-white');
 	var val=clean_filename($(this).val());
 	$(this).val(val);
 	delay(function(){
