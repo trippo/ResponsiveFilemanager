@@ -141,7 +141,13 @@ $get_params = http_build_query(array(
 	    height: 100%;
 	}
 	</style><![endif]-->
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	if (typeof jQuery === 'undefined')
+	{
+	  document.write(unescape("%3Cscript src='js/jquery.js' type='text/javascript'%3E%3C/script%3E"));
+	}
+	</script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-lightbox.min.js"></script>
 	<script type="text/javascript" src="js/dropzone.min.js"></script>
