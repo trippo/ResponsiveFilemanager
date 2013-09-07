@@ -27,31 +27,31 @@ version 8.1.0
 - other layout and uploading bug fixed
 
 version 8.0.2
-- fix a 8.0.1 upload bug
+- fix an 8.0.1 upload bug
 - default sorting option
-- minification of all file and filemanager folder cleaning
+- minification of all files and filemanager folder cleaning
 - js sorting split between folders and files
 - other sorting fix
 
 version 8.0.1
 - simplification of the installation procedure
-- compatibility with PHP version < 5.3
+- compatibility with PHP versions < 5.3
 - fix in use of subfolder session variable
 
 version 8.0
-- set responsive filemanager as external plugin (so you can install more simply and update tinymce externally and never changing plugin.min.js files) Special Thanks to Jules Gravinese
-- new amazing direct button (tinymce plugin) to include directly a file o image in the document 
-- change .config files in config.php to windows server compatibility
-- add PHP sorting and filter script for the huge folders. (the script automatically choose which script to use)
-- context menu to show files details
+- use responsive filemanager as an external plugin (simpler installation and allows updating of TinyMCE without changing any of its plugin.min.js files). Special thanks to Jules Gravinese
+- amazing new direct button (TinyMCE plugin) to insert a file or image directly into the document
+- change .config files in config.php for windows server compatibility
+- add PHP sorting and filter script for huge folders. (the script automatically chooses which script to use)
+- context menu to show file details
 - sorting features in all layouts
-- add in config.php the possibility to truncate the overflow file name with ...
-- now the filemanager remember for 1 day the last opened position using cookie
-- alert change to bootbox alert
+- add in config.php the option to truncate over-long file names and add an ellipsis
+- 24-hour retention of the last-opened layout using a cookie
+- change alert to bootbox alert
 - thumbs folder path customization
 - block of right click out of files boxes
 - tested in windows apache server
-- fix a lot of bugs and bad codes
+- fix various bugs and bad code
 - improve security
 
 *********************************************************
@@ -158,7 +158,7 @@ function close_window() {
 SET SUBFOLDER AS ROOT AND MULTI-USER USE
 
 You can set a subfolder as root.
-So you can have a root folder for each user or use.
+So you can have a root folder for each user.
 The way to implement this is set the session variable $_SESSION["subfolder"] ="subfolder/name/"
 
 Remember that subfolder value must not have ../ ./ . inside and can't begin with /
@@ -185,7 +185,7 @@ View:
 subfolder1
 subfolder2
 
-So if you want use filemanager in a multiuser cms you can simply create a folder for each users and set the session variable ($_SESSION['subfolder']) with the name of the user folder
+So if you want use filemanager in a multiuser CMS you can simply create a folder for each user and set a session variable ($_SESSION['subfolder']) with the name of the user folder
 
 
 CUSTOMISE CONFIGURATION FOR EACH FOLDER
@@ -208,7 +208,7 @@ Parameter	Example Value	Description
 base_url	http://site.com	base url of site (without final /). if you prefer relative urls leave empty.
 upload_dir	/uploads/	address path from base_url to base of upload folder (with start and final /).
 current_path	../uploads/	relative path from filemanager folder to upload folder (with final /).
-thumbs_base_path	thumbs/	relative path from filemanager folder to thumbs folder (with final /).thumbs folder can't put inside upload folder.
+thumbs_base_path	thumbs/	relative path from filemanager folder to thumbs folder (with final /). NB thumbs folder must not reside in the upload folder. 
 
 
 Parameters that you can override in all config.php files inside folders
@@ -217,31 +217,31 @@ Parameter	Example Value	Description
 
 MaxSizeUpload	100	Max size upload limit in Mb.
 default_language	en_EN	default language file name.
-file_number_limit_js	500	the filter and sorter are managed through both javascript and php scripts because if you have a lot of file in a folder the javascript script can't sort all or filter all, so the filemanager switch to php script. the plugin automatic swich javascript to php when the current folder exceeds the below limit of files number.
-show_sorting_bar	true	show or not show sorting feature in filemanager.
-show_folder_size	true	show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations).
+file_number_limit_js	500	the filter and sorter are managed through both javascript and php scripts. If you have a lot of files in a folder the javascript script wil not cope, so the filemanager then switches to the php script. The plugin automatically switches from javascript to php when the folder contains more than the specified number of files. 
+show_sorting_bar	true	show or hide the sorting feature
+show_folder_size	true	show or hide the folder size in filemanager list view (very large folders greatly increase the calculation time). 
 Images configuration
 image_max_width, image_max_height	800	these parameters set maximum pixel width and/or maximum pixel height for all images. if you set a maximum width or height, oversized images are converted to those limits. Images smaller than the limit(s) are unaffected. if you don't need a limit set both to 0.
 image_resizing	false	activate or not Automatic resizing. if you set image_resizing to true the script converts all uploaded images exactly to image_resizing_width x image_resizing_height dimension.
-image_resizing_width, image_resizing_height	800	these parameters set the dimension of image resized. if you set width or height to 0 the script automatically calculates the other dimension. is possible that if you upload very big images the script not work to overcome this increase the php configuration of memory and time limit.
+image_resizing_width, image_resizing_height	800	these parameters set the dimensions of the resized image. if you set width or height to 0 the script automatically calculates the other dimension. NB Very large images may cause the script to fail unless the server's php memory and time limit configuration is modified.
 Layout configuration
 default_view	0	set the Default layout setting. ( 0 => boxes, 1 => detailed list (1 column) , 2 => columns list (multiple columns depending on the width of the page)).
-ellipsis_title_after_first_row	true	set if the filename is truncated when overflow first row.
+ellipsis_title_after_first_row	true	if true the filename will be truncated if it runs beyond a single row.
 Permissions configuration
-delete_files	true	set if the user can or not delete files.
-create_folders	true	set if the user can or not create folders.
-delete_folders	true	set if the user can or not delete folders.
-upload_files	true	set if the user can or not upload files.
-rename_files	true	set if the user can or not rename files.
-rename_folders	true	set if the user can or not rename folders.
+delete_files	true	allow or disallow file deletion.
+create_folders	true	allow or disallow folder creation.
+delete_folders	true	allow or disallow folder deletion.
+upload_files	true	allow or disallow file uploading.
+rename_files	true	allow or disallow file renaming.
+rename_folders	true	allow or disallow folder renaming.
 Allowed extensions (this differentiation corresponds to the type filter)
-ext_file	'pdf', 'doc'	allowed files extensions
-ext_img	'jpg', 'jpeg'	allowed images file extensions.
-ext_video	'mov', 'mpeg'	allowed videos file extensions.
-ext_music	'mp3', 'm4a'	allowed musics file extensions.
+ext_file	'pdf', 'doc'	allowed file extensions
+ext_img	'jpg', 'jpeg'	allowed image file extensions.
+ext_video	'mov', 'mpeg'	allowed video file extensions.
+ext_music	'mp3', 'm4a'	allowed audio file extensions.
 ext_misc	'zip', 'rar'	allowed archive file extensions.
 Hidden files and folders
-hidden_folders	"hidden_folder1", "hidden_folder2"	set the names of any folders you want hidden. remember all folders with these names will be hidden (you can set any exceptions in config.php files on folders).
+hidden_folders	"hidden_folder1", "hidden_folder2"	set the names of any folders you want hidden. Remember: all folders with these names will be hidden (you can set any exceptions in config.php files in folders). 
 hidden_files	"this_document.pdf", "that_image.jpg"	set the names of any files you want hidden. remember these names will be hidden in all folders.
 JAVA upload
 java_upload	true	enable or disable java applets uploads

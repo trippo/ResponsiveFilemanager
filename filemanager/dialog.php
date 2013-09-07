@@ -13,7 +13,11 @@ include('upload.php');
 include('config/config.php');
 include('include/utils.php');
 
-if (isset($_GET['fldr']) && !empty($_GET['fldr']) )
+if (isset($_GET['fldr'])
+    && !empty($_GET['fldr'])
+    && strpos($_GET['fldr'],'../')===FALSE
+    && strpos($_GET['fldr'],'./')===FALSE
+    && strpos($_GET['fldr'],'.')===FALSE)
     $subdir = trim($_GET['fldr'],"/") ."/";
 else
     $subdir = '';
