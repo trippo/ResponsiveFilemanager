@@ -34,8 +34,8 @@ body{ 	background:url(../img/fabric_plaid.jpg);
 	margin-left: 10px;
 	margin-right: 10px;
 	overflow: hidden;
-	
 }
+
 .btn{
 	-webkit-border-radius: 0px;
     border-radius: 0px;
@@ -380,8 +380,11 @@ ul.sorting.dropdown-menu>li>a{
 		margin:0px !important;
 		padding: 0px;
 	}
+	#qLbar{
+	  position: absolute;
+	  top:8px !important;
+	}
 }
-
 @media(min-width:400px) and (max-width:839px){
 	.filters .row-fluid .half{
 		width:48.61878453038674%;*width:48.56559304102504%; float:left;
@@ -610,7 +613,6 @@ form{
 				text-align: left;
 			}
 			margin-left: 50px;
-			padding-right: 115px;
 			-webkit-transition: none;
 			-moz-transition: none;
 			transition: none;
@@ -701,6 +703,13 @@ form{
 	}
 	figure .box{
 		padding-right: 352px;
+	}
+}
+.list-view2.grid{
+	figure{
+		.box{
+			padding-right: 115px;
+		}
 	}
 }
 
