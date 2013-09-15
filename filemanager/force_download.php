@@ -10,7 +10,7 @@ if(strpos($_POST['path'],'/')===0
 $path=$current_path.$_POST['path'];
 $name=$_POST['name'];
 
-$info=pathinfo($path);
+$info=pathinfo($name);
 if(!in_array($info['extension'], $ext)){
     die('wrong extension');
 }
