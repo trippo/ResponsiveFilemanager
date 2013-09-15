@@ -130,7 +130,7 @@ $JAVAMaxSizeUpload=200; //Gb
 // Remember than the image creation respect the folder hierarchy so if you are inside source/test/test1/ the new image will create at
 // path_from_filemanager/test/test1/
 // PS if there isn't write permission in your destination folder you must set it
-$fixed_image_creation                   = true; //activate or not the creation of one or more image resized with fixed path from filemanager folder
+$fixed_image_creation                   = false; //activate or not the creation of one or more image resized with fixed path from filemanager folder
 $fixed_path_from_filemanager            = array('../test/','../test1/'); //fixed path of the image folder from the current position on upload folder
 $fixed_image_creation_name_to_prepend   = array('','test_'); //name to prepend on filename
 $fixed_image_creation_to_append         = array('_test',''); //name to appendon filename
@@ -142,7 +142,7 @@ $fixed_image_creation_height            = array(200,''); //height of image (you 
 // With Responsive filemanager you can create automatically resized image inside the upload folder, also more than one at a time
 // just simply add a value in the array
 // The image creation path is always relative so if i'm inside source/test/test1 and I upload an image, the path start from here
-$relative_image_creation                = true; //activate or not the creation of one or more image resized with relative path from upload folder
+$relative_image_creation                = false; //activate or not the creation of one or more image resized with relative path from upload folder
 $relative_path_from_current_pos         = array('thumb/','thumb/'); //relative path of the image folder from the current position on upload folder
 $relative_image_creation_name_to_prepend= array('','test_'); //name to prepend on filename
 $relative_image_creation_name_to_append = array('_test',''); //name to append on filename
