@@ -51,4 +51,8 @@ define('lang_Date_type','d.m.Y');	//y-m-d
 define('lang_OK','OK');
 define('lang_Cancel','Abbrechen');
 define('lang_Sorting','sorting');
+define('lang_Show_url','show URL');
+define('lang_Extract','extract here');
+define('lang_File_info','file info');
+define('lang_Edit_image','edit image');
 ?>

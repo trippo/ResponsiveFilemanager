@@ -1,45 +1,40 @@
 <?php
-
-session_start();
-if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
-
 include('config/config.php');
+if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 
-$ds = '/'; 
- 
 $storeFolder = $_POST['path'];
-$storeFolderThumb = fix_realpath($_POST['path_thumb']).$ds;
+$storeFolderThumb = $_POST['path_thumb'];
 
-$base=$current_path;
-$base_thumb=fix_realpath($thumbs_base_path).$ds;
+$path_pos=strpos($storeFolder,$current_path);
+$thumb_pos=strpos($_POST['path_thumb'],$thumbs_base_path);
+if($path_pos!=0 
+    || $thumb_pos !=0
+    || strpos($_POST['path_thumb'],'../',strlen($thumbs_base_path)+$thumb_pos)!==FALSE
+    || strpos($storeFolder,'../',strlen($current_path)+$path_pos)!==FALSE
+    || strpos($storeFolder,'./',strlen($current_path)+$path_pos)!==FALSE )
+    die('wrong path');
+
+
 $path=$storeFolder;
 $cycle=true;
 $max_cycles=50;
 $i=0;
 while($cycle && $i<$max_cycles){
     $i++;
-    if($path==$base)  $cycle=false;
+    if($path==$current_path)  $cycle=false;
     if(file_exists($path."config.php")){
 	require_once($path."config.php");
 	$cycle=false;
     }
-    $path=fix_dirname($path).$ds;
+    $path=fix_dirname($path).'/';
 }
 
 
-$path_pos=strpos($storeFolder,$base);
-$thumb_pos=strpos($storeFolderThumb,$base_thumb);
-if($path_pos!=0
-   || $thumb_pos !=0
-   || strpos($storeFolder,'../',strlen($base)+$path_pos)!==FALSE
-   || strpos($storeFolderThumb,'../',strlen($base_thumb)+$thumb_pos)!==FALSE)
-    die('wrong path');
-    
-
 if (!empty($_FILES)) {
-     
+$info=pathinfo($_FILES['file']['name']);
+if(in_array($info['extension'], $ext)){
     $tempFile = $_FILES['file']['tmp_name'];   
       
     $targetPath = $storeFolder;
@@ -65,9 +60,12 @@ if (!empty($_FILES)) {
     if($is_img){
 	create_img_gd($targetFile, $targetFileThumb, 122, 91);
 	
+	new_thumbnails_creation($targetPath,$targetFile,$_FILES['file']['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+	
 	$imginfo =getimagesize($targetFile);
 	$srcWidth = $imginfo[0];
 	$srcHeight = $imginfo[1];
+	
 	
 	if($image_resizing){
 	    if($image_resizing_width==0){
@@ -100,8 +98,11 @@ if (!empty($_FILES)) {
 	}
 	if($resize)
 	    create_img_gd($targetFile, $targetFile, $srcWidth, $srcHeight);	
-	    
+	
     }
+}else{
+    echo "file not permitted";
+}
 }else{
     echo "error";
 }

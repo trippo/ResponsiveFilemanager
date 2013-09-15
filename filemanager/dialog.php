@@ -1,8 +1,8 @@
 <?php
 
-session_start();
+include('config/config.php');
 
-$_SESSION["verify"] = "RESPONSIVEfilemanager";
+$_SESSION["verify"]= "RESPONSIVEfilemanager";
 
 if(isset($_POST['submit'])){
 
@@ -10,7 +10,6 @@ include('upload.php');
 
 }else{
 
-include('config/config.php');
 include('include/utils.php');
 
 if (isset($_GET['fldr'])
@@ -80,8 +79,9 @@ while($cycle && $i<$max_cycles){
     else $parent=fix_dirname($parent)."/";
 }
 
-if(!is_dir($thumbs_path.$subdir))
+if(!is_dir($thumbs_path.$subdir)){
     create_folder(false, $thumbs_path.$subdir);
+}
 
 if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
 
@@ -101,13 +101,19 @@ if(!isset($_SESSION['descending'])) $_SESSION['descending']=false;
 if(isset($_GET["descending"])) $descending=$_SESSION['descending']=fix_filename($_GET["descending"])==="true";
 else $descending=$_SESSION['descending'];
 
+
+$lang=$default_language;
+if(isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='')
+    $lang=$_GET['lang'];
+
 $language_file = 'lang/'.$default_language.'.php'; 
-if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
-    $path_parts = pathinfo($_GET['lang']);
+if ($lang!=$default_language) {
+    $path_parts = pathinfo($lang);
     if(is_readable('lang/' .$path_parts['basename']. '.php')){ 
         $language_file = 'lang/' .$path_parts['basename']. '.php';
     }
 }
+
 
 require_once $language_file;
 
@@ -116,17 +122,17 @@ if(!isset($_GET['field_id'])) $_GET['field_id']='';
 
 $get_params = http_build_query(array(
     'type'      => $_GET['type'],
-    'lang'      => isset($_GET['lang']) ? $_GET['lang'] : 'en_EN',
+    'lang'      => $lang,
     'popup'     => $popup,
     'field_id'  => isset($_GET['field_id']) ? $_GET['field_id'] : '',
     'fldr'      => ''
 ));
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="robots" content="noindex,nofollow">
         <title>Responsive FileManager</title>
@@ -145,7 +151,7 @@ $get_params = http_build_query(array(
 	    height: 100%;
 	}
 	</style><![endif]-->
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	if (typeof jQuery === 'undefined')
 	{
@@ -163,9 +169,10 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
 	<script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
 	<script type="text/javascript" src="js/jquery.queryloader2.min.js"></script>
+	<script type="text/javascript" src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
-	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<script src="js/jquery.ui.position.min.js" type="text/javascript"></script>
 	<script src="js/jquery.contextMenu.min.js" type="text/javascript"></script>    
@@ -191,16 +198,44 @@ $get_params = http_build_query(array(
 		      else { done("<?php echo lang_Error_extension;?>"); }
 		    }
 	    };
-
+	    
+	    var featherEditor = new Aviary.Feather({
+		apiKey: "<?php echo $aviary_key; ?>",
+		apiVersion: <?php echo $aviary_version; ?>,
+		language: "<?php echo $aviary_language; ?>",
+	       theme: 'light',
+	       tools: 'all',
+	       onSave: function(imageID, newURL) {
+		   var img = document.getElementById(imageID);
+		   img.src = newURL;
+		    $.ajax({
+			type: "POST",
+			url: "ajax_calls.php?action=save_img",
+			data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').data('name') }
+		    }).done(function( msg ) {
+			featherEditor.close();
+			d = new Date();
+			$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('img').each(function(){
+			    $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
+			    });
+			$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('figcaption a.preview').each(function(){
+			    $(this).data('url',$(this).data('url')+"?"+d.getTime());
+			    });
+		    });
+		    return false;
+	       },
+	       onError: function(errorObj) {
+		   bootbox.alert(errorObj.message);
+	       }
+	   });
 	</script>
-	<script type="text/javascript" src="js/include.min.js"></script>
+	<script type="text/javascript" src="js/include.js"></script>
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
 	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
-	<input type="hidden" id="root" value="<?php echo $root; ?>" />
 	<input type="hidden" id="insert_folder_name" value="<?php echo lang_Insert_Folder_Name; ?>" />
 	<input type="hidden" id="new_folder" value="<?php echo lang_New_Folder; ?>" />
 	<input type="hidden" id="ok" value="<?php echo lang_OK; ?>" />
@@ -208,13 +243,18 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="rename" value="<?php echo lang_Rename; ?>" />
 	<input type="hidden" id="base_url" value="<?php echo $base_url?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
+	<input type="hidden" id="sub_folder" value="<?php echo $subfolder; ?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
 	<?php $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https'; ?>
 	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter),array(''),$protocol."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']); ?>" />
-		
+	<input type="hidden" id="lang_show_url" value="<?php echo lang_Show_url; ?>" />
+	<input type="hidden" id="lang_extract" value="<?php echo lang_Extract; ?>" />
+	<input type="hidden" id="lang_file_info" value="<?php echo strtoupper(lang_File_info); ?>" />
+	<input type="hidden" id="lang_edit_image" value="<?php echo lang_Edit_image; ?>" />
 <?php if($upload_files){ ?>
 <!----- uploader div start ------->
+
 <div class="uploader">
     <center><button class="btn btn-inverse close-uploader"><i class="icon-backward icon-white"></i> <?php echo lang_Return_Files_List?></button></center>
 	<div class="space10"></div><div class="space10"></div>
@@ -238,7 +278,7 @@ $get_params = http_build_query(array(
 			<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>"/>
 			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
-			<input type="hidden" name="lang" value="<?php echo $_GET['lang']; ?>"/>
+			<input type="hidden" name="lang" value="<?php echo $lang; ?>"/>
 			<input type="hidden" name="filter" value="<?php echo $filter; ?>"/>
 			<input type="submit" name="submit" value="<?php echo lang_OK?>" />
 		    </div>
@@ -267,14 +307,14 @@ $get_params = http_build_query(array(
 $class_ext = '';
 $src = '';
 		 
-$dir = opendir($root . $cur_dir);
+$dir = opendir($current_path.$subfolder.$subdir);
 if ($_GET['type']==1) 	 $apply = 'apply_img';
 elseif($_GET['type']==2) $apply = 'apply_link';
 elseif($_GET['type']==0 && $_GET['field_id']=='') $apply = 'apply_none';
 elseif($_GET['type']==3) $apply = 'apply_video';
 else $apply = 'apply';
 
-$files = scandir($root . $cur_dir);
+$files = scandir($current_path.$subfolder.$subdir);
 $n_files=count($files);
 
 //php sorting
@@ -284,13 +324,13 @@ $prev_folder=array();
 foreach($files as $k=>$file){
     if($file==".") $current_folder=array('file'=>$file);
     elseif($file=="..") $prev_folder=array('file'=>$file);
-    elseif(is_dir($root .$cur_dir.$file)){
-	$date=filemtime($root . $cur_dir . $file);
-	$size=foldersize($root . $cur_dir . $file);
+    elseif(is_dir($current_path.$subfolder.$subdir.$file)){
+	$date=filemtime($current_path.$subfolder.$subdir. $file);
+	$size=foldersize($current_path.$subfolder.$subdir. $file);
 	$file_ext=lang_Type_dir;
 	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
     }else{
-	$file_path=fix_realpath($current_path.$subfolder.$subdir.$file);
+	$file_path=$current_path.$subfolder.$subdir.$file;
 	$date=filemtime($file_path);
 	$size=filesize($file_path);
 	$file_ext = substr(strrchr($file,'.'),1);
@@ -377,7 +417,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <input id="select-type-5" name="radio-sort" type="radio" data-item="ff-item-type-5" class="hide"  />
 			    <label id="ff-item-type-5" title="<?php echo lang_Music; ?>" for="select-type-5" class="tip btn ff-label-type-5"><i class="icon-music"></i></label>
 			    <?php } ?>
-			    <img src="http://bit.ly/17seita" />
 			    <input accesskey="f" type="text" class="filter-input" id="filter-input" name="filter" placeholder="<?php echo strtolower(lang_Text_filter); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
 			    
 			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide"  />
@@ -393,9 +432,8 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 
 <!----- header div end ------->
 
-
-
     <!----- breadcrumb div start ------->
+    
     <div class="row-fluid">
 	<?php	
 	$link="dialog.php?".$get_params;
@@ -439,9 +477,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     <!----- breadcrumb div end ------->
     <div class="row-fluid ff-container">
 	<div class="span12">	    
-	    <?php if(@opendir($root . $cur_dir)===FALSE){ ?>
+	    <?php if(@opendir($current_path.$subfolder.$subdir)===FALSE){ ?>
 	    <br/>
-	    <div class="alert alert-error">There is an error! The root folder not exist. </div> 
+	    <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div> 
 	    <?php }else{ ?>
 	    <h4 id="help"><?php echo lang_Swipe_help; ?></h4>
 	    <?php if(isset($folder_message)){ ?>
@@ -484,19 +522,20 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			
 			?>
 			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>>
-				<figure class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
+				<figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
 				    <a title="<?php echo lang_Open?>" class="folder-link" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>">
 				    <div class="img-precontainer">
 					<div class="img-container directory"><span></span>
-					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
+					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
 					</div>
 				    </div>
 				    <div class="img-precontainer-mini directory">
 					<div class="img-container-mini">
 					    <span></span>
-					    <img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_return"; }?>.png" alt="folder" />
+					    <img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
 					</div>
 				    </div>
+				    <div class="cover"></div>
 			<?php if($file==".."){ ?>
 				    <div class="box no-effect">
 					<h4><?php echo lang_Back ?></h4>
@@ -504,7 +543,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    </a>
 				    
 			<?php }else{ ?>
-					
 				    </a>
 				    <div class="box">
 					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a title="<?php echo lang_Open?>" class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>"><?php echo $file; ?></a></h4>
@@ -517,9 +555,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <?php if($show_folder_size){ ?><div class="file-size"><?php echo makeSize($file_array['size'])?></div><?php } ?>
 				    <div class='file-extension'><?php echo lang_Type_dir; ?></div>
 				    <figcaption>
-					    <a href="javascript:void('')" class="tip-left edit-button <?php if($rename_folders) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
+					    <a href="javascript:void('')" class="tip-left edit-button <?php if($rename_folders) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
 					    <i class="icon-pencil <?php if(!$rename_folders) echo 'icon-white'; ?>"></i></a>
-					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders) echo "delete-folder"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_Folder_del; ?>" data-path="<?php echo $root. $cur_dir .$file; ?>"  data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders) echo "delete-folder"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_Folder_del; ?>" data-path="<?php echo $subfolder.$subdir.$file; ?>"  data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
 					    <i class="icon-trash <?php if(!$delete_folders) echo 'icon-white'; ?>"></i>
 					    </a>
 				    </figcaption>
@@ -532,41 +570,86 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		    foreach ($files as $nu=>$file_array) {		
 			$file=$file_array['file'];
 		    
-			    if($file == '.' || $file == '..' || is_dir($root . $cur_dir . $file) || in_array($file, $hidden_files) || !in_array($file_array['extension'], $ext) || ($filter!='' && strpos($file,$filter)===false))
+			    if($file == '.' || $file == '..' || is_dir($current_path.$subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
 				    continue;
+			    
+			    $file_path=$current_path.$subfolder.$subdir.$file;
+			    //check if file have illegal caracter
+			    if($file!=strtolower($file['extension'])){
+				rename($current_path.$subfolder.$subdir.$file,$current_path.$subfolder.$subdir.strtolower($file));
+				$file=strtolower($file);
+				$file_path=$current_path.$subfolder.$subdir.$file;
+				$file_array['extension']=strtolower($file_array['extension']);
+			    }
+			    
+			    $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
+			    
+			    if($file!=fix_filename($file)){
+				$file1=fix_filename($file);
+				$file_path1=($current_path.$subfolder.$subdir.$file1);
+				if(file_exists($file_path1)){
+				    $i = 1;
+				    $info=pathinfo($file1);
+				    while(file_exists($current_path.$subfolder.$subdir.$info['filename'].".[".$i."].".$info['extension'])) {
+					    $i++;
+				    }
+				    $file1=$info['filename'].".[".$i."].".$info['extension'];
+				    $file_path1=($current_path.$subfolder.$subdir.$file1);
+				}
 				
+				$filename=substr($file1, 0, '-' . (strlen($file_array['extension']) + 1));
+				rename_file($file_path,fix_filename($filename));
+				$file=$file1;
+				$file_array['extension']=fix_filename($file_array['extension']);
+				$file_path=$file_path1;
+			    }
+			    
 			    $is_img=false;
 			    $is_video=false;
 			    $is_audio=false;
 			    $show_original=false;
+			    $show_original_mini=false;
 			    $mini_src="";
-			    $file_path=fix_realpath($current_path.$subfolder.$subdir.$file);
+			    $src_thumb="";
+			    
 			    if(in_array($file_array['extension'], $ext_img)){
 				$src = $base_url . $cur_dir . $file;
 				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 				//add in thumbs folder if not exist 				
 				if(!file_exists($src_thumb)){
+				    try {
 					create_img_gd($file_path, $src_thumb, 122, 91);
+					new_thumbnails_creation($current_path.$subfolder.$subdir,$file_path,$file,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+				    } catch (Exception $e) {
+					$src_thumb=$mini_src="";
+				    }
 				}
 				$is_img=true;
 				//check if is smaller tha thumb
 				list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
-				if(($view==0 && $img_width<122 && $img_height<91) || ($view>0 && $img_width<45 && $img_height<38)){
-					$mini_src=$src_thumb=$current_path.$subfolder.$subdir.$file;
+				if($img_width<122 && $img_height<91){ 
+					$src_thumb=$current_path.$subfolder.$subdir.$file;
 					$show_original=true;
 				}
-			    }elseif(file_exists('img/ico/'.strtoupper($file_array['extension']).".png")){
-				    $src_thumb ='img/ico/'.strtoupper($file_array['extension']).".png";
-			    }else{
-				    $src_thumb = "img/ico/Default.png";
+				
+				if($img_width<45 && $img_height<38){
+				    $mini_src=$current_path.$subfolder.$subdir.$file;
+				    $show_original_mini=true;
+				}
 			    }
 			    
+			    $is_icon_thumb=false;
+			    $is_icon_thumb_mini=false;
+			    if($src_thumb==""){
+				if(file_exists('img/ico/'.($file_array['extension']).".jpg")){
+					$src_thumb ='img/ico/'.($file_array['extension']).".jpg";
+				}else{
+					$src_thumb = "img/ico/default.jpg";
+				}
+				$is_icon_thumb=true;
+			    }
 			    if($mini_src==""){
-				    if(file_exists('img/ico/file_extension_'.strtolower($file_array['extension']).".png")){
-					    $mini_src  ='img/ico/file_extension_'.strtolower($file_array['extension']).".png";
-				    }else{
-					    $mini_src ='img/ico/'.strtoupper($file_array['extension']).".png";
-				    }
+				$is_icon_thumb_mini=false;
 			    }
 			    
 			    $class_ext=0;
@@ -585,25 +668,30 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }
 			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']==3 && !$is_video)) && $class_ext>0){
 ?>
-		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file ?>">
-			<figure  data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
+		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>">
+			<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
 				<a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
+				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div> <?php } ?>
 					<div class="img-container">
 						<span></span>
-						<img alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $src_thumb; ?>">
+						<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?> <?php echo $is_icon_thumb ? "icon" : "" ?>" src="<?php echo $src_thumb; ?>">
 					</div>
 				</div>
 				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
+				    <div class="filetype <?php echo $file_array['extension'] ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $file_array['extension'] ?></div>
 				    <div class="img-container-mini">
 					<span></span>
-					<img alt="image" <?php echo $show_original ? "class='original'" : "" ?> src="<?php echo $mini_src; ?>">
+					<?php if($mini_src!=""){ ?>
+					<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original_mini ? "original" : "" ?> <?php echo $is_icon_thumb_mini ? "icon" : "" ?>" src="<?php echo $mini_src; ?>">
+					<?php } ?>
 				    </div>
 				</div>
+				<div class="cover"></div>
 				</a>	
 				<div class="box">				
 				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
-				<?php $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1)); echo $filename; ?></a> </h4>
+				<?php echo $filename; ?></a> </h4>
 				</div>
 				<input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
 				<input type="hidden" class="size" value="<?php echo $file_array['size'] ?>"/>
@@ -615,8 +703,8 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<div class='file-extension'><?php echo $file_array['extension']; ?></div>
 				<figcaption>
 				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
-					<input type="hidden" name="path" value="<?php echo $root. $cur_dir. $file?>"/>
-					<input type="hidden" name="name" value="<?php echo $file?>"/>
+					<input type="hidden" name="path" value="<?php echo $subfolder.$subdir?>"/>
+					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 					
 				    <a title="<?php echo lang_Download?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
 				    <?php if($is_img){ ?>
@@ -626,10 +714,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 				    <?php } ?>
-				    <a href="javascript:void('')" class="tip-left edit-button <?php if($rename_files) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+				    <a href="javascript:void('')" class="tip-left edit-button <?php if($rename_files) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $subfolder.$subdir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
 				    <i class="icon-pencil <?php if(!$rename_files) echo 'icon-white'; ?>"></i></a>
 					    
-				    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $root. $cur_dir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+				    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
 				    <i class="icon-trash <?php if(!$delete_files) echo 'icon-white'; ?>"></i>
 				    </a>
 				    </form>
@@ -677,7 +765,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
       
     </div>
     <!----- player div end ------->
-    
+    <img id='aviary_img' src='' class="hide"/>
 </body>
 </html>
 <?php } ?>

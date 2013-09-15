@@ -1,5 +1,5 @@
 *********************************************************
-! Responsive FileManager for TinyMCE Version 8.1.1
+! Responsive FileManager for TinyMCE Version 9.0.0
 *********************************************************
 Responsive FileManager is a free open-source file manager made with the jQuery library, CSS3, PHP and HTML5 that offers a nice and elegant way to upload and insert files, images and videos.
 You can use it as external plugin for TinyMCE version 4.x. and you can also use it as a stand-alone file manager to manage and select files.
@@ -17,42 +17,21 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 
 CHANGES LOG
-version 8.1.1
-- fixed all issues
 
-version 8.1.0
-- audio e video preview [thanks to Aniello Martuscelli for contribution]
-- pre-loading bar and percentage until all image loaded
-- remember sorting selection
-- other layout and uploading bug fixed
+version 9.0.0
 
-version 8.0.2
-- fix an 8.0.1 upload bug
-- default sorting option
-- minification of all files and filemanager folder cleaning
-- js sorting split between folders and files
-- other sorting fix
-
-version 8.0.1
-- simplification of the installation procedure
-- compatibility with PHP versions < 5.3
-- fix in use of subfolder session variable
-
-version 8.0
-- use responsive filemanager as an external plugin (simpler installation and allows updating of TinyMCE without changing any of its plugin.min.js files). Special thanks to Jules Gravinese
-- amazing new direct button (TinyMCE plugin) to insert a file or image directly into the document
-- change .config files in config.php for windows server compatibility
-- add PHP sorting and filter script for huge folders. (the script automatically chooses which script to use)
-- context menu to show file details
-- sorting features in all layouts
-- add in config.php the option to truncate over-long file names and add an ellipsis
-- 24-hour retention of the last-opened layout using a cookie
-- change alert to bootbox alert
-- thumbs folder path customization
-- block of right click out of files boxes
-- tested in windows apache server
-- fix various bugs and bad code
-- improve security
+New amazing layout with new flat icons
+Add Aviary image editor on context menu, the best image editor in the world (free for 800x800px resolution)
+Add possibility to create multiple thumbs for external use both inside (relative path) and outside (fixed path) of upload folder, and they are update on renaming , deleting, and editing
+Add support of zip,tar,gz files decompression
+Fix a lot of security bug (you must download this version)
+Add https compatibility
+Fix all files when they are loaded externally via ftp client
+Add show url button on context menu of each file
+The config/config.php is the first file included in all filemanager files for cms costumization
+Deletes all path configuration problems (if you insert correct path in config.php file)
+Remove critical error when loading corrupted images
+Fix other bugs
 
 *********************************************************
 ! Installation
@@ -61,7 +40,8 @@ version 8.0
 1. Upload the 'filemanager' folder where you want in your server.
 2. Create a folder for your uploaded files and give it write permission (755).
 3. Open filemanager/config/config.php and edit the settings (read config.php parameters setting paragraph). Save file.
-4. Great! Your work is finished!
+4. Subscribe to Aviary.com to get free app key to use for image editor (the free account permit to export image with maximum dimension 800x800 pixel)
+5. Great! Your work is finished!
 
 PS If you don't see the preview images you need to give write permission to the thumbs folder.
 If you are updating from a previous version of FileManager delete the contents of thumbs folder, the script will automatically re-create the thumbnails.
@@ -152,7 +132,6 @@ If you not use FancyBox,, you must change the function to close the windows afte
 function close_window() {
     parent.$.fancybox.close();
 }
-
 
 
 SET SUBFOLDER AS ROOT AND MULTI-USER USE
@@ -262,7 +241,7 @@ JAVAMaxSizeUpload	200	donparameter
 - ITA
 - NOR [Pål Schroeder]
 - NLD [johan12]
-- POL [Michell Hoduń]
+- POL [Remigiusz Waszkiewicz]
 - POR [Sérgio Lima]
 - RUS [Sergey]
 - TUR [Ahmed Faruk Bora]
@@ -271,6 +250,43 @@ JAVAMaxSizeUpload	200	donparameter
 *********************************************************
 ! Old version CHANGES
 *********************************************************
+
+version 8.1.1
+- fixed all issues
+
+version 8.1.0
+- audio e video preview [thanks to Aniello Martuscelli for contribution]
+- pre-loading bar and percentage until all image loaded
+- remember sorting selection
+- other layout and uploading bug fixed
+
+version 8.0.2
+- fix an 8.0.1 upload bug
+- default sorting option
+- minification of all files and filemanager folder cleaning
+- js sorting split between folders and files
+- other sorting fix
+
+version 8.0.1
+- simplification of the installation procedure
+- compatibility with PHP versions < 5.3
+- fix in use of subfolder session variable
+
+version 8.0
+- use responsive filemanager as an external plugin (simpler installation and allows updating of TinyMCE without changing any of its plugin.min.js files). Special thanks to Jules Gravinese
+- amazing new direct button (TinyMCE plugin) to insert a file or image directly into the document
+- change .config files in config.php for windows server compatibility
+- add PHP sorting and filter script for huge folders. (the script automatically chooses which script to use)
+- context menu to show file details
+- sorting features in all layouts
+- add in config.php the option to truncate over-long file names and add an ellipsis
+- 24-hour retention of the last-opened layout using a cookie
+- change alert to bootbox alert
+- thumbs folder path customization
+- block of right click out of files boxes
+- tested in windows apache server
+- fix various bugs and bad code
+- improve security
 
 version 7.3.2
 - fix bug in internet explore 9/10 and old browser

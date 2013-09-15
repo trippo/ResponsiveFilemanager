@@ -1,9 +1,7 @@
 <?php
 
-session_start();
-if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
-
 include('config/config.php');
+if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 if(isset($_GET['action']))
@@ -27,6 +25,52 @@ if(isset($_GET['action']))
 		echo json_encode($info);
 	    }
 	    
+	    break;
+	case 'save_img':
+	    $info=pathinfo($_POST['name']);
+	    if(strpos($_POST['path'],'/')===0
+		|| strpos($_POST['path'],'../')!==FALSE
+		|| strpos($_POST['path'],'./')===0
+		|| strpos($_POST['url'],'http://featherfiles.aviary.com')!==0
+		|| $_POST['name']!=fix_filename($_POST['name'])
+		|| !in_array($info['extension'], array('jpg','jpeg','png')))
+		    die('wrong data');
+	    $image_data = file_get_contents($_POST['url']);
+	    file_put_contents($current_path.$_POST['path'].$_POST['name'],$image_data);
+	    //new thumb creation
+	    //try{
+	    create_img_gd($current_path.$_POST['path'].$_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
+	    new_thumbnails_creation($current_path.$_POST['path'],$current_path.$_POST['path'].$_POST['name'],$_POST['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+	    /*} catch (Exception $e) {
+		$src_thumb=$mini_src="";
+	    }*/
+	    break;
+	case 'extract':
+	    if(strpos($_POST['path'],'/')===0 || strpos($_POST['path'],'../')!==FALSE || strpos($_POST['path'],'./')===0)
+		die('wrong path');
+	    $path=$current_path.$_POST['path'];
+	    $info=pathinfo($path);
+	    switch($info['extension']){
+		case "zip":
+		    $zip = new ZipArchive;
+		    if ($zip->open($path) === TRUE) {
+			if(!$zip->extractTo($current_path.fix_dirname($_POST['path'])."/"))
+			    echo "error in extraction";
+			$zip->close();
+		    } else {
+			echo 'failed to open file';
+		    }
+		    break;
+		case "gz":
+		    $p = new PharData($path);
+		    $p->decompress(); // creates files.tar
+		    break;
+		case "tar":
+		    // unarchive from the tar
+		    $phar = new PharData($path);
+		    $phar->extractTo($current_path.fix_dirname($_POST['path'])."/"); 
+		    break;
+	    }
 	    break;
 	case 'media_preview':
 	    

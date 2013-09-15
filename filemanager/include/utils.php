@@ -31,10 +31,19 @@ function rename_folder($old_path,$name){
 }
 
 function create_img_gd($imgfile, $imgthumb, $newwidth, $newheight="") {
-    require_once('php_image_magician.php');  
+    require_once('php_image_magician.php');
+    
     $magicianObj = new imageLib($imgfile);
     // *** Resize to best fit then crop
-    $magicianObj -> resizeImage($newwidth, $newheight, 'crop');  
+    $magicianObj -> resizeImage($newwidth, $newheight, 'crop');
+    
+    $magicianObj -> saveImage($imgthumb,80);
+}
+
+function create_img($imgfile, $imgthumb, $newwidth, $newheight) {
+    require_once('php_image_magician.php');  
+    $magicianObj = new imageLib($imgfile);
+    $magicianObj -> resizeImage($newwidth, $newheight, 'auto');  
     $magicianObj -> saveImage($imgthumb,80);
 }
 
@@ -81,7 +90,7 @@ function create_folder($path=false,$path_thumbs=false){
 
 function fix_filename($str){
     $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
-    $str = preg_replace("/[^a-zA-Z0-9\._| -]/", '', $str);
+    $str = preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str);
     $str = strtolower(trim($str));
     
     return $str;
@@ -89,10 +98,6 @@ function fix_filename($str){
 
 function fix_dirname($str){
     return str_replace('~',' ',dirname(str_replace(' ','~',$str)));
-}
-
-function fix_realpath($str){
-    return str_replace('\\','/',realpath($str));
 }
 
 function fix_path($path){
@@ -116,6 +121,29 @@ function config_loading($current_path,$fld){
     }
     
     return false;
+}
+
+function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height){
+    //create relative thumbs
+    if($relative_image_creation){
+	foreach($relative_path_from_current_pos as $k=>$path){
+	    if($path!="" && $path[strlen($path)-1]!="/") $path.="/";
+	    if (!file_exists($targetPath.$path)) create_folder($targetPath.$path,false);
+	    $info=pathinfo($name);
+	    create_img($targetFile, $targetPath.$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension'], $relative_image_creation_width[$k], $relative_image_creation_height[$k]);
+	}
+    }
+    
+    //create fixed thumbs
+    if($fixed_image_creation){
+	foreach($fixed_path_from_filemanager as $k=>$path){
+	    if($path!="" && $path[strlen($path)-1]!="/") $path.="/";
+	    $base_dir=$path.substr_replace($targetPath, '', 0, strlen($current_path));
+	    if (!file_exists($base_dir)) create_folder($base_dir,false);
+	    $info=pathinfo($name);
+	    create_img($targetFile, $base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'], $fixed_image_creation_width[$k], $fixed_image_creation_height[$k]);
+	}
+    }
 }
 
 ?>

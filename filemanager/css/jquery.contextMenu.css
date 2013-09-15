@@ -14,15 +14,14 @@
 
 .context-menu-list {
     margin:0; 
-    padding:0px;
+    padding:5px;
     font-family: 'Open Sans', sans-serif;
     width: 200px;
     display: inline-block;
     position: absolute;
     list-style-type: none;
-    
     border: 1px solid #DDD;
-    background: #EEE;
+    background: #ffffff;
     
     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
        -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -34,19 +33,16 @@
 }
 
 .context-menu-item {
-    padding: 5px 5px 5px 24px;
-    background-color: #e6e6e6;
+    padding: 5px 5px 5px 30px;
+    background-color: #ffffff;
     position: relative;
+    border-bottom: 1px solid #eeeeee;
     height:auto;
 	word-wrap: break-word;
     -webkit-user-select: none;
        -moz-user-select: -moz-none;
         -ms-user-select: none;
             user-select: none;
-            border-bottom: 1px solid #dddddd;
-}
-.context-menu-item:nth-child(even) {
-    background:#efefef;
 }
 
 .context-menu-item:last-child{
@@ -67,7 +63,7 @@
 
 .context-menu-item.hover {
     cursor: pointer;
-    background-color: #39F;
+    background-color: #ddd;
 }
 
 .context-menu-item.disabled {
@@ -110,6 +106,10 @@
 .context-menu-item.icon-delete { background-image: url(../img/page_white_delete.png); }
 .context-menu-item.icon-add { background-image: url(../img/page_white_add.png); }
 .context-menu-item.icon-quit { background-image: url(../img/door.png); }
+.context-menu-item.icon-info { background-image: url(../img/info.png); }
+.context-menu-item.icon-extract{background-image:url(../img/zip.png)}
+.context-menu-item.icon-url{background-image:url(../img/url.png)}
+.context-menu-item.icon-edit_img{background-image:url(../img/edit_img.png)}
 
 /* vertically align inside labels */
 .context-menu-input > label > * { vertical-align: top; }

@@ -50,4 +50,8 @@ define('lang_Date_type','d/m/y');
 define('lang_OK','OK');
 define('lang_Cancel','Annulla');
 define('lang_Sorting','ordina');
+define('lang_Show_url','mostra URL');
+define('lang_Extract','estrai qui');
+define('lang_File_info','informazioni file');
+define('lang_Edit_image','modifica immagine');
 ?>
