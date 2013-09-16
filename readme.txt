@@ -27,7 +27,7 @@ New amazing layout with new flat icons
 Add Aviary image editor on context menu, the best image editor in the world (free for 800x800px resolution)
 Add possibility to create multiple thumbs for external use both inside (relative path) and outside (fixed path) of upload folder, and they are update on renaming , deleting, and editing
 Add support of zip,tar,gz files decompression
-Fix a lot of security bug (you must download this version)
+Fix a lot of security bug (you must download this version) thanks to Dmitry Kurilo
 Add https compatibility
 Fix all files when they are loaded externally via ftp client
 Add show url button on context menu of each file
