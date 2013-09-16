@@ -26,9 +26,7 @@ while($cycle && $i<$max_cycles){
 
 $path=$current_path.$_GET['path'];
 
-
-
-if(strpos($_GET['path'],'../') || strpos($_GET['path'],'./')!==FALSE ||strpos($_GET['path'],'/')==0) die ('path error');
+if(strpos($_GET['path'],'../')!==FALSE || strpos($_GET['path'],'./')!==FALSE || strpos($_GET['path'],'/')===0) die ('path error');
 
 $path=str_replace(' ','~',$path);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
