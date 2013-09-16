@@ -1,4 +1,4 @@
-var version="9.0.1";
+var version="9.0.2";
 var active_contextmenu=true;
 
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -23,14 +23,14 @@ $(document).ready(function(){
 			case "copy_url":
 			    var m ="URL:<br/><br/>";
 			    m+=$('#base_url').val()+$('#cur_dir').val();
-			    add=$trigger.find('a.link').data('file');
+			    add=$trigger.find('a.link').attr('data-file');
 			    if (add!="" && add!=null) {
 				m+=add;
 			    }
 			    bootbox.alert(m); 	
 			    break;
 			case "unzip":
-			    var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').data('file');
+			    var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
 			    $.ajax({
 				type: "POST",
 				url: "ajax_calls.php?action=extract",
@@ -43,7 +43,7 @@ $(document).ready(function(){
 			    });
 			    break;
 			case "edit_img":
-			    var filename=$trigger.data('name');
+			    var filename=$trigger.attr('data-name');
 			    var full_path=$('#base_url').val()+$('#cur_dir').val()+filename;
 			    $('#aviary_img').attr('data-name',filename);
 			    $('#aviary_img').attr('src',full_path).load(launchEditor('aviary_img', full_path));
@@ -64,11 +64,11 @@ $(document).ready(function(){
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
 		}
 		options.items.info = {name: $('#lang_file_info').val(), disabled:true };
-		if ($trigger.data('type')=="dir")
+		if ($trigger.attr('data-type')=="dir")
 		  options.items.name = {name: $trigger.find('h4 a').html(),icon:'label', disabled:true };
 		else	    
 		  options.items.name = {name: $trigger.find('h4 a').html()+"."+$trigger.find('.file-extension').html(),icon:'label', disabled:true };
-		if ($trigger.data('type')=="img") {
+		if ($trigger.attr('data-type')=="img") {
 		  options.items.dimension = {name: $trigger.find('.img-dimension').html(),icon:"dimension", disabled:true };
 		}
 		options.items.size = {name: $trigger.find('.file-size').html(),icon:"size", disabled:true };
@@ -108,7 +108,7 @@ $(document).ready(function(){
 	}
 	
         $.ajax({
-            url: _this.data("url"),
+            url: _this.attr('data-url'),
             success: function(data) {
 		
 		$(".body-preview").html(data);
@@ -117,7 +117,7 @@ $(document).ready(function(){
     });
     
     $('input[name=radio-sort]').on('click',function(){
-        var li=$(this).data('item');
+        var li=$(this).attr('data-item');
 	$('.filters label').removeClass("btn-inverse");
 	$('.filters label').find('i').removeClass('icon-white');
 	$('#filter-input').val('');
@@ -155,7 +155,7 @@ $(document).ready(function(){
 	    if (js_script) {
 		$('ul.grid li').each(function(){
 		    var _this = $(this);
-		    if (val!="" && _this.data('name').toString().toLowerCase().indexOf(val.toLowerCase())==-1) {
+		    if (val!="" && _this.attr('data-name').toString().toLowerCase().indexOf(val.toLowerCase())==-1) {
 			_this.hide(100);
 		    }else{
 			_this.show(100);
@@ -207,18 +207,18 @@ $(document).ready(function(){
 	sortDescending=!sortDescending;
 	if (js_script) {
 	    $.ajax({
-		url: "ajax_calls.php?action=sort&sort_by="+_this.data('sort')+"&descending="+sortDescending
+		url: "ajax_calls.php?action=sort&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending
 	    }).done(function( msg ) {
 		    
 	    });
-	    sortUnorderedList('ul.grid',sortDescending,"."+_this.data('sort'));
+	    sortUnorderedList('ul.grid',sortDescending,"."+_this.attr('data-sort'));
 	    $(' a.sorter').removeClass('descending').removeClass('ascending');
 	    if (sortDescending)
-		$('.sort-'+_this.data('sort')).addClass("descending");
+		$('.sort-'+_this.attr('data-sort')).addClass("descending");
 	    else
-		$('.sort-'+_this.data('sort')).addClass("ascending");
+		$('.sort-'+_this.attr('data-sort')).addClass("ascending");
 	}else{
-	    window.location.href=$('#current_url').val()+"&sort_by="+_this.data('sort')+"&descending="+sortDescending;
+	    window.location.href=$('#current_url').val()+"&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending;
 	}
     });
     
@@ -230,7 +230,7 @@ $(document).ready(function(){
     $('ul.grid').on('click','.preview',function(){
 	    var _this = $(this);
 	    
-	    $('#full-img').attr('src',_this.data('url'));
+	    $('#full-img').attr('src',_this.attr('data-url'));
 	    if(!_this.hasClass('disabled'))
 		    show_animation();
 	    return true;
@@ -245,7 +245,7 @@ $(document).ready(function(){
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    name=clean_filename(name);
 	    if (name !== null && name!=old_name) {                                             
-		execute_action('rename_file',_this.data('path'),_this.data('thumb'),name,file_container,'apply_file_rename');
+		execute_action('rename_file',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_file_rename');
 	    }
 	},old_name);
     });
@@ -260,7 +260,7 @@ $(document).ready(function(){
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    name=clean_filename(name);
 	    if (name !== null && name!=old_name) {                                             
-		execute_action('rename_folder',_this.data('path'),_this.data('thumb'),name,file_container,'apply_folder_rename');
+		execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
 	    }
 	},old_name);
     });
@@ -268,9 +268,9 @@ $(document).ready(function(){
     $('ul.grid').on('click','.delete-file',function(){
 	var _this = $(this);
 	
-	bootbox.confirm(_this.data('confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
+	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
 	    if (result==true) {
-		execute_action('delete_file',_this.data('path'),_this.data('thumb'),'','','');
+		execute_action('delete_file',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
 		_this.parent().parent().parent().parent().remove();
 	    }
 	});
@@ -279,9 +279,9 @@ $(document).ready(function(){
     $('ul.grid').on('click','.delete-folder',function(){
 	var _this = $(this);
 	
-	bootbox.confirm(_this.data('confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
+	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
 	    if (result==true) {
-		execute_action('delete_folder',_this.data('path'),_this.data('thumb'),'','','');
+		execute_action('delete_folder',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
 		_this.parent().parent().parent().remove();
 	    }
 	});
@@ -313,7 +313,7 @@ $(document).ready(function(){
 	    _this.find('i').addClass('icon-white');
 	    
 	     $.ajax({
-		url: "ajax_calls.php?action=view&type="+_this.data('value')
+		url: "ajax_calls.php?action=view&type="+_this.attr('data-value')
 	    }).done(function( msg ) {
 		if (msg!="") {
 		    bootbox.alert(msg);
@@ -324,11 +324,11 @@ $(document).ready(function(){
 	    if (typeof $('.sorter-container')[0] !== "undefined" && $('.sorter-container')[0])
 		$('.sorter-container')[0].className = $('.sorter-container')[0].className.replace(/\blist-view.*?\b/g, '');
 	    
-	    var value=_this.data('value');
+	    var value=_this.attr('data-value');
 	    $('#view').val(value);
 	    $('ul.grid').addClass('list-view'+value);
 	    $('.sorter-container').addClass('list-view'+value);
-	    if (_this.data('value')>=1){
+	    if (_this.attr('data-value')>=1){
 		fix_colums(14);
 	    }
 	    else{
@@ -378,7 +378,7 @@ $(document).ready(function(){
 	$('.link').on('click',function(){
 		var _this = $(this);
 		
-		window[_this.data('function')](_this.data('file'),_this.data('field_id'));
+		window[_this.attr('data-function')](_this.attr('data-file'),_this.attr('data-field_id'));
 	});
 	
 	
@@ -512,7 +512,7 @@ function apply_file_rename(container,name) {
     container.find('h4').find('a').text(name);
     //select link
     var link=container.find('a.link');
-    var file=link.data('file');
+    var file=link.attr('data-file');
     var extension=file.substring(file.lastIndexOf('.') + 1);
     link.each(function(){
 	$(this).attr('data-file',name+"."+extension);
@@ -520,7 +520,7 @@ function apply_file_rename(container,name) {
     
     //preview link
     var link2=container.find('a.preview');
-    var file= link2.data('url');
+    var file= link2.attr('data-url');
     if (typeof file !=="undefined" && file) {
 	var old_name=file.substring(file.lastIndexOf('/') + 1);
 	link2.attr('data-url',file.replace(old_name,name+"."+extension));
@@ -536,8 +536,8 @@ function apply_file_rename(container,name) {
     //rename link && delete link
     var link3=container.find('a.rename-file');
     var link4=container.find('a.delete-file');
-    var path_old=link3.data('path');
-    var path_thumb=link3.data('thumb');
+    var path_old=link3.attr('data-path');
+    var path_thumb=link3.attr('data-thumb');
     var new_path=path_old.replace(old_name,name+"."+extension);
     var new_thumb=path_thumb.replace(old_name,name+"."+extension);
     link3.attr('data-path',new_path);
@@ -559,8 +559,8 @@ function apply_folder_rename(container,name) {
     //rename link && delete link
     var link2=container.find('a.delete-folder');
     var link3=container.find('a.rename-folder');
-    var path_old=link3.data('path');
-    var thumb_old=link3.data('thumb');
+    var path_old=link3.attr('data-path');
+    var thumb_old=link3.attr('data-thumb');
     var index = path_old.lastIndexOf('/');
     var new_path = path_old.substr(0, index + 1)+name;
     link2.attr('data-path',new_path);
@@ -643,7 +643,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 		value=parseFloat(parseFloat(value)+parseFloat(0.001));
 	    }
 	}else{
-	    value=value+"a"+_this.find('h4 a').data('file');
+	    value=value+"a"+_this.find('h4 a').attr('data-file');
 	}
 	vals_dir[value]=_this.html();
 	values_dir.push(value);
@@ -658,7 +658,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 		value=parseFloat(parseFloat(value)+parseFloat(0.001));
 	    }
 	}else{
-	    value=value+"a"+_this.find('h4 a').data('file');
+	    value=value+"a"+_this.find('h4 a').attr('data-file');
 	}
 	vals_file[value]=_this.html();
 	values_file.push(value);
