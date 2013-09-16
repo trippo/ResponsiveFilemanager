@@ -43,7 +43,7 @@ Fix other bugs
 1. Upload the 'filemanager' folder where you want in your server.
 2. Create a folder for your uploaded files and give it write permission (755).
 3. Open filemanager/config/config.php and edit the settings (read config.php parameters setting paragraph). Save file.
-4. Subscribe to Aviary.com to get free app key to use for image editor (the free account permit to export image with maximum dimension 800x800 pixel)
+4. Subscribe to Aviary.com to get free app key to use for image editor (the free account permit to export image with maximum dimension 800x800 pixel) P.S.: remember aviary editor work only online so don't work on localhost!!
 5. Great! Your work is finished!
 
 PS If you don't see the preview images you need to give write permission to the thumbs folder.
