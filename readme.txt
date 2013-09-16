@@ -18,8 +18,11 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 CHANGES LOG
 
-version 9.0.0
+version 9.0.1
+Update queryloader (loading bar)
+fix a little bug
 
+version 9.0.0
 New amazing layout with new flat icons
 Add Aviary image editor on context menu, the best image editor in the world (free for 800x800px resolution)
 Add possibility to create multiple thumbs for external use both inside (relative path) and outside (fixed path) of upload folder, and they are update on renaming , deleting, and editing
