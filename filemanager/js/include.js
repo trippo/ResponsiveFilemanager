@@ -44,7 +44,7 @@ $(document).ready(function(){
 			    break;
 			case "edit_img":
 			    var filename=$trigger.attr('data-name');
-			    var full_path=$('#base_url').val()+$('#cur_dir').val()+filename;
+			    var full_path=$('#base_url_true').val()+$('#cur_dir').val()+filename;
 			    $('#aviary_img').attr('data-name',filename);
 			    $('#aviary_img').attr('src',full_path).load(launchEditor('aviary_img', full_path));
 			    

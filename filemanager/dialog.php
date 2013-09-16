@@ -242,15 +242,16 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="cancel" value="<?php echo lang_Cancel; ?>" />
 	<input type="hidden" id="rename" value="<?php echo lang_Rename; ?>" />
 	<input type="hidden" id="base_url" value="<?php echo $base_url?>"/>
+	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $subfolder; ?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
-	<?php $protocol = strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https'; ?>
+	<?php $protocol = strpos(mb_strtolower($_SERVER['SERVER_PROTOCOL']),'https') === FALSE ? 'http' : 'https'; ?>
 	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter),array(''),$protocol."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']); ?>" />
 	<input type="hidden" id="lang_show_url" value="<?php echo lang_Show_url; ?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo lang_Extract; ?>" />
-	<input type="hidden" id="lang_file_info" value="<?php echo strtoupper(lang_File_info); ?>" />
+	<input type="hidden" id="lang_file_info" value="<?php echo mb_strtoupper(lang_File_info); ?>" />
 	<input type="hidden" id="lang_edit_image" value="<?php echo lang_Edit_image; ?>" />
 <?php if($upload_files){ ?>
 <!----- uploader div start ------->
@@ -417,7 +418,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <input id="select-type-5" name="radio-sort" type="radio" data-item="ff-item-type-5" class="hide"  />
 			    <label id="ff-item-type-5" title="<?php echo lang_Music; ?>" for="select-type-5" class="tip btn ff-label-type-5"><i class="icon-music"></i></label>
 			    <?php } ?>
-			    <input accesskey="f" type="text" class="filter-input" id="filter-input" name="filter" placeholder="<?php echo strtolower(lang_Text_filter); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
+			    <input accesskey="f" type="text" class="filter-input" id="filter-input" name="filter" placeholder="<?php echo mb_strtolower(lang_Text_filter); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
 			    
 			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide"  />
 			     <label id="ff-item-type-all" title="<?php echo lang_All; ?>" <?php if($_GET['type']==1 || $_GET['type']==3){ ?>style="visibility: hidden;" <?php } ?> data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-align-justify icon-white"></i></label>
@@ -570,16 +571,16 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		    foreach ($files as $nu=>$file_array) {		
 			$file=$file_array['file'];
 		    
-			    if($file == '.' || $file == '..' || is_dir($current_path.$subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
+			    if($file == '.' || $file == '..' || is_dir($current_path.$subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(mb_strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
 				    continue;
 			    
 			    $file_path=$current_path.$subfolder.$subdir.$file;
 			    //check if file have illegal caracter
-			    if($file!=strtolower($file['extension'])){
-				rename($current_path.$subfolder.$subdir.$file,$current_path.$subfolder.$subdir.strtolower($file));
-				$file=strtolower($file);
+			    if($file!=mb_strtolower($file['extension'])){
+				rename($current_path.$subfolder.$subdir.$file,$current_path.$subfolder.$subdir.mb_strtolower($file));
+				$file=mb_strtolower($file);
 				$file_path=$current_path.$subfolder.$subdir.$file;
-				$file_array['extension']=strtolower($file_array['extension']);
+				$file_array['extension']=mb_strtolower($file_array['extension']);
 			    }
 			    
 			    $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
