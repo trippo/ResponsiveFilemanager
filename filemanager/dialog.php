@@ -25,8 +25,9 @@ else
 setcookie('last_position',$subdir,time() + (86400 * 7)); 
 
 if($subdir==""){
-    if(!empty($_COOKIE['last_position']))
-	$subdir= $_COOKIE['last_position'];
+    if(!empty($_COOKIE['last_position'])
+	&& strpos($_COOKIE['last_position'],'.')===FALSE)
+	$subdir= trim($_COOKIE['last_position'])."/";
 }
 
 if($subdir=="/"){
@@ -229,7 +230,7 @@ $get_params = http_build_query(array(
 	       }
 	   });
 	</script>
-	<script type="text/javascript" src="js/include.min.js"></script>
+	<script type="text/javascript" src="js/include.js"></script>
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />

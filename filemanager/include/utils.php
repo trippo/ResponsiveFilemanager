@@ -88,6 +88,19 @@ function create_folder($path=false,$path_thumbs=false){
     umask($oldumask);
 }
 
+function check_files_extensions_on_path($path,$ext){
+    if(!is_dir($path)){
+	$fileinfo = pathinfo($path);
+	if(!in_array($fileinfo['extension'],$ext))
+	    unlink($path);
+    }else{
+	$files = scandir($path);
+	foreach($files as $file){
+	    check_files_extensions_on_path(trim($path,'/')."/".$file,$ext);
+	}
+    }
+}
+
 function fix_filename($str){
     $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
     $str = preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str);

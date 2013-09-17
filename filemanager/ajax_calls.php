@@ -50,14 +50,38 @@ if(isset($_GET['action']))
 		die('wrong path');
 	    $path=$current_path.$_POST['path'];
 	    $info=pathinfo($path);
+	    $base_folder=$current_path.fix_dirname($_POST['path'])."/";
 	    switch($info['extension']){
 		case "zip":
 		    $zip = new ZipArchive;
-		    if ($zip->open($path) === TRUE) {
-			if(!$zip->extractTo($current_path.fix_dirname($_POST['path'])."/"))
-			    echo "error in extraction";
+		    if ($zip->open($path) === true) {
+			//make all the folders
+			for($i = 0; $i < $zip->numFiles; $i++) 
+			{ 
+			    $OnlyFileName = $zip->getNameIndex($i);
+			    $FullFileName = $zip->statIndex($i);    
+			    if ($FullFileName['name'][strlen($FullFileName['name'])-1] =="/")
+			    {
+				create_folder($base_folder.$FullFileName['name']);
+			    }
+			}
+			//unzip into the folders
+			for($i = 0; $i < $zip->numFiles; $i++) 
+			{ 
+			    $OnlyFileName = $zip->getNameIndex($i);
+			    $FullFileName = $zip->statIndex($i);    
+		    
+			    if (!($FullFileName['name'][strlen($FullFileName['name'])-1] =="/"))
+			    {
+				$fileinfo = pathinfo($OnlyFileName);
+				if(in_array($fileinfo['extension'],$ext))
+				{
+				    copy('zip://'. $path .'#'. $OnlyFileName , $base_folder.$FullFileName['name'] ); 
+				} 
+			    }
+			}
 			$zip->close();
-		    } else {
+		    }else {
 			echo 'failed to open file';
 		    }
 		    break;
@@ -68,7 +92,13 @@ if(isset($_GET['action']))
 		case "tar":
 		    // unarchive from the tar
 		    $phar = new PharData($path);
-		    $phar->extractTo($current_path.fix_dirname($_POST['path'])."/"); 
+		    $phar->decompressFiles();
+		    $files=array();
+		    foreach ($phar as $file) {
+			$files[]=($base_folder.$file->getFileName());
+		    }
+		    $phar->extractTo($current_path.fix_dirname($_POST['path'])."/");
+		    foreach($files as $file) check_files_extensions_on_path($file,$ext);
 		    break;
 	    }
 	    break;

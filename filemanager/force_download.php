@@ -7,6 +7,9 @@ if(strpos($_POST['path'],'/')===0
     || strpos($_POST['path'],'./')===0)
     die('wrong path');
 
+if(strpos($_POST['name'],'/')!==FALSE)
+    die('wrong path');
+
 $path=$current_path.$_POST['path'];
 $name=$_POST['name'];
 

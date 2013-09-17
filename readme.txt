@@ -18,23 +18,13 @@ Creator : info@albertoperipolli.com - tr1pp0
 
 CHANGES LOG
 
-version 9.0.1
-Update queryloader (loading bar)
-fix a little bug
+version 9.0.3
+fixed bugs
 
 version 9.0.0
-New amazing layout with new flat icons
-Add Aviary image editor on context menu, the best image editor in the world (free for 800x800px resolution)
-Add possibility to create multiple thumbs for external use both inside (relative path) and outside (fixed path) of upload folder, and they are update on renaming , deleting, and editing
-Add support of zip,tar,gz files decompression
-Fix a lot of security bug (you must download this version) thanks to Dmitry Kurilo
-Add https compatibility
-Fix all files when they are loaded externally via ftp client
-Add show url button on context menu of each file
-The config/config.php is the first file included in all filemanager files for cms costumization
-Deletes all path configuration problems (if you insert correct path in config.php file)
-Remove critical error when loading corrupted images
-Fix other bugs
+Amazing new layout with new flat icons 
+Added link to Aviary image editor in contextual menu, the best image editor in the world (free for 800x800px resolution) Added possibility to create multiple thumbnails for external use both inside (relative path) and outside (fixed path) the upload folder, they are also updated on renaming, deleting, and editing Added support for zip,tar,gz files decompression Fixed a lot of security bugs (you must download this version) thanks to Dmitry Kurilo 
+Add https compatibility Fix all files when they are loaded externally via ftp client Add show url button in contextual menu of each file The config/config.php is the first file included in all filemanager files for cms customisation Eliminates all path configuration problems (provided correct path is set in config.php file) Removed critical error when loading corrupted images Fixed various other bugs
 
 *********************************************************
 ! Installation
@@ -43,7 +33,8 @@ Fix other bugs
 1. Upload the 'filemanager' folder where you want in your server.
 2. Create a folder for your uploaded files and give it write permission (755).
 3. Open filemanager/config/config.php and edit the settings (read config.php parameters setting paragraph). Save file.
-4. Subscribe to Aviary.com to get free app key to use for image editor (the free account permit to export image with maximum dimension 800x800 pixel) P.S.: remember aviary editor work only online so don't work on localhost!!
+4. Subscribe to Aviary.com to get a free app key (NB the free account limits the export of images to a maximum of 800x800 pixels)
+NB Aviary Editor only works online; it won't work on localhost
 5. Great! Your work is finished!
 
 PS If you don't see the preview images you need to give write permission to the thumbs folder.
