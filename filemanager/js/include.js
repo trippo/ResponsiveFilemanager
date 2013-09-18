@@ -39,8 +39,8 @@ $(document).ready(function(){
 			    }).done(function( msg ) {
 				if (msg!="")
 				    bootbox.alert(msg);
-				//else
-				    //window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();   
+				else
+				    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();   
 			    });
 			    break;
 			case "edit_img":
