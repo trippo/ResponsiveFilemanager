@@ -1,6 +1,6 @@
 var version="9.0.4";
 var active_contextmenu=true;
-
+if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
     window.addEventListener('DOMContentLoaded', function() {
         $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
@@ -9,6 +9,7 @@ if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){
     $(document).ready(function () {
         $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
     });
+}
 }
 $(document).ready(function(){
     if (active_contextmenu) {

@@ -181,7 +181,7 @@ $get_params = http_build_query(array(
 	<script>
 	    var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
 	    var allowed_ext=new Array('<?php echo implode("','", $ext)?>');
-
+	    var loading_bar=<?php echo $loading_bar?"true":"false"; ?>;
 	    //dropzone config
 	    Dropzone.options.myAwesomeDropzone = {
 		    dictInvalidFileType: "<?php echo lang_Error_extension;?>",
