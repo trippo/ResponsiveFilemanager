@@ -577,7 +577,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    
 			    $file_path=$current_path.$subfolder.$subdir.$file;
 			    //check if file have illegal caracter
-			    if($file!=mb_strtolower($file['extension'])){
+			    if($file!=mb_strtolower($file_array['extension'])){
 				rename($current_path.$subfolder.$subdir.$file,$current_path.$subfolder.$subdir.mb_strtolower($file));
 				$file=mb_strtolower($file);
 				$file_path=$current_path.$subfolder.$subdir.$file;
