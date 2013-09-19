@@ -22,13 +22,13 @@ $(document).ready(function(){
 		  callback: function(key, options) {
 		    switch (key) {
 			case "copy_url":
-			    var m ="URL:<br/><br/>";
+			    var m ="";
 			    m+=$('#base_url').val()+$('#cur_dir').val();
 			    add=$trigger.find('a.link').attr('data-file');
 			    if (add!="" && add!=null) {
 				m+=add;
 			    }
-			    bootbox.alert(m); 	
+			    bootbox.alert('URL:<br/><br/><input type="text" style="height:30px; width:100%;" value="'+m+'" />'); 	
 			    break;
 			case "unzip":
 			    var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
@@ -497,13 +497,12 @@ function apply_any(path, file) {
 }
 
 function close_window() {
-   if ( window.frameElement.parentNode.id) parent.$('#' + window.frameElement.parentNode.id).dialog("close");
-   else if ($('#popup').val()==1) window.close();
+   if ($('#popup').val()==1) window.close();
    else{
-	if ( typeof parent.$ !== "undefined" && parent.$) {
-	    parent.$.fancybox.close();
+	if ( typeof parent.jQuery !== "undefined" && parent.jQuery) {
+	    parent.jQuery.fancybox.close();   
 	}else{
-	    parent.jQuery.fancybox.close();
+	    parent.$.fancybox.close();
 	}
    }
 }
