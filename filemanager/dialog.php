@@ -182,6 +182,7 @@ $get_params = http_build_query(array(
 	    var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
 	    var allowed_ext=new Array('<?php echo implode("','", $ext)?>');
 	    var loading_bar=<?php echo $loading_bar?"true":"false"; ?>;
+	    var image_editor=<?php echo $aviary_active?"true":"false"; ?>;
 	    //dropzone config
 	    Dropzone.options.myAwesomeDropzone = {
 		    dictInvalidFileType: "<?php echo lang_Error_extension;?>",
@@ -199,7 +200,7 @@ $get_params = http_build_query(array(
 		      else { done("<?php echo lang_Error_extension;?>"); }
 		    }
 	    };
-	    
+	    if (image_editor) {
 	    var featherEditor = new Aviary.Feather({
 		apiKey: "<?php echo $aviary_key; ?>",
 		apiVersion: <?php echo $aviary_version; ?>,
@@ -207,13 +208,14 @@ $get_params = http_build_query(array(
 	       theme: 'light',
 	       tools: 'all',
 	       onSave: function(imageID, newURL) {
-		   var img = document.getElementById(imageID);
-		   img.src = newURL;
+		    show_animation();
+		    var img = document.getElementById(imageID);
+		    img.src = newURL;
 		    $.ajax({
 			type: "POST",
 			url: "ajax_calls.php?action=save_img",
 			data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').data('name') }
-		    }).done(function( msg ) {
+		    }).done(function( msg ) {			
 			featherEditor.close();
 			d = new Date();
 			$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('img').each(function(){
@@ -222,13 +224,16 @@ $get_params = http_build_query(array(
 			$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('figcaption a.preview').each(function(){
 			    $(this).data('url',$(this).data('url')+"?"+d.getTime());
 			    });
+			hide_animation();
 		    });
 		    return false;
 	       },
 	       onError: function(errorObj) {
 		   bootbox.alert(errorObj.message);
 	       }
+	    
 	   });
+	    }
 	</script>
 	<script type="text/javascript" src="js/include.min.js"></script>
     </head>

@@ -54,9 +54,9 @@ $(document).ready(function(){
 		  },
 		  items: {}
 		};
-		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('png') ||
+		if (($trigger.find('.img-precontainer-mini .filetype').hasClass('png') ||
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('jpg') ||
-		    $trigger.find('.img-precontainer-mini .filetype').hasClass('jpeg') )
+		    $trigger.find('.img-precontainer-mini .filetype').hasClass('jpeg')) && image_editor )
 		    options.items.edit_img = {name: $('#lang_edit_image').val(),icon:"edit_img", disabled:false };
 		options.items.copy_url = {name: $('#lang_show_url').val(),icon:"url", disabled:false };
 		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('zip') ||

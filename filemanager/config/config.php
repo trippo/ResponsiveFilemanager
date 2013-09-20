@@ -94,6 +94,7 @@ $ext=array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //allow
 /******************
  * AVIARY config
 *******************/
+$aviary_active=true;
 $aviary_key="dvh8qudbp6yx2bnp";
 $aviary_secret="m6xaym5q42rpw433";
 $aviary_version=3;
