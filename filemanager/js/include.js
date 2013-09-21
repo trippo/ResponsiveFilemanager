@@ -1,4 +1,4 @@
-var version="9.0.4";
+var version="9.0.5";
 var active_contextmenu=true;
 if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -599,7 +599,7 @@ function clean_filename(stri) {
 	strii=RemoveAccents(stri);
 	strii=strii.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
 	
-	return $.trim(strii.toLowerCase());	
+	return $.trim(strii);	
     }
     return null;
 }
