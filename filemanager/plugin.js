@@ -17,17 +17,17 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 		if (type=='image') { urltype=1; }
 		if (type=='media') { urltype=3; }
                 var title="RESPONSIVE FileManager";
-                if (typeof tinymce.settings.filemanager_title !== "undefined" && tinymce.settings.filemanager_title) 
-                    title=tinymce.settings.filemanager_title;
+                if (typeof editor.settings.filemanager_title !== "undefined" && editor.settings.filemanager_title) 
+                    title=editor.settings.filemanager_title;
                 var sort_by="";
                 var descending="false";
-		if (typeof tinymce.settings.filemanager_sort_by !== "undefined" && tinymce.settings.filemanager_sort_by) 
-                    sort_by=tinymce.settings.filemanager_sort_by;
-		if (typeof tinymce.settings.filemanager_descending !== "undefined" && tinymce.settings.filemanager_descending) 
-                    descending=tinymce.settings.filemanager_descending;
+		if (typeof editor.settings.filemanager_sort_by !== "undefined" && editor.settings.filemanager_sort_by) 
+                    sort_by=editor.settings.filemanager_sort_by;
+		if (typeof editor.settings.filemanager_descending !== "undefined" && editor.settings.filemanager_descending) 
+                    descending=editor.settings.filemanager_descending;
 		tinymce.activeEditor.windowManager.open({
 			title: title,
-			file: tinymce.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+'&sort_by='+sort_by+'&lang='+tinymce.settings.language,
+			file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+'&sort_by='+sort_by+'&lang='+editor.settings.language,
 			width: 880,  
 			height: 570,
 			resizable: true,

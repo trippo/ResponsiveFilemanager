@@ -33,7 +33,7 @@ if(isset($_GET['action']))
 		|| strpos($_POST['path'],'./')===0
 		|| strpos($_POST['url'],'http://featherfiles.aviary.com')!==0
 		|| $_POST['name']!=fix_filename($_POST['name'])
-		|| !in_array($info['extension'], array('jpg','jpeg','png')))
+		|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
 		    die('wrong data');
 	    $image_data = file_get_contents($_POST['url']);
 	    file_put_contents($current_path.$_POST['path'].$_POST['name'],$image_data);
@@ -74,7 +74,7 @@ if(isset($_GET['action']))
 			    if (!($FullFileName['name'][strlen($FullFileName['name'])-1] =="/"))
 			    {
 				$fileinfo = pathinfo($OnlyFileName);
-				if(in_array($fileinfo['extension'],$ext))
+				if(in_array(strtolower($fileinfo['extension']),$ext))
 				{
 				    copy('zip://'. $path .'#'. $OnlyFileName , $base_folder.$FullFileName['name'] ); 
 				} 
@@ -155,7 +155,7 @@ $info = pathinfo($preview_file);
     </div>
   </div>
 <?php
-if(in_array($info['extension'], $ext_music)){ ?>
+if(in_array(strtolower($info['extension']), $ext_music)){ ?>
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -180,7 +180,7 @@ if(in_array($info['extension'], $ext_music)){ ?>
   </script>
 
 <?php
-}elseif(in_array($info['extension'], $ext_video)){ ?>
+}elseif(in_array(strtolower($info['extension']), $ext_video)){ ?>
     
     <script type="text/javascript">
     $(document).ready(function(){

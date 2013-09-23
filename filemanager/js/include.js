@@ -1,4 +1,4 @@
-var version="9.0.5";
+var version="9.1.0";
 var active_contextmenu=true;
 if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -65,10 +65,7 @@ $(document).ready(function(){
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
 		}
 		options.items.info = {name: $('#lang_file_info').val(), disabled:true };
-		if ($trigger.attr('data-type')=="dir")
-		  options.items.name = {name: $trigger.find('h4 a').html(),icon:'label', disabled:true };
-		else	    
-		  options.items.name = {name: $trigger.find('h4 a').html()+"."+$trigger.find('.file-extension').html(),icon:'label', disabled:true };
+		options.items.name = {name: $trigger.attr('data-name'),icon:'label', disabled:true };
 		if ($trigger.attr('data-type')=="img") {
 		  options.items.dimension = {name: $trigger.find('.img-dimension').html(),icon:"dimension", disabled:true };
 		}

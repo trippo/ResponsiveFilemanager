@@ -48,8 +48,9 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight="") {
 	$magicianObj -> resizeImage($newwidth, $newheight, 'auto');  
 	$magicianObj -> saveImage($imgthumb,80);
 	return true;
+    }else{
+	return false;
     }
-    return false;
 }
 
 function makeSize($size) {
@@ -96,7 +97,7 @@ function create_folder($path=false,$path_thumbs=false){
 function check_files_extensions_on_path($path,$ext){
     if(!is_dir($path)){
 	$fileinfo = pathinfo($path);
-	if(!in_array($fileinfo['extension'],$ext))
+	if(!in_array(mb_strtolower($fileinfo['extension']),$ext))
 	    unlink($path);
     }else{
 	$files = scandir($path);
@@ -109,9 +110,7 @@ function check_files_extensions_on_path($path,$ext){
 function fix_filename($str){
     $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
     $str = preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str);
-    $str = trim($str);
-    
-    return $str;
+    return trim($str);
 }
 
 function fix_dirname($str){

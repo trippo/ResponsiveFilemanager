@@ -46,7 +46,7 @@ if(isset($_POST['name'])){
 }
 
 $info=pathinfo($path);
-if(isset($info['extension']) && !in_array($info['extension'], $ext)){
+if(isset($info['extension']) && !in_array(strtolower($info['extension']), $ext)){
     die('wrong extension');
 }
     

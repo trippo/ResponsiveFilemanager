@@ -15,8 +15,7 @@ include('include/utils.php');
 if (isset($_GET['fldr'])
     && !empty($_GET['fldr'])
     && strpos($_GET['fldr'],'../')===FALSE
-    && strpos($_GET['fldr'],'./')===FALSE
-    && strpos($_GET['fldr'],'.')===FALSE)
+    && strpos($_GET['fldr'],'./')===FALSE)
     $subdir = trim($_GET['fldr'],"/") ."/";
 else
     $subdir = '';
@@ -539,10 +538,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <div class="img-precontainer-mini directory">
 					<div class="img-container-mini">
 					    <span></span>
-					    <img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
+					    <img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_back"; }?>.png" alt="folder" />
 					</div>
 				    </div>
-				    <div class="cover"></div>
 			<?php if($file==".."){ ?>
 				    <div class="box no-effect">
 					<h4><?php echo lang_Back ?></h4>
@@ -582,12 +580,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    
 			    $file_path=$current_path.$subfolder.$subdir.$file;
 			    //check if file have illegal caracter
-			    if($file!=mb_strtolower($file_array['extension'])){
-				rename($current_path.$subfolder.$subdir.$file,$current_path.$subfolder.$subdir.mb_strtolower($file));
-				$file=mb_strtolower($file);
-				$file_path=$current_path.$subfolder.$subdir.$file;
-				$file_array['extension']=mb_strtolower($file_array['extension']);
-			    }
 			    
 			    $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
 			    
@@ -618,11 +610,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $show_original_mini=false;
 			    $mini_src="";
 			    $src_thumb="";
-			    
-			    if(in_array($file_array['extension'], $ext_img)){
+			    $extension_lower=mb_strtolower($file_array['extension']);
+			    if(in_array($extension_lower, $ext_img)){
 				$src = $base_url . $cur_dir . $file;
 				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
-				//add in thumbs folder if not exist 				
+				//add in thumbs folder if not exist
 				if(!file_exists($src_thumb)){
 				    try {
 					create_img_gd($file_path, $src_thumb, 122, 91);
@@ -632,7 +624,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    }
 				}
 				$is_img=true;
-				//check if is smaller tha thumb
+				//check if is smaller than thumb
 				list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
 				if($img_width<122 && $img_height<91){ 
 					$src_thumb=$current_path.$subfolder.$subdir.$file;
@@ -648,8 +640,8 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $is_icon_thumb=false;
 			    $is_icon_thumb_mini=false;
 			    if($src_thumb==""){
-				if(file_exists('img/ico/'.($file_array['extension']).".jpg")){
-					$src_thumb ='img/ico/'.($file_array['extension']).".jpg";
+				if(file_exists('img/ico/'.$extension_lower.".jpg")){
+					$src_thumb ='img/ico/'.$extension_lower.".jpg";
 				}else{
 					$src_thumb = "img/ico/default.jpg";
 				}
@@ -660,15 +652,15 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }
 			    
 			    $class_ext=0;
-			    if (in_array($file_array['extension'], $ext_video)) {
+			    if (in_array($extension_lower, $ext_video)) {
 				    $class_ext = 4;
 				    $is_video=true;
-			    }elseif (in_array($file_array['extension'], $ext_img)) {
+			    }elseif (in_array($extension_lower, $ext_img)) {
 				    $class_ext = 2;
-			    }elseif (in_array($file_array['extension'], $ext_music)) {
+			    }elseif (in_array($extension_lower, $ext_music)) {
 				    $class_ext = 5;
 				    $is_audio=true;
-			    }elseif (in_array($file_array['extension'], $ext_misc)) {
+			    }elseif (in_array($extension_lower, $ext_misc)) {
 				    $class_ext = 3;
 			    }else{
 				    $class_ext = 1;
@@ -679,14 +671,14 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
 				<a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
-				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div> <?php } ?>
-					<div class="img-container">
-						<span></span>
-						<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?> <?php echo $is_icon_thumb ? "icon" : "" ?>" src="<?php echo $src_thumb; ?>">
-					</div>
+				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
+				    <div class="img-container">
+					    <span></span>
+					    <img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?> <?php echo $is_icon_thumb ? "icon" : "" ?>" src="<?php echo $src_thumb; ?>">
+				    </div>
 				</div>
 				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
-				    <div class="filetype <?php echo $file_array['extension'] ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $file_array['extension'] ?></div>
+				    <div class="filetype <?php echo $extension_lower ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $extension_lower ?></div>
 				    <div class="img-container-mini">
 					<span></span>
 					<?php if($mini_src!=""){ ?>
@@ -694,7 +686,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					<?php } ?>
 				    </div>
 				</div>
+				<?php if($is_icon_thumb){ ?>
 				<div class="cover"></div>
+				<?php } ?>
 				</a>	
 				<div class="box">				
 				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" title="<?php echo  lang_Select?>" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
@@ -702,12 +696,12 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				</div>
 				<input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
 				<input type="hidden" class="size" value="<?php echo $file_array['size'] ?>"/>
-				<input type="hidden" class="extension" value="<?php echo $file_array['extension']; ?>"/>
+				<input type="hidden" class="extension" value="<?php echo $extension_lower; ?>"/>
 				<input type="hidden" class="name" value=""/>
 				<div class="file-date"><?php echo date(lang_Date_type,$file_array['date'])?></div>
 				<div class="file-size"><?php echo makeSize($file_array['size'])?></div>
 				<div class='img-dimension'><?php if($is_img){ echo $img_width."x".$img_height; } ?></div>
-				<div class='file-extension'><?php echo $file_array['extension']; ?></div>
+				<div class='file-extension'><?php echo $extension_lower; ?></div>
 				<figcaption>
 				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
 					<input type="hidden" name="path" value="<?php echo $subfolder.$subdir?>"/>
@@ -716,7 +710,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <a title="<?php echo lang_Download?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
 				    <?php if($is_img){ ?>
 				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
-				    <?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$jplayer_ext)){ ?>
+				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$subfolder.$subdir.$file;; ?>" href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
