@@ -134,6 +134,7 @@ $get_params = http_build_query(array(
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="robots" content="noindex,nofollow">
         <title>Responsive FileManager</title>
 	<link rel="shortcut icon" href="img/ico/favicon.ico">
@@ -665,7 +666,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }else{
 				    $class_ext = 1;
 			    }
-			    if((!($_GET['type']==1 && !$is_img) && !($_GET['type']==3 && !$is_video)) && $class_ext>0){
+			    if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
 ?>
 		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>">
 			<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
