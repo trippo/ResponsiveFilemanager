@@ -533,13 +533,13 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <a title="<?php echo lang_Open?>" class="folder-link" href="dialog.php?<?php echo $get_params.$src."&".uniqid() ?>">
 				    <div class="img-precontainer">
 					<div class="img-container directory"><span></span>
-					<img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
+					<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
 					</div>
 				    </div>
 				    <div class="img-precontainer-mini directory">
 					<div class="img-container-mini">
 					    <span></span>
-					    <img class="directory-img"  src="img/ico/folder<?php if($file==".."){ echo "_back"; }?>.png" alt="folder" />
+					    <img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.png" alt="folder" />
 					</div>
 				    </div>
 			<?php if($file==".."){ ?>
@@ -641,10 +641,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $is_icon_thumb=false;
 			    $is_icon_thumb_mini=false;
 			    if($src_thumb==""){
-				if(file_exists('img/ico/'.$extension_lower.".jpg")){
-					$src_thumb ='img/ico/'.$extension_lower.".jpg";
+				if(file_exists('img/'.$icon_theme.'/'.$extension_lower.".jpg")){
+					$src_thumb ='img/'.$icon_theme.'/'.$extension_lower.".jpg";
 				}else{
-					$src_thumb = "img/ico/default.jpg";
+					$src_thumb = "img/".$icon_theme."/default.jpg";
 				}
 				$is_icon_thumb=true;
 			    }
