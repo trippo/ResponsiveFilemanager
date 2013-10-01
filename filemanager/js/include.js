@@ -249,14 +249,13 @@ $(document).ready(function(){
     });
     
     $('ul.grid').on('click','.rename-folder',function(){
-	
 	var _this = $(this);
 	    
 	var file_container=_this.parent().parent().parent();
 	var file_title=file_container.find('h4');
 	var old_name=$.trim(file_title.text());
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-	    name=clean_filename(name);
+	    name=clean_filename(name).replace('.','');
 	    if (name !== null && name!=old_name) {                                             
 		execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
 	    }
@@ -287,7 +286,7 @@ $(document).ready(function(){
     $('.new-folder').on('click',function(){
 	bootbox.prompt($('#insert_folder_name').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    if (name !== null) {
-		name=clean_filename(name);
+		name=clean_filename(name).replace('.','');
 		var folder_path=$('#sub_folder').val()+$('#fldr_value').val()+ name;
 		var folder_path_thumb=$('#cur_dir_thumb').val()+ name;
 		$.ajax({

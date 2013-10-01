@@ -105,6 +105,7 @@ if(isset($_GET['action'])){
         case 'rename_folder':
             if($rename_folders){
                 $name=fix_filename($name);
+		$name=str_replace('.','',$name);
                 if(!empty($name)){
                     if(!rename_folder($path,$name))
                         die(lang_Rename_existing_folder);
