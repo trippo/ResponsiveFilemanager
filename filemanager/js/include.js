@@ -1,4 +1,4 @@
-var version="9.1.0";
+var version="9.1.2";
 var active_contextmenu=true;
 if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -265,7 +265,6 @@ $(document).ready(function(){
     
     $('ul.grid').on('click','.delete-file',function(){
 	var _this = $(this);
-	
 	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
 	    if (result==true) {
 		execute_action('delete_file',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
@@ -373,7 +372,7 @@ $(document).ready(function(){
 	$(window).resize(function(){fix_colums(28); });
 	fix_colums(14);
 	
-	$('.link').on('click',function(){
+	$('ul.grid').on('click','.link',function(){
 		var _this = $(this);
 		
 		window[_this.attr('data-function')](_this.attr('data-file'),_this.attr('data-field_id'));
@@ -510,6 +509,7 @@ function apply_file_rename(container,name) {
     //select link
     var link=container.find('a.link');
     var file=link.attr('data-file');
+    var old_name=file.substring(file.lastIndexOf('/') + 1);
     var extension=file.substring(file.lastIndexOf('.') + 1);
     link.each(function(){
 	$(this).attr('data-file',name+"."+extension);
@@ -519,7 +519,6 @@ function apply_file_rename(container,name) {
     var link2=container.find('a.preview');
     var file= link2.attr('data-url');
     if (typeof file !=="undefined" && file) {
-	var old_name=file.substring(file.lastIndexOf('/') + 1);
 	link2.attr('data-url',file.replace(old_name,name+"."+extension));
     }
     
