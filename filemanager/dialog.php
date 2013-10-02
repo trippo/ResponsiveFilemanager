@@ -26,7 +26,7 @@ setcookie('last_position',$subdir,time() + (86400 * 7));
 if($subdir==""){
     if(!empty($_COOKIE['last_position'])
 	&& strpos($_COOKIE['last_position'],'.')===FALSE)
-	$subdir= trim($_COOKIE['last_position'])."/";
+	$subdir= trim($_COOKIE['last_position']);
 }
 
 if($subdir=="/"){
