@@ -107,6 +107,24 @@ function check_files_extensions_on_path($path,$ext){
     }
 }
 
+function check_files_extensions_on_phar( $phar, &$files, $basepath, $ext ) {
+    foreach( $phar as $file )
+    {
+        if( $file->isFile() )
+        {
+            if(in_array(mb_strtolower($file->getExtension()),$ext))
+            {
+                $files[] = $basepath.$file->getFileName( );
+            }
+        }
+        else if( $file->isDir() )
+        {
+            $iterator = new DirectoryIterator( $file );
+            check_files_extensions_on_phar($iterator, $files, $basepath.$file->getFileName().'/', $ext);
+        }
+    }
+}
+
 function fix_filename($str){
     if( function_exists( 'transliterator_transliterate' ) )
     {

@@ -93,12 +93,10 @@ if(isset($_GET['action']))
 		    // unarchive from the tar
 		    $phar = new PharData($path);
 		    $phar->decompressFiles();
-		    $files=array();
-		    foreach ($phar as $file) {
-			$files[]=($base_folder.$file->getFileName());
-		    }
-		    $phar->extractTo($current_path.fix_dirname($_POST['path'])."/");
-		    foreach($files as $file) check_files_extensions_on_path($file,$ext);
+		    $files = array();
+		    check_files_extensions_on_phar( $phar, $files, '', $ext );
+		    $phar->extractTo( $current_path.fix_dirname( $_POST['path'] )."/", $files, TRUE );
+
 		    break;
 	    }
 	    break;
