@@ -1,7 +1,7 @@
 <?php
 
 include '../config/config.php';
-
+if(!$java_upload) die('forbidden');
 if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbidden');
 
 //Let's load the 'interesting' stuff ...  ;-)

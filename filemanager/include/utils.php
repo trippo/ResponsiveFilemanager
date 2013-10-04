@@ -108,9 +108,26 @@ function check_files_extensions_on_path($path,$ext){
 }
 
 function fix_filename($str){
-    $str = iconv('UTF-8', 'US-ASCII//TRANSLIT', $str);
-    $str = preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str);
-    return trim($str);
+    if( function_exists( 'transliterator_transliterate' ) )
+    {
+       $str = transliterator_transliterate( 'Any-Latin; Latin-ASCII', $str );
+    }
+    else
+    {
+       $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+    }
+	    
+    $str = preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str );
+	    
+    // Empty or incorrectly transliterated filename.
+    // Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
+    // So we add that default 'file' name to fix that issue.
+    if( strpos( $str, '.' ) === 0 )
+    {
+       $str = 'file'.$str;
+    }
+	    
+    return trim( $str );
 }
 
 function fix_dirname($str){
