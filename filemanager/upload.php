@@ -9,8 +9,8 @@ $storeFolderThumb = $_POST['path_thumb'];
 
 $path_pos=strpos($storeFolder,$current_path);
 $thumb_pos=strpos($_POST['path_thumb'],$thumbs_base_path);
-if($path_pos!=0 
-    || $thumb_pos !=0
+if($path_pos!==0 
+    || $thumb_pos !==0
     || strpos($_POST['path_thumb'],'../',strlen($thumbs_base_path)+$thumb_pos)!==FALSE
     || strpos($storeFolder,'../',strlen($current_path)+$path_pos)!==FALSE
     || strpos($storeFolder,'./',strlen($current_path)+$path_pos)!==FALSE )
