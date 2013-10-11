@@ -23,8 +23,7 @@ while($cycle && $i<$max_cycles){
     $path=fix_dirname($path)."/";
 }
 
-
-$path=$current_path.$_GET['path'];
+$path="../".$current_path.$_GET['path'];
 
 if(strpos($_GET['path'],'../')!==FALSE || strpos($_GET['path'],'./')!==FALSE || strpos($_GET['path'],'/')===0) die ('path error');
 
@@ -82,7 +81,7 @@ $appletParameters = array(
         //
         //Default afterUploadURL displays the list of uploaded files above the applet (in the <!--JUPLOAD_FILES--> markers, see below)
         //You can use any page you want, to manage the uploaded files. Here is a sample, that also only shows the list of files.
-        'afterUploadURL' => 'success.php?path='.$path,
+        'afterUploadURL' => 'success.php?path='.$_GET['path'],
         //
         //This demo expects the md5sum to be sent by the applet. But the parameter is not mandatory
         //This value should be set to false (or the line commented), for big files, as md5 calculation

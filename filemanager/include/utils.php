@@ -128,7 +128,7 @@ function check_files_extensions_on_phar( $phar, &$files, $basepath, $ext ) {
 function fix_filename($str){
     if( function_exists( 'transliterator_transliterate' ) )
     {
-       $str = transliterator_transliterate( 'Any-Latin; Latin-ASCII', $str );
+       $str = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $str );
     }
     else
     {
