@@ -12,6 +12,15 @@ function deleteDir($dir) {
     return rmdir($dir);
 }
 
+function duplicate_file($old_path,$name){
+    if(file_exists($old_path)){
+	$info=pathinfo($old_path);
+	$new_path=$info['dirname']."/".$name.".".$info['extension'];
+	if(file_exists($new_path)) return false;
+	return copy($old_path,$new_path);
+    }
+}
+
 function rename_file($old_path,$name){
     if(file_exists($old_path)){
 	$info=pathinfo($old_path);
@@ -128,7 +137,7 @@ function check_files_extensions_on_phar( $phar, &$files, $basepath, $ext ) {
 function fix_filename($str){
     if( function_exists( 'transliterator_transliterate' ) )
     {
-       $str = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $str );
+       $str = transliterator_transliterate( 'Accents-Any', $str );
     }
     else
     {
@@ -150,6 +159,21 @@ function fix_filename($str){
 
 function fix_dirname($str){
     return str_replace('~',' ',dirname(str_replace(' ','~',$str)));
+}
+
+function fix_strtoupper($str){
+    if( function_exists( 'mb_strtoupper' ) )
+	return mb_strtoupper($str);
+    else
+	return strtoupper($str);
+}
+
+
+function fix_strtolower($str){
+    if( function_exists( 'mb_strtoupper' ) )
+	return mb_strtolower($str);
+    else
+	return strtolower($str);
 }
 
 function fix_path($path){

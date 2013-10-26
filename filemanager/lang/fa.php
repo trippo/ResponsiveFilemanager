@@ -54,5 +54,5 @@ define('lang_Show_url','نمایش آدرس');
 define('lang_Extract','استخراج در اینجا');
 define('lang_File_info','اطلاعات فایل');
 define('lang_Edit_image','ویرایش تصویر');
-
+define('lang_Duplicate','Duplicate');
 ?>

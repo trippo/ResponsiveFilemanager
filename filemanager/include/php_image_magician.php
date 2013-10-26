@@ -215,7 +215,7 @@ class imageLib
 
         // *** Save the image file name. Only store this incase you want to display it
         $this->fileName = $fileName;
-    $this->fileExtension = mb_strtolower(strrchr($fileName, '.'));
+    $this->fileExtension = fix_strtolower(strrchr($fileName, '.'));
 
         // *** Open up the file
         $this->image = $this->openImage($fileName);
@@ -310,7 +310,7 @@ class imageLib
 
     // *** We can pass in an array of options to change the crop position
     $cropPos = 'm';
-    if (is_array($option) && mb_strtolower($option[0]) == 'crop') {
+    if (is_array($option) && fix_strtolower($option[0]) == 'crop') {
       $cropPos = $option[1];         # get the crop option
     } else if (strpos($option, '-') !== false) {
       // *** Or pass in a hyphen seperated option
@@ -468,7 +468,7 @@ class imageLib
   #       black borders.
   #
   {
-    $pos = mb_strtolower($pos);
+    $pos = fix_strtolower($pos);
 
     // *** If co-ords have been entered
     if (strstr($pos, 'x')) {
@@ -866,7 +866,7 @@ class imageLib
     #
   {
     if (is_array($option)) {
-      if (mb_strtolower($option[0]) == 'crop' && count($option) == 2) {
+      if (fix_strtolower($option[0]) == 'crop' && count($option) == 2) {
         return 'crop';
       } else {
         throw new Exception('Crop resize option array is badly formatted.');
@@ -876,7 +876,7 @@ class imageLib
     }
 
     if (is_string($option)) {
-      return mb_strtolower($option);
+      return fix_strtolower($option);
     }
 
     return $option;
@@ -1308,7 +1308,7 @@ class imageLib
 
       if (is_string($value)) {
 
-        $value = mb_strtolower($value);
+        $value = fix_strtolower($value);
 
         switch ($value) {
           case 'left':
@@ -1365,7 +1365,7 @@ class imageLib
     // *** Check if the user wants transparency
     $isTransparent = false;
     if (!is_array($bgColor)) {
-      if (mb_strtolower($bgColor) == 'transparent') {
+      if (fix_strtolower($bgColor) == 'transparent') {
         $isTransparent = true;
       }
     }
@@ -1477,7 +1477,7 @@ class imageLib
 
 
     // *** Convert color
-    if (mb_strtolower($bgColor) != 'transparent') {
+    if (fix_strtolower($bgColor) != 'transparent') {
       $rgbArray = $this->formatColor($bgColor);
       $r0 = $rgbArray['r'];
       $g0 = $rgbArray['g'];
@@ -1568,7 +1568,7 @@ class imageLib
         $t = $a/128.0;
 
         // *** Create color
-        if(mb_strtolower($bgColor) == 'transparent') {
+        if(fix_strtolower($bgColor) == 'transparent') {
           $myColour = imagecolorallocatealpha($rgb,$r,$g,$b,$a);
         } else {
           $myColour = imagecolorallocate($rgb,$r*(1.0-$t)+$r0*$t,$g*(1.0-$t)+$g0*$t,$b*(1.0-$t)+$b0*$t);
@@ -1608,7 +1608,7 @@ class imageLib
   # Notes:
   #
   {
-      $side = mb_strtolower($side);
+      $side = fix_strtolower($side);
 
       // *** Convert color
       $rgbArray = $this->formatColor($bgColor);
@@ -2205,7 +2205,7 @@ class imageLib
     $y = $posArray['height'];
 
     // *** Set watermark opacity
-    if (mb_strtolower(strrchr($watermarkImage, '.')) == '.png') {
+    if (fix_strtolower(strrchr($watermarkImage, '.')) == '.png') {
 
       $opacity = $this->invertTransparency($opacity, 100);
       $this->filterOpacity($stamp, $opacity);
@@ -2239,7 +2239,7 @@ class imageLib
   #
   #
   {
-    $pos = mb_strtolower($pos);
+    $pos = fix_strtolower($pos);
 
     // *** If co-ords have been entered
     if (strstr($pos, 'x')) {
@@ -2396,7 +2396,7 @@ class imageLib
 
         // *** Get extension
         $extension = strrchr($file, '.');
-        $extension = mb_strtolower($extension);
+        $extension = fix_strtolower($extension);
         switch($extension)
         {
             case '.jpg':
@@ -2468,7 +2468,7 @@ class imageLib
 
     // *** Get extension
         $extension = strrchr($savePath, '.');
-        $extension = mb_strtolower($extension);
+        $extension = fix_strtolower($extension);
 
     $error = '';
 
@@ -2821,7 +2821,7 @@ class imageLib
       } else {
         $rgbArray = $value;
       }
-    } else if (mb_strtolower($value) == 'transparent') {
+    } else if (fix_strtolower($value) == 'transparent') {
 
       $rgbArray = array(
         'r' => 255,

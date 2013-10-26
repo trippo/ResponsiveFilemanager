@@ -78,6 +78,7 @@ $delete_folders=true;
 $upload_files=true;
 $rename_files=true;
 $rename_folders=true;
+$duplicate_files=true;
 
 //**********************
 //Allowed extensions (lowercase insert)

@@ -54,4 +54,5 @@ define('lang_Show_url','toon URL');
 define('lang_Extract','hier uitpakken');
 define('lang_File_info','bestands-info');
 define('lang_Edit_image','afbeelding bewerken');
+define('lang_Duplicate','Duplicate');
 ?>

@@ -54,4 +54,5 @@ define('lang_Show_url','Показать URL');
 define('lang_Extract','Распаковать здесь');
 define('lang_File_info','Свойства файла');
 define('lang_Edit_image','Редактировать');
+define('lang_Duplicate','Duplicate');
 ?>

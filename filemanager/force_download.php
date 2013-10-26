@@ -1,6 +1,7 @@
 <?php
 include('config/config.php');
 if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
+include('include/utils.php');
 
 if(strpos($_POST['path'],'/')===0
     || strpos($_POST['path'],'../')!==FALSE
@@ -14,7 +15,7 @@ $path=$current_path.$_POST['path'];
 $name=$_POST['name'];
 
 $info=pathinfo($name);
-if(!in_array(mb_strtolower($info['extension']), $ext)){
+if(!in_array(fix_strtolower($info['extension']), $ext)){
     die('wrong extension');
 }
 

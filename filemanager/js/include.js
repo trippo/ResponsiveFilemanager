@@ -1,4 +1,4 @@
-var version="9.1.4";
+var version="9.2.0";
 var active_contextmenu=true;
 if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -40,7 +40,7 @@ $(document).ready(function(){
 				if (msg!="")
 				    bootbox.alert(msg);
 				else
-				    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();   
+				    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
 			    });
 			    break;
 			case "edit_img":
@@ -49,6 +49,18 @@ $(document).ready(function(){
 			    $('#aviary_img').attr('data-name',filename);
 			    $('#aviary_img').attr('src',full_path).load(launchEditor('aviary_img', full_path));
 			    
+			    break;
+			case "duplicate":
+			    var old_name=$trigger.find('h4').text().trim();
+			    bootbox.prompt($('#lang_duplicate').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+				if (name !== null){
+				    name=clean_filename(name);
+				    if (name!=old_name) {
+					var _this=$trigger.find('.rename-file');
+					execute_action('duplicate_file',_this.attr('data-path'),_this.attr('data-thumb'),name,_this,'apply_file_duplicate');
+				    }
+				}
+			    },old_name);
 			    break;
 		    }
 		  },
@@ -64,7 +76,11 @@ $(document).ready(function(){
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('gz') ) {
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
 		}
-		options.items.info = {name: $('#lang_file_info').val(), disabled:true };
+		if (!$trigger.hasClass('directory') && $('#duplicate').val()==1) {
+		    options.items.duplicate = {name: $('#lang_duplicate').val(),icon:"duplicate", disabled:false };
+		}
+		options.items.sep = '----';
+		options.items.info = {name: "<strong>"+$('#lang_file_info').val()+"</strong>", disabled:true };
 		options.items.name = {name: $trigger.attr('data-name'),icon:'label', disabled:true };
 		if ($trigger.attr('data-type')=="img") {
 		  options.items.dimension = {name: $trigger.find('.img-dimension').html(),icon:"dimension", disabled:true };
@@ -89,8 +105,7 @@ $(document).ready(function(){
 	       return false;
 	});	
     }
-    
-    $(".modalAV").on("click", function(e) {
+    $('ul.grid').on('click','.modalAV', function(e) {
 	_this=$(this);
         e.preventDefault();
 
@@ -189,11 +204,6 @@ $(document).ready(function(){
 		height: 360
 	    }));
 	});
-    
-    $('#full-img').on('click',function(){
-	    $('#previewLightbox').lightbox('hide');
-    });
-    
     $('.upload-btn').on('click',function(){
 	    $('.uploader').show(500);
     });
@@ -226,12 +236,11 @@ $(document).ready(function(){
     });
     
     $('ul.grid').on('click','.preview',function(){
-	    var _this = $(this);
-	    
-	    $('#full-img').attr('src',_this.attr('data-url'));
-	    if(!_this.hasClass('disabled'))
-		    show_animation();
-	    return true;
+	var _this = $(this);
+	if(_this.hasClass('disabled')==false){
+	    bootbox.dialog('<style type="text/css">.wraptocenter { display: table-cell;text-align: center;vertical-align: middle;width: auto;height:380px;}.wraptocenter * {vertical-align: middle;}/*\*//*/.wraptocenter {display: block;}.wraptocenter span{display: inline-block;height: 100%;width: 1px;}/**/</style><!--[if lt IE 8]><style>.wraptocenter span {    display: inline-block;    height: 100%;}</style><![endif]--><center><div class="wraptocenter"><span></span><img style="max-height:380px;" src="'+_this.attr('data-url')+'" /></div></center>',{label:'<i class="icon-remove icon-white"></i></div>'});
+	}
+	return true;
     });
     
     $('ul.grid').on('click','.rename-file',function(){
@@ -241,9 +250,11 @@ $(document).ready(function(){
 	var file_title=file_container.find('h4');
 	var old_name=$.trim(file_title.text());
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-	    name=clean_filename(name);
-	    if (name !== null && name!=old_name) {                                             
-		execute_action('rename_file',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_file_rename');
+	    if (name !== null){
+		name=clean_filename(name);
+		if (name!=old_name) {                                             
+		    execute_action('rename_file',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_file_rename');
+		}
 	    }
 	},old_name);
     });
@@ -255,9 +266,11 @@ $(document).ready(function(){
 	var file_title=file_container.find('h4');
 	var old_name=$.trim(file_title.text());
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-	    name=clean_filename(name).replace('.','');
-	    if (name !== null && name!=old_name) {                                             
-		execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
+	    if (name !== null){
+		name=clean_filename(name).replace('.','');
+		if (name!=old_name) {                                             
+		    execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
+		}
 	    }
 	},old_name);
     });
@@ -294,7 +307,8 @@ $(document).ready(function(){
 			  url: "execute.php?action=create_folder",
 			  data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
-			window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+			setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
+			
 		});
 	    }
 	},$('#new_folder').val());
@@ -424,11 +438,12 @@ function apply(file,external){
     var base_url = $('#base_url').val();
     var alt_name=file.substr(0, file.lastIndexOf('.'));
     var ext=file.split('.').pop();
+    ext=ext.toLowerCase();
     var fill='';
     if($.inArray(ext, ext_img) > -1){
-        fill='<img src="'+path+file+'" alt="'+alt_name+'" />';
+        fill='<img src="'+base_url+path+file+'" alt="'+alt_name+'" />';
     }else{
-	fill='<a href="'+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
+	fill='<a href="'+base_url+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
     }
     
     parent.tinymce.activeEditor.insertContent(fill);
@@ -448,7 +463,7 @@ function apply_link(file,external){
 	close_window();
     }
     else
-	apply_any(path, file);
+	apply_any(base_url+path, file);
 }
 
 function apply_img(file,external){
@@ -463,7 +478,7 @@ function apply_img(file,external){
 	close_window();
     }
     else
-        apply_any(path, file);
+        apply_any(base_url+path, file);
 }
 
 function apply_video(file,external){
@@ -473,7 +488,7 @@ function apply_video(file,external){
     var base_url = $('#base_url').val();
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
-	$(target).val(base_url+path+file);
+	$(target).val(base_url+base_url+path+file);
 	close_window();
     }
     else
@@ -502,6 +517,11 @@ function close_window() {
    }
 }
 
+function apply_file_duplicate(container,name){
+    var li_container=container.parent().parent().parent().parent();
+    li_container.after("<li class='"+li_container.attr('class')+"' data-name='"+li_container.attr('data-name')+"'>"+li_container.html()+"</li>");
+    apply_file_rename(li_container.next(),name);
+}
 
 function apply_file_rename(container,name) {
     container.find('h4').find('a').text(name);
@@ -572,26 +592,33 @@ function replace_last(str,find,replace) {
 	return str.replace(re, replace);
 }
 
-function RemoveAccents(strAccents) {
-       strAccents = strAccents.split('');
-       var strAccentsOut = new Array();
-       var strAccentsLen = strAccents.length;
-       var accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
-       var accentsOut = "AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz";
-       for (var y = 0; y < strAccentsLen; y++) {
-	       if (accents.indexOf(strAccents[y]) != -1) {
-		       strAccentsOut[y] = accentsOut.substr(accents.indexOf(strAccents[y]), 1);
-	       } else
-		       strAccentsOut[y] = strAccents[y];
-       }
-       strAccentsOut = strAccentsOut.join('');
-       return strAccentsOut;
-}
+function replaceDiacritics(s)
+{
+    var s;
 
+    var diacritics =[
+        /[\300-\306]/g, /[\340-\346]/g,  // A, a
+        /[\310-\313]/g, /[\350-\353]/g,  // E, e
+        /[\314-\317]/g, /[\354-\357]/g,  // I, i
+        /[\322-\330]/g, /[\362-\370]/g,  // O, o
+        /[\331-\334]/g, /[\371-\374]/g,  // U, u
+        /[\321]/g, /[\361]/g, // N, n
+        /[\307]/g, /[\347]/g, // C, c
+    ];
+
+    var chars = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
+
+    for (var i = 0; i < diacritics.length; i++)
+    {
+        s = s.replace(diacritics[i],chars[i]);
+    }
+
+    return s;
+}
 
 function clean_filename(stri) {
     if (stri!=null) {
-	strii=RemoveAccents(stri);
+	strii=replaceDiacritics(stri);
 	strii=strii.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
 	
 	return $.trim(strii);	
@@ -600,22 +627,24 @@ function clean_filename(stri) {
 }
 
 function execute_action(action,file1,file2,name,container,function_name){
-    name=clean_filename(name);
-    $.ajax({
-	type: "POST",
-	url: "execute.php?action="+action,
-	data: {path: file1, path_thumb: file2, name: name.replace('/','')}
-    }).done(function( msg ) {
-	if (msg!="") {
-	    bootbox.alert(msg);
-	    return false;
-	}else{
-	    if (function_name!="") {
-		window[function_name](container,name);
+    if (name!==null) {
+	name=clean_filename(name);
+	$.ajax({
+	    type: "POST",
+	    url: "execute.php?action="+action,
+	    data: {path: file1, path_thumb: file2, name: name.replace('/','')}
+	}).done(function( msg ) {
+	    if (msg!="") {
+		bootbox.alert(msg);
+		return false;
+	    }else{
+		if (function_name!="") {
+		    window[function_name](container,name);
+		}
 	    }
-	}
-	return true;
-    });
+	    return true;
+	});
+    }
 }
 
 

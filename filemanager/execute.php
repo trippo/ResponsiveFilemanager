@@ -144,6 +144,28 @@ if(isset($_GET['action'])){
                 }
             }
             break;
+	case 'duplicate_file':
+            if($duplicate_files){
+                $name=fix_filename($name);
+                if(!empty($name)){
+                    if(!duplicate_file($path,$name))
+                        die(lang_Rename_existing_file);
+                    duplicate_file($path_thumb,$name);
+		    if($fixed_image_creation){
+			$info=pathinfo($path);
+			foreach($fixed_path_from_filemanager as $k=>$paths){
+			    if($paths!="" && $paths[strlen($paths)-1]!="/") $paths.="/";
+			    $base_dir=$paths.substr_replace($info['dirname']."/", '', 0, strlen($current_path));
+			    if(file_exists($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'])){
+				duplicate_file($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'],$fixed_image_creation_name_to_prepend[$k].$name.$fixed_image_creation_to_append[$k]);
+			    }
+			}
+		    }
+                }else{
+                    die(lang_Empty_name);
+                }
+            }
+            break;
         default:
             die('wrong action');
             break;

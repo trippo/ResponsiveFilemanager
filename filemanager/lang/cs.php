@@ -50,4 +50,5 @@ define('lang_Date_type','d.m.Y');
 define('lang_OK','OK');
 define('lang_Cancel','Zrušit');
 define('lang_Sorting','řazení');
+define('lang_Duplicate','Duplicate');
 ?>
