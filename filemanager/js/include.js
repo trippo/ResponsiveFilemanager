@@ -1,4 +1,4 @@
-var version="9.2.0";
+var version="9.2.1";
 var active_contextmenu=true;
 if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -105,6 +105,11 @@ $(document).ready(function(){
 	       return false;
 	});	
     }
+    
+    $('#full-img').on('click',function(){
+	    $('#previewLightbox').lightbox('hide');
+    });
+    
     $('ul.grid').on('click','.modalAV', function(e) {
 	_this=$(this);
         e.preventDefault();
@@ -188,7 +193,7 @@ $(document).ready(function(){
     });
     
     $('#info').on('click',function(){
-	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
+	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://responsivefilemanager.com/license.php"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
 	});
     
     $('#uploader-btn').on('click',function(){
@@ -237,8 +242,9 @@ $(document).ready(function(){
     
     $('ul.grid').on('click','.preview',function(){
 	var _this = $(this);
+	$('#full-img').attr('src',_this.attr('data-url'));
 	if(_this.hasClass('disabled')==false){
-	    bootbox.dialog('<style type="text/css">.wraptocenter { display: table-cell;text-align: center;vertical-align: middle;width: auto;height:380px;}.wraptocenter * {vertical-align: middle;}/*\*//*/.wraptocenter {display: block;}.wraptocenter span{display: inline-block;height: 100%;width: 1px;}/**/</style><!--[if lt IE 8]><style>.wraptocenter span {    display: inline-block;    height: 100%;}</style><![endif]--><center><div class="wraptocenter"><span></span><img style="max-height:380px;" src="'+_this.attr('data-url')+'" /></div></center>',{label:'<i class="icon-remove icon-white"></i></div>'});
+	    show_animation();
 	}
 	return true;
     });
@@ -496,6 +502,13 @@ function apply_video(file,external){
 }
 
 function apply_none(file,external){
+	var _this=$('li[data-name="'+file+'"]').find('.preview');
+	
+	$('#full-img').attr('src',_this.attr('data-url'));
+	if(_this.hasClass('disabled')==false){
+	    show_animation();
+	    $('#previewLightbox').lightbox();
+	}
 	return;
 }
 

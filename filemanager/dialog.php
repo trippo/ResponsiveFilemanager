@@ -139,6 +139,7 @@ $get_params = http_build_query(array(
 	<link rel="shortcut icon" href="img/ico/favicon.ico">
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
 	<link href="css/dropzone.min.css" type="text/css" rel="stylesheet" />
 	<link href="css/jquery.contextMenu.min.css" rel="stylesheet" type="text/css" />	
@@ -158,6 +159,7 @@ $get_params = http_build_query(array(
 	}
 	</script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-lightbox.min.js"></script>
 	<script type="text/javascript" src="js/dropzone.min.js"></script>
 	<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
 	<script type="text/javascript" src="js/modernizr.custom.js"></script>
@@ -167,7 +169,6 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
 	<script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
 	<script type="text/javascript" src="js/jquery.queryloader2.min.js"></script>
-        <script type="text/javascript" src="js/jquery.transliterate-min.js"></script>
 	<? if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
 	    <script type="text/javascript" src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
 	<? }else{ ?>
@@ -720,7 +721,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					
 				    <a title="<?php echo lang_Download?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
 				    <?php if($is_img){ ?>
-				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" href="javascript:void('');"><i class=" icon-eye-open"></i></a>
+				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$subfolder.$subdir.$file;; ?>" href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 				    <?php }else{ ?>
@@ -746,6 +747,14 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	</div>
     </div>
 </div>
+
+    <!----- lightbox div start ------->    
+    <div id="previewLightbox" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">
+	    <div class='lightbox-content'>
+		    <img id="full-img" src="">
+	    </div>    
+    </div>
+    <!----- lightbox div end ------->
 
     <!----- loading div start ------->  
     <div id="loading_container" style="display:none;">
