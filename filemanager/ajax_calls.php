@@ -32,7 +32,7 @@ if(isset($_GET['action']))
 		|| strpos($_POST['path'],'../')!==FALSE
 		|| strpos($_POST['path'],'./')===0
 		|| strpos($_POST['url'],'http://featherfiles.aviary.com')!==0
-		|| $_POST['name']!=fix_filename($_POST['name'])
+		|| $_POST['name']!=fix_filename($_POST['name'],$transliteration)
 		|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
 		    die('wrong data');
 	    $image_data = file_get_contents($_POST['url']);

@@ -40,15 +40,15 @@ if (!empty($_FILES)) {
 	  
 	$targetPath = $storeFolder;
 	$targetPathThumb = $storeFolderThumb;
-	$_FILES['file']['name'] = fix_filename($_FILES['file']['name']);
+	$_FILES['file']['name'] = fix_filename($_FILES['file']['name'],$transliteration);
 	 
 	if(file_exists($targetPath.$_FILES['file']['name'])){
 	    $i = 1;
 	    $info=pathinfo($_FILES['file']['name']);
-	    while(file_exists($targetPath.$info['filename'].".[".$i."].".$info['extension'])) {
+	    while(file_exists($targetPath.$info['filename']."_".$i.".".$info['extension'])) {
 		    $i++;
 	    }
-	    $_FILES['file']['name']=$info['filename'].".[".$i."].".$info['extension'];
+	    $_FILES['file']['name']=$info['filename']."_".$i.".".$info['extension'];
 	}
 	$targetFile =  $targetPath. $_FILES['file']['name']; 
 	$targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];

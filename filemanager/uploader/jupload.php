@@ -237,7 +237,7 @@ class JUpload {
 	 */
 	private function tobytes($val) {
 		$val = trim($val);
-		$last = mb_strtolower($val{strlen($val)-1});
+		$last = fix_strtolower($val{strlen($val)-1});
 		switch($last) {
 			case 'g':
 				$val *= 1024;
@@ -399,13 +399,13 @@ class JUpload {
 					$nameWithoutExtension = $name;
 				}
 
-				$rtry = $dir.$nameWithoutExtension.'.['.$cnt.']'.$ext;
+				$rtry = $dir.$nameWithoutExtension.'_'.$cnt.$ext;
 				while (file_exists($rtry)) {
 					$cnt++;
-					$rtry = $dir.$nameWithoutExtension.'.['.$cnt.']'.$ext;
+					$rtry = $dir.$nameWithoutExtension.'._'.$cnt.$ext;
 				}
 				//We store the result name in the byReference name parameter.
-				$name = $nameWithoutExtension.'.['.$cnt.']'.$ext;
+				$name = $nameWithoutExtension.'_'.$cnt.$ext;
 				$ret = $rtry;
 			}
 		}

@@ -25,9 +25,9 @@ $current_path = '../source/'; // relative path from filemanager folder to upload
 //thumbs folder can't put inside upload folder
 $thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
 
-//------------------------------------------------------------------------------
-// YOU CAN COPY AND CHANGE THESE VARIABLES IN FOLDERS config.php FILES
-//------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
+// YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS
+//--------------------------------------------------------------------------------------------------------
 
 $MaxSizeUpload=100; //Mb
 
@@ -36,6 +36,7 @@ $icon_theme="ico"; //ico or ico_dark you can cusatomize just putting a folder in
 $show_folder_size=true; //Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
 $show_sorting_bar=true; //Show or not show sorting feature in filemanager
 $loading_bar=true; //Show or not show loading bar
+$transliteration=false; //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
 
 //*******************************************
 //Images limit and resizing configuration

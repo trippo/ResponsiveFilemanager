@@ -21,7 +21,8 @@ function duplicate_file($old_path,$name){
     }
 }
 
-function rename_file($old_path,$name){
+function rename_file($old_path,$name,$transliteration){
+    $name=fix_filename($name,$transliteration);
     if(file_exists($old_path)){
 	$info=pathinfo($old_path);
 	$new_path=$info['dirname']."/".$name.".".$info['extension'];
@@ -30,8 +31,8 @@ function rename_file($old_path,$name){
     }
 }
 
-function rename_folder($old_path,$name){
-    $name=fix_filename($name);
+function rename_folder($old_path,$name,$transliteration){
+    $name=fix_filename($name,$transliteration);
     if(file_exists($old_path)){
 	$new_path=fix_dirname($old_path)."/".$name;
 	if(file_exists($new_path)) return false;
@@ -134,18 +135,19 @@ function check_files_extensions_on_phar( $phar, &$files, $basepath, $ext ) {
     }
 }
 
-function fix_filename($str){
-    if( function_exists( 'transliterator_transliterate' ) )
-    {
-       $str = transliterator_transliterate( 'Accents-Any', $str );
-    }
-    else
-    {
-       $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
-    }
-	    
-    $str = preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str );
-	    
+function fix_filename($str,$transliteration){
+    if($transliteration){
+	if( function_exists( 'transliterator_transliterate' ) )
+	{
+	   $str = transliterator_transliterate( 'Accents-Any', $str );
+	}
+	else
+	{
+	   $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+	}
+		
+	$str = preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str );
+    }	    
     // Empty or incorrectly transliterated filename.
     // Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
     // So we add that default 'file' name to fix that issue.
@@ -176,10 +178,10 @@ function fix_strtolower($str){
 	return strtolower($str);
 }
 
-function fix_path($path){
+function fix_path($path,$transliteration){
     $info=pathinfo($path);
     $tmp_path=$info['dirname'];
-    $str=fix_filename($info['filename']);
+    $str=fix_filename($info['filename'],$transliteration);
     if($tmp_path!="")
 	return $tmp_path.DIRECTORY_SEPARATOR.$str;
     else
@@ -217,8 +219,8 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte){
 	$image_width = $image_properties[0];
 	$image_height = $image_properties[1];
 	$image_bits = $image_properties['bits'];
-	$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits / 8)  * 2);
-	$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits / 8) * 2);
+	$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits )  * 2);
+	$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits ) * 2);
 	$memory_needed = intval($memory_usage + $image_memory_usage + $thumb_memory_usage);
  
         if($memory_needed > $memory_limit){

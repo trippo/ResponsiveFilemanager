@@ -99,22 +99,23 @@ if(isset($_GET['action'])){
             break;
         case 'create_folder':
             if($create_folders){
-                create_folder(fix_path($path),fix_path($path_thumb));
+                create_folder(fix_path($path,$transliteration),fix_path($path_thumb,$transliteration));
             }
             break;
         case 'rename_folder':
             if($rename_folders){
-                $name=fix_filename($name);
+                $name=fix_filename($name,$transliteration);
 		$name=str_replace('.','',$name);
+		
                 if(!empty($name)){
-                    if(!rename_folder($path,$name))
+                    if(!rename_folder($path,$name,$transliteration))
                         die(lang_Rename_existing_folder);
-                    rename_folder($path_thumb,$name);
+                    rename_folder($path_thumb,$name,$transliteration);
 		    if($fixed_image_creation){
 			foreach($fixed_path_from_filemanager as $k=>$paths){
 			    if($paths!="" && $paths[strlen($paths)-1]!="/") $paths.="/";
 			    $base_dir=$paths.substr_replace($path, '', 0, strlen($current_path));
-			    rename_folder($base_dir,$name);
+			    rename_folder($base_dir,$name,$transliteration);
 			}
 		    }
                 }else{
@@ -124,18 +125,18 @@ if(isset($_GET['action'])){
             break;
         case 'rename_file':
             if($rename_files){
-                $name=fix_filename($name);
+                $name=fix_filename($name,$transliteration);
                 if(!empty($name)){
-                    if(!rename_file($path,$name))
+                    if(!rename_file($path,$name,$transliteration))
                         die(lang_Rename_existing_file);
-                    rename_file($path_thumb,$name);
+                    rename_file($path_thumb,$name,$transliteration);
 		    if($fixed_image_creation){
 			$info=pathinfo($path);
 			foreach($fixed_path_from_filemanager as $k=>$paths){
 			    if($paths!="" && $paths[strlen($paths)-1]!="/") $paths.="/";
 			    $base_dir=$paths.substr_replace($info['dirname']."/", '', 0, strlen($current_path));
 			    if(file_exists($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'])){
-				rename_file($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'],$fixed_image_creation_name_to_prepend[$k].$name.$fixed_image_creation_to_append[$k]);
+				rename_file($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'],$fixed_image_creation_name_to_prepend[$k].$name.$fixed_image_creation_to_append[$k],$transliteration);
 			    }
 			}
 		    }
@@ -146,7 +147,7 @@ if(isset($_GET['action'])){
             break;
 	case 'duplicate_file':
             if($duplicate_files){
-                $name=fix_filename($name);
+                $name=fix_filename($name,$transliteration);
                 if(!empty($name)){
                     if(!duplicate_file($path,$name))
                         die(lang_Rename_existing_file);
