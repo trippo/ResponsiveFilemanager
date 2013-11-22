@@ -462,7 +462,6 @@ ul.sorting.dropdown-menu>li>a{
 }
 
 .grid figcaption {
-	background:#ffffff;
 	text-align: center;
 	padding: 2px;
 	padding-top: 8px;
@@ -476,18 +475,18 @@ ul.sorting.dropdown-menu>li>a{
 	bottom: 0;
 	-webkit-box-shadow: inset 0px 0px 8px 0px rgba(41, 41, 41, 0.5);
         box-shadow: inset 0px 0px 8px 0px rgba(41, 41, 41, 0.5);
+	
+	a{
+		margin: 0px;
+		padding: 3px;
+	}
+	h3 {
+		margin: 0;
+		padding: 0;
+		color: #fff;
+	}
 }
-
-.grid figcaption a{
-	margin: 0px;
-	padding: 3px;
-}
-
-.grid figcaption h3 {
-	margin: 0;
-	padding: 0;
-	color: #fff;
-}
+ 
 
 .grid h4{
 	text-align: center;
@@ -655,6 +654,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
 			background: #bbbbbb;
 		}
 	}
+	
+	figcaption{
+		background:#ffffff;
+	}
 }
 
 .list-view1.grid , .list-view2.grid {
@@ -755,6 +758,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
 	}
 	
 	figcaption{
+		background:none;
 		width: 120px;
 		position: absolute;
 		right: 0px;
