@@ -28,7 +28,7 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 		tinymce.activeEditor.windowManager.open({
 			title: title,
 			file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+'&sort_by='+sort_by+'&lang='+editor.settings.language,
-			width: 880,  
+			width: 860,  
 			height: 570,
 			resizable: true,
 			maximizable: true,
