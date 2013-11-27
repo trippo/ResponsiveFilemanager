@@ -13,6 +13,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 *********************************************************
 ! Localization
 *********************************************************
+- AZE [Elshad Agayev]
 - BGR [Stanislav Panev]
 - BRA [paulomanrique]
 - CZE [jlusticky]
