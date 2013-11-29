@@ -26,11 +26,12 @@ Creator : info@albertoperipolli.com - tr1pp0
 - MON [Tumenzul Batjargal]
 - NLD [Martijn van der Made]
 - NOR [Pål Schroeder]
-- Persian []
+- Persian [web2web esf ir]
 - POL [Michell Hoduń]
 - POR [Sérgio Lima]
 - RUS [vasromand] 
 - SLO [Roman Šovčík]
+- SWE [Jon Sten]
 - TUR [Ahmed Faruk Bora]
 - UKR [Sergey]
 
