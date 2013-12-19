@@ -544,7 +544,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			?>
 			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>>
 				<figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
-				    <a class="folder-link" href="dialog.php?<?php echo $get_params.urlencode($src)."&".uniqid() ?>">
+				    <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>">
 				    <div class="img-precontainer">
 					<div class="img-container directory"><span></span>
 					<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
@@ -565,7 +565,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			<?php }else{ ?>
 				    </a>
 				    <div class="box">
-					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.urlencode($src)."&".uniqid() ?>"><?php echo $file; ?></a></h4>
+					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>"><?php echo $file; ?></a></h4>
 				    </div>
 				    <input type="hidden" class="name" value=""/>
 				    <input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
@@ -627,7 +627,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $src_thumb="";
 			    $extension_lower=fix_strtolower($file_array['extension']);
 			    if(in_array($extension_lower, $ext_img)){
-				$src = $base_url . $cur_dir . urlencode($file);
+				$src = $base_url . $cur_dir . rawurlencode($file);
 				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 				//add in thumbs folder if not exist
 				if(!file_exists($src_thumb)){
