@@ -147,7 +147,11 @@ function fix_filename($str,$transliteration){
 	}
 		
 	$str = preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str );
-    }	    
+    }
+    
+    $str=str_replace(array('"',"'","/","\\"),"",$str);
+    $str=strip_tags($str);
+			   
     // Empty or incorrectly transliterated filename.
     // Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
     // So we add that default 'file' name to fix that issue.

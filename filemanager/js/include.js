@@ -1,4 +1,4 @@
-var version="9.3.0";
+var version="9.3.1";
 var active_contextmenu=true;
 if (loading_bar) {   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -242,11 +242,18 @@ $(document).ready(function(){
     
     $('ul.grid').on('click','.preview',function(){
 	var _this = $(this);
-	$('#full-img').attr('src',_this.attr('data-url'));
+	$('#full-img').attr('src',decodeURIComponent(_this.attr('data-url')));
 	if(_this.hasClass('disabled')==false){
 	    show_animation();
 	}
 	return true;
+    });
+    
+    $('body').on('keypress',function(e){
+	var c = String.fromCharCode(e.which);
+	if (c=="'" || c=='"' || c=="\\" || c=='/') {
+	    return false;
+	}
     });
     
     $('ul.grid').on('click','.rename-file',function(){
@@ -446,12 +453,23 @@ function apply(file,external){
     var ext=file.split('.').pop();
     ext=ext.toLowerCase();
     var fill='';
+    var ext_audio=new Array('ogg','mp3','wav');
+    var ext_video=new Array('mp4','ogg','webm');
     if($.inArray(ext, ext_img) > -1){
         fill='<img src="'+base_url+path+file+'" alt="'+alt_name+'" />';
     }else{
-	fill='<a href="'+base_url+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
+	if($.inArray(ext, ext_video) > -1){
+	    fill='<video controls source src="'+base_url+path+file+'" type="video/'+ext+'">'+alt_name+'</video>';
+	}else{
+	    if($.inArray(ext, ext_audio) > -1 ){
+		if (ext=='mp3') { ext='mpeg'; }
+		fill='<audio controls src="'+base_url+path+file+'" type="audio/'+ext+'">'+alt_name+'</audio>';
+	    }else{
+		fill='<a href="'+base_url+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
+	    }
+	}
+	
     }
-    
     parent.tinymce.activeEditor.insertContent(fill);
     parent.tinymce.activeEditor.windowManager.close();
 }
@@ -507,7 +525,7 @@ function apply_none(file,external){
 	
 	if (_this.html()!="" && _this.html()!==undefined) {
 	    
-	    $('#full-img').attr('src',_this.attr('data-url'));
+	    $('#full-img').attr('src',decodeURIComponent(_this.attr('data-url')));
 	    if(_this.hasClass('disabled')==false){
 		show_animation();
 		$('#previewLightbox').lightbox();
@@ -527,7 +545,7 @@ function apply_none(file,external){
 	    }
 	    
 	    $.ajax({
-		url: _this.attr('data-url'),
+		url: decodeURIComponent(_this.attr('data-url')),
 		success: function(data) {
 		    $(".body-preview").html(data);
 		}
@@ -683,7 +701,11 @@ function fix_filename(stri) {
 	    stri=replaceDiacritics(stri);
 	    stri=stri.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
 	}
-	
+	stri=stri.replace('"','');
+	stri=stri.replace("'",'');
+	stri=stri.replace("/",'');
+	stri=stri.replace("\\",'');
+	stri=stri.replace(/<\/?[^>]+(>|$)/g, "");
 	return $.trim(stri);
     }
     return null;
