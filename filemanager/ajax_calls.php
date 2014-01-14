@@ -31,11 +31,14 @@ if(isset($_GET['action']))
 	    if(strpos($_POST['path'],'/')===0
 		|| strpos($_POST['path'],'../')!==FALSE
 		|| strpos($_POST['path'],'./')===0
-		|| strpos($_POST['url'],'http://featherfiles.aviary.com')!==0
+		|| strpos($_POST['url'],'http://featherfiles.aviary.com/')!==0
 		|| $_POST['name']!=fix_filename($_POST['name'],$transliteration)
 		|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
 		    die('wrong data');
-	    $image_data = file_get_contents($_POST['url']);
+	    $image_data = get_file_by_url($_POST['url']);
+	    if ($image_data === false) {
+	        die('file could not be loaded');
+	    }
 	    file_put_contents($current_path.$_POST['path'].$_POST['name'],$image_data);
 	    //new thumb creation
 	    //try{

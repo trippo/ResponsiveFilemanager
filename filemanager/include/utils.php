@@ -184,7 +184,14 @@ function fix_strtolower($str){
 
 function fix_path($path,$transliteration){
     $info=pathinfo($path);
-    $tmp_path=$info['dirname'];
+    if (($s = strrpos($path, '/')) !== false) $s++; 
+    if (($e = strrpos($path, '.') - $s) !== strlen($info['filename']))
+    {
+       $info['filename'] = substr($path, $s, $e); 
+       $info['basename'] = substr($path, $s); 
+    }
+    $tmp_path = $info['dirname'].DIRECTORY_SEPARATOR.$info['basename'];
+    
     $str=fix_filename($info['filename'],$transliteration);
     if($tmp_path!="")
 	return $tmp_path.DIRECTORY_SEPARATOR.$str;
@@ -273,6 +280,28 @@ function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$re
 	}
     }
     return $all_ok;
+}
+
+
+// Get a remote file, using whichever mechanism is enabled
+function get_file_by_url($url) {
+    if (ini_get('allow_url_fopen')) {
+        return file_get_contents($url);
+    }
+    if (!function_exists('curl_version')) {
+        return false;
+    }
+    
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
 }
 
 ?>
