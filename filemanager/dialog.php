@@ -653,7 +653,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    
 			    $is_icon_thumb=false;
 			    $is_icon_thumb_mini=false;
+			    $no_thumb=false;
 			    if($src_thumb==""){
+				$no_thumb=true;
 				if(file_exists('img/'.$icon_theme.'/'.$extension_lower.".jpg")){
 					$src_thumb ='img/'.$icon_theme.'/'.$extension_lower.".jpg";
 				}else{
@@ -722,7 +724,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 					
 				    <a title="<?php echo lang_Download?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
-				    <?php if($is_img){ ?>
+				    <?php if($is_img && !$src_thumb){ ?>
 				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$subfolder.$subdir.$file;; ?>" href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
