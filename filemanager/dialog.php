@@ -167,6 +167,7 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="js/bootstrap-modal.min.js"></script>   
 	<script type="text/javascript" src="js/bootstrap-modalmanager.min.js"></script>
 	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
+	<script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
 	<script type="text/javascript" src="js/jquery.queryloader2.min.js"></script>
 	<?php
 	if($aviary_active){
