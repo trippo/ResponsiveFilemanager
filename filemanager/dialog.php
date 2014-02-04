@@ -83,6 +83,8 @@ if(!is_dir($thumbs_path.$subdir)){
 }
 
 if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
+//Sanitize popup
+$popup=!!$popup;
 
 //view type
 if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
