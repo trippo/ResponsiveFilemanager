@@ -484,6 +484,7 @@ function apply_link(file,external){
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
 	$(target).val(base_url+path+file);
+	$(target).trigger( "change" );
 	close_window();
     }
     else
@@ -514,6 +515,7 @@ function apply_video(file,external){
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
 	$(target).val(base_url+path+file);
+	$(target).trigger( "change" );
 	close_window();
     }
     else
