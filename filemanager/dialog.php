@@ -612,7 +612,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				}
 				
 				$filename=substr($file1, 0, '-' . (strlen($file_array['extension']) + 1));
-				rename_file($file_path,fix_filename($filename,$transliteration));
+				rename_file($file_path,fix_filename($filename,$transliteration),$transliteration);
 				$file=$file1;
 				$file_array['extension']=fix_filename($file_array['extension'],$transliteration);
 				$file_path=$file_path1;
