@@ -24,7 +24,7 @@ $(document).ready(function(){
 			case "copy_url":
 			    var m ="";
 			    m+=$('#base_url').val()+$('#cur_dir').val();
-			    add=$trigger.find('a.link').attr('data-file');
+			    add=$trigger.attr('data-name');
 			    if (add!="" && add!=null) {
 				m+=add;
 			    }
@@ -56,7 +56,7 @@ $(document).ready(function(){
 				if (name !== null){
 				    name=fix_filename(name);
 				    if (name!=old_name) {
-					var _this=$trigger.find('.rename-file');
+					var _this=$trigger.find('.rename-file-paths');
 					execute_action('duplicate_file',_this.attr('data-path'),_this.attr('data-thumb'),name,_this,'apply_file_duplicate');
 				    }
 				}
@@ -76,8 +76,11 @@ $(document).ready(function(){
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('gz') ) {
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
 		}
+        var filename=$trigger.attr('data-name');
 		if (!$trigger.hasClass('directory') && $('#duplicate').val()==1) {
-		    options.items.duplicate = {name: $('#lang_duplicate').val(),icon:"duplicate", disabled:false };
+            duplicateDisabled = false;
+            duplicateDisabled = duplicateDisabled || ($.inArray(filename, files_prevent_duplicate) > -1);
+		    options.items.duplicate = {name: $('#lang_duplicate').val(),icon:"duplicate", disabled:duplicateDisabled };
 		}
 		options.items.sep = '----';
 		options.items.info = {name: "<strong>"+$('#lang_file_info').val()+"</strong>", disabled:true };
@@ -623,7 +626,7 @@ function apply_file_rename(container,name) {
     container.find('.name_download').val(name+"."+extension);
     
     //rename link && delete link
-    var link3=container.find('a.rename-file');
+    var link3=container.find('a.rename-file-paths');
     var link4=container.find('a.delete-file');
     var path_old=link3.attr('data-path');
     var path_thumb=link3.attr('data-thumb');
