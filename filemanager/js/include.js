@@ -1,4 +1,4 @@
-var version="9.3.3";
+var version="9.3.4";
 var active_contextmenu=true;
 if(loading_bar){   
 if(!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -24,7 +24,11 @@ $(document).ready(function(){
 			case "copy_url":
 			    var m ="";
 			    m+=$('#base_url').val()+$('#cur_dir').val();
-			    add=$trigger.attr('data-name');
+			    add=$trigger.find('a.link').attr('data-file');
+			    if (add!="" && add!=null) {
+				m+=add;
+			    }
+			    add=$trigger.find('h4 a.folder-link').attr('data-file');
 			    if (add!="" && add!=null) {
 				m+=add;
 			    }
@@ -56,7 +60,7 @@ $(document).ready(function(){
 				if (name !== null){
 				    name=fix_filename(name);
 				    if (name!=old_name) {
-					var _this=$trigger.find('.rename-file-paths');
+					var _this=$trigger.find('.rename-file');
 					execute_action('duplicate_file',_this.attr('data-path'),_this.attr('data-thumb'),name,_this,'apply_file_duplicate');
 				    }
 				}
@@ -76,11 +80,8 @@ $(document).ready(function(){
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('gz') ) {
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
 		}
-        var filename=$trigger.attr('data-name');
 		if (!$trigger.hasClass('directory') && $('#duplicate').val()==1) {
-            duplicateDisabled = false;
-            duplicateDisabled = duplicateDisabled || ($.inArray(filename, files_prevent_duplicate) > -1);
-		    options.items.duplicate = {name: $('#lang_duplicate').val(),icon:"duplicate", disabled:duplicateDisabled };
+		    options.items.duplicate = {name: $('#lang_duplicate').val(),icon:"duplicate", disabled:false };
 		}
 		options.items.sep = '----';
 		options.items.info = {name: "<strong>"+$('#lang_file_info').val()+"</strong>", disabled:true };
@@ -626,7 +627,7 @@ function apply_file_rename(container,name) {
     container.find('.name_download').val(name+"."+extension);
     
     //rename link && delete link
-    var link3=container.find('a.rename-file-paths');
+    var link3=container.find('a.rename-file');
     var link4=container.find('a.delete-file');
     var path_old=link3.attr('data-path');
     var path_thumb=link3.attr('data-thumb');
