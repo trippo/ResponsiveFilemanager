@@ -544,14 +544,14 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			}
 			
 			?>
-			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>><?php 
-                    $file_prevent_rename = false;
-                    $file_prevent_delete = false;
-                    if (isset($filePermissions[$file])) {
-                        $file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename']; 
-                        $file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
-                    }
-            ?><figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
+			    <li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>><?php 
+			    $file_prevent_rename = false;
+			    $file_prevent_delete = false;
+			    if (isset($filePermissions[$file])) {
+				$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
+				$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
+			    }
+			    ?>	<figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
 				    <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>">
 				    <div class="img-precontainer">
 					<div class="img-container directory"><span></span>
@@ -692,18 +692,18 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }
 			    if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
 ?>
-		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>"><?php 
-                    $file_prevent_rename = false;
-                    $file_prevent_delete = false;
+		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>"><?php
+		    $file_prevent_rename = false;
+		    $file_prevent_delete = false;
                     $files_prevent_duplicate = array();
-                    if (isset($filePermissions[$file])) {
-                        if (isset($filePermissions[$file]['prevent_duplicate']) && $filePermissions[$file]['prevent_duplicate']) {
-                            $files_prevent_duplicate[] = $file; 
-                        }
-                        $file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename']; 
-                        $file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
-                    }
-            ?><figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
+		    if (isset($filePermissions[$file])) {
+			if (isset($filePermissions[$file]['prevent_duplicate']) && $filePermissions[$file]['prevent_duplicate']) {
+			    $files_prevent_duplicate[] = $file;
+			}
+			$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
+			$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
+		    }
+            ?>		<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
 				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
 				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
@@ -753,10 +753,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 				    <?php } ?>
 				    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_files && !$file_prevent_rename) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $subfolder.$subdir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-				    <i class="icon-pencil <?php if(!$rename_files || $file_prevent_rename) echo 'icon-white'; ?>"></i></a>
-					    
+ 				    <i class="icon-pencil <?php if(!$rename_files || $file_prevent_rename) echo 'icon-white'; ?>"></i></a>
+
 				    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files && !$file_prevent_delete) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-				    <i class="icon-trash <?php if(!$delete_files || $file_prevent_delete) echo 'icon-white'; ?>"></i>
+ 				    <i class="icon-trash <?php if(!$delete_files || $file_prevent_delete) echo 'icon-white'; ?>"></i>
 				    </a>
 				    </form>
 				</figcaption>
@@ -774,7 +774,8 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 </div>
 <script>
     var files_prevent_duplicate = new Array();
-    <?php foreach ($files_prevent_duplicate as $key => $value): ?>
+    <?php
+    foreach ($files_prevent_duplicate as $key => $value): ?>
         files_prevent_duplicate[<?php echo $key;?>] = '<?php echo $value; ?>';
     <?php endforeach; ?>
 </script>
