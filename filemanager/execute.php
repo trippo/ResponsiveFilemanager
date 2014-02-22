@@ -6,8 +6,6 @@ include('include/utils.php');
 
 $thumb_pos=strpos($_POST['path_thumb'],$thumbs_base_path);
 if($thumb_pos !=0
-    || strpos($_POST['path_thumb'],'../',strlen($thumbs_base_path)+$thumb_pos)!==FALSE
-    || strpos($_POST['path'],'/')===0
     || strpos($_POST['path'],'../')!==FALSE
     || strpos($_POST['path'],'./')===0)
     die('wrong path');
@@ -21,8 +19,8 @@ if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
 }
 require_once $language_file;
 
-$base=$current_path;
-$path=$current_path.$_POST['path'];
+$base=$upload_path;
+$path=$upload_path.$_POST['path'];
 $cycle=true;
 $max_cycles=50;
 $i=0;
@@ -38,8 +36,8 @@ while($cycle && $i<$max_cycles){
     $cycle=false;
 }
 
-$path=$current_path.$_POST['path'];
-$path_thumb=$_POST['path_thumb'];
+$path=$upload_path.$_POST['path'];
+$path_thumb=$thumbs_base_path . $_POST['path'];
 if(isset($_POST['name'])){
     $name=$_POST['name'];
     if(strpos($name,'../')!==FALSE) die('wrong name');
