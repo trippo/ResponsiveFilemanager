@@ -19,11 +19,23 @@ mb_internal_encoding('UTF-8');
 //    |   |   |   |- responsivefilemanager
 //    |   |   |   |   |- plugin.min.js
 
-$base_url="http://www.site.com";  // base url (only domain) of site (without final /). If you prefer relative urls leave empty
-$upload_dir = '/source/'; // path from base_url to base of upload folder (with start and final /)
-$current_path = '../source/'; // relative path from filemanager folder to upload folder (with final /)
+$base_url="http://www.site.com"; // base url (only domain) of site (without final /). If you prefer relative urls leave empty
+$upload_url = '/source/'; // url from base_url to base of upload folder (with start and final /)
+
 //thumbs folder can't put inside upload folder
-$thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
+$thumbs_base_url = '/thumbs/'; // relative url from base_url to base of thumbs folder (with start and final /)
+
+
+
+// $upload_path and $thumbs_base_path is only necessary to set if the folder
+// structure is different from "Path configuration" above!
+
+// absolute path to base of upload folder
+$upload_path = realpath(dirname(__FILE__) . '../../' . $upload_url);
+
+// absolute path to base of thumbs folder
+$thumbs_base_path = realpath(dirname(__FILE__) . '../../' . $thumbs_base_url);
+
 
 //--------------------------------------------------------------------------------------------------------
 // YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS
@@ -153,4 +165,3 @@ $relative_image_creation_name_to_append = array('_test',''); //name to append on
 $relative_image_creation_width          = array(300,400); //width of image (you can leave empty if you set height)
 $relative_image_creation_height         = array(200,''); //height of image (you can leave empty if you set width)
 
-?>

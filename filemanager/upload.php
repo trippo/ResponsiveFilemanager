@@ -4,18 +4,13 @@ if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 
-$storeFolder = $_POST['path'];
-$storeFolderThumb = $_POST['path_thumb'];
-
-$path_pos=strpos($storeFolder,$current_path);
-$thumb_pos=strpos($_POST['path_thumb'],$thumbs_base_path);
-if($path_pos!==0 
-    || $thumb_pos !==0
-    || strpos($storeFolderThumb,'../',strlen($thumbs_base_path))!==FALSE
-    || strpos($storeFolderThumb,'./',strlen($thumbs_base_path))!==FALSE
-    || strpos($storeFolder,'../',strlen($current_path))!==FALSE
-    || strpos($storeFolder,'./',strlen($current_path))!==FALSE )
+if(strpos($_POST['path'],'/')===0
+    || strpos($_POST['path'],'../')!==FALSE
+    || strpos($_POST['path'],'./')===0)
     die('wrong path');
+
+$storeFolder = $upload_path . $_POST['path'];
+$storeFolderThumb = $thumbs_base_path . $_POST['path'];
 
 
 $path=$storeFolder;
@@ -24,7 +19,7 @@ $max_cycles=50;
 $i=0;
 while($cycle && $i<$max_cycles){
     $i++;
-    if($path==$current_path)  $cycle=false;
+    if($path==$upload_path)  $cycle=false;
     if(file_exists($path."config.php")){
 	require_once($path."config.php");
 	$cycle=false;
@@ -65,7 +60,7 @@ if (!empty($_FILES)) {
 	    if(!create_img_gd($targetFile, $targetFileThumb, 122, 91)){
 		$memory_error=false;
 	    }else{
-		if(!new_thumbnails_creation($targetPath,$targetFile,$_FILES['file']['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height)){
+		if(!new_thumbnails_creation($targetPath,$targetFile,$_FILES['file']['name'],$upload_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height)){
 		    $memory_error=false;
 		}else{		    
 		    $imginfo =getimagesize($targetFile);

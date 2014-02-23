@@ -44,21 +44,21 @@ if(!empty($_SESSION["subfolder"]) && strpos($_SESSION["subfolder"],'../')===FALS
    
 if($subfolder!="" && $subfolder[strlen($subfolder)-1]!="/") $subfolder.="/";
    
-if(!file_exists($current_path . $subfolder.$subdir)){
+if(!file_exists($upload_path . $subfolder.$subdir)){
     $subdir='';
-    if(!file_exists($current_path . $subfolder.$subdir)){
+    if(!file_exists($upload_path . $subfolder.$subdir)){
 	$subfolder="";
     }
 }
     
 if(trim($subfolder)==""){
-    $cur_dir = $upload_dir . $subdir;
-    $cur_path = $current_path . $subdir;
+    $cur_dir = $upload_url . $subdir;
+    $cur_path = $upload_path . $subdir;
     $thumbs_path = $thumbs_base_path;
     $parent=$subdir;
 }else{
     $cur_dir = $upload_dir . $subfolder.$subdir;
-    $cur_path = $current_path . $subfolder.$subdir;
+    $cur_path = $upload_path . $subfolder.$subdir;
     $thumbs_path = $thumbs_base_path. $subfolder;
     $parent=$subfolder.$subdir;
 }
@@ -69,8 +69,8 @@ $i=0;
 while($cycle && $i<$max_cycles){
     $i++;
     if($parent=="./") $parent="";    
-    if(file_exists($current_path.$parent."config.php")){
-	require_once($current_path.$parent."config.php");
+    if(file_exists($upload_path.$parent."config.php")){
+	require_once($upload_path.$parent."config.php");
 	$cycle=false;
     }
     
@@ -244,8 +244,8 @@ $get_params = http_build_query(array(
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
-	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
-	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
+	<input type="hidden" id="cur_dir" value="<?php echo $subdir; ?>" />
+	<input type="hidden" id="cur_dir_thumb" value="<?php echo $subdir; ?>" />
 	<input type="hidden" id="insert_folder_name" value="<?php echo lang_Insert_Folder_Name; ?>" />
 	<input type="hidden" id="new_folder" value="<?php echo lang_New_Folder; ?>" />
 	<input type="hidden" id="ok" value="<?php echo lang_OK; ?>" />
@@ -282,8 +282,8 @@ $get_params = http_build_query(array(
 		<div class="tab-pane active" id="tab1">
 		    <?php } ?>
 		<form action="dialog.php" method="post" enctype="multipart/form-data" id="myAwesomeDropzone" class="dropzone">
-		    <input type="hidden" name="path" value="<?php echo $cur_path?>"/>
-		    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
+		    <input type="hidden" name="path" value="<?php echo $subdir?>"/>
+<!--		    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>-->
 		    <div class="fallback">
 			<?php echo  lang_Upload_file?>:<br/>
 			<input name="file" type="file" />
@@ -327,7 +327,7 @@ elseif($_GET['type']==0 && $_GET['field_id']=='') $apply = 'apply_none';
 elseif($_GET['type']==3) $apply = 'apply_video';
 else $apply = 'apply';
 
-$files = scandir($current_path.$subfolder.$subdir);
+$files = scandir($upload_path.$subfolder.$subdir);
 $n_files=count($files);
 
 //php sorting
@@ -337,13 +337,13 @@ $prev_folder=array();
 foreach($files as $k=>$file){
     if($file==".") $current_folder=array('file'=>$file);
     elseif($file=="..") $prev_folder=array('file'=>$file);
-    elseif(is_dir($current_path.$subfolder.$subdir.$file)){
-	$date=filemtime($current_path.$subfolder.$subdir. $file);
-	$size=foldersize($current_path.$subfolder.$subdir. $file);
+    elseif(is_dir($upload_path.$subfolder.$subdir.$file)){
+	$date=filemtime($upload_path.$subfolder.$subdir. $file);
+	$size=foldersize($upload_path.$subfolder.$subdir. $file);
 	$file_ext=lang_Type_dir;
 	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
     }else{
-	$file_path=$current_path.$subfolder.$subdir.$file;
+	$file_path=$upload_path.$subfolder.$subdir.$file;
 	$date=filemtime($file_path);
 	$size=filesize($file_path);
 	$file_ext = substr(strrchr($file,'.'),1);
@@ -490,7 +490,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     <!----- breadcrumb div end ------->
     <div class="row-fluid ff-container">
 	<div class="span12">	    
-	    <?php if(@opendir($current_path.$subfolder.$subdir)===FALSE){ ?>
+	    <?php if(@opendir($upload_path.$subfolder.$subdir)===FALSE){ ?>
 	    <br/>
 	    <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div> 
 	    <?php }else{ ?>
@@ -588,25 +588,25 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		    foreach ($files as $nu=>$file_array) {		
 			$file=$file_array['file'];
 		    
-			    if($file == '.' || $file == '..' || is_dir($current_path.$subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
+			    if($file == '.' || $file == '..' || is_dir($upload_path.$subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
 				    continue;
 			    
-			    $file_path=$current_path.$subfolder.$subdir.$file;
+			    $file_path=$upload_path.$subfolder.$subdir.$file;
 			    //check if file have illegal caracter
 			    
 			    $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
 			    
 			    if($file!=fix_filename($file,$transliteration)){
 				$file1=fix_filename($file,$transliteration);
-				$file_path1=($current_path.$subfolder.$subdir.$file1);
+				$file_path1=($upload_path.$subfolder.$subdir.$file1);
 				if(file_exists($file_path1)){
 				    $i = 1;
 				    $info=pathinfo($file1);
-				    while(file_exists($current_path.$subfolder.$subdir.$info['filename'].".[".$i."].".$info['extension'])) {
+				    while(file_exists($upload_path.$subfolder.$subdir.$info['filename'].".[".$i."].".$info['extension'])) {
 					    $i++;
 				    }
 				    $file1=$info['filename'].".[".$i."].".$info['extension'];
-				    $file_path1=($current_path.$subfolder.$subdir.$file1);
+				    $file_path1=($upload_path.$subfolder.$subdir.$file1);
 				}
 				
 				$filename=substr($file1, 0, '-' . (strlen($file_array['extension']) + 1));
@@ -625,13 +625,13 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $src_thumb="";
 			    $extension_lower=fix_strtolower($file_array['extension']);
 			    if(in_array($extension_lower, $ext_img)){
-				$src = $base_url . $cur_dir . urlencode($file);
-				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
+				$src = $cur_dir . urlencode($file);
+				$mini_src = $src_thumb = $subdir. $file;
 				//add in thumbs folder if not exist
-				if(!file_exists($src_thumb)){
+				if(!file_exists($thumbs_base_path . $src_thumb)){
 				    try {
-					create_img_gd($file_path, $src_thumb, 122, 91);
-					new_thumbnails_creation($current_path.$subfolder.$subdir,$file_path,$file,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+					create_img_gd($file_path, $thumbs_base_path . $src_thumb, 122, 91);
+					new_thumbnails_creation($upload_path.$subfolder.$subdir,$file_path,$file,$upload_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
 				    } catch (Exception $e) {
 					$src_thumb=$mini_src="";
 				    }
@@ -640,23 +640,25 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				//check if is smaller than thumb
 				list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
 				if($img_width<122 && $img_height<91){ 
-					$src_thumb=$current_path.$subfolder.$subdir.$file;
+					$src_thumb=$subfolder.$subdir.$file;
 					$show_original=true;
 				}
 				
 				if($img_width<45 && $img_height<38){
-				    $mini_src=$current_path.$subfolder.$subdir.$file;
+				    $mini_src=$subfolder.$subdir.$file;
 				    $show_original_mini=true;
 				}
 			    }
 			    
 			    $is_icon_thumb=false;
 			    $is_icon_thumb_mini=false;
+				$url_thumb = ($show_original ? $upload_url : $thumbs_base_url) . $src_thumb;
+				$url_mini = ($show_original_mini ? $upload_url : $thumbs_base_url) . $mini_src;
 			    if($src_thumb==""){
 				if(file_exists('img/'.$icon_theme.'/'.$extension_lower.".jpg")){
-					$src_thumb ='img/'.$icon_theme.'/'.$extension_lower.".jpg";
+					$url_thumb ='img/'.$icon_theme.'/'.$extension_lower.".jpg";
 				}else{
-					$src_thumb = "img/".$icon_theme."/default.jpg";
+					$url_thumb = "img/".$icon_theme."/default.jpg";
 				}
 				$is_icon_thumb=true;
 			    }
@@ -687,7 +689,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
 				    <div class="img-container">
 					    <span></span>
-					    <img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?> <?php echo $is_icon_thumb ? "icon" : "" ?>" src="<?php echo $src_thumb; ?>">
+					    <img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?> <?php echo $is_icon_thumb ? "icon" : "" ?>" src="<?php echo $url_thumb; ?>">
 				    </div>
 				</div>
 				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
@@ -695,7 +697,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <div class="img-container-mini">
 					<span></span>
 					<?php if($mini_src!=""){ ?>
-					<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original_mini ? "original" : "" ?> <?php echo $is_icon_thumb_mini ? "icon" : "" ?>" src="<?php echo $mini_src; ?>">
+					<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original_mini ? "original" : "" ?> <?php echo $is_icon_thumb_mini ? "icon" : "" ?>" src="<?php echo $url_mini; ?>">
 					<?php } ?>
 				    </div>
 				</div>
