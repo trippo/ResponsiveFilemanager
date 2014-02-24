@@ -595,6 +595,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			<?php
 		    }
 			
+            $files_prevent_duplicate = array();
 		    foreach ($files as $nu=>$file_array) {		
 			$file=$file_array['file'];
 		    
@@ -695,7 +696,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>"><?php
 		    $file_prevent_rename = false;
 		    $file_prevent_delete = false;
-                    $files_prevent_duplicate = array();
 		    if (isset($filePermissions[$file])) {
 			if (isset($filePermissions[$file]['prevent_duplicate']) && $filePermissions[$file]['prevent_duplicate']) {
 			    $files_prevent_duplicate[] = $file;
