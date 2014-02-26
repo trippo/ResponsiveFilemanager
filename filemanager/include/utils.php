@@ -184,19 +184,12 @@ function fix_strtolower($str){
 
 function fix_path($path,$transliteration){
     $info=pathinfo($path);
-    if (($s = strrpos($path, '/')) !== false) $s++; 
-    if (($e = strrpos($path, '.') - $s) !== strlen($info['filename']))
-    {
-       $info['filename'] = substr($path, $s, $e); 
-       $info['basename'] = substr($path, $s); 
-    }
-    $tmp_path = $info['dirname'].DIRECTORY_SEPARATOR.$info['basename'];
-    
-    $str=fix_filename($info['filename'],$transliteration);
+    $tmp_path = $info['dirname'];
+	$str=fix_filename($info['filename'],$transliteration);
     if($tmp_path!="")
-	return $tmp_path.DIRECTORY_SEPARATOR.$str;
+		return $tmp_path.DIRECTORY_SEPARATOR.$str;
     else
-	return $str;
+		return $str;
 }
 
 function base_url(){
