@@ -19,8 +19,8 @@ mb_internal_encoding('UTF-8');
 //    |   |   |   |- responsivefilemanager
 //    |   |   |   |   |- plugin.min.js
 
-$base_url="http://www.site.com"; // base url (only domain) of site (without final /). If you prefer relative urls leave empty
-$upload_url = '/source/'; // url from base_url to base of upload folder (with start and final /)
+$base_url="http://".$_SERVER['HTTP_HOST'];  // DON'T TOUCH (base url (only domain) of site (without final /)).
+$upload_url = '/source/'; // path from base_url to base of upload folder (with start and final /)
 
 //thumbs folder can't put inside upload folder
 $thumbs_base_url = '/thumbs/'; // relative url from base_url to base of thumbs folder (with start and final /)

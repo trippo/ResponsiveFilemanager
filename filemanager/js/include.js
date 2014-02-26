@@ -1,7 +1,7 @@
-var version="9.3.0";
+var version="9.3.4";
 var active_contextmenu=true;
-if (loading_bar) {   
-if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
+if(loading_bar){   
+if(!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
     window.addEventListener('DOMContentLoaded', function() {
         $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
     });
@@ -14,7 +14,7 @@ if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){
 $(document).ready(function(){
     if (active_contextmenu) {
 	$.contextMenu({
-	    selector: 'figure:not(.back-directory), .list-view2 figure:not(.back-directory) ',
+	    selector:'figure:not(.back-directory), .list-view2 figure:not(.back-directory)',
 	    autoHide:true,
 	    build: function($trigger) {
 		$trigger.addClass('selected');
@@ -25,6 +25,10 @@ $(document).ready(function(){
 			    var m ="";
 			    m+=$('#base_url').val()+$('#cur_dir').val();
 			    add=$trigger.find('a.link').attr('data-file');
+			    if (add!="" && add!=null) {
+				m+=add;
+			    }
+			    add=$trigger.find('h4 a.folder-link').attr('data-file');
 			    if (add!="" && add!=null) {
 				m+=add;
 			    }
@@ -193,7 +197,7 @@ $(document).ready(function(){
     });
     
     $('#info').on('click',function(){
-	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><a rel="license" href="http://responsivefilemanager.com/license.php"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
+	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
 	});
     
     $('#uploader-btn').on('click',function(){
@@ -242,11 +246,18 @@ $(document).ready(function(){
     
     $('ul.grid').on('click','.preview',function(){
 	var _this = $(this);
-	$('#full-img').attr('src',_this.attr('data-url'));
+	$('#full-img').attr('src',decodeURIComponent(_this.attr('data-url')));
 	if(_this.hasClass('disabled')==false){
 	    show_animation();
 	}
 	return true;
+    });
+    
+    $('body').on('keypress',function(e){
+	var c = String.fromCharCode(e.which);
+	if (c=="'" || c=='"' || c=="\\" || c=='/') {
+	    return false;
+	}
     });
     
     $('ul.grid').on('click','.rename-file',function(){
@@ -446,12 +457,23 @@ function apply(file,external){
     var ext=file.split('.').pop();
     ext=ext.toLowerCase();
     var fill='';
+    var ext_audio=new Array('ogg','mp3','wav');
+    var ext_video=new Array('mp4','ogg','webm');
     if($.inArray(ext, ext_img) > -1){
         fill='<img src="'+base_url+path+file+'" alt="'+alt_name+'" />';
     }else{
-	fill='<a href="'+base_url+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
+	if($.inArray(ext, ext_video) > -1){
+	    fill='<video controls source src="'+base_url+path+file+'" type="video/'+ext+'">'+alt_name+'</video>';
+	}else{
+	    if($.inArray(ext, ext_audio) > -1 ){
+		if (ext=='mp3') { ext='mpeg'; }
+		fill='<audio controls src="'+base_url+path+file+'" type="audio/'+ext+'">'+alt_name+'</audio>';
+	    }else{
+		fill='<a href="'+base_url+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
+	    }
+	}
+	
     }
-    
     parent.tinymce.activeEditor.insertContent(fill);
     parent.tinymce.activeEditor.windowManager.close();
 }
@@ -466,6 +488,7 @@ function apply_link(file,external){
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
 	$(target).val(base_url+path+file);
+	$(target).trigger( "change" );
 	close_window();
     }
     else
@@ -495,7 +518,8 @@ function apply_video(file,external){
     var base_url = $('#base_url').val();
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
-	$(target).val(base_url+base_url+path+file);
+	$(target).val(base_url+path+file);
+	$(target).trigger( "change" );
 	close_window();
     }
     else
@@ -507,7 +531,7 @@ function apply_none(file,external){
 	
 	if (_this.html()!="" && _this.html()!==undefined) {
 	    
-	    $('#full-img').attr('src',_this.attr('data-url'));
+	    $('#full-img').attr('src',decodeURIComponent(_this.attr('data-url')));
 	    if(_this.hasClass('disabled')==false){
 		show_animation();
 		$('#previewLightbox').lightbox();
@@ -527,7 +551,7 @@ function apply_none(file,external){
 	    }
 	    
 	    $.ajax({
-		url: _this.attr('data-url'),
+		url: decodeURIComponent(_this.attr('data-url')),
 		success: function(data) {
 		    $(".body-preview").html(data);
 		}
@@ -683,7 +707,11 @@ function fix_filename(stri) {
 	    stri=replaceDiacritics(stri);
 	    stri=stri.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
 	}
-	
+	stri=stri.replace('"','');
+	stri=stri.replace("'",'');
+	stri=stri.replace("/",'');
+	stri=stri.replace("\\",'');
+	stri=stri.replace(/<\/?[^>]+(>|$)/g, "");
 	return $.trim(stri);
     }
     return null;

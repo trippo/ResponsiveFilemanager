@@ -147,7 +147,11 @@ function fix_filename($str,$transliteration){
 	}
 		
 	$str = preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str );
-    }	    
+    }
+    
+    $str=str_replace(array('"',"'","/","\\"),"",$str);
+    $str=strip_tags($str);
+			   
     // Empty or incorrectly transliterated filename.
     // Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
     // So we add that default 'file' name to fix that issue.
@@ -180,12 +184,12 @@ function fix_strtolower($str){
 
 function fix_path($path,$transliteration){
     $info=pathinfo($path);
-    $tmp_path=$info['dirname'];
-    $str=fix_filename($info['filename'],$transliteration);
+    $tmp_path = $info['dirname'];
+	$str=fix_filename($info['filename'],$transliteration);
     if($tmp_path!="")
-	return $tmp_path.DIRECTORY_SEPARATOR.$str;
+		return $tmp_path.DIRECTORY_SEPARATOR.$str;
     else
-	return $str;
+		return $str;
 }
 
 function base_url(){
@@ -269,6 +273,28 @@ function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$re
 	}
     }
     return $all_ok;
+}
+
+
+// Get a remote file, using whichever mechanism is enabled
+function get_file_by_url($url) {
+    if (ini_get('allow_url_fopen')) {
+        return file_get_contents($url);
+    }
+    if (!function_exists('curl_version')) {
+        return false;
+    }
+    
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
 }
 
 ?>

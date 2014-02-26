@@ -37,30 +37,30 @@ if($subdir=="/"){
  *SUB-DIR CODE
  ***/
 if(!isset($_SESSION["subfolder"])) $_SESSION["subfolder"]='';
-$subfolder = '';
+$rfm_subfolder = '';
 if(!empty($_SESSION["subfolder"]) && strpos($_SESSION["subfolder"],'../')===FALSE
    && strpos($_SESSION["subfolder"],'./')===FALSE && strpos($_SESSION["subfolder"],"/")!==0
-    && strpos($_SESSION["subfolder"],'.')===FALSE) $subfolder= $_SESSION['subfolder'];
+    && strpos($_SESSION["subfolder"],'.')===FALSE) $rfm_subfolder= $_SESSION['subfolder'];
    
-if($subfolder!="" && $subfolder[strlen($subfolder)-1]!="/") $subfolder.="/";
+if($rfm_subfolder!="" && $rfm_subfolder[strlen($rfm_subfolder)-1]!="/") $rfm_subfolder.="/";
    
-if(!file_exists($upload_path . $subfolder.$subdir)){
+if(!file_exists($upload_path . $rfm_subfolder.$subdir)){
     $subdir='';
-    if(!file_exists($upload_path . $subfolder.$subdir)){
-	$subfolder="";
+    if(!file_exists($upload_path . $rfm_subfolder.$subdir)){
+	$rfm_subfolder="";
     }
 }
     
-if(trim($subfolder)==""){
+if(trim($rfm_subfolder)==""){
     $cur_dir = $upload_url . $subdir;
     $cur_path = $upload_path . $subdir;
     $thumbs_path = $thumbs_base_path;
     $parent=$subdir;
 }else{
-    $cur_dir = $upload_dir . $subfolder.$subdir;
-    $cur_path = $upload_path . $subfolder.$subdir;
-    $thumbs_path = $thumbs_base_path. $subfolder;
-    $parent=$subfolder.$subdir;
+    $cur_dir = $upload_dir . $rfm_subfolder.$subdir;
+    $cur_path = $upload_path . $rfm_subfolder.$subdir;
+    $thumbs_path = $thumbs_base_path. $rfm_subfolder;
+    $parent=$rfm_subfolder.$subdir;
 }
 
 $cycle=true;
@@ -83,6 +83,8 @@ if(!is_dir($thumbs_path.$subdir)){
 }
 
 if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
+//Sanitize popup
+$popup=!!$popup;
 
 //view type
 if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
@@ -169,11 +171,13 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
 	<script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
 	<script type="text/javascript" src="js/jquery.queryloader2.min.js"></script>
-	<? if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
+	<?php
+	if($aviary_active){
+	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
 	    <script type="text/javascript" src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
-	<? }else{ ?>
+	<?php }else{ ?>
 	    <script type="text/javascript" src="http://feather.aviary.com/js/feather.js "></script>
-	<? } ?>
+	<?php }} ?>
 	
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -256,7 +260,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="base_url" value="<?php echo $base_url?>"/>
 	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
-	<input type="hidden" id="sub_folder" value="<?php echo $subfolder; ?>"/>
+	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder; ?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
 	<?php $protocol = 'http'; ?>
@@ -327,7 +331,7 @@ elseif($_GET['type']==0 && $_GET['field_id']=='') $apply = 'apply_none';
 elseif($_GET['type']==3) $apply = 'apply_video';
 else $apply = 'apply';
 
-$files = scandir($upload_path.$subfolder.$subdir);
+$files = scandir($upload_path.$rfm_subfolder.$subdir);
 $n_files=count($files);
 
 //php sorting
@@ -337,13 +341,13 @@ $prev_folder=array();
 foreach($files as $k=>$file){
     if($file==".") $current_folder=array('file'=>$file);
     elseif($file=="..") $prev_folder=array('file'=>$file);
-    elseif(is_dir($upload_path.$subfolder.$subdir.$file)){
-	$date=filemtime($upload_path.$subfolder.$subdir. $file);
-	$size=foldersize($upload_path.$subfolder.$subdir. $file);
+    elseif(is_dir($upload_path.$rfm_subfolder.$subdir.$file)){
+	$date=filemtime($upload_path.$rfm_subfolder.$subdir. $file);
+	$size=foldersize($upload_path.$rfm_subfolder.$subdir. $file);
 	$file_ext=lang_Type_dir;
 	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
     }else{
-	$file_path=$upload_path.$subfolder.$subdir.$file;
+	$file_path=$upload_path.$rfm_subfolder.$subdir.$file;
 	$date=filemtime($file_path);
 	$size=filesize($file_path);
 	$file_ext = substr(strrchr($file,'.'),1);
@@ -490,7 +494,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     <!----- breadcrumb div end ------->
     <div class="row-fluid ff-container">
 	<div class="span12">	    
-	    <?php if(@opendir($upload_path.$subfolder.$subdir)===FALSE){ ?>
+	    <?php if(@opendir($upload_path.$rfm_subfolder.$subdir)===FALSE){ ?>
 	    <br/>
 	    <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div> 
 	    <?php }else{ ?>
@@ -540,9 +544,15 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			}
 			
 			?>
-			<li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>>
-				<figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
-				    <a class="folder-link" href="dialog.php?<?php echo $get_params.urlencode($src)."&".uniqid() ?>">
+			    <li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>><?php 
+			    $file_prevent_rename = false;
+			    $file_prevent_delete = false;
+			    if (isset($filePermissions[$file])) {
+				$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
+				$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
+			    }
+			    ?>	<figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
+				    <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>">
 				    <div class="img-precontainer">
 					<div class="img-container directory"><span></span>
 					<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.jpg" alt="folder" />
@@ -563,7 +573,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			<?php }else{ ?>
 				    </a>
 				    <div class="box">
-					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.urlencode($src)."&".uniqid() ?>"><?php echo $file; ?></a></h4>
+					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>"><?php echo $file; ?></a></h4>
 				    </div>
 				    <input type="hidden" class="name" value=""/>
 				    <input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
@@ -573,10 +583,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <?php if($show_folder_size){ ?><div class="file-size"><?php echo makeSize($file_array['size'])?></div><?php } ?>
 				    <div class='file-extension'><?php echo lang_Type_dir; ?></div>
 				    <figcaption>
-					    <a href="javascript:void('')" class="tip-left edit-button <?php if($rename_folders) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
-					    <i class="icon-pencil <?php if(!$rename_folders) echo 'icon-white'; ?>"></i></a>
-					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders) echo "delete-folder"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_Folder_del; ?>" data-path="<?php echo $subfolder.$subdir.$file; ?>"  data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-					    <i class="icon-trash <?php if(!$delete_folders) echo 'icon-white'; ?>"></i>
+					    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_folders && !$file_prevent_rename) echo "rename-folder"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">
+					    <i class="icon-pencil <?php if(!$rename_folders || $file_prevent_rename) echo 'icon-white'; ?>"></i></a>
+					    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders && !$file_prevent_delete) echo "delete-folder"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_Folder_del; ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>"  data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+					    <i class="icon-trash <?php if(!$delete_folders || $file_prevent_delete) echo 'icon-white'; ?>"></i>
 					    </a>
 				    </figcaption>
 			<?php } ?>
@@ -585,32 +595,33 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			<?php
 		    }
 			
+            $files_prevent_duplicate = array();
 		    foreach ($files as $nu=>$file_array) {		
 			$file=$file_array['file'];
 		    
-			    if($file == '.' || $file == '..' || is_dir($upload_path.$subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
+			    if($file == '.' || $file == '..' || is_dir($upload_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
 				    continue;
 			    
-			    $file_path=$upload_path.$subfolder.$subdir.$file;
+			    $file_path=$upload_path.$rfm_subfolder.$subdir.$file;
 			    //check if file have illegal caracter
 			    
 			    $filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
 			    
 			    if($file!=fix_filename($file,$transliteration)){
 				$file1=fix_filename($file,$transliteration);
-				$file_path1=($upload_path.$subfolder.$subdir.$file1);
+				$file_path1=($upload_path.$rfm_subfolder.$subdir.$file1);
 				if(file_exists($file_path1)){
 				    $i = 1;
 				    $info=pathinfo($file1);
-				    while(file_exists($upload_path.$subfolder.$subdir.$info['filename'].".[".$i."].".$info['extension'])) {
+				    while(file_exists($upload_path.$rfm_subfolder.$subdir.$info['filename'].".[".$i."].".$info['extension'])) {
 					    $i++;
 				    }
 				    $file1=$info['filename'].".[".$i."].".$info['extension'];
-				    $file_path1=($upload_path.$subfolder.$subdir.$file1);
+				    $file_path1=($upload_path.$rfm_subfolder.$subdir.$file1);
 				}
 				
 				$filename=substr($file1, 0, '-' . (strlen($file_array['extension']) + 1));
-				rename_file($file_path,fix_filename($filename,$transliteration));
+				rename_file($file_path,fix_filename($filename,$transliteration),$transliteration);
 				$file=$file1;
 				$file_array['extension']=fix_filename($file_array['extension'],$transliteration);
 				$file_path=$file_path1;
@@ -625,13 +636,13 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    $src_thumb="";
 			    $extension_lower=fix_strtolower($file_array['extension']);
 			    if(in_array($extension_lower, $ext_img)){
-				$src = $cur_dir . urlencode($file);
+				$src = $cur_dir . rawurlencode($file);
 				$mini_src = $src_thumb = $subdir. $file;
 				//add in thumbs folder if not exist
 				if(!file_exists($thumbs_base_path . $src_thumb)){
 				    try {
 					create_img_gd($file_path, $thumbs_base_path . $src_thumb, 122, 91);
-					new_thumbnails_creation($upload_path.$subfolder.$subdir,$file_path,$file,$upload_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+					new_thumbnails_creation($upload_path.$rfm_subfolder.$subdir,$file_path,$file,$upload_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
 				    } catch (Exception $e) {
 					$src_thumb=$mini_src="";
 				    }
@@ -640,21 +651,23 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				//check if is smaller than thumb
 				list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
 				if($img_width<122 && $img_height<91){ 
-					$src_thumb=$subfolder.$subdir.$file;
+					$src_thumb=$rfm_subfolder.$subdir.$file;
 					$show_original=true;
 				}
 				
 				if($img_width<45 && $img_height<38){
-				    $mini_src=$subfolder.$subdir.$file;
+				    $mini_src=$rfm_subfolder.$subdir.$file;
 				    $show_original_mini=true;
 				}
 			    }
 			    
 			    $is_icon_thumb=false;
 			    $is_icon_thumb_mini=false;
+			    $no_thumb=false;
 				$url_thumb = ($show_original ? $upload_url : $thumbs_base_url) . $src_thumb;
 				$url_mini = ($show_original_mini ? $upload_url : $thumbs_base_url) . $mini_src;
 			    if($src_thumb==""){
+				$no_thumb=true;
 				if(file_exists('img/'.$icon_theme.'/'.$extension_lower.".jpg")){
 					$url_thumb ='img/'.$icon_theme.'/'.$extension_lower.".jpg";
 				}else{
@@ -682,8 +695,17 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }
 			    if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
 ?>
-		<li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>">
-			<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
+		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>"><?php
+		    $file_prevent_rename = false;
+		    $file_prevent_delete = false;
+		    if (isset($filePermissions[$file])) {
+			if (isset($filePermissions[$file]['prevent_duplicate']) && $filePermissions[$file]['prevent_duplicate']) {
+			    $files_prevent_duplicate[] = $file;
+			}
+			$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
+			$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
+		    }
+            ?>		<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
 				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
 				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
@@ -719,22 +741,24 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<div class='file-extension'><?php echo $extension_lower; ?></div>
 				<figcaption>
 				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
-					<input type="hidden" name="path" value="<?php echo $subfolder.$subdir?>"/>
+					<input type="hidden" name="path" value="<?php echo $rfm_subfolder.$subdir?>"/>
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 					
 				    <a title="<?php echo lang_Download?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
-				    <?php if($is_img){ ?>
+				    <?php if($is_img && $src_thumb!=""){ ?>
 				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
-				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$subfolder.$subdir.$file;; ?>" href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
+				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
+					title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
+					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 				    <?php } ?>
-				    <a href="javascript:void('')" class="tip-left edit-button <?php if($rename_files) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $subfolder.$subdir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-				    <i class="icon-pencil <?php if(!$rename_files) echo 'icon-white'; ?>"></i></a>
-					    
-				    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
-				    <i class="icon-trash <?php if(!$delete_files) echo 'icon-white'; ?>"></i>
+				    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_files && !$file_prevent_rename) echo "rename-file"; ?>" title="<?php echo lang_Rename?>" data-path="<?php echo $rfm_subfolder.$subdir .$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+ 				    <i class="icon-pencil <?php if(!$rename_files || $file_prevent_rename) echo 'icon-white'; ?>"></i></a>
+
+				    <a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files && !$file_prevent_delete) echo "delete-file"; ?>" title="<?php echo lang_Erase?>" data-confirm="<?php echo lang_Confirm_del; ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir .$file; ?>">
+ 				    <i class="icon-trash <?php if(!$delete_files || $file_prevent_delete) echo 'icon-white'; ?>"></i>
 				    </a>
 				    </form>
 				</figcaption>
@@ -750,6 +774,13 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	</div>
     </div>
 </div>
+<script>
+    var files_prevent_duplicate = new Array();
+    <?php
+    foreach ($files_prevent_duplicate as $key => $value): ?>
+        files_prevent_duplicate[<?php echo $key;?>] = '<?php echo $value; ?>';
+    <?php endforeach; ?>
+</script>
 
     <!----- lightbox div start ------->    
     <div id="previewLightbox" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">

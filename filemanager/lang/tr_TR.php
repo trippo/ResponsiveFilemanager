@@ -54,5 +54,5 @@ define('lang_Show_url','URL göster');
 define('lang_Extract','buraya çıkart');
 define('lang_File_info','dosya bilgisi');
 define('lang_Edit_image','resmi düzenle');
-define('lang_Duplicate','Duplicate');
+define('lang_Duplicate','Çoğalt');
 ?>
