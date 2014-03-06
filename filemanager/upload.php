@@ -53,14 +53,13 @@ if (!empty($_FILES)) {
 	$targetFile =  $targetPath. $_FILES['file']['name']; 
 	$targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
 	
-	if(in_array(fix_strtolower($info['extension']),$ext_img)) $is_img=true;
+	if(in_array(fix_strtolower($info['extension']),$ext_img) && @getimagesize($tempFile) != false) $is_img=true;
 	else $is_img=false;
 	
 	
-	move_uploaded_file($tempFile,$targetFile);
-	chmod($targetFile, 0755);
-	
 	if($is_img){
+	    move_uploaded_file($tempFile,$targetFile);
+	    chmod($targetFile, 0755);
 	    $memory_error=false;
 	    if(!create_img_gd($targetFile, $targetFileThumb, 122, 91)){
 		$memory_error=false;
