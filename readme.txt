@@ -16,6 +16,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - AZE [Elshad Agayev]
 - BGR [Stanislav Panev]
 - BRA [paulomanrique]
+- CRO []
 - CZE [jlusticky]
 - ENG
 - ESP [Roberto Santamaria] 
@@ -32,6 +33,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - POR [Sérgio Lima]
 - RUS [vasromand] 
 - SLO [Roman Šovčík]
+- SVN [Peter Benko]
 - SWE [Jon Sten]
 - TUR [Ahmed Faruk Bora]
 - UKR [Sergey]
