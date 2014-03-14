@@ -13,7 +13,7 @@ define('lang_Upload_file','Загрузить файл');
 define('lang_Filters','Фильтр');
 define('lang_Videos','Видео');
 define('lang_Music','Музыка');
-define('lang_New_Folder','New folder');
+define('lang_New_Folder','Новая папка');
 define('lang_Folder_Created','Папка успешно создана');
 define('lang_Existing_Folder','Существующая папка');
 define('lang_Confirm_Folder_del','Уверены, что хотите удалить эту папку и все файлы в ней?');
@@ -54,5 +54,5 @@ define('lang_Show_url','Показать URL');
 define('lang_Extract','Распаковать здесь');
 define('lang_File_info','Свойства файла');
 define('lang_Edit_image','Редактировать');
-define('lang_Duplicate','Duplicate');
+define('lang_Duplicate','Дублировать');
 ?>
