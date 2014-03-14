@@ -135,6 +135,10 @@ function check_files_extensions_on_phar( $phar, &$files, $basepath, $ext ) {
     }
 }
 
+function fix_get_params($str){
+	return strip_tags(preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
+}
+
 function fix_filename($str,$transliteration){
     if($transliteration){
 	if( function_exists( 'transliterator_transliterate' ) )

@@ -15,7 +15,7 @@ if (isset($_GET['fldr'])
     && !empty($_GET['fldr'])
     && strpos($_GET['fldr'],'../')===FALSE
     && strpos($_GET['fldr'],'./')===FALSE)
-    $subdir = urldecode(trim($_GET['fldr'],"/") ."/");
+    $subdir = urldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
 else
     $subdir = '';
     
@@ -82,30 +82,30 @@ if(!is_dir($thumbs_path.$subdir)){
     create_folder(false, $thumbs_path.$subdir);
 }
 
-if(isset($_GET['popup'])) $popup= $_GET['popup']; else $popup=0;
+if(isset($_GET['popup'])) $popup= strip_tags($_GET['popup']); else $popup=0;
 //Sanitize popup
 $popup=!!$popup;
 
 //view type
 if(!isset($_SESSION["view_type"])){ $view=$default_view; $_SESSION["view_type"] = $view; }
-if(isset($_GET['view'])){ $view=$_GET['view']; $_SESSION["view_type"] = $view; }
+if(isset($_GET['view'])){ $view=fix_get_params($_GET['view']); $_SESSION["view_type"] = $view; }
 $view=$_SESSION["view_type"];
 
-if(isset($_GET["filter"])) $filter=fix_filename($_GET["filter"],$transliteration);
+if(isset($_GET["filter"])) $filter=fix_get_params($_GET["filter"]);
 else $filter='';
 
 if(!isset($_SESSION['sort_by'])) $_SESSION['sort_by']='';
-if(isset($_GET["sort_by"])) $sort_by=$_SESSION['sort_by']=fix_filename($_GET["sort_by"],$transliteration);
+if(isset($_GET["sort_by"])) $sort_by=$_SESSION['sort_by']=fix_get_params($_GET["sort_by"]);
 else $sort_by=$_SESSION['sort_by'];
 
 if(!isset($_SESSION['descending'])) $_SESSION['descending']=false;
-if(isset($_GET["descending"])) $descending=$_SESSION['descending']=fix_filename($_GET["descending"],$transliteration)==="true";
+if(isset($_GET["descending"])) $descending=$_SESSION['descending']=fix_get_params($_GET["descending"])==="true";
 else $descending=$_SESSION['descending'];
 
 
 $lang=$default_language;
 if(isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='')
-    $lang=$_GET['lang'];
+    $lang=fix_get_params($_GET['lang']);
 
 $language_file = 'lang/'.$default_language.'.php'; 
 if ($lang!=$default_language) {
@@ -121,11 +121,14 @@ require_once $language_file;
 if(!isset($_GET['type'])) $_GET['type']=0;
 if(!isset($_GET['field_id'])) $_GET['field_id']='';
 
+$field_id=isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
+$type_param=fix_get_params($_GET['type']);
+
 $get_params = http_build_query(array(
-    'type'      => $_GET['type'],
+    'type'      => $type_param,
     'lang'      => $lang,
     'popup'     => $popup,
-    'field_id'  => isset($_GET['field_id']) ? $_GET['field_id'] : '',
+    'field_id'  => $field_id,
     'fldr'      => ''
 ));
 ?>
@@ -243,7 +246,7 @@ $get_params = http_build_query(array(
 	   });
 	    }
 	</script>
-	<script type="text/javascript" src="js/include.min.js"></script>
+	<script type="text/javascript" src="js/include.commercial.min.js"></script>
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
@@ -293,8 +296,8 @@ $get_params = http_build_query(array(
 			<input name="file" type="file" />
 			<input type="hidden" name="fldr" value="<?php echo $subdir; ?>"/>
 			<input type="hidden" name="view" value="<?php echo $view; ?>"/>
-			<input type="hidden" name="type" value="<?php echo $_GET['type']; ?>"/>
-			<input type="hidden" name="field_id" value="<?php echo $_GET['field_id']; ?>"/>
+			<input type="hidden" name="type" value="<?php echo $type_param; ?>"/>
+			<input type="hidden" name="field_id" value="<?php echo $field_id; ?>"/>
 			<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
 			<input type="hidden" name="lang" value="<?php echo $lang; ?>"/>
 			<input type="hidden" name="filter" value="<?php echo $filter; ?>"/>
@@ -518,7 +521,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	    <!--ul class="thumbnails ff-items"-->
 	    <ul class="grid cs-style-2 <?php echo "list-view".$view; ?>">
 		<?php
-		
 		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 		foreach ($files as $file_array) {
 		    $file=$file_array['file'];
@@ -704,7 +706,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
 		    }
             ?>		<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
-				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
+				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $field_id; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
 				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
 				    <div class="img-container">
@@ -726,7 +728,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<?php } ?>
 				</a>	
 				<div class="box">				
-				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $_GET['field_id']; ?>" data-function="<?php echo $apply; ?>">
+				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $field_id; ?>" data-function="<?php echo $apply; ?>">
 				<?php echo $filename; ?></a> </h4>
 				</div>
 				<input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
