@@ -1,4 +1,4 @@
-var version="9.3.4";
+var version="9.3.5";
 var active_contextmenu=true;
 if(loading_bar){   
 if(!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
