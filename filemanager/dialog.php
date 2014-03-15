@@ -279,8 +279,8 @@ $get_params = http_build_query(array(
 <div class="uploader">
     <center><button class="btn btn-inverse close-uploader"><i class="icon-backward icon-white"></i> <?php echo lang_Return_Files_List?></button></center>
 	<div class="space10"></div><div class="space10"></div>
-	<?php if($java_upload){ ?>
 	<div class="tabbable upload-tabbable"> <!-- Only required for left/right tabs -->
+	<?php if($java_upload){ ?>
 	    <ul class="nav nav-tabs">
 		<li class="active"><a href="#tab1" data-toggle="tab"><?php echo lang_Upload_base; ?></a></li>
 		<li><a href="#tab2" id="uploader-btn" data-toggle="tab"><?php echo lang_Upload_java; ?></a></li>
@@ -312,9 +312,9 @@ $get_params = http_build_query(array(
 			
 		    </div>
 		    <div class="upload-help"><?php echo lang_Upload_java_help; ?></div>
-		</div>
 		<?php } ?>
-	    </div>
+		</div>
+	</div>
 	</div>
 	
 </div>
