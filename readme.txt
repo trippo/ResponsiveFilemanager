@@ -16,7 +16,8 @@ Creator : info@albertoperipolli.com - tr1pp0
 - AZE [Elshad Agayev]
 - BGR [Stanislav Panev]
 - BRA [paulomanrique]
-- CRO []
+- CAT [Manel Peña]
+- CRO 
 - CZE [jlusticky]
 - ENG
 - ESP [Roberto Santamaria] 
