@@ -55,4 +55,23 @@ define('lang_Extract','kibontás ide');
 define('lang_File_info','fájl info');
 define('lang_Edit_image','kép szerkesztése');
 define('lang_Duplicate','Klónozás');
+define('lang_Folders', 'Mappák');
+define('lang_Copy','Másolás');
+define('lang_Cut','Kivágás');
+define('lang_Paste','Beillesztés');
+define('lang_CB', 'VL'); // clipboard
+define('lang_Paste_Here','Beillesztés ebbe a mappába.');
+define('lang_Paste_Confirm','Biztos vagy benne, hogy ebbe a mappába szeretnéd beilleszteni a fájlokat? A létező fájlok/mappák felül lesznek írva.');
+define('lang_Paste_Failed','A beillesztés sikertelen!');
+define('lang_Clear_Clipboard','Vágólap törlése');
+define('lang_Clear_Clipboard_Confirm','Biztos törlöd a vágólap tartalmát?');
+define('lang_Files_ON_Clipboard','Fájlok találhatóak a vágólapon.');
+define('lang_Copy_Cut_Size_Limit','A kiválasztott fájlok/mappák túl nagyok a %shoz. Limit: %d MB/művelet'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Túl sok fájlt választottál ki a %shoz. Limit: %d fájl/művelet'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','A %s nem engedélyezett.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'A kép mentése sikertelen.');
+define('lang_Zip_No_Extract', 'Kicsomagolás sikertelen. Lehet, hogy korrupt a fájl.');
+define('lang_Zip_Invalid', 'Ez a kiterjesztés nem támogatott. Támogatott: zip, gz, tar.');
+define('lang_Dir_No_Write', 'A kiválasztott mappa nem írható.');
+define('lang_Function_Disabled', 'A %s funkciót letiltotta a szerver.'); // %s = cut or copy
 ?>

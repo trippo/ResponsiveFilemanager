@@ -1,6 +1,6 @@
 <?php 
 
-if($_SESSION["verify"] != "RESPONSIVEfilemanager") die('forbiden');
+if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 
 function deleteDir($dir) {
     if (!file_exists($dir)) return true;
@@ -79,7 +79,7 @@ function foldersize($path) {
     $cleanPath = rtrim($path, '/'). '/';
 
     foreach($files as $t) {
-        if ($t<>"." && $t<>"..") {
+        if ($t != "." && $t != "..") {
             $currentFile = $cleanPath . $t;
             if (is_dir($currentFile)) {
                 $size = foldersize($currentFile);
@@ -93,6 +93,27 @@ function foldersize($path) {
     }
 
     return $total_size;
+}
+
+function filescount($path) {
+    $total_count = 0;
+    $files = scandir($path);
+    $cleanPath = rtrim($path, '/'). '/';
+
+    foreach($files as $t) {
+        if ($t != "." && $t != "..") {
+            $currentFile = $cleanPath . $t;
+            if (is_dir($currentFile)) {
+                $size = filescount($currentFile);
+                $total_count += $size;
+            }
+            else {
+                $total_count += 1;
+            }
+        }   
+    }
+
+    return $total_count;
 }
 
 function create_folder($path=false,$path_thumbs=false){
@@ -136,19 +157,19 @@ function check_files_extensions_on_phar( $phar, &$files, $basepath, $ext ) {
 }
 
 function fix_get_params($str){
-	return strip_tags(preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
+    return strip_tags(preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
 }
 
 function fix_filename($str,$transliteration){
     if($transliteration){
-	if( function_exists( 'transliterator_transliterate' ) )
-	{
-	   $str = transliterator_transliterate( 'Accents-Any', $str );
-	}
-	else
-	{
-	   $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
-	}
+    	if( function_exists( 'transliterator_transliterate' ) )
+    	{
+    	   $str = transliterator_transliterate( 'Accents-Any', $str );
+    	}
+    	else
+    	{
+    	   $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+    	}
 		
 	$str = preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str );
     }
@@ -299,6 +320,167 @@ function get_file_by_url($url) {
     curl_close($ch);
 
     return $data;
+}
+
+// test for dir/file writability properly
+function is_really_writable($dir){
+    $dir = rtrim($dir, '/');
+    // linux, safe off
+    if (DIRECTORY_SEPARATOR == '/' && @ini_get("safe_mode") == FALSE){
+        return is_writable($dir);
+    }
+
+    // Windows, safe ON. (have to write a file :S)
+    if (is_dir($dir)){
+        $dir = $dir.'/'.md5(mt_rand(1,1000).mt_rand(1,1000));
+
+        if (($fp = @fopen($dir, 'ab')) === FALSE){
+            return FALSE;
+        }
+
+        fclose($fp);
+        @chmod($dir, 0777);
+        @unlink($dir);
+        return TRUE;
+    }
+    elseif ( ! is_file($dir) || ($fp = @fopen($dir, 'ab')) === FALSE){
+        return FALSE;
+    }
+
+    fclose($fp);
+    return TRUE;
+}
+
+/**
+ * Check if a function is callable.
+ * Some servers disable copy,rename etc.
+ *
+ * Returns TRUE if callable and everything is OK
+ * Otherwise returns FALSE
+ */
+function is_function_callable($name){
+    if (function_exists($name) === FALSE) return FALSE;
+    $disabled = explode(',', ini_get('disable_functions'));
+    return !in_array($name, $disabled);
+}
+
+// recursivly copies everything
+function rcopy($source, $destination, $is_rec = FALSE) {
+    if (is_dir($source)) {
+        if ($is_rec === FALSE){
+            $pinfo = pathinfo($source);
+            $destination = rtrim($destination, '/').DIRECTORY_SEPARATOR.$pinfo['basename'];
+        }
+        if (is_dir($destination) === FALSE){
+            mkdir($destination, 0777, true);
+        }
+
+        $files = scandir($source);
+        foreach ($files as $file){
+            if ($file != "." && $file != "..") {
+                rcopy($source.DIRECTORY_SEPARATOR.$file, rtrim($destination, '/').DIRECTORY_SEPARATOR.$file, TRUE);
+            }
+        }
+    }
+    else {
+        if (file_exists($source)){
+            if (is_dir($destination) === TRUE){
+                $pinfo = pathinfo($source);
+                $dest2 = rtrim($destination, '/').DIRECTORY_SEPARATOR.$pinfo['basename'];
+            }
+            else {
+                $dest2 = $destination;
+            }
+
+            copy($source, $dest2);
+        }
+    }
+}
+
+// recursivly renames everything
+// I know copy and rename could be done with just one function
+// but i split the 2 because sometimes rename fails on windows
+// Need more feedback from users and refactor if needed
+function rrename($source, $destination, $is_rec = FALSE) {
+    if (is_dir($source)) {
+        if ($is_rec === FALSE){
+            $pinfo = pathinfo($source);
+            $destination = rtrim($destination, '/').DIRECTORY_SEPARATOR.$pinfo['basename'];
+        }
+        if (is_dir($destination) === FALSE){
+            mkdir($destination, 0777, true);
+        }
+
+        $files = scandir($source);
+        foreach ($files as $file){
+            if ($file != "." && $file != "..") {
+                rrename($source.DIRECTORY_SEPARATOR.$file, rtrim($destination, '/').DIRECTORY_SEPARATOR.$file, TRUE);
+            }
+        }
+    }
+    else {
+        if (file_exists($source)){
+            if (is_dir($destination) === TRUE){
+                $pinfo = pathinfo($source);
+                $dest2 = rtrim($destination, '/').DIRECTORY_SEPARATOR.$pinfo['basename'];
+            }
+            else {
+                $dest2 = $destination;
+            }
+            
+            rename($source, $dest2);
+        }
+    }
+}
+
+// On windows rename leaves folders sometime
+// This will clear leftover folders
+// After more feedback will merge it with rrename
+function rrename_after_cleaner($source) {
+    $files = scandir($source);
+
+    foreach ($files as $file) {
+        if ($file != "." && $file != "..") {
+            if (is_dir($source.DIRECTORY_SEPARATOR.$file)){
+                rrename_after_cleaner($source.DIRECTORY_SEPARATOR.$file);
+            }
+            else {
+                unlink($source.DIRECTORY_SEPARATOR.$file);
+            }
+        }
+    }
+
+    return rmdir($source);
+} 
+
+function debugger($input, $trace = FALSE, $halt = FALSE){
+    ob_start();
+
+    echo "<br>----- DEBUG DUMP -----";
+    echo "<pre>";
+    var_dump($input);
+    echo "</pre>";
+    
+    if ($trace){
+        $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+
+        echo "<br>-----STACK TRACE-----";
+        echo "<pre>";
+        var_dump($debug);
+        echo "</pre>";
+    }
+
+    echo "</pre>";
+    echo "---------------------------<br>";
+
+    $ret = ob_get_contents();
+    ob_end_clean();
+
+    echo $ret;
+
+    if ($halt == TRUE){
+        exit();
+    }
 }
 
 ?>
