@@ -263,16 +263,16 @@ body .avpw .avpw_primary_button:hover {
     min-height: 20px !important;
 }
 .op-name-actions {
-    padding-left: 8%; /*65px*/
+    /*padding-left: 70px;*/
 }
 .op-name-views {
-    padding-left: 4%; /*35px*/
+    /*padding-left: 38px;*/
 }
 .op-name-filters {
-    padding-left: 18%;
+    /*padding-right: 160px;*/
 }
 .op-name-filters-notype {
-    padding-left: 26%; /*225px*/
+    /*padding-right: 80px;*/
 }
 .filter-input-notype {
     width: 120px !important;
@@ -405,7 +405,11 @@ ul.sorting.dropdown-menu>li>a.descending {
     margin-top: 5px;
 }
 .filters .types {
-    text-align: right;
+    text-align: left;
+}
+.types > span {
+    float:left;
+    text-align: left;
 }
 @media(max-width:780px) {
     #view2 {
@@ -764,35 +768,38 @@ form {
 }
 @media(max-width:610px) {
     .list-view1.grid figure .box {
-    padding-right: 312px;
+        padding-right: 312px;
+    }
+    .list-view1.grid figure .file-extension {
+        display: none;
+    }
+    .sorter-container .file-extension {
+        display: none;
+    }
 }
-.list-view1.grid figure .file-extension {
-    display: none;
-}
-.sorter-container .file-extension {
-    display: none;
-}
-}@media(max-width:565px) {
+@media(max-width:565px) {
     .list-view1.grid figure .box {
-    padding-right: 257px;
+        padding-right: 257px;
+    }
+    .list-view1.grid figure .file-size {
+        display: none;
+    }
+    .sorter-container .file-size {
+        display: none;
+    }
 }
-.list-view1.grid figure .file-size {
-    display: none;
-}
-.sorter-container .file-size {
-    display: none;
-}
-}@media(max-width:495px) {
+@media(max-width:495px) {
     .list-view1.grid figure .box {
-    padding-right: 187px;
+        padding-right: 187px;
+    }
+    .list-view1.grid figure .file-date {
+        display: none;
+    }
+    .sorter-container .file-date {
+        display: none;
+    }
 }
-.list-view1.grid figure .file-date {
-    display: none;
-}
-.sorter-container .file-date {
-    display: none;
-}
-}@media(max-width:430px) {
+@media(max-width:430px) {
     .list-view1.grid figure .box {
     padding-right: 115px;
 }

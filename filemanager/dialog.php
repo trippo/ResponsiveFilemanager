@@ -464,13 +464,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	    <div class="brand"><?php echo lang_Toolbar; ?> -></div>
 	    <div class="nav-collapse collapse">
 		<div class="filters">
-			<div class="row-fluid operations-name-row">
-				<span class="span4 half op-name-actions"><?php echo lang_Actions; ?>:</span>
-				<span class="span3 half op-name-views"><?php echo lang_View; ?>:</span>
-				<span class="span5 half <?php echo (($_GET['type']!=1 && $_GET['type']!=3) ? 'op-name-filters' : 'op-name-filters-notype'); ?>"><?php echo lang_Filters; ?>:</span>
-			</div>
 		    <div class="row-fluid">
 			<div class="span4 half"> 
+				<span class="op-name-actions"><?php echo lang_Actions; ?></span><br>
 			    <?php if($upload_files){ ?>
 						    <button class="tip btn upload-btn" title="<?php echo  lang_Upload_file; ?>"><i class="icon-plus"></i><i class="icon-file"></i></button> 
 			    <?php } ?>
@@ -481,11 +477,13 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <button class="tip btn clear-clipboard-btn" title="<?php echo lang_Clear_Clipboard; ?>"><i class="rficon-clipboard-clear"></i></button> 
 			</div>
 			<div class="span3 half view-controller">
+				<span class="op-name-views"><?php echo lang_View; ?></span><br>
 			    <button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
 			</div>
 			<div class="span5 half types"> 
+				<span class="<?php echo (($_GET['type']!=1 && $_GET['type']!=3) ? 'op-name-filters' : 'op-name-filters-notype'); ?>"><?php echo lang_Filters; ?></span><br>
 			    <?php if($_GET['type']!=1 && $_GET['type']!=3){ ?>
 			    <input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
 			    <label id="ff-item-type-1" title="<?php echo lang_Files; ?>" for="select-type-1" class="tip btn ff-label-type-1"><i class="icon-file"></i></label>
