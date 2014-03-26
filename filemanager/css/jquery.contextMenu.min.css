@@ -10,7 +10,7 @@
 .context-menu-item.icon{min-height:18px;vertical-align:middle;background-repeat:no-repeat;background-position:4px 5px;width:auto;display:list-item}
 .context-menu-item.icon-edit{background-image:url(../img/page_white_edit.png)}
 .context-menu-item.icon-cut{background-image:url(../img/cut.png)}
-.context-menu-item.icon-copy{background-image:url(../img/page_white_copy.png)}
+.context-menu-item.icon-copy{background-image:url(../img/copy.png)}
 .context-menu-item.icon-rename{background-image:url(../img/rename.png)}
 .context-menu-item.icon-preview{background-image:url(../img/preview.png)}
 .context-menu-item.icon-dimension{background-image:url(../img/dimension.png)}
@@ -19,6 +19,7 @@
 .context-menu-item.icon-size{background-image:url(../img/size.png)}
 .context-menu-item.icon-download{background-image:url(../img/download.png)}
 .context-menu-item.icon-paste{background-image:url(../img/page_white_paste.png)}
+.context-menu-item.icon-clipboard-apply {background-image:url(../img/clipboard_apply.png)}
 .context-menu-item.icon-delete{background-image:url(../img/page_white_delete.png)}
 .context-menu-item.icon-add{background-image:url(../img/page_white_add.png)}
 .context-menu-item.icon-quit{background-image:url(../img/door.png)}

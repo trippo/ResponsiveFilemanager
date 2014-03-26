@@ -40,11 +40,11 @@ define('lang_Upload_java','Wgrywanie przez skrypty JS (dla dużych plików)');
 define('lang_Upload_java_help',"Jeżeli ten aplet JS nie powoduje wgrywania 1. Sprawdź czy masz pobraną i uruchomioną obsługę skryptów w JAVA na stronie JAVA <a href='http://java.com/en/download/'>[pobierz]</a> 2. Upewnij się, że nie jest to blokada wynikająca z ustawień zapory firewall");
 define('lang_Upload_base_help',"Metoda zwana Przeciągnij & Upuść pliki w poniższy obszar, lub kliknij weń (dotyczy tylko najnowszych przeglądarek), lub wybierz plik i kliknij w przycisk. Kiedy zakończy się proces wgrywania, kliknij wyżej na przycisk by zakończyć.");
 define('lang_Type_dir','FLD');
-define('lang_Type','typ');
+define('lang_Type','wg. typu');
 define('lang_Dimension','Wymiary');
-define('lang_Size','rozmiar');
-define('lang_Date','data');
-define('lang_Filename','nazwa');
+define('lang_Size','wg. wagi');
+define('lang_Date','wg. daty');
+define('lang_Filename','wg. nazwy');
 define('lang_Operations','Opcje');
 define('lang_Date_type','d-m-y');
 define('lang_OK','OK');
@@ -55,4 +55,23 @@ define('lang_Extract','extract here');
 define('lang_File_info','file info');
 define('lang_Edit_image','edit image');
 define('lang_Duplicate','Duplicate');
+define('lang_Folders', 'Folders');
+define('lang_Copy','Copy');
+define('lang_Cut','Cut');
+define('lang_Paste','Paste');
+define('lang_CB', 'CB'); // clipboard
+define('lang_Paste_Here','Paste to this directory');
+define('lang_Paste_Confirm','Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.');
+define('lang_Paste_Failed','Failed to paste file(s)');
+define('lang_Clear_Clipboard','Clear clipboard');
+define('lang_Clear_Clipboard_Confirm','Are you sure you want to clear the clipboard?');
+define('lang_Files_ON_Clipboard','There are files on the clipboard.');
+define('lang_Copy_Cut_Size_Limit','The selected files/folders are too big to %s. Limit: %d MB/operation'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','You selected too many files/folders to %s. Limit: %d files/operation'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','You are not allowed to %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Could not save image');
+define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
+define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
+define('lang_Dir_No_Write', 'The directory you selected is not writable.');
+define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
 ?>
