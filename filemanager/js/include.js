@@ -440,18 +440,19 @@ $(document).ready(function(){
     });
 	
 	// reverted to jquery from Modernizr.csstransforms because drag&drop
-	$('figure').on('mouseover',function(){
-		if ($('#view').val()==0 && $('#main-item-container').hasClass('no-effect-slide') === false) {
-			$(this).find('.box:not(.no-effect)').animate({top: "-26px"} ,{queue:false,duration:300});
-		}
-	});
-	
-	$('figure').on('mouseout', function(){
-		if ($('#view').val()==0) {
-			$(this).find('.box:not(.no-effect)').animate({top: "0px"} ,{queue:false,duration:300});
-		}
-	});
-
+	if(!Modernizr.csstransforms) { // Test if CSS transform are supported
+		$('figure').on('mouseover',function(){
+			if ($('#view').val()==0 && $('#main-item-container').hasClass('no-effect-slide') === false) {
+				$(this).find('.box:not(.no-effect)').animate({top: "-26px"} ,{queue:false,duration:300});
+			}
+		});
+		
+		$('figure').on('mouseout', function(){
+			if ($('#view').val()==0) {
+				$(this).find('.box:not(.no-effect)').animate({top: "0px"} ,{queue:false,duration:300});
+			}
+		});
+	}
 	
 	$(window).resize(function(){fix_colums(28); });
 	fix_colums(14);
@@ -471,15 +472,16 @@ $(document).ready(function(){
 
 	// Drag & Drop
 	$('li.dir, li.file').draggable({ 
-		revert: "invalid", 
+		revert: true, 
 		distance: 20,
-		helper: "clone",
 		cursor: "move",
 
 		helper: function(){
 			//hack all the way through
 			$(this).find('figure').find('.box').css("top", "0px");
-			return $(this).clone().css("z-index", 1000).find('.box').css("box-shadow", "none").css("-webkit-box-shadow", "none").parent().parent();
+			var ret=$(this).clone().css("z-index", 1000).find('.box').css("box-shadow", "none").css("-webkit-box-shadow", "none").parent().parent();
+			$(this).addClass('selected');
+			return ret;
 		},
 
 		start: function(){
@@ -488,6 +490,7 @@ $(document).ready(function(){
 			}
 		},
 		stop: function(){
+			$(this).removeClass('selected');
 			if ($('#view').val()==0) {
 				$('#main-item-container').removeClass('no-effect-slide');
 			}
@@ -495,11 +498,14 @@ $(document).ready(function(){
 	});
 
 	$('li.dir').droppable({
-		drop: function(event, ui){
-			// copy_cut_clicked(ui.draggable.find('figure'), 'cut');
-			// paste_to_this_dir($(this).find('figure'));
-			drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
-		}
+      accept: "ul.grid li",
+      activeClass: "ui-state-highlight",  
+  	hoverClass: "ui-state-highlight",
+	drop: function(event, ui){
+		// copy_cut_clicked(ui.draggable.find('figure'), 'cut');
+		// paste_to_this_dir($(this).find('figure'));
+		drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
+	}
 	});
 });
 
