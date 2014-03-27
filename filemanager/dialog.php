@@ -472,8 +472,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <?php if($create_folders){ ?>
 						    <button class="tip btn new-folder" title="<?php echo  lang_New_Folder?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button> 
 			    <?php } ?>
+			    <?php if($copy_cut_files || $copy_cut_dirs){ ?>
 				    <button class="tip btn paste-here-btn" title="<?php echo lang_Paste_Here; ?>"><i class="rficon-clipboard-apply"></i></button> 
 				    <button class="tip btn clear-clipboard-btn" title="<?php echo lang_Clear_Clipboard; ?>"><i class="rficon-clipboard-clear"></i></button> 
+				<?php } ?>
 			</div>
 			<div class="span3 half view-controller">
 
