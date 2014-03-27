@@ -56,22 +56,22 @@ define('lang_File_info','informazioni file');
 define('lang_Edit_image','modifica immagine');
 define('lang_Duplicate','Duplica');
 define('lang_Folders', 'Folders');
-define('lang_Copy','Copy');
-define('lang_Cut','Cut');
-define('lang_Paste','Paste');
+define('lang_Copy','Copia');
+define('lang_Cut','Taglia');
+define('lang_Paste','Incolla');
 define('lang_CB', 'CB'); // clipboard
-define('lang_Paste_Here','Paste to this directory');
-define('lang_Paste_Confirm','Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.');
-define('lang_Paste_Failed','Failed to paste file(s)');
-define('lang_Clear_Clipboard','Clear clipboard');
-define('lang_Clear_Clipboard_Confirm','Are you sure you want to clear the clipboard?');
-define('lang_Files_ON_Clipboard','There are files on the clipboard.');
-define('lang_Copy_Cut_Size_Limit','The selected files/folders are too big to %s. Limit: %d MB/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Count_Limit','You selected too many files/folders to %s. Limit: %d files/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Not_Allowed','You are not allowed to %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
-define('lang_Aviary_No_Save', 'Could not save image');
-define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
-define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
-define('lang_Dir_No_Write', 'The directory you selected is not writable.');
-define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
+define('lang_Paste_Here','Incolla su questa cartella');
+define('lang_Paste_Confirm','Sei sicuro di voler incollare in questa cartella? Questo file sovrascriverà i file/cartelle esistenti qual\'ora ci fossero.');
+define('lang_Paste_Failed','Errore nell\'incollare il/i file');
+define('lang_Clear_Clipboard','Pulisci clipboard');
+define('lang_Clear_Clipboard_Confirm','Sei sicuro di voler cancellare la clipboard?');
+define('lang_Files_ON_Clipboard','Ci sono file nella clipboard.');
+define('lang_Copy_Cut_Size_Limit','I file o cartelle selezionati sono troppo grandi per %s. Il limite è: %d MB/operazione'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Hai selezionato troppi files/cartelle da %s. Il limite è: %d files/operazione'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Non hai i permessi per %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Non è stato possibile salvare l\'immagine');
+define('lang_Zip_No_Extract', 'Non si può estrarre il pacchetto perchè sembra corrotto');
+define('lang_Zip_Invalid', 'Questa estensione non è supportata. Le estensioni valide sono: zip, gz, tar.');
+define('lang_Dir_No_Write', 'La cartella selezionata non è scrivibile.');
+define('lang_Function_Disabled', 'La funzione %s è stata disabilitata.'); // %s = cut or copy
 ?>

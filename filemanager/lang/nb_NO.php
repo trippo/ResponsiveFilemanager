@@ -51,27 +51,27 @@ define('lang_OK','OK');
 define('lang_Cancel','Avbryt');
 define('lang_Sorting','Sortering');
 define('lang_Show_url','Vis URL');
-define('lang_Extract','extract here');
+define('lang_Extract','Pakk ut her');
 define('lang_File_info','Fil-info');
 define('lang_Edit_image','Rediger bilde');
 define('lang_Duplicate','Duplikat');
-define('lang_Folders', 'Folders');
-define('lang_Copy','Copy');
-define('lang_Cut','Cut');
-define('lang_Paste','Paste');
-define('lang_CB', 'CB'); // clipboard
-define('lang_Paste_Here','Paste to this directory');
-define('lang_Paste_Confirm','Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.');
-define('lang_Paste_Failed','Failed to paste file(s)');
-define('lang_Clear_Clipboard','Clear clipboard');
-define('lang_Clear_Clipboard_Confirm','Are you sure you want to clear the clipboard?');
-define('lang_Files_ON_Clipboard','There are files on the clipboard.');
-define('lang_Copy_Cut_Size_Limit','The selected files/folders are too big to %s. Limit: %d MB/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Count_Limit','You selected too many files/folders to %s. Limit: %d files/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Not_Allowed','You are not allowed to %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
-define('lang_Aviary_No_Save', 'Could not save image');
-define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
-define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
-define('lang_Dir_No_Write', 'The directory you selected is not writable.');
-define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
+define('lang_Folders', 'Mapper');
+define('lang_Copy','Kopier');
+define('lang_Cut','Klipp ut');
+define('lang_Paste','Lim inn');
+define('lang_CB', 'Utklippstavle'); // clipboard
+define('lang_Paste_Here','Lim inn i denne mappen');
+define('lang_Paste_Confirm','Er du sikker på at du vil lime inn i denne mappen? Dette vil overskrive eventuelle eksisterende filer eller mapper.');
+define('lang_Paste_Failed','Lim inn feilet');
+define('lang_Clear_Clipboard','Tøm utklippstavlen');
+define('lang_Clear_Clipboard_Confirm','Er du sikker på at du vil tømme utklippstavlen?');
+define('lang_Files_ON_Clipboard','Der er filer på utklippstavlen.');
+define('lang_Copy_Cut_Size_Limit','De valgte filene/mappene er for store for %s. Grense: %d MB/operasjon'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Du valgte for mange filer/mapper for %s. Grense: %d filer/operasjon'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Du har ikke lov til å %s filer.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Kunne ikke lagre bildet');
+define('lang_Zip_No_Extract', 'Kunne ikke pakke ut. Filen er muligens ødelagt.');
+define('lang_Zip_Invalid', 'Dette filetternavnet er ikke støttet. Valide filer: zip, gz, tar.');
+define('lang_Dir_No_Write', 'Mappen du valgte er ikke skrivbar.');
+define('lang_Function_Disabled', 'Funksjonen %s er blitt deaktivert av serveren.'); // %s = cut or copy
 ?>
