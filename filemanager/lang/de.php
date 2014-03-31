@@ -2,7 +2,7 @@
 define('lang_Select','Ausw&auml;hlen');
 define('lang_Erase','L&ouml;schen');
 define('lang_Open','&Ouml;ffnen');
-define('lang_Confirm_del','Sind Sie sicher, dass Sie diese Datei l&ouml;schen wollen?');
+define('lang_Confirm_del','Sind Sie sicher, dass Sie diese Datei l&ouml;schen möchten?');
 define('lang_All','Alle');
 define('lang_Files','Dateien');
 define('lang_Images','Bilder');
