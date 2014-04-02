@@ -1,6 +1,19 @@
 <?php
 include('config/config.php');
 
+if (USE_ACCESS_KEYS == TRUE){
+	if (!isset($_GET['akey'], $access_keys) || empty($access_keys)){
+		die('Access Denied!');
+	}
+
+	$_GET['akey'] = strip_tags(preg_replace( "/[^a-zA-Z0-9\._-]/", '', $_GET['akey']));
+
+	if (!in_array($_GET['akey'], $access_keys)){
+		die('Access Denied!');
+	}
+
+}
+
 $_SESSION['RF']["verify"]= "RESPONSIVEfilemanager";
 
 if(isset($_POST['submit'])){
@@ -135,6 +148,7 @@ $get_params = http_build_query(array(
     'lang'      => $lang,
     'popup'     => $popup,
     'field_id'  => $field_id,
+    'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key'),
     'fldr'      => ''
 ));
 ?>
