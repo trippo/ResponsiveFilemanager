@@ -25,6 +25,29 @@ $current_path = '../source/'; // relative path from filemanager folder to upload
 //thumbs folder can't put inside upload folder
 $thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
 
+// OPTIONAL SECURITY
+// if set to true only those will access RF whose url contains the access key(akey) like: 
+// <input type="button" href="../filemanager/dialog.php?field_id=imgField&lang=en_EN&akey=myPrivateKey" value="Files">
+// in tinymce a new parameter added: filemanager_access_key:"myPrivateKey"
+// example tinymce config:
+// tiny init ...
+// 
+// external_filemanager_path:"../filemanager/",
+// filemanager_title:"Filemanager" ,
+// filemanager_access_key:"myPrivateKey" ,
+// ...
+define('USE_ACCESS_KEYS', FALSE); // TRUE or FALSE
+
+// add access keys eg: array('myPrivateKey', 'someoneElseKey');
+// keys should only containt (a-z A-Z 0-9 \ . _ -) characters
+// if you are integrating lets say to a cms for admins, i recommend making keys randomized something like this:
+// $username = 'Admin';
+// $salt = 'dsflFWR9u2xQa' (a hard coded string)
+// $akey = md5($username.$salt);
+// DO NOT use 'key' as access key!
+// Keys are CASE SENSITIVE!
+$access_keys = array('myPrivateKey','someoneElseKey');
+
 //--------------------------------------------------------------------------------------------------------
 // YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS
 //--------------------------------------------------------------------------------------------------------
