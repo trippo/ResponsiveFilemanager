@@ -203,8 +203,8 @@ if(isset($_GET['action']))
 				        swfPath: "js",
 					solution:"html,flash",
 				        supplied: "mp3, m4a, midi, mid, oga,webma, ogg, wav",
-					smoothPlayBar: TRUE,
-					keyEnabled: FALSE
+					smoothPlayBar: true,
+					keyEnabled: false
 				      });
 				    });
 				  </script>
@@ -227,8 +227,8 @@ if(isset($_GET['action']))
 			        swfPath: "js",
 				solution:"html,flash",
 			        supplied: "mp4, m4v, ogv, flv, webmv, webm",
-				smoothPlayBar: TRUE,
-				keyEnabled: FALSE
+				smoothPlayBar: true,
+				keyEnabled: false
 			    });
 				  
 			    });
