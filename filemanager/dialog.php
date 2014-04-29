@@ -31,15 +31,15 @@ if (isset($_GET['fldr'])
     $subdir = urldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
 else
     $subdir = '';
-    
-//remember last position
-setcookie('last_position',$subdir,time() + (86400 * 7)); 
 
 if($subdir==""){
     if(!empty($_COOKIE['last_position'])
 	&& strpos($_COOKIE['last_position'],'.')===FALSE)
 	$subdir= trim($_COOKIE['last_position']);
 }
+
+//remember last position
+setcookie('last_position',$subdir,time() + (86400 * 7)); 
 
 if($subdir=="/"){
     $subdir="";
