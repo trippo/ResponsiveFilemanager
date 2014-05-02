@@ -87,9 +87,8 @@ $(document).ready(function(){
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('jpeg')) && image_editor )
 		{
 		    options.items.edit_img = {name: $('#lang_edit_image').val(),icon:"edit_img", disabled:false };
-			options.items.copy_url = {name: $('#lang_show_url').val(),icon:"url", disabled:false };
 		}
-
+		options.items.copy_url = {name: $('#lang_show_url').val(),icon:"url", disabled:false };
 		// extract
 		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('zip') ||
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('tar') ||
@@ -719,8 +718,7 @@ function apply_link(file,external){
     var base_url = $('#base_url').val();
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
-	$(target).val(base_url+path+file);
-	$(target).trigger( "change" );
+	window_parent.$(target).val(base_url+path+file).trigger( "change" );
 	close_window();
     }
     else
@@ -734,10 +732,10 @@ function apply_img(file,external){
     var base_url = $('#base_url').val();
     
     if (external!=""){
-	var target = $('#'+external, window_parent.document);
-	$(target).val(base_url+path+file);
-	$(target).trigger( "change" );
-	close_window();
+		var target = $('#'+external, window_parent.document);
+		$(target).val(base_url+path+file)
+		$(target).trigger( "change" );
+		close_window();
     }
     else
         apply_any(base_url+path, file);
@@ -750,8 +748,7 @@ function apply_video(file,external){
     var base_url = $('#base_url').val();
     if (external!=""){
 	var target = $('#'+external,window_parent.document);
-	$(target).val(base_url+path+file);
-	$(target).trigger( "change" );
+	window_parent.$(target).val(base_url+path+file).trigger( "change" );
 	close_window();
     }
     else
