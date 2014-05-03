@@ -1,4 +1,4 @@
-var version="9.4.0";
+var version="9.4.1";
 var active_contextmenu=true;
 if (loading_bar){   
 if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -717,9 +717,9 @@ function apply_link(file,external){
     path = path.replace('\\', '/');
     var base_url = $('#base_url').val();
     if (external!=""){
-	var target = $('#'+external,window_parent.document);
-	window_parent.$(target).val(base_url+path+file).trigger( "change" );
-	close_window();
+			var target = $('#'+external,window_parent.document);
+			target.val(base_url+path+file).trigger('change');
+			close_window();
     }
     else
 	apply_any(base_url+path, file);
@@ -733,8 +733,7 @@ function apply_img(file,external){
     
     if (external!=""){
 		var target = $('#'+external, window_parent.document);
-		$(target).val(base_url+path+file)
-		$(target).trigger( "change" );
+		target.val(base_url+path+file).trigger( "change" );
 		close_window();
     }
     else
@@ -747,9 +746,9 @@ function apply_video(file,external){
     path = path.replace('\\', '/');
     var base_url = $('#base_url').val();
     if (external!=""){
-	var target = $('#'+external,window_parent.document);
-	window_parent.$(target).val(base_url+path+file).trigger( "change" );
-	close_window();
+		var target = $('#'+external,window_parent.document);
+		target.val(base_url+path+file).trigger('change');
+		close_window();
     }
     else
 	apply_any(path, file);
@@ -820,10 +819,8 @@ function apply_file_duplicate(container,name){
 }
 
 function apply_file_rename(container,name) {
-    
     container.attr('data-name',name);
     container.parent().attr('data-name',name);
-    
     container.find('h4').find('a').text(name);
     //select link
     var link=container.find('a.link');
@@ -836,9 +833,9 @@ function apply_file_rename(container,name) {
     
     //thumbnails
     container.find('img').each(function(){
-	var src =$(this).attr('src');
-	$(this).attr('src',src.replace(old_name,name+"."+extension));
-	$(this).attr('alt',name+" thumbnails");
+		var src =$(this).attr('src');
+		$(this).attr('src',src.replace(old_name,name+"."+extension)+'?time=' + new Date().getTime());
+		$(this).attr('alt',name+" thumbnails");
     });
     
     //preview link
