@@ -247,8 +247,6 @@ if(isset($_GET['action']))
 			}
 
 			$path = $current_path.$_POST['path'];
-		    $info = pathinfo($path);
-		    $base_folder = $current_path.fix_dirname($_POST['path'])."/";
 
 			if (is_dir($path))
 			{
@@ -278,7 +276,7 @@ if(isset($_GET['action']))
 				}
 			}
 
-			$_SESSION['RF']['clipboard']['path'] = $path;
+			$_SESSION['RF']['clipboard']['path'] = $_POST['path'];
 			$_SESSION['RF']['clipboard']['path_thumb'] = $_POST['path_thumb'];
 			$_SESSION['RF']['clipboard_action'] = $_POST['sub_action'];
 			break;
