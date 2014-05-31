@@ -16,18 +16,30 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 		urltype=2;
 		if (type=='image') { urltype=1; }
 		if (type=='media') { urltype=3; }
-                var title="RESPONSIVE FileManager";
-                if (typeof editor.settings.filemanager_title !== "undefined" && editor.settings.filemanager_title) 
-                    title=editor.settings.filemanager_title;
-                var sort_by="";
-                var descending="false";
-		if (typeof editor.settings.filemanager_sort_by !== "undefined" && editor.settings.filemanager_sort_by) 
-                    sort_by=editor.settings.filemanager_sort_by;
-		if (typeof editor.settings.filemanager_descending !== "undefined" && editor.settings.filemanager_descending) 
-                    descending=editor.settings.filemanager_descending;
+		var title="RESPONSIVE FileManager";
+		if (typeof editor.settings.filemanager_title !== "undefined" && editor.settings.filemanager_title) {
+			title=editor.settings.filemanager_title;
+		}
+		var akey="key";
+		if (typeof editor.settings.filemanager_access_key !== "undefined" && editor.settings.filemanager_access_key) {
+			akey=editor.settings.filemanager_access_key;
+		}
+		var sort_by="";
+		if (typeof editor.settings.filemanager_sort_by !== "undefined" && editor.settings.filemanager_sort_by) {
+			sort_by="&sort_by="+editor.settings.filemanager_sort_by;
+		}
+		var descending="false";
+		if (typeof editor.settings.filemanager_descending !== "undefined" && editor.settings.filemanager_descending) {
+			descending=editor.settings.filemanager_descending;
+		}
+		var fldr="";
+		if (typeof editor.settings.filemanager_subfolder !== "undefined" && editor.settings.filemanager_subfolder) {
+			fldr="&fldr="+editor.settings.filemanager_subfolder;
+		}
+
 		tinymce.activeEditor.windowManager.open({
 			title: title,
-			file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+'&sort_by='+sort_by+'&lang='+editor.settings.language,
+			file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+sort_by+fldr+'&lang='+editor.settings.language+'&akey='+akey,
 			width: 860,  
 			height: 570,
 			resizable: true,

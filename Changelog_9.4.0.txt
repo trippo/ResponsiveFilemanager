@@ -1,0 +1,62 @@
+Responsive Filemanager Changelog (9.4.0) update by Mikeyhun
+
+Major:
+- Cut/copy/paste support
+- Drag&drop support
+- Few new icons
+- Code refactor
+- Bugfixes
+
+Detailed:
+- Cut/copy/paste
+	You can configure the actions in config.php file and disable/ limit them if needed.
+	When right clicking on a folder/file there will be options for copy and cut 
+	(and paste if files on clipboard and righ clicked on a file)
+	There's icon for paste to this dir and clear clipboard after the 'new dir' icons
+	They will grey out if there's nothing on the clipboard.
+
+- Drag&drop
+	Now you can drag n drop files/folders to other folders 
+	(this will overwrite existing files if encountered any!)
+
+- Icons
+	Added new icons for the new functions
+	All are legit made by me or get from free icon sites
+
+- Code Refator
+	- Added bunch of comments and change a lot of codes.
+
+	- Changed all $_SESSION vars to be in a separet array 
+	eg.:$_SESSION["verify"] -> $_SESSION['RF']["verify"]
+	So now there won't be any problem with big projecfts integrating RF
+
+	- Added the lang file url to $_SESSION['RF']['language_file']
+	Now it can be included easily
+
+	- Added a lot of new lang. lines and feedback info
+	New lines added to every language (in english) so translation can go smoothly
+	(There are places where i added %s to lang lines which will be swapped with an action name
+	, commented out what will be inserted at runtime)
+
+	- Added timeout when closing upload tab
+
+
+- Bugfixes
+	- Corrected issue #69 Dropzone spritemap.png problem
+	Now when loading a language it will search for the appropiate spritemaps.
+	If none found will fallback to english
+	All spritemaps should follow the language code naming eg:
+	For hu_HU:
+		spritemap_hu_HU.png
+		spritemap@2x_hu_HU.png
+
+	(might consider moving them in a separte folder in the future)
+
+	- Fixed issue #71 The uploaded file exceeds the max size allowed
+	Now when uploading it properly check for max post size
+	It is dealt with in config.php after definning the max upload size and if it's bigger 
+	than server's ini it will revert it back to it. 
+
+
+Also added everything that was commited on the master branch by 
+trippo until 2014.03.22 15:54 gmt+1 (so everything before this updates pull request)

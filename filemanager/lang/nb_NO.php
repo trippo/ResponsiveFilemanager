@@ -51,9 +51,27 @@ define('lang_OK','OK');
 define('lang_Cancel','Avbryt');
 define('lang_Sorting','Sortering');
 define('lang_Show_url','Vis URL');
-define('lang_Extract','extract here');
+define('lang_Extract','Pakk ut her');
 define('lang_File_info','Fil-info');
 define('lang_Edit_image','Rediger bilde');
 define('lang_Duplicate','Duplikat');
-
+define('lang_Folders', 'Mapper');
+define('lang_Copy','Kopier');
+define('lang_Cut','Klipp ut');
+define('lang_Paste','Lim inn');
+define('lang_CB', 'Utklippstavle'); // clipboard
+define('lang_Paste_Here','Lim inn i denne mappen');
+define('lang_Paste_Confirm','Er du sikker på at du vil lime inn i denne mappen? Dette vil overskrive eventuelle eksisterende filer eller mapper.');
+define('lang_Paste_Failed','Lim inn feilet');
+define('lang_Clear_Clipboard','Tøm utklippstavlen');
+define('lang_Clear_Clipboard_Confirm','Er du sikker på at du vil tømme utklippstavlen?');
+define('lang_Files_ON_Clipboard','Der er filer på utklippstavlen.');
+define('lang_Copy_Cut_Size_Limit','De valgte filene/mappene er for store for %s. Grense: %d MB/operasjon'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Du valgte for mange filer/mapper for %s. Grense: %d filer/operasjon'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Du har ikke lov til å %s filer.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Kunne ikke lagre bildet');
+define('lang_Zip_No_Extract', 'Kunne ikke pakke ut. Filen er muligens ødelagt.');
+define('lang_Zip_Invalid', 'Dette filetternavnet er ikke støttet. Valide filer: zip, gz, tar.');
+define('lang_Dir_No_Write', 'Mappen du valgte er ikke skrivbar.');
+define('lang_Function_Disabled', 'Funksjonen %s er blitt deaktivert av serveren.'); // %s = cut or copy
 ?>

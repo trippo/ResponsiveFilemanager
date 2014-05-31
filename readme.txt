@@ -17,6 +17,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - BGR [Stanislav Panev]
 - BRA [paulomanrique]
 - CZE [jlusticky]
+- CHI [Richard Yang]
 - ENG
 - ESP [Roberto Santamaria] 
 - FRA [Mathieu Ducharme]

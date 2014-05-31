@@ -12,7 +12,7 @@ define('lang_Error_extension','La extensión del archivo no está permitida.');
 define('lang_Upload_file','Subir');
 define('lang_Filters','Filtros');
 define('lang_Videos','Videos');
-define('lang_Music','Musica');
+define('lang_Music','Música');
 define('lang_New_Folder','Nueva carpeta');
 define('lang_Folder_Created','La carpeta ha sido creada exitosamente.');
 define('lang_Existing_Folder','Carpeta existente');
@@ -23,7 +23,7 @@ define('lang_Download','Descargar');
 define('lang_Insert_Folder_Name','Nombre de la carpeta:');
 define('lang_Root','raíz');
 define('lang_Rename','Renombrar');
-define('lang_Back','atrás');
+define('lang_Back','Atrás');
 define('lang_View','Vista');
 define('lang_View_list','Vista de lista');
 define('lang_View_columns_list','Vista de columnas');
@@ -54,5 +54,24 @@ define('lang_Show_url','Mostrar URL');
 define('lang_Extract','Extraer aquí');
 define('lang_File_info','Información');
 define('lang_Edit_image','Editar imagen');
-define('lang_Duplicate','Duplicate');
+define('lang_Duplicate','Duplicar');
+define('lang_Folders', 'Carpetas');
+define('lang_Copy','Copiar');
+define('lang_Cut','Cortar');
+define('lang_Paste','Pegar');
+define('lang_CB', 'Portapapeles'); // clipboard
+define('lang_Paste_Here','Pegar en esta carpeta');
+define('lang_Paste_Confirm','¿Está seguro de pegar el contenido en esta carpeta? Esta acción sobreescribirá los archivos y carpetas existentes.');
+define('lang_Paste_Failed','Error al pegar los archivos');
+define('lang_Clear_Clipboard','Limpiar el portapapeles');
+define('lang_Clear_Clipboard_Confirm','¿Está seguro que desea limpiar el portapapeles?');
+define('lang_Files_ON_Clipboard','Existen archivos en el portapapeles');
+define('lang_Copy_Cut_Size_Limit','Los archivos/carpetas seleccionados son demasiado grandes para %s. Límite: %d MB/operación'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Ha seleccionado demasiados archivos/carpetas para %s. Límite: %d archivos/operación'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','No está permitido de %s archivos.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'No fue posible guardar la imagen');
+define('lang_Zip_No_Extract', 'No fue posible extraer los archivos. Es posible que el archivo esté corrupto.');
+define('lang_Zip_Invalid', 'Esta extensión no es soportada. Extensiones válidas: zip, gz, tar.');
+define('lang_Dir_No_Write', 'El directorio que ha seleccionado no tiene permisos de escritura.');
+define('lang_Function_Disabled', 'La función %s ha sido deshabilitada en el servidor.'); // %s = cut or copy
 ?>

@@ -55,4 +55,23 @@ define('lang_Extract','estrai qui');
 define('lang_File_info','informazioni file');
 define('lang_Edit_image','modifica immagine');
 define('lang_Duplicate','Duplica');
+define('lang_Folders', 'Folders');
+define('lang_Copy','Copia');
+define('lang_Cut','Taglia');
+define('lang_Paste','Incolla');
+define('lang_CB', 'CB'); // clipboard
+define('lang_Paste_Here','Incolla su questa cartella');
+define('lang_Paste_Confirm','Sei sicuro di voler incollare in questa cartella? Questo file sovrascriverà i file/cartelle esistenti qual\'ora ci fossero.');
+define('lang_Paste_Failed','Errore nell\'incollare il/i file');
+define('lang_Clear_Clipboard','Pulisci clipboard');
+define('lang_Clear_Clipboard_Confirm','Sei sicuro di voler cancellare la clipboard?');
+define('lang_Files_ON_Clipboard','Ci sono file nella clipboard.');
+define('lang_Copy_Cut_Size_Limit','I file o cartelle selezionati sono troppo grandi per %s. Il limite è: %d MB/operazione'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Hai selezionato troppi files/cartelle da %s. Il limite è: %d files/operazione'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Non hai i permessi per %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Non è stato possibile salvare l\'immagine');
+define('lang_Zip_No_Extract', 'Non si può estrarre il pacchetto perchè sembra corrotto');
+define('lang_Zip_Invalid', 'Questa estensione non è supportata. Le estensioni valide sono: zip, gz, tar.');
+define('lang_Dir_No_Write', 'La cartella selezionata non è scrivibile.');
+define('lang_Function_Disabled', 'La funzione %s è stata disabilitata.'); // %s = cut or copy
 ?>
