@@ -4,12 +4,7 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 
-$thumb_pos  = strpos($_POST['path_thumb'], $thumbs_base_path);
-
-if ($thumb_pos !=0
-    || strpos($_POST['path_thumb'],'../',strlen($thumbs_base_path)+$thumb_pos)!==FALSE
-    || strpos($_POST['path'],'/')===0
-    || strpos($_POST['path'],'../')!==FALSE
+if (strpos($_POST['path'],'../')!==FALSE
     || strpos($_POST['path'],'./')===0)
 {
     die('wrong path');
@@ -27,9 +22,9 @@ if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='')
 
 require_once $language_file;
 
-$base = $current_path;
-$path = $current_path.$_POST['path'];
-$cycle = TRUE;
+$base = $upload_path;
+$path = $upload_path.$_POST['path'];
+$cycle = true;
 $max_cycles = 50;
 $i = 0;
 while($cycle && $i<$max_cycles)
@@ -46,11 +41,11 @@ while($cycle && $i<$max_cycles)
     $cycle = FALSE;
 }
 
-$path = $current_path.$_POST['path'];
-$path_thumb = $_POST['path_thumb'];
+$path = $upload_path.$_POST['path'];
+$path_thumb = $thumbs_base_path . $_POST['path'];
 if (isset($_POST['name']))
 {
-    $name = $_POST['name'];
+    $name=$_POST['name'];
     if (strpos($name,'../') !== FALSE) die('wrong name');
 }
 
@@ -221,7 +216,7 @@ if (isset($_GET['action']))
 
             $action = $_SESSION['RF']['clipboard_action'];
             $data = $_SESSION['RF']['clipboard'];
-            $data['path'] = $current_path.$data['path'];
+            $data['path'] = $upload_path.$data['path'];
             $pinfo = pathinfo($data['path']);
             
             // user wants to paste to the same dir. nothing to do here...

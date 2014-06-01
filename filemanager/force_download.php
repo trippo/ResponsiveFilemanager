@@ -11,7 +11,7 @@ if(strpos($_POST['path'],'/')===0
 if(strpos($_POST['name'],'/')!==FALSE)
     die('wrong path');
 
-$path=$current_path.$_POST['path'];
+$path=$upload_path.$_POST['path'];
 $name=$_POST['name'];
 
 $info=pathinfo($name);

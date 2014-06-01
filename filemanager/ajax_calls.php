@@ -1,10 +1,9 @@
 <?php
-
 include('config/config.php');
 if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('Access Denied!');
 include('include/utils.php');
 
-if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
+if (isset($_SESSION['RF']['language_file']) && file_exists(dirname(__FILE__) . '/' . $_SESSION['RF']['language_file'])){
 	include($_SESSION['RF']['language_file']);
 }
 else {
@@ -59,20 +58,20 @@ if(isset($_GET['action']))
 		        die(lang_Aviary_No_Save);
 		    }
 
-		    file_put_contents($current_path.$_POST['path'].$_POST['name'],$image_data);
+		    file_put_contents($upload_path.$_POST['path'].$_POST['name'],$image_data);
 
-		    create_img_gd($current_path.$_POST['path'].$_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
+		    create_img_gd($upload_path.$_POST['path'].$_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
 		    // TODO something with this function cause its blowing my mind
-		    new_thumbnails_creation($current_path.$_POST['path'],$current_path.$_POST['path'].$_POST['name'],$_POST['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+		    new_thumbnails_creation($upload_path.$_POST['path'],$upload_path.$_POST['path'].$_POST['name'],$_POST['name'],$upload_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
 		    break;
 		case 'extract':
 		    if(strpos($_POST['path'],'/')===0 || strpos($_POST['path'],'../')!==FALSE || strpos($_POST['path'],'./')===0) {
 				die('wrong path');
 			}
 
-		    $path = $current_path.$_POST['path'];
+		    $path = $upload_path.$_POST['path'];
 		    $info = pathinfo($path);
-		    $base_folder = $current_path.fix_dirname($_POST['path'])."/";
+		    $base_folder = $upload_path.fix_dirname($_POST['path'])."/";
 
 		    switch($info['extension'])
 		    {
@@ -124,7 +123,7 @@ if(isset($_GET['action']))
 				    $phar->decompressFiles();
 				    $files = array();
 				    check_files_extensions_on_phar( $phar, $files, '', $ext );
-				    $phar->extractTo( $current_path.fix_dirname( $_POST['path'] )."/", $files, TRUE );
+				    $phar->extractTo( $base_folder, $files, TRUE );
 
 				    break;
 
@@ -246,7 +245,7 @@ if(isset($_GET['action']))
 				die('no path');
 			}
 
-			$path = $current_path.$_POST['path'];
+			$path = $upload_path.$_POST['path'];
 
 			if (is_dir($path))
 			{
