@@ -4,10 +4,7 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 
-$thumb_pos  = strpos($_POST['path_thumb'], $thumbs_base_path);
-
-if ($thumb_pos !=0
-    || strpos($_POST['path'],'../')!==FALSE
+if (strpos($_POST['path'],'../')!==FALSE
     || strpos($_POST['path'],'./')===0)
 {
     die('wrong path');
@@ -219,7 +216,7 @@ if (isset($_GET['action']))
 
             $action = $_SESSION['RF']['clipboard_action'];
             $data = $_SESSION['RF']['clipboard'];
-            $data['path'] = $current_path.$data['path'];
+            $data['path'] = $upload_path.$data['path'];
             $pinfo = pathinfo($data['path']);
             
             // user wants to paste to the same dir. nothing to do here...
