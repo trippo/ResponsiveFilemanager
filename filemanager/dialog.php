@@ -307,7 +307,7 @@ $get_params = http_build_query(array(
 	   });
 	    }
 	</script>
-	<script type="text/javascript" src="js/include.min.js"></script>
+	<script type="text/javascript" src="js/include.js"></script>
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
@@ -342,6 +342,9 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="lang_files_on_clipboard" value="<?php echo lang_Files_ON_Clipboard; ?>" />
 	<input type="hidden" id="clipboard" value="<?php echo ((isset($_SESSION['RF']['clipboard']['path']) && trim($_SESSION['RF']['clipboard']['path']) != null) ? 1 : 0); ?>" />
 	<input type="hidden" id="lang_clear_clipboard_confirm" value="<?php echo lang_Clear_Clipboard_Confirm; ?>" />
+	<input type="hidden" id="lang_file_permission" value="<?php echo lang_File_Permission; ?>" />
+	<input type="hidden" id="chmod_files_allowed" value="<?php if($chmod_files) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="chmod_dirs_allowed" value="<?php if($chmod_dirs) echo 1; else echo 0; ?>" />
 	<input type="hidden" id="lang_file_info" value="<?php echo fix_strtoupper(lang_File_info); ?>" />
 	<input type="hidden" id="lang_edit_image" value="<?php echo lang_Edit_image; ?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo lang_Extract; ?>" />

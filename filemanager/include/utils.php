@@ -453,6 +453,54 @@ function rrename_after_cleaner($source) {
     return rmdir($source);
 } 
 
+function rchmod($source, $mode, $rec_option = "none"){
+    if ($rec_option == "none")
+    {
+        chmod($source, $mode);
+    }
+    else 
+    {
+        $files = scandir($source);
+
+        foreach ($files as $file) 
+        {
+            if ($file != "." && $file != "..") 
+            {
+                if (is_dir($source.DIRECTORY_SEPARATOR.$file))
+                {
+                    if ($rec_option == "folders" || $rec_option == "both")
+                    {
+                        chmod($source.DIRECTORY_SEPARATOR.$file, $mode);
+                    }
+                    rchmod($source.DIRECTORY_SEPARATOR.$file, $mode, $rec_option);
+                }
+                else 
+                {
+                    if ($rec_option == "files" || $rec_option == "both")
+                    {
+                        chmod($source.DIRECTORY_SEPARATOR.$file, $mode);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function chmod_logic_helper($perm, $val){
+    $valid = array(
+        1 => array(1,3,5,7),
+        2 => array(2,3,6,7),
+        4 => array(4,5,6,7)
+    );
+
+    if (in_array($perm, $valid[$val])){
+        return TRUE;
+    }
+    else {
+        return FALSE;
+    }
+}
+
 function debugger($input, $trace = FALSE, $halt = FALSE){
     ob_start();
 
@@ -462,7 +510,12 @@ function debugger($input, $trace = FALSE, $halt = FALSE){
     echo "</pre>";
     
     if ($trace){
-        $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        if( is_php('5.3.6')){
+            $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        }
+        else{
+            $debug = debug_backtrace(FALSE);
+        }
 
         echo "<br>-----STACK TRACE-----";
         echo "<pre>";
@@ -481,6 +534,18 @@ function debugger($input, $trace = FALSE, $halt = FALSE){
     if ($halt == TRUE){
         exit();
     }
+}
+
+function is_php($version = '5.0.0'){
+    static $phpVer;
+    $version = (string)$version;
+
+    if ( ! isset($phpVer[$version]))
+    {
+        $phpVer[$version] = (version_compare(PHP_VERSION, $version) < 0) ? FALSE : TRUE;
+    }
+
+    return $phpVer[$version];
 }
 
 ?>

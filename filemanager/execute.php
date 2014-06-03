@@ -272,6 +272,25 @@ if (isset($_GET['action']))
             $_SESSION['RF']['clipboard_action'] = NULL;
 
             break;
+        case 'chmod':
+            $mode = $_POST['new_mode'];
+            $rec_option = $_POST['is_recursive'];
+            $valid_options = array('none', 'files', 'folders', 'both');
+
+            if (!preg_match("/^[0-7]{3}$/", $mode)){
+                die(lang_File_Permission_Wrong_Mode);
+            }
+
+            if (!in_array($rec_option, $valid_options)){
+                die("wrong option");
+            }
+            
+            $mode = "0".$mode;
+            $mode = (int)$mode;
+            debugger($mode);
+            rchmod($path, $mode, $rec_option);
+
+            break;
         default:
             die('wrong action');
     }  

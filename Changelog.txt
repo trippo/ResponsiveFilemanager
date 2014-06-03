@@ -1,4 +1,60 @@
-Responsive Filemanager Changelog (9.4.0) update by Mikeyhun
+Responsive Filemanager Changelog 
+
+|------------------------------|
+|          RFM 9.4.1           |
+|------------------------------|
+
+Major:
+- Security Access Keys
+- More Tinymce settings
+- Tinymce 3.* support
+- Bugfixes
+
+Detailed:
+- Security Access Keys
+	If 'USE_ACCESS_KEYS' are set to true only those will access RF whose url
+	contains the access key (akey) like:
+	<input type="button" href="../filemanager/dialog.php?akey=myPrivateKey">
+
+	Allowed access keys are defined in the config as well.
+	$access_keys must be an array so you can add multiple.
+	Your access key should NEVER be 'key' and keep in mind they are CASE
+	SENSITIVE!
+	For recommended key generation read the comments in the config file.
+
+	If there's no access key supplied with the url or it's not in the
+	$access_key array you will get 'Access Denied' and you cannot continue.
+
+	For tinymce a new variable was added: "filemanager_access_key"
+
+	Tinymce config example:
+
+	tinyinit
+	...
+	external_filemanager_path:"../filemanager",
+	filemanager_access_key: "myPrivateKey",
+	...
+
+	This is a bit of additional security so no one can access your filesystem.
+
+- More Tinymce settings
+	- Added 'filemanager_subfolder' param so you can now define the starting folder in tinymce
+  	eg: 'filemanager_subfolder:"subfolder/"'
+  	- Added 'filemanager_type' param !!!!!!!!!!!! Rigth now it's bugged so this function is OFF!!!!!!!!!!
+  	eg: 'filemanager_type=1'
+  	type can be: 1,2,3,'image','media'
+
+- Bugfixes
+	- Fixed audio/video player bug
+	- Fix in remember last position
+	- Show url context link in all files and folder
+	- Fixed a problem with old thumbnails on renaming
+	- Fixed a copy past issue
+	- Fixed Standalone Mode not using the field_id passed in mixed use cases
+
+|------------------------------|
+|          RFM 9.4.0           |
+|------------------------------|
 
 Major:
 - Cut/copy/paste support
@@ -56,7 +112,3 @@ Detailed:
 	Now when uploading it properly check for max post size
 	It is dealt with in config.php after definning the max upload size and if it's bigger 
 	than server's ini it will revert it back to it. 
-
-
-Also added everything that was commited on the master branch by 
-trippo until 2014.03.22 15:54 gmt+1 (so everything before this updates pull request)

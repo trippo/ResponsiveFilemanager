@@ -74,5 +74,13 @@ define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
 define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
 define('lang_Dir_No_Write', 'The directory you selected is not writable.');
 define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
+define('lang_File_Permission', 'File permission');
+define('lang_File_Permission_Not_Allowed', 'Changing %s permissions are not allowed.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Apply recursively?');
+define('lang_File_Permission_Wrong_Mode', "The supplied permission mode is incorrect.");
+define('lang_User', 'User');
+define('lang_Group', 'Group');
+define('lang_Yes', 'Yes');
+define('lang_No', 'No');
 
 ?>

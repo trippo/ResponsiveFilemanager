@@ -77,6 +77,9 @@ $(document).ready(function(){
 		    case "paste":
 		    	paste_to_this_dir();
 			    break;
+			case "chmod":
+				chmod($trigger);
+				break;
 		  }},
 		  items: {}
 		};
@@ -117,6 +120,14 @@ $(document).ready(function(){
 		// Its not added to folders because it might confuse someone
 		if ($('#clipboard').val() != 0 && !$trigger.hasClass('directory')) {
 		    options.items.paste = {name: $('#lang_paste_here').val(),icon:"clipboard-apply", disabled:false };
+		}
+
+		// file permission
+		if (!$trigger.hasClass('directory') && $('#chmod_files_allowed').val()==1) {
+		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"copy", disabled:false };
+		}
+		else if ($trigger.hasClass('directory') && $('#chmod_dirs_allowed').val()==1) {
+		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"copy", disabled:false };
 		}
 
 		// fileinfo
@@ -501,12 +512,151 @@ $(document).ready(function(){
       activeClass: "ui-state-highlight",  
   	hoverClass: "ui-state-highlight",
 	drop: function(event, ui){
-		// copy_cut_clicked(ui.draggable.find('figure'), 'cut');
-		// paste_to_this_dir($(this).find('figure'));
 		drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
 	}
 	});
+
+	$(document).on("keyup", '#chmod_form #chmod_value', function() 
+	{
+		chmod_logic(true);
+	});
+	//safety 
+	$(document).on("focusout", '#chmod_form #chmod_value', function() 
+	{
+		var chmod_temp_val = $('#chmod_form #chmod_value').val();
+		if (chmod_temp_val.match(/^[0-7]{3}$/) == null) 
+		{
+			var def_val = $('#chmod_form #chmod_value').attr('data-def-value'); 
+			$('#chmod_form #chmod_value').val(def_val);
+			chmod_logic(true);
+		}
+	});
 });
+
+function chmod($trigger) {
+	// remove to prevent duplicates
+	$('#files_permission_start').parent().parent().remove();
+
+	if (!$trigger.hasClass('directory')){
+		var is_dir = false;
+    	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
+    	var full_path = $trigger.find('.rename-file').attr('data-path');
+    }
+    else {
+    	var is_dir = true;
+    	var thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
+    	var full_path = $trigger.find('.rename-folder').attr('data-path');
+    }
+
+    // ajax -> box -> ajax -> box -> mind blown
+	$.ajax({
+	type: "POST",
+	url: "ajax_calls.php?action=chmod",
+	data: { path: full_path, path_thumb: thumb_path }
+    }).done(function( init_msg ) 
+    {
+		bootbox.dialog(init_msg, 
+		[
+			{
+				"label" : $('#cancel').val(),
+				"class" : "btn-danger"
+			}, 
+			{
+				"label" : $('#ok').val(),
+				"class" : "btn-primary",
+				"callback": function() {
+					// get new perm
+                    var newPerm = $('#chmod_form #chmod_value').val();
+                    if (newPerm != '' && typeof newPerm !== "undefined")
+                    {
+                    	// get recursive option if any
+                    	var recOpt = $('#chmod_form input[name=apply_recursive]:checked').val();
+                    	if (recOpt == '' || typeof recOpt === "undefined"){
+                    		recOpt = 'none';
+                    	}
+
+                    	// post ajax
+                    	$.ajax({
+						type: "POST",
+						url: "execute.php?action=chmod",
+						data: {path: full_path, path_thumb: thumb_path, new_mode: newPerm, is_recursive: recOpt}
+						}).done(function( status_msg ) {
+							if (status_msg!=""){
+								bootbox.alert(status_msg);
+							}
+						});
+                    }
+                }
+			}
+		]);
+    });
+}
+
+function chmod_logic(is_text=false) {
+	var perm = [];
+	perm['user'] = 0;
+	perm['group'] = 0;
+	perm['all'] = 0;
+
+	// value was set by text input
+	if (is_text == true){
+		// assign values
+		var newperm = $('#chmod_form #chmod_value').val();
+		perm['user'] = newperm.substr(0,1);
+		perm['group'] = newperm.substr(1,1);
+		perm['all'] = newperm.substr(2,1);
+		
+		// check values for errors (empty,not num, not 0-7)
+		$.each(perm, function(index) {
+			if ( perm[index] == '' || 
+				$.isNumeric(perm[index]) == false || 
+				(parseInt(perm[index]) < 0 || parseInt(perm[index]) > 7) ) 
+			{
+				perm[index] = "0";
+			}
+		});
+
+		// update checkboxes
+		$('#chmod_form input:checkbox').each(function() {
+			var group = $(this).attr('data-group');
+			var val = $(this).attr('data-value');
+
+			if (chmod_logic_helper(perm[group], val)){
+				$(this).prop('checked', true);
+			}
+			else {
+				$(this).prop('checked', false);
+			}
+		});
+
+	}
+	else { //a checkbox was updated
+		$('#chmod_form input:checkbox:checked').each(function() {
+			var group = $(this).attr('data-group');
+			var val = $(this).attr('data-value');
+			perm[group] = parseInt(perm[group]) + parseInt(val);
+		});
+
+		$('#chmod_form #chmod_value').val(perm['user'].toString() + perm['group'].toString() + perm['all'].toString());
+	}
+}
+
+function chmod_logic_helper(perm, val){
+	var valid = [];
+	valid[1] = [1,3,5,7];
+	valid[2] = [2,3,6,7];
+	valid[4] = [4,5,6,7];
+
+	perm = parseInt(perm);
+	val = parseInt(val);
+
+	if ($.inArray(perm, valid[val]) != -1){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 
 function clear_clipboard() {
 	bootbox.confirm($('#lang_clear_clipboard_confirm').val(),$('#cancel').val(),$('#ok').val(), function(result) {

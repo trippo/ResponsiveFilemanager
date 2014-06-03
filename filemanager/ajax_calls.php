@@ -284,6 +284,74 @@ if(isset($_GET['action']))
 			$_SESSION['RF']['clipboard'] = NULL;
 			$_SESSION['RF']['clipboard_action'] = NULL;
 			break;
+		case 'chmod':
+			$path = $current_path.$_POST['path'];
+			if ( (is_dir($path) && $chmod_dirs === FALSE) ||
+				 (is_file($path) && $chmod_files === FALSE) ||
+				 (is_function_callable("chmod") === FALSE) )
+			{
+				die(sprintf(lang_File_Permission_Not_Allowed, (is_dir($path) ? lcfirst(lang_Folders) : lcfirst(lang_Files))));
+			}
+			else 
+			{
+				$perm = decoct(fileperms($path) & 0777);
+				$perm_user = substr($perm, 0, 1);
+				$perm_group = substr($perm, 1, 1);
+				$perm_all = substr($perm, 2, 1);
+
+				$ret = '<h3 id="files_permission_start">File Permissions</h3>
+				<form id="chmod_form">
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								<td>r&nbsp;&nbsp;</td>
+								<td>w&nbsp;&nbsp;</td>
+								<td>x&nbsp;&nbsp;</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>'.lang_User.'</td>
+								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
+								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
+								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
+							</tr>
+							<tr>
+								<td>'.lang_Group.'</td>
+								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
+								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
+								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
+							</tr>
+							<tr>
+								<td>'.lang_All.'</td>
+								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
+								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
+								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan="3"><input name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
+							</tr>
+						</tbody>
+					</table>';
+
+				if (is_dir($path)){
+					$ret .= '<div>'.lang_File_Permission_Recursive.'
+							<ul>
+								<li><input value="none" name="apply_recursive" type="radio" checked> '.lang_No.'</li>
+								<li><input value="files" name="apply_recursive" type="radio"> '.lang_Files.'</li>
+								<li><input value="folders" name="apply_recursive" type="radio"> '.lang_Folders.'</li>
+								<li><input value="both" name="apply_recursive" type="radio"> '.lang_Files.' & '.lang_Folders.'</li>
+							</ul>
+							</div>';
+				}
+
+				$ret .= '</form>';
+
+				echo $ret;
+			}
+			break;
 	    default: die('no action passed');
     }
 }
