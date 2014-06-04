@@ -588,7 +588,10 @@ function chmod($trigger) {
                     }
                 }
 			}
-		]);
+		],
+		{
+			"header" : $('#lang_file_permission').val()
+		});
     });
 }
 

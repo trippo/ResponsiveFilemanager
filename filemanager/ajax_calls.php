@@ -299,9 +299,9 @@ if(isset($_GET['action']))
 				$perm_group = substr($perm, 1, 1);
 				$perm_all = substr($perm, 2, 1);
 
-				$ret = '<h3 id="files_permission_start">File Permissions</h3>
+				$ret = '<div id="files_permission_start">
 				<form id="chmod_form">
-					<table>
+					<table class="file-perms-table">
 						<thead>
 							<tr>
 								<td></td>
@@ -331,7 +331,7 @@ if(isset($_GET['action']))
 							</tr>
 							<tr>
 								<td></td>
-								<td colspan="3"><input name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
+								<td colspan="3"><input type="text" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
 							</tr>
 						</tbody>
 					</table>';
@@ -347,7 +347,7 @@ if(isset($_GET['action']))
 							</div>';
 				}
 
-				$ret .= '</form>';
+				$ret .= '</form></div>';
 
 				echo $ret;
 			}
