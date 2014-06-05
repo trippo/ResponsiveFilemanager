@@ -286,8 +286,8 @@ if (isset($_GET['action']))
             }
             
             $mode = "0".$mode;
-            $mode = (int)$mode;
-            debugger($mode);
+            $mode = octdec($mode);
+
             rchmod($path, $mode, $rec_option);
 
             break;

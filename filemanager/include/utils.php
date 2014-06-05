@@ -453,13 +453,17 @@ function rrename_after_cleaner($source) {
     return rmdir($source);
 } 
 
-function rchmod($source, $mode, $rec_option = "none"){
+function rchmod($source, $mode, $rec_option = "none", $is_rec = FALSE){
     if ($rec_option == "none")
     {
         chmod($source, $mode);
     }
     else 
     {
+        if ($is_rec === FALSE){
+            chmod($source, $mode);
+        }
+
         $files = scandir($source);
 
         foreach ($files as $file) 
@@ -472,7 +476,7 @@ function rchmod($source, $mode, $rec_option = "none"){
                     {
                         chmod($source.DIRECTORY_SEPARATOR.$file, $mode);
                     }
-                    rchmod($source.DIRECTORY_SEPARATOR.$file, $mode, $rec_option);
+                    rchmod($source.DIRECTORY_SEPARATOR.$file, $mode, $rec_option, TRUE);
                 }
                 else 
                 {

@@ -124,10 +124,10 @@ $(document).ready(function(){
 
 		// file permission
 		if (!$trigger.hasClass('directory') && $('#chmod_files_allowed').val()==1) {
-		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"copy", disabled:false };
+		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"key", disabled:false };
 		}
 		else if ($trigger.hasClass('directory') && $('#chmod_dirs_allowed').val()==1) {
-		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"copy", disabled:false };
+		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"key", disabled:false };
 		}
 
 		// fileinfo
@@ -538,12 +538,10 @@ function chmod($trigger) {
 	$('#files_permission_start').parent().parent().remove();
 
 	if (!$trigger.hasClass('directory')){
-		var is_dir = false;
     	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
     	var full_path = $trigger.find('.rename-file').attr('data-path');
     }
     else {
-    	var is_dir = true;
     	var thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
     	var full_path = $trigger.find('.rename-folder').attr('data-path');
     }
@@ -559,11 +557,11 @@ function chmod($trigger) {
 		[
 			{
 				"label" : $('#cancel').val(),
-				"class" : "btn-danger"
+				"class" : "btn"
 			}, 
 			{
 				"label" : $('#ok').val(),
-				"class" : "btn-primary",
+				"class" : "btn-inverse",
 				"callback": function() {
 					// get new perm
                     var newPerm = $('#chmod_form #chmod_value').val();
