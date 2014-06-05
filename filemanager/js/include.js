@@ -1,15 +1,16 @@
-var version="9.4.1";
-var active_contextmenu=true;
+var version = "9.4.1";
+var active_contextmenu = true;
 if (loading_bar){   
-if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
-    window.addEventListener('DOMContentLoaded', function() {
-        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
-    });
-}else {
-    $(document).ready(function () {
-        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
-    });
-}
+	if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
+	    window.addEventListener('DOMContentLoaded', function() {
+	        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
+	    });
+	}
+	else {
+	    $(document).ready(function () {
+	        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
+	    });
+	}
 }
 $(document).ready(function(){
 	// Right click menu
@@ -639,14 +640,14 @@ function chmod($trigger) {
     });
 }
 
-function chmod_logic(is_text=false) {
+function chmod_logic(is_text) {
 	var perm = [];
 	perm['user'] = 0;
 	perm['group'] = 0;
 	perm['all'] = 0;
 
 	// value was set by text input
-	if (is_text == true){
+	if (typeof is_text !== "undefined" && is_text == true){
 		// assign values
 		var newperm = $('#chmod_form #chmod_value').val();
 		perm['user'] = newperm.substr(0,1);
