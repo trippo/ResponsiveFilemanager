@@ -74,4 +74,14 @@ define('lang_Zip_No_Extract', 'Kicsomagolás sikertelen. Lehet, hogy korrupt a f
 define('lang_Zip_Invalid', 'Ez a kiterjesztés nem támogatott. Támogatott: zip, gz, tar.');
 define('lang_Dir_No_Write', 'A kiválasztott mappa nem írható.');
 define('lang_Function_Disabled', 'A %s funkciót letiltotta a szerver.'); // %s = cut or copy
+define('lang_File_Permission', 'Engedélyek');
+define('lang_File_Permission_Not_Allowed', 'A %s jogainak a megváltoztatása nem engedélyezett.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Rekurzív beállítás az almappákra?');
+define('lang_File_Permission_Wrong_Mode', "A beírt engedély nem megfelelő.");
+define('lang_User', 'Felhasználó');
+define('lang_Group', 'Csoport');
+define('lang_Yes', 'Igen');
+define('lang_No', 'Nem');
+define('lang_Lang_Not_Found', 'A nyelv nem található.');
+define('lang_Lang_Change', 'Nyelv megváltoztatása');
 ?>

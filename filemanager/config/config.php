@@ -110,8 +110,8 @@ $rename_folders	 = TRUE;
 $duplicate_files = TRUE;
 $copy_cut_files	 = TRUE; // for copy/cut files
 $copy_cut_dirs	 = TRUE; // for copy/cut directories
-$chmod_files 	 = TRUE; // change file permissions
-$chmod_dirs		 = TRUE; // change folder permissions
+$chmod_files 	 = FALSE; // change file permissions
+$chmod_dirs		 = FALSE; // change folder permissions
 
 
 // defines size limit for paste in MB / operation

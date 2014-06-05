@@ -74,5 +74,14 @@ define('lang_Zip_No_Extract', '文件解压缩失败。文件可能已经损坏'
 define('lang_Zip_Invalid', '不支持此文件后缀，支持的后缀名: zip, gz, tar.');
 define('lang_Dir_No_Write', '您选择的目录没有写权限');
 define('lang_Function_Disabled', '%s 功能已经被服务器禁用。'); // %s = cut or copy
-
+define('lang_File_Permission', 'File permission');
+define('lang_File_Permission_Not_Allowed', 'Changing %s permissions are not allowed.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Apply recursively?');
+define('lang_File_Permission_Wrong_Mode', "The supplied permission mode is incorrect.");
+define('lang_User', 'User');
+define('lang_Group', 'Group');
+define('lang_Yes', 'Yes');
+define('lang_No', 'No');
+define('lang_Lang_Not_Found', 'Could not find language.');
+define('lang_Lang_Change', 'Change the language');
 ?>

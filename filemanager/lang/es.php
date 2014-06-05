@@ -74,4 +74,14 @@ define('lang_Zip_No_Extract', 'No fue posible extraer los archivos. Es posible q
 define('lang_Zip_Invalid', 'Esta extensión no es soportada. Extensiones válidas: zip, gz, tar.');
 define('lang_Dir_No_Write', 'El directorio que ha seleccionado no tiene permisos de escritura.');
 define('lang_Function_Disabled', 'La función %s ha sido deshabilitada en el servidor.'); // %s = cut or copy
+define('lang_File_Permission', 'File permission');
+define('lang_File_Permission_Not_Allowed', 'Changing %s permissions are not allowed.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Apply recursively?');
+define('lang_File_Permission_Wrong_Mode', "The supplied permission mode is incorrect.");
+define('lang_User', 'User');
+define('lang_Group', 'Group');
+define('lang_Yes', 'Yes');
+define('lang_No', 'No');
+define('lang_Lang_Not_Found', 'Could not find language.');
+define('lang_Lang_Change', 'Change the language');
 ?>

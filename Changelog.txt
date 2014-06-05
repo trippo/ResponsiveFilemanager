@@ -1,16 +1,62 @@
 Responsive Filemanager Changelog 
 
-|------------------------------|
-|          RFM 9.4.1           |
-|------------------------------|
+*************************************************************
+*  RFM 9.4.2
+*************************************************************
 
-Major:
+***** Major *****
+- File permission changing
+- Language Changing
+- Added documentation
+- Fixes
+
+
+***** Detailed *****
+- File permission changing (OFF BY DEFAULT!)
+	Now you can change the files/folders permission with a slick window.
+	To access the window first you must activate it in the config file.
+	After you activated it you can reach it from the rigth click menu.
+	You can configure the permission with both text and checkboxes.
+	If you entered a wrong format/number the initial state will be restored.
+	When changing permissions for folders there will be more options for
+	recursive changing (No/only files/only folders/both).
+	If you set the permission wrong there will be errors.
+
+	NOTE! If you don't know what you are doing than leave as it is bacause
+	you can cause trouble.
+	Usually files are 666 and folders are 775
+	You CANNOT set the sticky bit!
+
+- Language Changing
+	You can now change the language dynamicly from the menu.
+	The button is located next to the refresh button (a globe icon)
+	
+	If adding new language, it should be added to the languages.php file as 
+	well for it to show up.
+	
+	I tried to identify all language codes and add there name on there own
+	language but I might messed up so please check it and correct it if
+	necessary. (Because I'm only a human and speak only 2 languages)
+
+- Added documentation
+	You will find a setup guide and config explanation in it.
+
+- Fixes
+	Fixed some css overflow errors
+	Removed hr.php lang because it's the same as hr_HR.php
+
+*************************************************************
+*  RFM 9.4.1
+*************************************************************
+
+***** Major *****
 - Security Access Keys
 - More Tinymce settings
 - Tinymce 3.* support
 - Bugfixes
 
-Detailed:
+
+***** Detailed *****
 - Security Access Keys
 	If 'USE_ACCESS_KEYS' are set to true only those will access RF whose url
 	contains the access key (akey) like:
@@ -40,9 +86,6 @@ Detailed:
 - More Tinymce settings
 	- Added 'filemanager_subfolder' param so you can now define the starting folder in tinymce
   	eg: 'filemanager_subfolder:"subfolder/"'
-  	- Added 'filemanager_type' param !!!!!!!!!!!! Rigth now it's bugged so this function is OFF!!!!!!!!!!
-  	eg: 'filemanager_type=1'
-  	type can be: 1,2,3,'image','media'
 
 - Bugfixes
 	- Fixed audio/video player bug
@@ -52,18 +95,19 @@ Detailed:
 	- Fixed a copy past issue
 	- Fixed Standalone Mode not using the field_id passed in mixed use cases
 
-|------------------------------|
-|          RFM 9.4.0           |
-|------------------------------|
+*************************************************************
+*  RFM 9.4.0
+*************************************************************
 
-Major:
+***** Major *****
 - Cut/copy/paste support
 - Drag&drop support
 - Few new icons
 - Code refactor
 - Bugfixes
 
-Detailed:
+
+***** Detailed *****
 - Cut/copy/paste
 	You can configure the actions in config.php file and disable/ limit them if needed.
 	When right clicking on a folder/file there will be options for copy and cut 
