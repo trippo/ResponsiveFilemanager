@@ -115,26 +115,35 @@ if(!isset($_SESSION['RF']['descending'])) $_SESSION['RF']['descending']=false;
 if(isset($_GET["descending"])) $descending=$_SESSION['RF']['descending']=fix_get_params($_GET["descending"])==="true";
 else $descending=$_SESSION['RF']['descending'];
 
+if (!isset($_SESSION['RF']['language']) || file_exists($_SESSION['RF']['language_file']) === FALSE || !is_readable($_SESSION['RF']['language_file'])) 
+{
+	$lang=$default_language;
+	if(isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
+	    $lang=fix_get_params($_GET['lang']);
+	    $lang=trim($lang);
+	}
 
-$lang=$default_language;
-if(isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
-    $lang=fix_get_params($_GET['lang']);
-    $lang=trim($lang);
+	$language_file = 'lang/'.$default_language.'.php'; 
+	if ($lang!=$default_language) {
+	    $path_parts = pathinfo($lang);
+	    if(is_readable('lang/' .$path_parts['basename']. '.php')){ 
+	        $language_file = 'lang/' .$path_parts['basename']. '.php';
+	    }
+	    else {
+	    	echo "<script>console.log('The ".$lang." language file is not readable! Falling back...');</script>";
+	    }
+	}
+
+	// add lang file to session for easy include
+	$_SESSION['RF']['language'] = $lang;
+	$_SESSION['RF']['language_file'] = $language_file;
+}
+else 
+{
+	$lang = $_SESSION['RF']['language'];
+	$language_file = $_SESSION['RF']['language_file']; 
 }
 
-$language_file = 'lang/'.$default_language.'.php'; 
-if ($lang!=$default_language) {
-    $path_parts = pathinfo($lang);
-    if(is_readable('lang/' .$path_parts['basename']. '.php')){ 
-        $language_file = 'lang/' .$path_parts['basename']. '.php';
-    }
-    else {
-    	echo "<script>console.log('The ".$lang." language file is not readable! Falling back...');</script>";
-    }
-}
-
-// add lang file to session for easy include
-$_SESSION['RF']['language_file'] = $language_file;
 require_once $language_file;
 
 if(!isset($_GET['type'])) $_GET['type']=0;
@@ -345,6 +354,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="lang_file_permission" value="<?php echo lang_File_Permission; ?>" />
 	<input type="hidden" id="chmod_files_allowed" value="<?php if($chmod_files) echo 1; else echo 0; ?>" />
 	<input type="hidden" id="chmod_dirs_allowed" value="<?php if($chmod_dirs) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="lang_lang_change" value="<?php echo lang_Lang_Change; ?>" />
 	<input type="hidden" id="lang_file_info" value="<?php echo fix_strtoupper(lang_File_info); ?>" />
 	<input type="hidden" id="lang_edit_image" value="<?php echo lang_Edit_image; ?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo lang_Extract; ?>" />
@@ -553,6 +563,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	}
 	?>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
+	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="change_lang_btn"><i class="icon-globe"></i></a></li>
 	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 	
 	<li class="pull-right">

@@ -251,6 +251,10 @@ $(document).ready(function(){
     $('#info').on('click',function(){
 	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
 	});
+
+	$('#change_lang_btn').on('click',function(){
+		change_lang();
+	});
     
     // upload btn
     $('#uploader-btn').on('click',function(){
@@ -516,6 +520,7 @@ $(document).ready(function(){
 	}
 	});
 
+	// file permissions window
 	$(document).on("keyup", '#chmod_form #chmod_value', function() 
 	{
 		chmod_logic(true);
@@ -532,6 +537,47 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function change_lang() {
+	$.ajax({
+	type: "POST",
+	url: "ajax_calls.php?action=get_lang",
+	data: {}
+    }).done(function( init_msg ) 
+    {
+		bootbox.dialog(init_msg, 
+		[
+			{
+				"label" : $('#cancel').val(),
+				"class" : "btn"
+			}, 
+			{
+				"label" : $('#ok').val(),
+				"class" : "btn-inverse",
+				"callback": function() {
+					// get new lang
+                    var newLang = $('#new_lang_select option:selected').val();
+                	// post ajax
+                	$.ajax({
+					type: "POST",
+					url: "ajax_calls.php?action=change_lang",
+					data: {choosen_lang: newLang}
+					}).done(function( error_msg ) {
+						if (error_msg!=""){
+							bootbox.alert(error_msg);
+						}
+						else {
+							setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},500);
+						} 
+					});
+                }
+			}
+		],
+		{
+			"header" : $('#lang_lang_change').val()
+		});
+    });
+}
 
 function chmod($trigger) {
 	// remove to prevent duplicates

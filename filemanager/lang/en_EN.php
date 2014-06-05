@@ -82,5 +82,7 @@ define('lang_User', 'User');
 define('lang_Group', 'Group');
 define('lang_Yes', 'Yes');
 define('lang_No', 'No');
+define('lang_Lang_Not_Found', 'Could not find language.');
+define('lang_Lang_Change', 'Change the language');
 
 ?>

@@ -352,6 +352,38 @@ if(isset($_GET['action']))
 				echo $ret;
 			}
 			break;
+		case 'get_lang':
+			if (!file_exists('lang/languages.php')){
+				die(lang_Lang_Not_Found);
+			}
+
+			require_once('lang/languages.php');
+			if (!isset($languages) || !is_array($languages)){
+				die(lang_Lang_Not_Found);
+			}
+
+			$curr = $_SESSION['RF']['language'];
+
+			$ret = '<select id="new_lang_select">';
+			foreach ($languages as $code => $name) {
+				$ret .= '<option value="'.$code.'"'.($code == $curr ? ' selected' : '').'>'.$name.'</option>';
+			}
+			$ret .= '</select>';
+
+			echo $ret;
+
+			break;
+		case 'change_lang':
+			$choosen_lang = $_POST['choosen_lang'];
+
+			if (!file_exists('lang/'.$choosen_lang.'.php')) {
+				die(lang_Lang_Not_Found);
+			}
+
+			$_SESSION['RF']['language'] = $choosen_lang;
+			$_SESSION['RF']['language_file'] = 'lang/'.$choosen_lang.'.php';
+
+			break;
 	    default: die('no action passed');
     }
 }
