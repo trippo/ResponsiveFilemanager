@@ -40,22 +40,22 @@ function rename_folder($old_path,$name,$transliteration){
     }
 }
 
-function create_img_gd($imgfile, $imgthumb, $newwidth, $newheight="") {
+function create_img_gd($imgfile, $imgthumb, $newwidth, $newheight="",$option="crop") {
     if(image_check_memory_usage($imgfile,$newwidth,$newheight)){
 	require_once('php_image_magician.php');
 	$magicianObj = new imageLib($imgfile);
-	$magicianObj -> resizeImage($newwidth, $newheight, 'crop');
+	$magicianObj -> resizeImage($newwidth, $newheight, $option);
 	$magicianObj -> saveImage($imgthumb,80);
 	return true;
     }
     return false;
 }
 
-function create_img($imgfile, $imgthumb, $newwidth, $newheight="") {
+function create_img($imgfile, $imgthumb, $newwidth, $newheight="",$option="auto") {
     if(image_check_memory_usage($imgfile,$newwidth,$newheight)){
 	require_once('php_image_magician.php');  
 	$magicianObj = new imageLib($imgfile);
-	$magicianObj -> resizeImage($newwidth, $newheight, 'auto');  
+	$magicianObj -> resizeImage($newwidth, $newheight, $option);  
 	$magicianObj -> saveImage($imgthumb,80);
 	return true;
     }else{
@@ -272,7 +272,7 @@ function endsWith($haystack, $needle)
     return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
 }
 
-function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height){
+function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$relative_image_creation_option,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option){
     //create relative thumbs
     $all_ok=true;
     if($relative_image_creation){
@@ -281,7 +281,7 @@ function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$re
 	    if (!file_exists($targetPath.$path)) create_folder($targetPath.$path,false);
 	    $info=pathinfo($name);
 	    if(!endsWith($targetPath,$path))
-		if(!create_img($targetFile, $targetPath.$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension'], $relative_image_creation_width[$k], $relative_image_creation_height[$k]))
+		if(!create_img($targetFile, $targetPath.$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension'], $relative_image_creation_width[$k], $relative_image_creation_height[$k], $relative_image_creation_option[$k]))
 		    $all_ok=false;
 	}
     }
@@ -293,7 +293,7 @@ function new_thumbnails_creation($targetPath,$targetFile,$name,$current_path,$re
 	    $base_dir=$path.substr_replace($targetPath, '', 0, strlen($current_path));
 	    if (!file_exists($base_dir)) create_folder($base_dir,false);
 	    $info=pathinfo($name);
-	    if(!create_img($targetFile, $base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'], $fixed_image_creation_width[$k], $fixed_image_creation_height[$k]))
+	    if(!create_img($targetFile, $base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension'], $fixed_image_creation_width[$k], $fixed_image_creation_height[$k], $fixed_image_creation_option[$k]))
 		$all_ok=false;
 	}
     }
