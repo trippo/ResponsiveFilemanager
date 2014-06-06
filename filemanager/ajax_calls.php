@@ -63,7 +63,7 @@ if(isset($_GET['action']))
 
 		    create_img_gd($current_path.$_POST['path'].$_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
 		    // TODO something with this function cause its blowing my mind
-		    new_thumbnails_creation($current_path.$_POST['path'],$current_path.$_POST['path'].$_POST['name'],$_POST['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height);
+		    new_thumbnails_creation($current_path.$_POST['path'],$current_path.$_POST['path'].$_POST['name'],$_POST['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$relative_image_creation_option,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
 		    break;
 		case 'extract':
 		    if(strpos($_POST['path'],'/')===0 || strpos($_POST['path'],'../')!==FALSE || strpos($_POST['path'],'./')===0) {
