@@ -284,6 +284,149 @@ if(isset($_GET['action']))
 			$_SESSION['RF']['clipboard'] = NULL;
 			$_SESSION['RF']['clipboard_action'] = NULL;
 			break;
+		case 'chmod':
+			$path = $current_path.$_POST['path'];
+			if ( (is_dir($path) && $chmod_dirs === FALSE) ||
+				 (is_file($path) && $chmod_files === FALSE) ||
+				 (is_function_callable("chmod") === FALSE) )
+			{
+				die(sprintf(lang_File_Permission_Not_Allowed, (is_dir($path) ? lcfirst(lang_Folders) : lcfirst(lang_Files))));
+			}
+			else 
+			{
+				$perm = decoct(fileperms($path) & 0777);
+				$perm_user = substr($perm, 0, 1);
+				$perm_group = substr($perm, 1, 1);
+				$perm_all = substr($perm, 2, 1);
+
+				$ret = '<div id="files_permission_start">
+				<form id="chmod_form">
+					<table class="file-perms-table">
+						<thead>
+							<tr>
+								<td></td>
+								<td>r&nbsp;&nbsp;</td>
+								<td>w&nbsp;&nbsp;</td>
+								<td>x&nbsp;&nbsp;</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>'.lang_User.'</td>
+								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
+								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
+								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
+							</tr>
+							<tr>
+								<td>'.lang_Group.'</td>
+								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
+								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
+								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
+							</tr>
+							<tr>
+								<td>'.lang_All.'</td>
+								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
+								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
+								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan="3"><input type="text" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
+							</tr>
+						</tbody>
+					</table>';
+
+				if (is_dir($path)){
+					$ret .= '<div>'.lang_File_Permission_Recursive.'
+							<ul>
+								<li><input value="none" name="apply_recursive" type="radio" checked> '.lang_No.'</li>
+								<li><input value="files" name="apply_recursive" type="radio"> '.lang_Files.'</li>
+								<li><input value="folders" name="apply_recursive" type="radio"> '.lang_Folders.'</li>
+								<li><input value="both" name="apply_recursive" type="radio"> '.lang_Files.' & '.lang_Folders.'</li>
+							</ul>
+							</div>';
+				}
+
+				$ret .= '</form></div>';
+
+				echo $ret;
+			}
+			break;
+		case 'get_lang':
+			if (!file_exists('lang/languages.php')){
+				die(lang_Lang_Not_Found);
+			}
+
+			require_once('lang/languages.php');
+			if (!isset($languages) || !is_array($languages)){
+				die(lang_Lang_Not_Found);
+			}
+
+			$curr = $_SESSION['RF']['language'];
+
+			$ret = '<select id="new_lang_select">';
+			foreach ($languages as $code => $name) {
+				$ret .= '<option value="'.$code.'"'.($code == $curr ? ' selected' : '').'>'.$name.'</option>';
+			}
+			$ret .= '</select>';
+
+			echo $ret;
+
+			break;
+		case 'change_lang':
+			$choosen_lang = $_POST['choosen_lang'];
+
+			if (!file_exists('lang/'.$choosen_lang.'.php')) {
+				die(lang_Lang_Not_Found);
+			}
+
+			$_SESSION['RF']['language'] = $choosen_lang;
+			$_SESSION['RF']['language_file'] = 'lang/'.$choosen_lang.'.php';
+
+			break;
+		case 'get_file': // preview or edit
+			$sub_action = $_GET['sub_action'];
+
+			if ($sub_action != 'preview' && $sub_action != 'edit'){
+				die("wrong action");
+			}
+
+			$selected_file = ($sub_action == 'preview' ? $_GET['file'] : $current_path.$_POST['path']);
+			$info = pathinfo($selected_file);
+
+			if (!file_exists($selected_file)) {
+				die(lang_File_Not_Found);
+			}
+
+			$is_allowed = ($sub_action == 'preview' ? $preview_text_files : $edit_text_files);
+			$allowed_file_exts = ($sub_action == 'preview' ? $previewable_text_file_exts : $editable_text_file_exts);
+
+			if (!isset($allowed_file_exts) || !is_array($allowed_file_exts)){
+				$allowed_file_exts = array();
+			}
+
+			if (!in_array($info['extension'], $allowed_file_exts) 
+				|| !isset($is_allowed) 
+				|| $is_allowed === FALSE
+				|| !is_readable($selected_file)) 
+			{
+				die(sprintf(lang_File_Open_Edit_Not_Allowed, ($sub_action == 'preview' ? strtolower(lang_Open) : strtolower(lang_Edit))));
+			}
+
+			// get and sanities
+			$data = file_get_contents($selected_file);
+			$data = htmlspecialchars($data);
+			$data = stripslashes($data);
+
+			if ($sub_action == 'preview') {
+				// echo '<h1>'.$info['basename'].'</h1><pre>'.$data.'</pre>';
+				echo '<h2>'.$info['basename'].'</h2><textarea disabled style="width:100%;height:150px;">'.$data.'</textarea>';
+			}
+			else {
+				echo '<textarea id="textfile_edit_area" style="width:100%;height:150px;">'.$data.'</textarea>';
+			}
+
+			break;
 	    default: die('no action passed');
     }
 }

@@ -8,7 +8,7 @@
 .context-menu-input.hover,.context-menu-item.disabled.hover{cursor:default;background-color:#EEE}
 .context-menu-submenu:after{content:">";color:#666;position:absolute;top:0;right:3px;z-index:1}
 .context-menu-item.icon{min-height:18px;vertical-align:middle;background-repeat:no-repeat;background-position:4px 5px;width:auto;display:list-item}
-.context-menu-item.icon-edit{background-image:url(../img/page_white_edit.png)}
+.context-menu-item.icon-edit{background-image:url(../img/file_edit.png)}
 .context-menu-item.icon-cut{background-image:url(../img/cut.png)}
 .context-menu-item.icon-copy{background-image:url(../img/copy.png)}
 .context-menu-item.icon-rename{background-image:url(../img/rename.png)}
@@ -28,6 +28,7 @@
 .context-menu-item.icon-url{background-image:url(../img/url.png)}
 .context-menu-item.icon-edit_img{background-image:url(../img/edit_img.png)}
 .context-menu-item.icon-duplicate{background-image:url(../img/duplicate.png)}
+.context-menu-item.icon-key{background-image:url(../img/key.png)}
 .context-menu-input > label > *{vertical-align:top}
 .context-menu-input > label > input[type=checkbox],.context-menu-input > label > input[type=radio]{margin-left:-17px}
 .context-menu-input > label > span{margin-left:5px}

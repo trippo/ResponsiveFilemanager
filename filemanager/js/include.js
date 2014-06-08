@@ -1,15 +1,16 @@
-var version="9.4.1";
-var active_contextmenu=true;
+var version = "9.5.0";
+var active_contextmenu = true;
 if (loading_bar){   
-if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
-    window.addEventListener('DOMContentLoaded', function() {
-        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
-    });
-}else {
-    $(document).ready(function () {
-        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
-    });
-}
+	if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
+	    window.addEventListener('DOMContentLoaded', function() {
+	        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
+	    });
+	}
+	else {
+	    $(document).ready(function () {
+	        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
+	    });
+	}
 }
 $(document).ready(function(){
 	// Right click menu
@@ -77,6 +78,12 @@ $(document).ready(function(){
 		    case "paste":
 		    	paste_to_this_dir();
 			    break;
+			case "chmod":
+				chmod($trigger);
+				break;
+			case "edit_text_file":
+				edit_text_file($trigger);
+				break;
 		  }},
 		  items: {}
 		};
@@ -95,6 +102,12 @@ $(document).ready(function(){
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('gz') ) 
 		{
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
+		}
+
+		// edit file's content
+		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('edit-text-file-allowed') ) 
+		{
+		    options.items.edit_text_file = {name: $('#lang_edit_file').val(),icon:"edit", disabled:false };
 		}
 
 		// duplicate
@@ -117,6 +130,14 @@ $(document).ready(function(){
 		// Its not added to folders because it might confuse someone
 		if ($('#clipboard').val() != 0 && !$trigger.hasClass('directory')) {
 		    options.items.paste = {name: $('#lang_paste_here').val(),icon:"clipboard-apply", disabled:false };
+		}
+
+		// file permission
+		if (!$trigger.hasClass('directory') && $('#chmod_files_allowed').val()==1) {
+		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"key", disabled:false };
+		}
+		else if ($trigger.hasClass('directory') && $('#chmod_dirs_allowed').val()==1) {
+		    options.items.chmod = {name: $('#lang_file_permission').val(),icon:"key", disabled:false };
 		}
 
 		// fileinfo
@@ -151,7 +172,7 @@ $(document).ready(function(){
     });
     
     $('ul.grid').on('click','.modalAV', function(e) {
-	_this=$(this);
+		_this=$(this);
         e.preventDefault();
 
         $('#previewAV').removeData("modal");
@@ -159,18 +180,30 @@ $(document).ready(function(){
             backdrop: 'static',
             keyboard: false
         });
-	if (_this.hasClass('audio')) {
-	    $(".body-preview").css('height','80px');
-	}else {
-	    $(".body-preview").css('height','345px');
-	}
+		
+		if (_this.hasClass('audio')) {
+	    	$(".body-preview").css('height','80px');
+		}else {
+	    	$(".body-preview").css('height','345px');
+		}
 	
         $.ajax({
             url: _this.attr('data-url'),
             success: function(data) {
-		
-		$(".body-preview").html(data);
-	    }
+				$(".body-preview").html(data);
+	    	}
+        });
+    });
+
+    $('ul.grid').on('click','.file-preview-btn', function(e) {
+		_this=$(this);
+        e.preventDefault();
+	
+        $.ajax({
+            url: _this.attr('data-url'),
+            success: function(data) {
+				bootbox.alert(data);
+	    	}
         });
     });
     
@@ -239,6 +272,10 @@ $(document).ready(function(){
     // info btn
     $('#info').on('click',function(){
 	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
+	});
+
+	$('#change_lang_btn').on('click',function(){
+		change_lang();
 	});
     
     // upload btn
@@ -355,6 +392,10 @@ $(document).ready(function(){
 	});
     });	
 
+    $('.create-file-btn').on('click',function(){
+    	create_text_file();
+    });
+
     $('.new-folder').on('click',function(){
 	bootbox.prompt($('#insert_folder_name').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    if (name !== null) {
@@ -366,9 +407,9 @@ $(document).ready(function(){
 			  url: "execute.php?action=create_folder",
 			  data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
-			setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
+				setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
 			
-		});
+			});
 	    }
 	},$('#new_folder').val());
     });
@@ -501,12 +542,282 @@ $(document).ready(function(){
       activeClass: "ui-state-highlight",  
   	hoverClass: "ui-state-highlight",
 	drop: function(event, ui){
-		// copy_cut_clicked(ui.draggable.find('figure'), 'cut');
-		// paste_to_this_dir($(this).find('figure'));
 		drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
 	}
 	});
+
+	// file permissions window
+	$(document).on("keyup", '#chmod_form #chmod_value', function() 
+	{
+		chmod_logic(true);
+	});
+	//safety 
+	$(document).on("focusout", '#chmod_form #chmod_value', function() 
+	{
+		var chmod_temp_val = $('#chmod_form #chmod_value').val();
+		if (chmod_temp_val.match(/^[0-7]{3}$/) == null) 
+		{
+			var def_val = $('#chmod_form #chmod_value').attr('data-def-value'); 
+			$('#chmod_form #chmod_value').val(def_val);
+			chmod_logic(true);
+		}
+	});
 });
+
+function create_text_file() {
+	// remove to prevent duplicates
+	$('#textfile_create_area').parent().parent().remove();
+
+	var init_form = $('#lang_filename').val() + ': <input type="text" id="create_text_file_name" style="min-height:30px"><br><hr><textarea id="textfile_create_area" style="width:100%;height:150px;"></textarea>';
+
+	bootbox.dialog(init_form, 
+	[
+		{
+			"label" : $('#cancel').val(),
+			"class" : "btn"
+		}, 
+		{
+			"label" : $('#ok').val(),
+			"class" : "btn-inverse",
+			"callback": function() {
+				var newFileName = $('#create_text_file_name').val();
+                var newContent = $('#textfile_create_area').val();
+
+                if (newFileName !== null) 
+                {
+                	newFileName = fix_filename(newFileName);
+                	var folder_path = $('#sub_folder').val()+$('#fldr_value').val()+ newFileName;
+					var folder_path_thumb = $('#cur_dir_thumb').val()+ newFileName;
+                	// post ajax
+                	$.ajax({
+					type: "POST",
+					url: "execute.php?action=create_file",
+					data: {path: folder_path, path_thumb: folder_path_thumb, name: newFileName, new_content: newContent}
+					}).done(function( status_msg ) {
+						if (status_msg!=""){
+							bootbox.alert(status_msg, function (result) {
+								setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},500);
+							});
+						}
+					});
+				}
+            }
+		}
+	],
+	{
+		"header" :$('#lang_new_file').val()
+	});
+}
+
+function edit_text_file($trigger) {
+	// remove to prevent duplicates
+	$('#textfile_edit_area').parent().parent().remove();
+	
+	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
+	var full_path = $trigger.find('.rename-file').attr('data-path');
+
+	$.ajax({
+	type: "POST",
+	url: "ajax_calls.php?action=get_file&sub_action=edit",
+	data: {path: full_path}
+    }).done(function( init_content ) 
+    {
+		bootbox.dialog(init_content, 
+		[
+			{
+				"label" : $('#cancel').val(),
+				"class" : "btn"
+			}, 
+			{
+				"label" : $('#ok').val(),
+				"class" : "btn-inverse",
+				"callback": function() {
+                    var newContent = $('#textfile_edit_area').val();
+                	// post ajax
+                	$.ajax({
+					type: "POST",
+					url: "execute.php?action=save_text_file",
+					data: {path: full_path, path_thumb: thumb_path, new_content: newContent}
+					}).done(function( status_msg ) {
+						if (status_msg!=""){
+							bootbox.alert(status_msg);
+						}
+					});
+                }
+			}
+		],
+		{
+			"header" : $trigger.find('.name_download').val()
+		});
+    });
+}
+
+function change_lang() {
+	$.ajax({
+	type: "POST",
+	url: "ajax_calls.php?action=get_lang",
+	data: {}
+    }).done(function( init_msg ) 
+    {
+		bootbox.dialog(init_msg, 
+		[
+			{
+				"label" : $('#cancel').val(),
+				"class" : "btn"
+			}, 
+			{
+				"label" : $('#ok').val(),
+				"class" : "btn-inverse",
+				"callback": function() {
+					// get new lang
+                    var newLang = $('#new_lang_select option:selected').val();
+                	// post ajax
+                	$.ajax({
+					type: "POST",
+					url: "ajax_calls.php?action=change_lang",
+					data: {choosen_lang: newLang}
+					}).done(function( error_msg ) {
+						if (error_msg!=""){
+							bootbox.alert(error_msg);
+						}
+						else {
+							setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},500);
+						} 
+					});
+                }
+			}
+		],
+		{
+			"header" : $('#lang_lang_change').val()
+		});
+    });
+}
+
+function chmod($trigger) {
+	// remove to prevent duplicates
+	$('#files_permission_start').parent().parent().remove();
+
+	if (!$trigger.hasClass('directory')){
+    	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
+    	var full_path = $trigger.find('.rename-file').attr('data-path');
+    }
+    else {
+    	var thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
+    	var full_path = $trigger.find('.rename-folder').attr('data-path');
+    }
+
+    // ajax -> box -> ajax -> box -> mind blown
+	$.ajax({
+	type: "POST",
+	url: "ajax_calls.php?action=chmod",
+	data: { path: full_path, path_thumb: thumb_path }
+    }).done(function( init_msg ) 
+    {
+		bootbox.dialog(init_msg, 
+		[
+			{
+				"label" : $('#cancel').val(),
+				"class" : "btn"
+			}, 
+			{
+				"label" : $('#ok').val(),
+				"class" : "btn-inverse",
+				"callback": function() {
+					// get new perm
+                    var newPerm = $('#chmod_form #chmod_value').val();
+                    if (newPerm != '' && typeof newPerm !== "undefined")
+                    {
+                    	// get recursive option if any
+                    	var recOpt = $('#chmod_form input[name=apply_recursive]:checked').val();
+                    	if (recOpt == '' || typeof recOpt === "undefined"){
+                    		recOpt = 'none';
+                    	}
+
+                    	// post ajax
+                    	$.ajax({
+						type: "POST",
+						url: "execute.php?action=chmod",
+						data: {path: full_path, path_thumb: thumb_path, new_mode: newPerm, is_recursive: recOpt}
+						}).done(function( status_msg ) {
+							if (status_msg!=""){
+								bootbox.alert(status_msg);
+							}
+						});
+                    }
+                }
+			}
+		],
+		{
+			"header" : $('#lang_file_permission').val()
+		});
+    });
+}
+
+function chmod_logic(is_text) {
+	var perm = [];
+	perm['user'] = 0;
+	perm['group'] = 0;
+	perm['all'] = 0;
+
+	// value was set by text input
+	if (typeof is_text !== "undefined" && is_text == true){
+		// assign values
+		var newperm = $('#chmod_form #chmod_value').val();
+		perm['user'] = newperm.substr(0,1);
+		perm['group'] = newperm.substr(1,1);
+		perm['all'] = newperm.substr(2,1);
+		
+		// check values for errors (empty,not num, not 0-7)
+		$.each(perm, function(index) {
+			if ( perm[index] == '' || 
+				$.isNumeric(perm[index]) == false || 
+				(parseInt(perm[index]) < 0 || parseInt(perm[index]) > 7) ) 
+			{
+				perm[index] = "0";
+			}
+		});
+
+		// update checkboxes
+		$('#chmod_form input:checkbox').each(function() {
+			var group = $(this).attr('data-group');
+			var val = $(this).attr('data-value');
+
+			if (chmod_logic_helper(perm[group], val)){
+				$(this).prop('checked', true);
+			}
+			else {
+				$(this).prop('checked', false);
+			}
+		});
+
+	}
+	else { //a checkbox was updated
+		$('#chmod_form input:checkbox:checked').each(function() {
+			var group = $(this).attr('data-group');
+			var val = $(this).attr('data-value');
+			perm[group] = parseInt(perm[group]) + parseInt(val);
+		});
+
+		$('#chmod_form #chmod_value').val(perm['user'].toString() + perm['group'].toString() + perm['all'].toString());
+	}
+}
+
+function chmod_logic_helper(perm, val){
+	var valid = [];
+	valid[1] = [1,3,5,7];
+	valid[2] = [2,3,6,7];
+	valid[4] = [4,5,6,7];
+
+	perm = parseInt(perm);
+	val = parseInt(val);
+
+	if ($.inArray(perm, valid[val]) != -1){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 
 function clear_clipboard() {
 	bootbox.confirm($('#lang_clear_clipboard_confirm').val(),$('#cancel').val(),$('#ok').val(), function(result) {
