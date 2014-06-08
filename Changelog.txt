@@ -1,15 +1,16 @@
 Responsive Filemanager Changelog 
 
-*************************************************************
-*  RFM 9.4.2
-*************************************************************
+*********************************************************
+*  RFM 9.5.0
+*********************************************************
 
 ***** Major *****
 - File permission changing
 - Language Changing
-- Added documentation
+- View/edit/create text files
 - Fixes
 
+NOTE: Changed upload button's icon!
 
 ***** Detailed *****
 - File permission changing (OFF BY DEFAULT!)
@@ -22,9 +23,9 @@ Responsive Filemanager Changelog
 	recursive changing (No/only files/only folders/both).
 	If you set the permission wrong there will be errors.
 
-	NOTE! If you don't know what you are doing than leave as it is bacause
+	NOTE! If you don't know what you are doing then leave as it is bacause
 	you can cause trouble.
-	Usually files are 666 and folders are 775
+	Usually files are 644 and folders are 755
 	You CANNOT set the sticky bit!
 
 - Language Changing
@@ -34,25 +35,36 @@ Responsive Filemanager Changelog
 	If adding new language, it should be added to the languages.php file as 
 	well for it to show up.
 	
-	I tried to identify all language codes and add there name on there own
+	I tried to identify all language codes and add the name on there own
 	language but I might messed up so please check it and correct it if
 	necessary. (Because I'm only a human and speak only 2 languages)
 
-- Added documentation
-	You will find a setup guide and config explanation in it.
+- View/edit/create text files
+	You can now view/edit/create text based files like .txt.
+
+	To view a file's content just click on the preview (eye) icon.
+	To edit a file rigth click on it and select "Edit file's content"
+	To create a new file just click on the "+ file" icon (old upload button)
+
+	When creating a new file you must specify it's extension.
+	All valid extensions for edit/create are listed in the config file
+	($editable_text_file_exts)
 
 - Fixes
 	Fixed some css overflow errors
+	Removed lang_View from menu because it was overflowing
 	Removed hr.php lang because it's the same as hr_HR.php
+	Changed upload buttons icon to accomodate the "new file" addition
 
-*************************************************************
+*********************************************************
 *  RFM 9.4.1
-*************************************************************
+*********************************************************
 
 ***** Major *****
 - Security Access Keys
 - More Tinymce settings
 - Tinymce 3.* support
+- Added image resize options
 - Bugfixes
 
 
@@ -95,9 +107,9 @@ Responsive Filemanager Changelog
 	- Fixed a copy past issue
 	- Fixed Standalone Mode not using the field_id passed in mixed use cases
 
-*************************************************************
+*********************************************************
 *  RFM 9.4.0
-*************************************************************
+*********************************************************
 
 ***** Major *****
 - Cut/copy/paste support

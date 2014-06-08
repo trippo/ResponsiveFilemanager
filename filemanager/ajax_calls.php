@@ -384,6 +384,49 @@ if(isset($_GET['action']))
 			$_SESSION['RF']['language_file'] = 'lang/'.$choosen_lang.'.php';
 
 			break;
+		case 'get_file': // preview or edit
+			$sub_action = $_GET['sub_action'];
+
+			if ($sub_action != 'preview' && $sub_action != 'edit'){
+				die("wrong action");
+			}
+
+			$selected_file = ($sub_action == 'preview' ? $_GET['file'] : $current_path.$_POST['path']);
+			$info = pathinfo($selected_file);
+
+			if (!file_exists($selected_file)) {
+				die(lang_File_Not_Found);
+			}
+
+			$is_allowed = ($sub_action == 'preview' ? $preview_text_files : $edit_text_files);
+			$allowed_file_exts = ($sub_action == 'preview' ? $previewable_text_file_exts : $editable_text_file_exts);
+
+			if (!isset($allowed_file_exts) || !is_array($allowed_file_exts)){
+				$allowed_file_exts = array();
+			}
+
+			if (!in_array($info['extension'], $allowed_file_exts) 
+				|| !isset($is_allowed) 
+				|| $is_allowed === FALSE
+				|| !is_readable($selected_file)) 
+			{
+				die(sprintf(lang_File_Open_Edit_Not_Allowed, ($sub_action == 'preview' ? strtolower(lang_Open) : strtolower(lang_Edit))));
+			}
+
+			// get and sanities
+			$data = file_get_contents($selected_file);
+			$data = htmlspecialchars($data);
+			$data = stripslashes($data);
+
+			if ($sub_action == 'preview') {
+				// echo '<h1>'.$info['basename'].'</h1><pre>'.$data.'</pre>';
+				echo '<h2>'.$info['basename'].'</h2><textarea disabled style="width:100%;height:150px;">'.$data.'</textarea>';
+			}
+			else {
+				echo '<textarea id="textfile_edit_area" style="width:100%;height:150px;">'.$data.'</textarea>';
+			}
+
+			break;
 	    default: die('no action passed');
     }
 }

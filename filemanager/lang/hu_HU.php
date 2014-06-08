@@ -84,4 +84,14 @@ define('lang_Yes', 'Igen');
 define('lang_No', 'Nem');
 define('lang_Lang_Not_Found', 'A nyelv nem található.');
 define('lang_Lang_Change', 'Nyelv megváltoztatása');
+define('lang_File_Not_Found', 'A fájl nem található.');
+define('lang_File_Open_Edit_Not_Allowed', 'Nincs jogod %s a fájlt.'); // %s = open or edit
+define('lang_Edit', 'Szerkesztés');
+define('lang_Edit_File', "Fájl szerkesztése");
+define('lang_File_Save_OK', "Fájl sikeresen mentve.");
+define('lang_File_Save_Error', "Hiba történt a fájl mentése közben.");
+define('lang_New_File','Új fájl');
+define('lang_No_Extension','Meg kell adnod a fájl kiterjesztését.'); 
+define('lang_Valid_Extensions','Elfogadott kiterjesztések: %s'); // %s = txt,log etc.
+
 ?>

@@ -101,18 +101,29 @@ $ellipsis_title_after_first_row = TRUE;
 //*************************
 //Permissions configuration
 //******************
-$delete_files	 = TRUE;
-$create_folders	 = TRUE;
-$delete_folders	 = TRUE;
-$upload_files	 = TRUE;
-$rename_files	 = TRUE;
-$rename_folders	 = TRUE;
-$duplicate_files = TRUE;
-$copy_cut_files	 = TRUE; // for copy/cut files
-$copy_cut_dirs	 = TRUE; // for copy/cut directories
-$chmod_files 	 = FALSE; // change file permissions
-$chmod_dirs		 = FALSE; // change folder permissions
+$delete_files	 	= TRUE;
+$create_folders	 	= TRUE;
+$delete_folders	 	= TRUE;
+$upload_files	 	= TRUE;
+$rename_files	 	= TRUE;
+$rename_folders	 	= TRUE;
+$duplicate_files 	= TRUE;
+$copy_cut_files	 	= TRUE; // for copy/cut files
+$copy_cut_dirs	 	= TRUE; // for copy/cut directories
+$chmod_files 	 	= FALSE; // change file permissions
+$chmod_dirs		 	= FALSE; // change folder permissions
+$preview_text_files = TRUE; // eg.: txt, log etc.
+$edit_text_files 	= TRUE; // eg.: txt, log etc.
+$create_text_files 	= TRUE; // only create files with exts. defined in $editable_text_file_exts
 
+// you can preview these type of files if $preview_text_files is true
+$previewable_text_file_exts = array('txt', 'log', 'xml');
+
+// you can edit these type of files if $edit_text_files is true (only text based files)
+// you can create these type of files if $create_text_files is true (only text based files)
+// if you want you can add html,css etc. 
+// but for security reasons it's NOT RECOMMENDED!
+$editable_text_file_exts = array('txt', 'log', 'xml');
 
 // defines size limit for paste in MB / operation
 // set 'FALSE' for no limit
