@@ -31,22 +31,6 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
 		if (typeof editor.settings.filemanager_subfolder !== "undefined" && editor.settings.filemanager_subfolder) {
 			fldr="&fldr="+editor.settings.filemanager_subfolder;
 		}
-		// Disabled because of bug
-		var type=2;
-		if (typeof editor.settings.filemanager_type !== "undefined" && editor.settings.filemanager_type) {
-			if ($.isNumeric(editor.settings.filemanager_type) === true && editor.settings.filemanager_type > 0 && editor.settings.filemanager_type <= 3) {
-				type=editor.settings.filemanager_type;
-			}
-			else if (editor.settings.filemanager_type == 'image'){
-				type = 1;
-			}
-			else if (editor.settings.filemanager_type == 'media'){
-				type = 3;
-			}
-			else {
-				type = 2;
-			}
-		}
 
 		win = editor.windowManager.open({
 			title: title,

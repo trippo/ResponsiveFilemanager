@@ -15,17 +15,12 @@ if ($thumb_pos !=0
     die('wrong path');
 }
 
-$language_file = 'lang/'.$default_language.'.php'; 
-if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') 
-{
-    $path_parts = pathinfo($_GET['lang']);
-    if (is_readable('lang/' .$path_parts['basename']. '.php'))
-    { 
-        $language_file = 'lang/' .$path_parts['basename']. '.php';
-    }
+if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
+    require_once($_SESSION['RF']['language_file']);
 }
-
-require_once $language_file;
+else {
+    die('Language file is missing!');
+}
 
 $base = $current_path;
 $path = $current_path.$_POST['path'];
@@ -55,7 +50,7 @@ if (isset($_POST['name']))
 }
 
 $info = pathinfo($path);
-if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action']=='delete_folder') && !in_array(strtolower($info['extension']), $ext))
+if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action']=='delete_folder') && !in_array(strtolower($info['extension']), $ext) && $_GET['action'] != 'create_file')
 {
     die('wrong extension');
 }
@@ -147,6 +142,56 @@ if (isset($_GET['action']))
                     die(lang_Empty_name);
                 }
             }
+            break;
+        case 'create_file':
+            if ($create_text_files === FALSE) {
+                die(sprintf(lang_File_Open_Edit_Not_Allowed, strtolower(lang_Edit)));
+            }
+
+            if (!isset($editable_text_file_exts) || !is_array($editable_text_file_exts)){
+                $editable_text_file_exts = array();
+            }
+
+            // check if user supplied extension
+            if (strpos($name, '.') === FALSE){
+                die(lang_No_Extension.' '.sprintf(lang_Valid_Extensions, implode(', ', $editable_text_file_exts)));
+            }
+
+            // correct name
+            $old_name = $name;
+            $name = fix_filename($name, $transliteration);
+            if (empty($name))
+            {
+                die(lang_Empty_name);
+            }
+
+            // check extension
+            $parts = explode('.', $name);
+            if (!in_array(end($parts), $editable_text_file_exts)) {
+                die(lang_Error_extension.' '.sprintf(lang_Valid_Extensions, implode(', ', $editable_text_file_exts)));
+            }
+
+            // correct paths
+            $path = str_replace($old_name, $name, $path);
+            $path_thumb = str_replace($old_name, $name, $path_thumb);
+
+            // file already exists
+            if (file_exists($path)) {
+                die(lang_Rename_existing_file);
+            }
+
+            $content = $_POST['new_content'];
+
+            if (@file_put_contents($path, $content) === FALSE) {
+                die(lang_File_Save_Error);
+            }
+            else {
+                if (is_function_callable('chmod') !== FALSE){
+                    chmod($path, 0644);
+                }
+                echo lang_File_Save_OK;
+            }
+
             break;
         case 'rename_file':
             if ($rename_files){
@@ -270,6 +315,61 @@ if (isset($_GET['action']))
             $_SESSION['RF']['clipboard']['path'] = NULL;
             $_SESSION['RF']['clipboard']['path_thumb'] = NULL;
             $_SESSION['RF']['clipboard_action'] = NULL;
+
+            break;
+        case 'chmod':
+            $mode = $_POST['new_mode'];
+            $rec_option = $_POST['is_recursive'];
+            $valid_options = array('none', 'files', 'folders', 'both');
+            $chmod_perm = (is_dir($path) ? $chmod_dirs : $chmod_files);
+
+            // check perm
+            if ($chmod_perm === FALSE) {
+                die(sprintf(lang_File_Permission_Not_Allowed, (is_dir($path) ? lcfirst(lang_Folders) : lcfirst(lang_Files))));
+            }
+
+            // check mode
+            if (!preg_match("/^[0-7]{3}$/", $mode)){
+                die(lang_File_Permission_Wrong_Mode);
+            }
+
+            // check recursive option
+            if (!in_array($rec_option, $valid_options)){
+                die("wrong option");
+            }
+
+            // check if server disabled chmod
+            if (is_function_callable('chmod') === FALSE){
+                die(sprintf(lang_Function_Disabled, 'chmod'));
+            }
+            
+            $mode = "0".$mode;
+            $mode = octdec($mode);
+
+            rchmod($path, $mode, $rec_option);
+
+            break;
+        case 'save_text_file':
+            $content = $_POST['new_content'];
+            // $content = htmlspecialchars($content); not needed
+            // $content = stripslashes($content);
+
+            // no file
+            if (!file_exists($path)) {
+                die(lang_File_Not_Found);
+            }
+
+            // not writable or edit not allowed
+            if (!is_writable($path) || $edit_text_files === FALSE) {
+                die(sprintf(lang_File_Open_Edit_Not_Allowed, strtolower(lang_Edit)));
+            }
+
+            if (@file_put_contents($path, $content) === FALSE) {
+                die(lang_File_Save_Error);
+            }
+            else {
+                echo lang_File_Save_OK;
+            }
 
             break;
         default:

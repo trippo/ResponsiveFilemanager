@@ -14,134 +14,198 @@ if (USE_ACCESS_KEYS == TRUE){
 
 }
 
-$_SESSION['RF']["verify"]= "RESPONSIVEfilemanager";
+$_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 
 if(isset($_POST['submit'])){
 
-include('upload.php');
+	include('upload.php');
 
-}else{
-
+}
+else {
 include('include/utils.php');
 
 if (isset($_GET['fldr'])
     && !empty($_GET['fldr'])
-    && strpos($_GET['fldr'],'../')===FALSE
-    && strpos($_GET['fldr'],'./')===FALSE)
+    && strpos($_GET['fldr'],'../') === FALSE
+    && strpos($_GET['fldr'],'./') === FALSE)
+{
     $subdir = urldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
-else
-    $subdir = '';
+}
+else { $subdir = ''; }
 
-if($subdir==""){
+if($subdir == "")
+{
     if(!empty($_COOKIE['last_position'])
-	&& strpos($_COOKIE['last_position'],'.')===FALSE)
+	&& strpos($_COOKIE['last_position'],'.') === FALSE)
 	$subdir= trim($_COOKIE['last_position']);
 }
 
 //remember last position
 setcookie('last_position',$subdir,time() + (86400 * 7)); 
 
-if($subdir=="/"){
-    $subdir="";
-}
+if ($subdir == "/") { $subdir = ""; }
 
 
 /***
  *SUB-DIR CODE
  ***/
-if(!isset($_SESSION['RF']["subfolder"])) $_SESSION['RF']["subfolder"]='';
+if (!isset($_SESSION['RF']["subfolder"])) 
+{ 
+	$_SESSION['RF']["subfolder"] = '';
+}
 $rfm_subfolder = '';
-if(!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../')===FALSE
-   && strpos($_SESSION['RF']["subfolder"],'./')===FALSE && strpos($_SESSION['RF']["subfolder"],"/")!==0
-    && strpos($_SESSION['RF']["subfolder"],'.')===FALSE) $rfm_subfolder= $_SESSION['RF']['subfolder'];
+
+if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../') === FALSE
+   && strpos($_SESSION['RF']["subfolder"],'./') === FALSE && strpos($_SESSION['RF']["subfolder"],"/") !== 0
+   && strpos($_SESSION['RF']["subfolder"],'.') === FALSE)
+{
+	$rfm_subfolder = $_SESSION['RF']['subfolder'];
+}
    
-if($rfm_subfolder!="" && $rfm_subfolder[strlen($rfm_subfolder)-1]!="/") $rfm_subfolder.="/";
+if ($rfm_subfolder != "" && $rfm_subfolder[strlen($rfm_subfolder)-1] != "/") { $rfm_subfolder .= "/"; }
    
-if(!file_exists($current_path . $rfm_subfolder.$subdir)){
-    $subdir='';
-    if(!file_exists($current_path . $rfm_subfolder.$subdir)){
-	$rfm_subfolder="";
+if (!file_exists($current_path . $rfm_subfolder.$subdir))
+{
+    $subdir = '';
+    if (!file_exists($current_path . $rfm_subfolder.$subdir))
+    {
+		$rfm_subfolder = "";
     }
 }
-    
-if(trim($rfm_subfolder)==""){
-    $cur_dir = $upload_dir . $subdir;
-    $cur_path = $current_path . $subdir;
+
+if (trim($rfm_subfolder) == "")
+{
+    $cur_dir 	 = $upload_dir . $subdir;
+    $cur_path 	 = $current_path . $subdir;
     $thumbs_path = $thumbs_base_path;
-    $parent=$subdir;
-}else{
-    $cur_dir = $upload_dir . $rfm_subfolder.$subdir;
-    $cur_path = $current_path . $rfm_subfolder.$subdir;
+    $parent 	 = $subdir;
+} 
+else
+{
+    $cur_dir 	 = $upload_dir . $rfm_subfolder.$subdir;
+    $cur_path 	 = $current_path . $rfm_subfolder.$subdir;
     $thumbs_path = $thumbs_base_path. $rfm_subfolder;
-    $parent=$rfm_subfolder.$subdir;
+    $parent 	 = $rfm_subfolder.$subdir;
 }
 
-$cycle=true;
-$max_cycles=50;
-$i=0;
-while($cycle && $i<$max_cycles){
+$cycle = TRUE;
+$max_cycles = 50;
+$i = 0;
+while($cycle && $i < $max_cycles){
     $i++;
-    if($parent=="./") $parent="";    
-    if(file_exists($current_path.$parent."config.php")){
-	require_once($current_path.$parent."config.php");
-	$cycle=false;
+    if ($parent=="./") $parent="";   
+
+    if (file_exists($current_path.$parent."config.php"))
+    {
+		require_once($current_path.$parent."config.php");
+		$cycle = FALSE;
     }
     
-    if($parent=="") $cycle=false;
-    else $parent=fix_dirname($parent)."/";
+    if ($parent == "") $cycle = FALSE;
+    else $parent = fix_dirname($parent)."/";
 }
 
-if(!is_dir($thumbs_path.$subdir)){
-    create_folder(false, $thumbs_path.$subdir);
+if (!is_dir($thumbs_path.$subdir))
+{
+    create_folder(FALSE, $thumbs_path.$subdir);
 }
 
-if(isset($_GET['popup'])) $popup= strip_tags($_GET['popup']); else $popup=0;
+if (isset($_GET['popup'])) 
+{
+	$popup = strip_tags($_GET['popup']);
+}
+else $popup=0;
+
 //Sanitize popup
 $popup=!!$popup;
 
 //view type
-if(!isset($_SESSION['RF']["view_type"])){ $view=$default_view; $_SESSION['RF']["view_type"] = $view; }
-if(isset($_GET['view'])){ $view=fix_get_params($_GET['view']); $_SESSION['RF']["view_type"] = $view; }
-$view=$_SESSION['RF']["view_type"];
-
-if(isset($_GET["filter"])) $filter=fix_get_params($_GET["filter"]);
-else $filter='';
-
-if(!isset($_SESSION['RF']['sort_by'])) $_SESSION['RF']['sort_by']='';
-if(isset($_GET["sort_by"])) $sort_by=$_SESSION['RF']['sort_by']=fix_get_params($_GET["sort_by"]);
-else $sort_by=$_SESSION['RF']['sort_by'];
-
-if(!isset($_SESSION['RF']['descending'])) $_SESSION['RF']['descending']=false;
-if(isset($_GET["descending"])) $descending=$_SESSION['RF']['descending']=fix_get_params($_GET["descending"])==="true";
-else $descending=$_SESSION['RF']['descending'];
-
-
-$lang=$default_language;
-if(isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') {
-    $lang=fix_get_params($_GET['lang']);
-    $lang=trim($lang);
+if(!isset($_SESSION['RF']["view_type"]))
+{ 
+	$view = $default_view; 
+	$_SESSION['RF']["view_type"] = $view; 
 }
 
-$language_file = 'lang/'.$default_language.'.php'; 
-if ($lang!=$default_language) {
-    $path_parts = pathinfo($lang);
-    if(is_readable('lang/' .$path_parts['basename']. '.php')){ 
-        $language_file = 'lang/' .$path_parts['basename']. '.php';
-    }
-    else {
-    	echo "<script>console.log('The ".$lang." language file is not readable! Falling back...');</script>";
-    }
+if (isset($_GET['view']))
+{ 
+	$view = fix_get_params($_GET['view']); 
+	$_SESSION['RF']["view_type"] = $view; 
 }
 
-// add lang file to session for easy include
-$_SESSION['RF']['language_file'] = $language_file;
+$view = $_SESSION['RF']["view_type"];
+
+if(isset($_GET["filter"])) 
+{
+	$filter = fix_get_params($_GET["filter"]);
+}
+else $filter = '';
+
+if (!isset($_SESSION['RF']['sort_by'])) 
+{
+	$_SESSION['RF']['sort_by'] = '';
+}
+
+if (isset($_GET["sort_by"])) 
+{
+	$sort_by = $_SESSION['RF']['sort_by'] = fix_get_params($_GET["sort_by"]);
+}
+else $sort_by = $_SESSION['RF']['sort_by'];
+
+if (!isset($_SESSION['RF']['descending'])) 
+{
+	$_SESSION['RF']['descending'] = FALSE;
+}
+
+if (isset($_GET["descending"])) 
+{
+	$descending = $_SESSION['RF']['descending'] = fix_get_params($_GET["descending"])==="true";
+}
+else $descending = $_SESSION['RF']['descending'];
+
+// language
+if (!isset($_SESSION['RF']['language']) 
+	|| file_exists($_SESSION['RF']['language_file']) === FALSE 
+	|| !is_readable($_SESSION['RF']['language_file'])) 
+{
+	$lang = $default_language;
+	if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') 
+	{
+   		$lang = fix_get_params($_GET['lang']);
+    	$lang = trim($lang);
+	}
+
+	$language_file = 'lang/'.$default_language.'.php'; 
+	if ($lang != $default_language) 
+	{
+    	$path_parts = pathinfo($lang);
+
+	    if (is_readable('lang/' .$path_parts['basename']. '.php'))
+	    { 
+	        $language_file = 'lang/' .$path_parts['basename']. '.php';
+	    }
+	    else 
+	    {
+	    	echo "<script>console.log('The ".$lang." language file is not readable! Falling back...');</script>";
+	    }
+	}
+
+	// add lang file to session for easy include
+	$_SESSION['RF']['language'] = $lang;
+	$_SESSION['RF']['language_file'] = $language_file;
+}
+else 
+{
+	$lang = $_SESSION['RF']['language'];
+	$language_file = $_SESSION['RF']['language_file']; 
+}
+
 require_once $language_file;
 
-if(!isset($_GET['type'])) $_GET['type']=0;
-if(!isset($_GET['field_id'])) $_GET['field_id']='';
+if (!isset($_GET['type'])) $_GET['type'] = 0;
+if (!isset($_GET['field_id'])) $_GET['field_id'] = '';
 
-$field_id=isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
-$type_param=fix_get_params($_GET['type']);
+$field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
+$type_param = fix_get_params($_GET['type']);
 
 $get_params = http_build_query(array(
     'type'      => $type_param,
@@ -233,7 +297,7 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
 	<script type="text/javascript" src="js/jquery.queryloader2.min.js"></script>
 	<?php
-	if($aviary_active){
+	if ($aviary_active){
 	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
 	    <script type="text/javascript" src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
 	<?php }else{ ?>
@@ -342,6 +406,14 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="lang_files_on_clipboard" value="<?php echo lang_Files_ON_Clipboard; ?>" />
 	<input type="hidden" id="clipboard" value="<?php echo ((isset($_SESSION['RF']['clipboard']['path']) && trim($_SESSION['RF']['clipboard']['path']) != null) ? 1 : 0); ?>" />
 	<input type="hidden" id="lang_clear_clipboard_confirm" value="<?php echo lang_Clear_Clipboard_Confirm; ?>" />
+	<input type="hidden" id="lang_file_permission" value="<?php echo lang_File_Permission; ?>" />
+	<input type="hidden" id="chmod_files_allowed" value="<?php if($chmod_files) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="chmod_dirs_allowed" value="<?php if($chmod_dirs) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="lang_lang_change" value="<?php echo lang_Lang_Change; ?>" />
+	<input type="hidden" id="edit_text_files_allowed" value="<?php if($edit_text_files) echo 1; else echo 0; ?>" />
+	<input type="hidden" id="lang_edit_file" value="<?php echo lang_Edit_File; ?>" />
+	<input type="hidden" id="lang_new_file" value="<?php echo lang_New_File; ?>" />
+	<input type="hidden" id="lang_filename" value="<?php echo lang_Filename; ?>" />
 	<input type="hidden" id="lang_file_info" value="<?php echo fix_strtoupper(lang_File_info); ?>" />
 	<input type="hidden" id="lang_edit_image" value="<?php echo lang_Edit_image; ?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo lang_Extract; ?>" />
@@ -479,9 +551,12 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	    <div class="nav-collapse collapse">
 		<div class="filters">
 		    <div class="row-fluid">
-			<div class="span3 half"> 
+			<div class="span4 half"> 
 			    <?php if($upload_files){ ?>
-						    <button class="tip btn upload-btn" title="<?php echo  lang_Upload_file; ?>"><i class="icon-plus"></i><i class="icon-file"></i></button> 
+						    <button class="tip btn upload-btn" title="<?php echo  lang_Upload_file; ?>"><i class="rficon-upload"></i></button> 
+			    <?php } ?>
+			    <?php if($create_text_files){ ?>
+						    <button class="tip btn create-file-btn" title="<?php echo  lang_New_File; ?>"><i class="icon-plus"></i><i class="icon-file"></i></button> 
 			    <?php } ?>
 			    <?php if($create_folders){ ?>
 						    <button class="tip btn new-folder" title="<?php echo  lang_New_Folder?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button> 
@@ -491,9 +566,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <button class="tip btn clear-clipboard-btn" title="<?php echo lang_Clear_Clipboard; ?>"><i class="rficon-clipboard-clear"></i></button> 
 				<?php } ?>
 			</div>
-			<div class="span3 half view-controller">
+			<div class="span2 half view-controller">
 
-				<span><?php echo lang_View; ?>:</span>
+				<!-- <span><?php echo lang_View; ?>:</span> there's no more space :(-->
 			    <button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
@@ -550,6 +625,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	}
 	?>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
+	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="change_lang_btn"><i class="icon-globe"></i></a></li>
 	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 	
 	<li class="pull-right">
@@ -791,7 +867,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    </div>
 				</div>
 				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
-				    <div class="filetype <?php echo $extension_lower ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $extension_lower ?></div>
+				    <div class="filetype <?php echo $extension_lower ?> <?php if(in_array($extension_lower, $editable_text_file_exts)) echo 'edit-text-file-allowed' ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $extension_lower ?></div>
 				    <div class="img-container-mini">
 					<span></span>
 					<?php if($mini_src!=""){ ?>
@@ -826,6 +902,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
 					title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
+					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
+					<?php }elseif($preview_text_files === TRUE && in_array($extension_lower,$previewable_text_file_exts)){ ?>
+				    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
