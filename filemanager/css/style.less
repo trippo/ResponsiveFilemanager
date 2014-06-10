@@ -58,6 +58,9 @@ body{
 .rficon-clipboard-clear {
     background-image:url(../img/clipboard_clear.png);
 }
+.rficon-upload{
+		background-image:url(../img/upload.png)
+}
 
 .btn{
 	-webkit-border-radius: 0px;
@@ -409,9 +412,19 @@ ul.sorting.dropdown-menu>li>a{
 		display: none;
 	}
 }
+@media(min-width:840px){
+
+	.mobile-inline-visible{
+		display: none !important;
+	}
+}
+
 @media(max-width:839px){
 	body{
 		padding-top: 0px;
+	}
+	.mobile-inline-visible{
+		display: inline !important;
 	}
 	.filters .types{
 		text-align: left;
@@ -423,7 +436,7 @@ ul.sorting.dropdown-menu>li>a{
 		padding-bottom: 4px;
 	}
 	.filters{
-		div.span3.half,div.half.span6{
+		div.span3.half,div.span2.half,div.span4.half,div.half.span6{
 			float:none;
 			width:100%;
 

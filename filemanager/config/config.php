@@ -101,19 +101,19 @@ $ellipsis_title_after_first_row = TRUE;
 //*************************
 //Permissions configuration
 //******************
-$delete_files	 	= TRUE;
+$delete_files	 	  = TRUE;
 $create_folders	 	= TRUE;
 $delete_folders	 	= TRUE;
-$upload_files	 	= TRUE;
-$rename_files	 	= TRUE;
+$upload_files	 	  = TRUE;
+$rename_files	 	  = TRUE;
 $rename_folders	 	= TRUE;
 $duplicate_files 	= TRUE;
 $copy_cut_files	 	= TRUE; // for copy/cut files
 $copy_cut_dirs	 	= TRUE; // for copy/cut directories
-$chmod_files 	 	= FALSE; // change file permissions
-$chmod_dirs		 	= FALSE; // change folder permissions
+$chmod_files 	 	  = FALSE; // change file permissions
+$chmod_dirs		 	  = FALSE; // change folder permissions
 $preview_text_files = TRUE; // eg.: txt, log etc.
-$edit_text_files 	= TRUE; // eg.: txt, log etc.
+$edit_text_files 	  = TRUE; // eg.: txt, log etc.
 $create_text_files 	= TRUE; // only create files with exts. defined in $editable_text_file_exts
 
 // you can preview these type of files if $preview_text_files is true

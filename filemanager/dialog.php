@@ -552,6 +552,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		<div class="filters">
 		    <div class="row-fluid">
 			<div class="span4 half"> 
+				  <span class="mobile-inline-visible"><?php echo lang_Operations; ?>:</span>
 			    <?php if($upload_files){ ?>
 						    <button class="tip btn upload-btn" title="<?php echo  lang_Upload_file; ?>"><i class="rficon-upload"></i></button> 
 			    <?php } ?>
@@ -567,8 +568,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<?php } ?>
 			</div>
 			<div class="span2 half view-controller">
-
-				<!-- <span><?php echo lang_View; ?>:</span> there's no more space :(-->
+				  <span class="mobile-inline-visible"><?php echo lang_View; ?>:</span>
 			    <button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo lang_View_boxes; ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo lang_View_list; ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo lang_View_columns_list; ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
