@@ -2,12 +2,12 @@
 define('lang_Select','Vybrať');
 define('lang_Erase','Odstrániť');
 define('lang_Open','Otvoriť');
-define('lang_Confirm_del','Naozaj chcete vymazať tento súbor?');
+define('lang_Confirm_del','Naozaj odstrániť tento súbor?');
 define('lang_All','Všetky');
 define('lang_Files','Súbory');
 define('lang_Images','Obrázky');
 define('lang_Archives','Archívy');
-define('lang_Error_Upload','Súbor presahuje maximálnu veľkosť.');
+define('lang_Error_Upload','Súbor presahuje maximálnu možnú veľkosť.');
 define('lang_Error_extension','Typ súboru nie je podporovaný.');
 define('lang_Upload_file','Súbor');
 define('lang_Filters','Filtrovať');
@@ -34,11 +34,11 @@ define('lang_Rename_existing_file','Súbor už existuje');
 define('lang_Rename_existing_folder','Adresár už existuje');
 define('lang_Empty_name','Názov je prázdny');
 define('lang_Text_filter','Vyhľadať');
-define('lang_Swipe_help','Pre viac možností prejdite myšou na súboru/adresár');
+define('lang_Swipe_help','Pre viac možností prejdite myšou na súbor/adresár');
 define('lang_Upload_base','Klasické nahratie súborov');
 define('lang_Upload_java','Nahrať súbory cez JAVA (veľké súbory)');
-define('lang_Upload_java_help',"Ak sa vám nezobrazí Java Applet, 1. uistite sa, že máte nainštalovanú Java, (<a href='http://java.com/en/download/'>[stiahnuť]</a>) 2. uistite sa, že nie je zablokovaná cez Firewall");
-define('lang_Upload_base_help',"Myšou presuňte súbory alebo kliknite na určenú plochu a vyberte súbory. Keď je nahrávanie dokončené, kliknite na tlačidlo 'Späť na zoznam súborov'.");
+define('lang_Upload_java_help',"Ak sa vám nezobrazí Java Applet uistite sa, že máte nainštalovanú Java (<a href='http://java.com/en/download/'>stiahnuť</a>) a skontrolujte blokovanie cez bránu Firewall.");
+define('lang_Upload_base_help',"Myšou presuňte súbory alebo kliknite na plochu a vyberte súbory. Keď je nahrávanie dokončené, kliknite na tlačidlo 'Späť na zoznam súborov'.");
 define('lang_Type_dir','dir');
 define('lang_Type','Typ');
 define('lang_Dimension','Rozlíšenie');
@@ -54,44 +54,44 @@ define('lang_Show_url','Zobratiť URL');
 define('lang_Extract','Rozbaliť sem');
 define('lang_File_info','Informácie o súbore');
 define('lang_Edit_image','Upraviť obrázok');
-define('lang_Duplicate','Duplicate');
-define('lang_Folders', 'Folders');
-define('lang_Copy','Copy');
-define('lang_Cut','Cut');
-define('lang_Paste','Paste');
-define('lang_CB', 'CB'); // clipboard
-define('lang_Paste_Here','Paste to this directory');
-define('lang_Paste_Confirm','Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.');
-define('lang_Paste_Failed','Failed to paste file(s)');
-define('lang_Clear_Clipboard','Clear clipboard');
-define('lang_Clear_Clipboard_Confirm','Are you sure you want to clear the clipboard?');
-define('lang_Files_ON_Clipboard','There are files on the clipboard.');
-define('lang_Copy_Cut_Size_Limit','The selected files/folders are too big to %s. Limit: %d MB/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Count_Limit','You selected too many files/folders to %s. Limit: %d files/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Not_Allowed','You are not allowed to %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
-define('lang_Aviary_No_Save', 'Could not save image');
-define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
-define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
-define('lang_Dir_No_Write', 'The directory you selected is not writable.');
-define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
-define('lang_File_Permission', 'File permission');
-define('lang_File_Permission_Not_Allowed', 'Changing %s permissions are not allowed.'); // %s = files or folders
-define('lang_File_Permission_Recursive', 'Apply recursively?');
-define('lang_File_Permission_Wrong_Mode', "The supplied permission mode is incorrect.");
-define('lang_User', 'User');
-define('lang_Group', 'Group');
-define('lang_Yes', 'Yes');
-define('lang_No', 'No');
-define('lang_Lang_Not_Found', 'Could not find language.');
-define('lang_Lang_Change', 'Change the language');
-define('lang_File_Not_Found', 'Could not find the file.');
-define('lang_File_Open_Edit_Not_Allowed', 'You are not allowed to %s this file.'); // %s = open or edit
-define('lang_Edit', 'Edit');
-define('lang_Edit_File', "Edit file's content");
-define('lang_File_Save_OK', "File successfully saved.");
-define('lang_File_Save_Error', "There was an error while saving the file.");
-define('lang_New_File','New File');
-define('lang_No_Extension','You have to add a file extension.'); 
-define('lang_Valid_Extensions','Valid extensions: %s'); // %s = txt,log etc.
+define('lang_Duplicate','Duplikovať');
+define('lang_Folders', 'Adresáre');
+define('lang_Copy','Kopírovať');
+define('lang_Cut','Vystrihnúť');
+define('lang_Paste','Prilepiť');
+define('lang_CB', 'Schránka'); // clipboard
+define('lang_Paste_Here','Prilepiť do tohto adresára');
+define('lang_Paste_Confirm','Naozaj chcete prilepiť súbory do tohto adresára? Existujúce súbory sa prepíšu.');
+define('lang_Paste_Failed','Zlyhalo prilepenie súborov');
+define('lang_Clear_Clipboard','Vyčistiť schránku');
+define('lang_Clear_Clipboard_Confirm','Naozaj chcete vyčistiť schránku?');
+define('lang_Files_ON_Clipboard','Máte súbory v schránke.');
+define('lang_Copy_Cut_Size_Limit','Vybrané položky sú príliš veľké na to aby boli vystrihnuté alebo kopírované. Limit: %d MB/operácia'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Vybrali ste príliš veľa položiek na to aby boli vystrihnuté alebo kopírované. Limit: %d files/operácia'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Nemáte povolenie na vystrihnutie alebo kopírovanie položiek.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Obrázok nebol uložený.');
+define('lang_Zip_No_Extract', 'Súbor nemožno rozbaliť. Môže byť poškodený.');
+define('lang_Zip_Invalid', 'Tento typ súboru nemožno rozbaliť. Povolené formáty: zip, gz, tar.');
+define('lang_Dir_No_Write', 'Do vybraného adresára nemožno zapisovať.');
+define('lang_Function_Disabled', 'Funkciu vystrihnúť alebo kopírovať nepodporuje Vás webhosting.'); // %s = cut or copy
+define('lang_File_Permission', 'Povolenia súborov');
+define('lang_File_Permission_Not_Allowed', 'Zmena povolení súborov alebo adresárov nie je povolená.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Použiť na vnorené súbory a adresáre?');
+define('lang_File_Permission_Wrong_Mode', "Nesprávny mód povolenia");
+define('lang_User', 'Užívateľ');
+define('lang_Group', 'Skupina');
+define('lang_Yes', 'Áno');
+define('lang_No', 'Nie');
+define('lang_Lang_Not_Found', 'Jazyk nebol nájdený.');
+define('lang_Lang_Change', 'Zmeniť jazyk');
+define('lang_File_Not_Found', 'Súbor sa nenašiel.');
+define('lang_File_Open_Edit_Not_Allowed', 'Nemáte právo otvoriť alebo upravovať tento súbor.'); // %s = open or edit
+define('lang_Edit', 'Upraviť');
+define('lang_Edit_File', "Upraviť obsah súboru");
+define('lang_File_Save_OK', "Súbor bol uložený.");
+define('lang_File_Save_Error', "Nastala chyba! Súbor nebol uložený.");
+define('lang_New_File','Nový súbor');
+define('lang_No_Extension','Musíte pridať príponu súboru.'); 
+define('lang_Valid_Extensions','Povolené prípony: %s'); // %s = txt,log etc.
 
 ?>
