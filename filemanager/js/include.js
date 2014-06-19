@@ -1002,9 +1002,19 @@ function apply(file,external){
     var ext_audio=new Array('ogg','mp3','wav');
     var ext_video=new Array('mp4','ogg','webm');
     if (external!=""){
-			var target = $('#'+external,window_parent.document);
+		if ($('#crossdomain').val()==1){
+			window.parent.postMessage({
+					sender: 'filemanager',
+					url: base_url+path+file,
+					field_id : external
+				},
+				'*'
+			);
+      } else {
+			var target = $('#'+external, window_parent.document);
 			target.val(base_url+path+file).trigger('change');
 			close_window();
+		}
 	  }
     if ($.inArray(ext, ext_img) > -1){
         fill='<img src="'+base_url+path+file+'" alt="'+alt_name+'" />';
@@ -1021,18 +1031,20 @@ function apply(file,external){
 	}
 	
     }
-	
-	// tinymce 3.X
-    if ( parent.tinymce.majorVersion < 4 )
-    {
-		parent.tinymce.activeEditor.execCommand('mceInsertContent', false, fill); 
-		parent.tinymce.activeEditor.windowManager.close( parent.tinymce.activeEditor.windowManager.params.mce_window_id );
-	}
-	// tinymce 4.X
-	else 
-	{
-		parent.tinymce.activeEditor.insertContent(fill);
-		parent.tinymce.activeEditor.windowManager.close();
+
+    if ($('#crossdomain').val()!=1){
+		// tinymce 3.X
+		if ( parent.tinymce.majorVersion < 4 )
+		{
+			parent.tinymce.activeEditor.execCommand('mceInsertContent', false, fill); 
+			parent.tinymce.activeEditor.windowManager.close( parent.tinymce.activeEditor.windowManager.params.mce_window_id );
+		}
+		// tinymce 4.X
+		else 
+		{
+			parent.tinymce.activeEditor.insertContent(fill);
+			parent.tinymce.activeEditor.windowManager.close();
+		}
 	}
 }
 
@@ -1044,9 +1056,19 @@ function apply_link(file,external){
     path = path.replace('\\', '/');
     var base_url = $('#base_url').val();
     if (external!=""){
-			var target = $('#'+external,window_parent.document);
+		if ($('#crossdomain').val()==1){
+			window.parent.postMessage({
+					sender: 'filemanager',
+					url: base_url+path+file,
+					id : external
+				},
+				'*'
+			);
+      } else {
+			var target = $('#'+external, window_parent.document);
 			target.val(base_url+path+file).trigger('change');
 			close_window();
+		}
     }
     else
 	apply_any(base_url+path, file);
@@ -1057,11 +1079,21 @@ function apply_img(file,external){
     var path = $('#cur_dir').val();
     path = path.replace('\\', '/');
     var base_url = $('#base_url').val();
-    
+   
     if (external!=""){
-		var target = $('#'+external, window_parent.document);
-		target.val(base_url+path+file).trigger( "change" );
-		close_window();
+		if ($('#crossdomain').val()==1){
+			window.parent.postMessage({
+					sender: 'filemanager',
+					url: base_url+path+file,
+					field_id : external
+				},
+				'*'
+			);
+      } else {
+			var target = $('#'+external, window_parent.document);
+			target.val(base_url+path+file).trigger('change');
+			close_window();
+		}
     }
     else
         apply_any(base_url+path, file);
@@ -1073,9 +1105,19 @@ function apply_video(file,external){
     path = path.replace('\\', '/');
     var base_url = $('#base_url').val();
     if (external!=""){
-		var target = $('#'+external,window_parent.document);
-		target.val(base_url+path+file).trigger('change');
-		close_window();
+		if ($('#crossdomain').val()==1){
+			window.parent.postMessage({
+					sender: 'filemanager',
+					url: base_url+path+file,
+					id : external
+				},
+				'*'
+			);
+      } else {
+			var target = $('#'+external, window_parent.document);
+			target.val(base_url+path+file).trigger('change');
+			close_window();
+		}
     }
     else
 	apply_any(path, file);
@@ -1116,6 +1158,8 @@ function apply_none(file,external){
 }
 
 function apply_any(path, file) {
+   if ($('#crossdomain').val()==1){ return false; }
+
 	path = path.replace('\\', '/');
 	// tinymce 3.X
 	if ( parent.tinymce.majorVersion < 4 )
