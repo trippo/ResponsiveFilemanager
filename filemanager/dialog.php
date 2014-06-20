@@ -119,6 +119,15 @@ else $popup=0;
 //Sanitize popup
 $popup=!!$popup;
 
+if (isset($_GET['crossdomain'])) 
+{
+   $crossdomain = strip_tags($_GET['crossdomain']);
+}
+else $crossdomain=0;
+
+//Sanitize crossdomain
+$crossdomain=!!$crossdomain;
+
 //view type
 if(!isset($_SESSION['RF']["view_type"]))
 { 
@@ -211,6 +220,7 @@ $get_params = http_build_query(array(
     'type'      => $type_param,
     'lang'      => $lang,
     'popup'     => $popup,
+    'crossdomain' => $crossdomain,
     'field_id'  => $field_id,
     'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key'),
     'fldr'      => ''
@@ -375,6 +385,7 @@ $get_params = http_build_query(array(
     </head>
     <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
+	<input type="hidden" id="crossdomain" value="<?php echo $crossdomain; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
 	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
