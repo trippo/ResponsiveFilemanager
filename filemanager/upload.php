@@ -40,7 +40,7 @@ if (!empty($_FILES)) {
 	  
 	$targetPath = $storeFolder;
 	$targetPathThumb = $storeFolderThumb;
-	$_FILES['file']['name'] = fix_filename($_FILES['file']['name'],$transliteration);
+	$_FILES['file']['name'] = fix_filename($_FILES['file']['name'],$transliteration,$convert_spaces);
 	 
 	if(file_exists($targetPath.$_FILES['file']['name'])){
 	    $i = 1;

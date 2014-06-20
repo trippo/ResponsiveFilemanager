@@ -47,7 +47,7 @@ if(isset($_GET['action']))
 			|| strpos($_POST['path'], '../') !== FALSE
 			|| strpos($_POST['path'], './') === 0
 			|| strpos($_POST['url'], 'http://featherfiles.aviary.com/') !== 0
-			|| $_POST['name'] != fix_filename($_POST['name'], $transliteration)
+			|| $_POST['name'] != fix_filename($_POST['name'], $transliteration,$convert_spaces)
 			|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
 		    {
 			    die('wrong data');

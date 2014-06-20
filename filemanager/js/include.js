@@ -1,4 +1,4 @@
-var version = "9.5.0";
+var version = "9.5.1";
 var active_contextmenu = true;
 if (loading_bar){   
 	if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -1265,19 +1265,22 @@ function replaceDiacritics(s)
 }
 
 function fix_filename(stri) {
-    if (stri!=null) {
-	if ($('#transliteration').val()=="true") {
-	    stri=replaceDiacritics(stri);
-	    stri=stri.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
-	}
-	stri=stri.replace('"','');
-	stri=stri.replace("'",'');
-	stri=stri.replace("/",'');
-	stri=stri.replace("\\",'');
-	stri=stri.replace(/<\/?[^>]+(>|$)/g, "");
-	return $.trim(stri);
-    }
-    return null;
+  if (stri!=null) {
+		if ($('#transliteration').val()=="true") {
+		    stri=replaceDiacritics(stri);
+		    stri=stri.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
+		}
+		if ($('#convert_spaces').val()=="true") {
+	      stri=stri.replace(' ','_');
+	  }
+		stri=stri.replace('"','');
+		stri=stri.replace("'",'');
+		stri=stri.replace("/",'');
+		stri=stri.replace("\\",'');
+		stri=stri.replace(/<\/?[^>]+(>|$)/g, "");
+		return $.trim(stri);
+  }
+  return null;
 }
 
 function execute_action(action,file1,file2,name,container,function_name){

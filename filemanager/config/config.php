@@ -65,6 +65,7 @@ $show_folder_size 	= TRUE; //Show or not show folder size in list view feature i
 $show_sorting_bar 	= TRUE; //Show or not show sorting feature in filemanager
 $loading_bar 		= TRUE; //Show or not show loading bar
 $transliteration 	= FALSE; //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
+$convert_spaces  = FALSE; //convert all spaces on files name and folders name with _
 
 //*******************************************
 //Images limit and resizing configuration
