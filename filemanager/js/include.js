@@ -1032,7 +1032,17 @@ function apply(file,external){
 	
     }
 
-    if ($('#crossdomain').val()!=1){
+	if ($('#crossdomain').val()==1){
+		window.parent.postMessage({
+				sender: 'filemanager',
+				url: base_url+path+file,
+				id : null,
+				html: fill
+			},
+			'*'
+		);
+
+	} else {
 		// tinymce 3.X
 		if ( parent.tinymce.majorVersion < 4 )
 		{
@@ -1158,21 +1168,32 @@ function apply_none(file,external){
 }
 
 function apply_any(path, file) {
-   if ($('#crossdomain').val()==1){ return false; }
-
 	path = path.replace('\\', '/');
-	// tinymce 3.X
-	if ( parent.tinymce.majorVersion < 4 )
-	{
-		parent.tinymce.activeEditor.windowManager.params.setUrl(path+file);
-		parent.tinymce.activeEditor.windowManager.close( parent.tinymce.activeEditor.windowManager.params.mce_window_id );
+
+	if ($('#crossdomain').val()==1){
+		window.parent.postMessage({
+				sender: 'filemanager',
+				url: path+file,
+				id : null
+			},
+			'*'
+		);
+
+	} else {
+		// tinymce 3.X
+		if ( parent.tinymce.majorVersion < 4 )
+		{
+			parent.tinymce.activeEditor.windowManager.params.setUrl(path+file);
+			parent.tinymce.activeEditor.windowManager.close( parent.tinymce.activeEditor.windowManager.params.mce_window_id );
+		}
+		// tinymce 4.X
+		else
+		{
+			parent.tinymce.activeEditor.windowManager.getParams().setUrl(path+file);
+			parent.tinymce.activeEditor.windowManager.close();
+		}
 	}
-	// tinymce 4.X
-	else
-	{
-		parent.tinymce.activeEditor.windowManager.getParams().setUrl(path+file);
-		parent.tinymce.activeEditor.windowManager.close();
-	}
+
 	return false;	
 }
 
