@@ -13,7 +13,7 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 
 	function filemanager_onMessage(event){
 		if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
-			if(event.data.sender === 'filemanager'){
+			if(event.data.sender === 'responsivefilemanager'){
 				tinymce.activeEditor.windowManager.getParams().setUrl(event.data.url);
 				tinymce.activeEditor.windowManager.close();
 
