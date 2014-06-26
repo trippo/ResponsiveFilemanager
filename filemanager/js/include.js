@@ -28,13 +28,13 @@ $(document).ready(function(){
 			    m+=$('#base_url').val()+$('#cur_dir').val();
 			    add=$trigger.find('a.link').attr('data-file');
 			    if (add!="" && add!=null) {
-				m+=add;
+						m+=add;
 			    }
 			    add=$trigger.find('h4 a.folder-link').attr('data-file');
 			    if (add!="" && add!=null) {
-				m+=add;
+						m+=add;
 			    }
-			    bootbox.alert('URL:<br/><br/><input type="text" style="height:30px; width:100%;" value="'+m+'" />'); 	
+			    bootbox.alert('URL:<br/><br/><input type="text" style="height:30px; width:100%;" value="'+encodeURL(m)+'" />'); 	
 			    break;
 			case "unzip":
 			    var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
