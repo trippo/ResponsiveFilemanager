@@ -6,6 +6,38 @@
 		init : function(editor, url)
 		{
 
+			function responsivefilemanager_onMessage(event){
+				if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
+					if(event.data.sender === 'filemanager'){
+						tinymce.activeEditor.execCommand('mceInsertContent', false, event.data.html); 
+						tinymce.activeEditor.windowManager.close( tinymce.activeEditor.windowManager.params.mce_window_id );
+
+						// Remove event listener for a message from ResponsiveFilemanager
+						if(window.removeEventListener){
+							window.removeEventListener('message', responsivefilemanager_onMessage, false);
+						} else {
+							window.detachEvent('onmessage', responsivefilemanager_onMessage);
+						}
+					}
+				}
+			}
+
+			function filemanager_onMessage(event){
+				if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
+					if(event.data.sender === 'filemanager'){
+						tinymce.activeEditor.windowManager.params.setUrl(event.data.url);
+						tinymce.activeEditor.windowManager.close(tinymce.activeEditor.windowManager.params.mce_window_id );
+
+						// Remove event listener for a message from ResponsiveFilemanager
+						if(window.removeEventListener){
+							window.removeEventListener('message', filemanager_onMessage, false);
+						} else {
+							window.detachEvent('onmessage', filemanager_onMessage);
+						}
+					}
+				}
+			}
+
 			// File manager callback
 			function openmanager() 
 			{
@@ -30,10 +62,21 @@
 				if (typeof editor.settings.filemanager_subfolder !== "undefined" && editor.settings.filemanager_subfolder) {
 					fldr="&fldr="+editor.settings.filemanager_subfolder;
 				}
+				var crossdomain="";
+				if (typeof editor.settings.filemanager_crossdomain !== "undefined" && editor.settings.filemanager_crossdomain) {
+					crossdomain="&crossdomain=1";
+
+					// Add handler for a message from ResponsiveFilemanager
+					if(window.addEventListener){
+						window.addEventListener('message', responsivefilemanager_onMessage, false);
+					} else {
+						window.attachEvent('onmessage', responsivefilemanager_onMessage);
+					}
+				}
 
 				win = editor.windowManager.open({
 					title: title,
-					file: editor.settings.external_filemanager_path+'dialog.php?type=4&descending='+descending+sort_by+fldr+'&lang='+editor.settings.language+'&akey='+akey,
+					file: editor.settings.external_filemanager_path+'dialog.php?type=4&descending='+descending+sort_by+fldr+crossdomain+'&lang='+editor.settings.language+'&akey='+akey,
 					width: 860,
 					height: 570,
 					inline: 1,
@@ -69,10 +112,21 @@
 				if (typeof editor.settings.filemanager_subfolder !== "undefined" && editor.settings.filemanager_subfolder) {
 					fldr="&fldr="+editor.settings.filemanager_subfolder;
 				}
+				var crossdomain="";
+				if (typeof editor.settings.filemanager_crossdomain !== "undefined" && editor.settings.filemanager_crossdomain) {
+					crossdomain="&crossdomain=1";
+
+					// Add handler for a message from ResponsiveFilemanager
+					if(window.addEventListener){
+						window.addEventListener('message', filemanager_onMessage, false);
+					} else {
+						window.attachEvent('onmessage', filemanager_onMessage);
+					}
+				}
 
 				tinymce.activeEditor.windowManager.open({
 					title: title,
-					file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+sort_by+fldr+'&lang='+editor.settings.language+'&akey='+akey,
+					file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+sort_by+fldr+crossdomain+'&lang='+editor.settings.language+'&akey='+akey,
 					width: 860,  
 					height: 570,
 					resizable: true,
