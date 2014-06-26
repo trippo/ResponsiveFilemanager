@@ -8,7 +8,7 @@
 
 			function responsivefilemanager_onMessage(event){
 				if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
-					if(event.data.sender === 'filemanager'){
+					if(event.data.sender === 'responsivefilemanager'){
 						tinymce.activeEditor.execCommand('mceInsertContent', false, event.data.html); 
 						tinymce.activeEditor.windowManager.close( tinymce.activeEditor.windowManager.params.mce_window_id );
 
@@ -24,7 +24,7 @@
 
 			function filemanager_onMessage(event){
 				if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
-					if(event.data.sender === 'filemanager'){
+					if(event.data.sender === 'responsivefilemanager'){
 						tinymce.activeEditor.windowManager.params.setUrl(event.data.url);
 						tinymce.activeEditor.windowManager.close(tinymce.activeEditor.windowManager.params.mce_window_id );
 

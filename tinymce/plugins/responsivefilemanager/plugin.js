@@ -11,7 +11,7 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
 
 	function responsivefilemanager_onMessage(event){
 		if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
-			if(event.data.sender === 'filemanager'){
+			if(event.data.sender === 'responsivefilemanager'){
 				tinymce.activeEditor.insertContent(event.data.html);
 				tinymce.activeEditor.windowManager.close();
 
