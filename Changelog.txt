@@ -1,6 +1,33 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.6.0
+*********************************************************
+
+***** Major *****
+- Cross domain feature
+- Convert_spaces options
+
+
+
+***** Detailed *****
+- Cross domain feature:To enable cross-domain file selector, where files are hosted on one server (for example, serverA.com) and URL is being sent to another (for example, serverB.com), include crossdomain=1 in the URL.
+For example, to instantiate image picker, use the following URL: http://serverA.com/[path to filemanager]/filemanager/dialog.php?type=1&field_id=fieldID&crossdomain=1
+Then on serverB.com, the following code can be used to retrieve the URL after file selection is made. Please note, that the code is written for jQuery with FancyBox plug-in.
+
+FILE MANAGER AS TINYMCE PLUG-IN
+There is extra parameter needed filemanager_crossdomain when calling tinymce.init(), please see below.
+tinymce.init({
+   ...
+   filemanager_crossdomain: true,
+   ...
+});
+
+
+- Convert_spaces options: enable the conversion of spaces to _ in file and folder name
+
+
+*********************************************************
 *  RFM 9.5.0
 *********************************************************
 
