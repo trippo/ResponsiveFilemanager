@@ -990,6 +990,14 @@ function swipe_reaction(event, direction, distance, duration, fingerCount) {
     }
 }
 
+function encodeURL(url){
+	var tmp=url.split('/');
+	for(var i=2;i<tmp.length;i++){
+		tmp[i]=encodeURIComponent(tmp[i]);
+	}
+	return tmp.join('/');
+}
+
 function apply(file,external){
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();    
@@ -1001,32 +1009,34 @@ function apply(file,external){
   var fill='';
   var ext_audio=new Array('ogg','mp3','wav');
   var ext_video=new Array('mp4','ogg','webm');
+  var url= encodeURL(base_url+path+file);
+
   if (external!=""){
 		if ($('#crossdomain').val()==1){
 			window_parent.postMessage({
 				sender: 'responsivefilemanager',
-				url: base_url+path+file,
+				url: url,
 				field_id : external
 			},
 			'*'
 			);
     } else {
 			var target = $('#'+external, window_parent.document);
-			target.val(base_url+path+file).trigger('change');
+			target.val(url).trigger('change');
 			close_window();
 		}
   }else{
 	  if ($.inArray(ext, ext_img) > -1){
-	    fill='<img src="'+base_url+path+file+'" alt="'+alt_name+'" />';
+	    fill='<img src="'+url+'" alt="'+alt_name+'" />';
 	  }else {
 			if ($.inArray(ext, ext_video) > -1){
-			  fill='<video controls source src="'+base_url+path+file+'" type="video/'+ext+'">'+alt_name+'</video>';
+			  fill='<video controls source src="'+url+'" type="video/'+ext+'">'+alt_name+'</video>';
 			}else {
 			  if ($.inArray(ext, ext_audio) > -1 ){
 					if (ext=='mp3') { ext='mpeg'; }
-					fill='<audio controls src="'+base_url+path+file+'" type="audio/'+ext+'">'+alt_name+'</audio>';
+					fill='<audio controls src="'+url+'" type="audio/'+ext+'">'+alt_name+'</audio>';
 			  }else {
-					fill='<a href="'+base_url+path+file+'" title="'+alt_name+'">'+alt_name+'</a>';
+					fill='<a href="'+url+'" title="'+alt_name+'">'+alt_name+'</a>';
 			  }
 			}
 		
@@ -1035,7 +1045,7 @@ function apply(file,external){
 		if ($('#crossdomain').val()==1){
 			window.parent.postMessage({
 					sender: 'responsivefilemanager',
-					url: base_url+path+file,
+					url: url,
 					id : null,
 					html: fill
 				},
@@ -1062,27 +1072,29 @@ function apply(file,external){
 
 
 function apply_link(file,external){
-    if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
-    var path = $('#cur_dir').val();
-    path = path.replace('\\', '/');
-    var base_url = $('#base_url').val();
-    if (external!=""){    	
-			if ($('#crossdomain').val()==1){
-				window_parent.postMessage({
-						sender: 'responsivefilemanager',
-						url: base_url+path+file,
-						field_id : external
-					},
-					'*'
-				);
-	    } else {
-				var target = $('#'+external, window_parent.document);
-				target.val(base_url+path+file).trigger('change');
-				close_window();
-			}
-    }else{
-			apply_any(base_url+path, file);
-    }
+  if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
+  var path = $('#cur_dir').val();
+  path = path.replace('\\', '/');
+  var base_url = $('#base_url').val();
+  var url= encodeURL(base_url+path+file);
+
+	if (external!=""){    	
+		if ($('#crossdomain').val()==1){
+			window_parent.postMessage({
+					sender: 'responsivefilemanager',
+					url: url,
+					field_id : external
+				},
+				'*'
+			);
+	  } else {
+			var target = $('#'+external, window_parent.document);
+			target.val(url).trigger('change');
+			close_window();
+		}
+	}else{
+		apply_any(url);
+	}
 }
 
 function apply_img(file,external){
@@ -1090,23 +1102,24 @@ function apply_img(file,external){
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
   var base_url = $('#base_url').val();
- 
+  var url= encodeURL(base_url+path+file);
+
   if (external!=""){
 		if ($('#crossdomain').val()==1){
 			window_parent.postMessage({
 					sender: 'responsivefilemanager',
-					url: base_url+path+file,
+					url: url,
 					field_id : external
 				},
 				'*'
 			);
       } else {
 			var target = $('#'+external, window_parent.document);
-			target.val(base_url+path+file).trigger('change');
+			target.val(url).trigger('change');
 			close_window();
 		}
   }else{
-    apply_any(base_url+path, file);
+    apply_any(url);
   }
 }
 
@@ -1115,22 +1128,24 @@ function apply_video(file,external){
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
   var base_url = $('#base_url').val();
+  var url= encodeURL(base_url+path+file);
+
   if (external!=""){
 		if ($('#crossdomain').val()==1){
 			window_parent.postMessage({
 					sender: 'responsivefilemanager',
-					url: base_url+path+file,
+					url: url,
 					field_id : external
 				},
 				'*'
 			);
     } else {
 			var target = $('#'+external, window_parent.document);
-			target.val(base_url+path+file).trigger('change');
+			target.val(url).trigger('change');
 			close_window();
 		}
   }else{
-		apply_any(path, file);
+		apply_any(url);
 	}
 }
 
@@ -1168,13 +1183,11 @@ function apply_none(file,external){
 	return;
 }
 
-function apply_any(path, file) {
-	path = path.replace('\\', '/');
-
+function apply_any(url) {
 	if ($('#crossdomain').val()==1){
 		window.parent.postMessage({
 				sender: 'responsivefilemanager',
-				url: path+file,
+				url: url,
 				field_id : null
 			},
 			'*'
@@ -1184,13 +1197,13 @@ function apply_any(path, file) {
 		// tinymce 3.X
 		if ( parent.tinymce.majorVersion < 4 )
 		{
-			parent.tinymce.activeEditor.windowManager.params.setUrl(path+file);
+			parent.tinymce.activeEditor.windowManager.params.setUrl(url);
 			parent.tinymce.activeEditor.windowManager.close( parent.tinymce.activeEditor.windowManager.params.mce_window_id );
 		}
 		// tinymce 4.X
 		else
 		{
-			parent.tinymce.activeEditor.windowManager.getParams().setUrl(path+file);
+			parent.tinymce.activeEditor.windowManager.getParams().setUrl(url);
 			parent.tinymce.activeEditor.windowManager.close();
 		}
 	}
