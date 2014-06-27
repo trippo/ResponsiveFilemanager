@@ -16,11 +16,38 @@ Responsive Filemanager Changelog
 For example, to instantiate image picker, use the following URL: http://serverA.com/[path to filemanager]/filemanager/dialog.php?type=1&field_id=fieldID&crossdomain=1
 Then on serverB.com, the following code can be used to retrieve the URL after file selection is made. Please note, that the code is written for jQuery with FancyBox plug-in.
 
+//
+// Handles message from ResponsiveFilemanager
+//
+function OnMessage(e){
+  var event = e.originalEvent;
+   // Make sure the sender of the event is trusted
+   if(event.data.sender === 'responsivefilemanager'){
+      if(event.data.field_id){
+      	var fieldID=event.data.field_id;
+      	var url=event.data.url;
+	$('#'+fieldID).val(url).trigger('change');
+	$.fancybox.close();
+
+	// Delete handler of the message from ResponsiveFilemanager
+	$(window).off('message', OnMessage);
+      }
+   }
+}
+
+// Handler for a message from ResponsiveFilemanager
+$(‘.opener-class).on('click',function(){
+  $(window).on('message', OnMessage);
+});
+
+
 FILE MANAGER AS TINYMCE PLUG-IN
 There is extra parameter needed filemanager_crossdomain when calling tinymce.init(), please see below.
 tinymce.init({
    ...
    filemanager_crossdomain: true,
+   external_filemanager_path:"http://path/secondaryserver/filemanager/",
+    external_plugins: { "filemanager" : "http://path/secondaryserver/filemanager/plugin.min.js"},
    ...
 });
 
