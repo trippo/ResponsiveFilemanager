@@ -1043,10 +1043,10 @@ function apply(file,external){
 	  }
 
 		if ($('#crossdomain').val()==1){
-			window.parent.postMessage({
+			window_parent.postMessage({
 					sender: 'responsivefilemanager',
 					url: url,
-					id : null,
+					field_id : null,
 					html: fill
 				},
 				'*'
