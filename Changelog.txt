@@ -6,8 +6,8 @@ Responsive Filemanager Changelog
 
 ***** Major *****
 - Cross domain feature
-- Convert_spaces options
-- Encode Export URL
+- Add in config.php a option to replace all spaces with _
+- Encoding of Export URL
 - Code refactoring
 
 
