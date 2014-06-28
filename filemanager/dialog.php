@@ -501,7 +501,11 @@ foreach($files as $k=>$file){
     elseif($file=="..") $prev_folder=array('file'=>$file);
     elseif(is_dir($current_path.$rfm_subfolder.$subdir.$file)){
 	$date=filemtime($current_path.$rfm_subfolder.$subdir. $file);
-	$size=foldersize($current_path.$rfm_subfolder.$subdir. $file);
+	if($show_folder_size){
+		$size=foldersize($current_path.$rfm_subfolder.$subdir. $file);
+	} else {
+		$size=0;
+	}
 	$file_ext=lang_Type_dir;
 	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
     }else{
