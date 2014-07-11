@@ -160,7 +160,11 @@ function fix_get_params($str){
     return strip_tags(preg_replace( "/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
 }
 
-function fix_filename($str,$transliteration){
+function fix_filename($str,$transliteration,$convert_spaces=false){
+    if ($convert_spaces) {
+        $str=str_replace(' ', '_', $str);
+    }
+
     if($transliteration){
     	if( function_exists( 'transliterator_transliterate' ) )
     	{
@@ -207,10 +211,10 @@ function fix_strtolower($str){
 	return strtolower($str);
 }
 
-function fix_path($path,$transliteration){
+function fix_path($path,$transliteration,$convert_spaces=false){
     $info=pathinfo($path);
     $tmp_path = $info['dirname'];
-	$str=fix_filename($info['filename'],$transliteration);
+	$str=fix_filename($info['filename'],$transliteration,$convert_spaces);
     if($tmp_path!="")
 		return $tmp_path.DIRECTORY_SEPARATOR.$str;
     else

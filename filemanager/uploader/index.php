@@ -115,6 +115,12 @@ $classParameters = array(
         //'errormail' => 'me@my.domain.org',
     );
 
+// If convert spaces is enabled, pass that option on to the uploader
+if (!empty($convert_spaces)) {
+    $classParameters['convert_spaces'] = true;
+    $classParameters['spaces_in_subdirs'] = false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Instantiate and initialize JUpload : integration of the applet in your web site.
 $juploadPhpSupportClass = new JUpload($appletParameters, $classParameters);
