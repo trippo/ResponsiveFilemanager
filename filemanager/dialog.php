@@ -45,6 +45,16 @@ setcookie('last_position',$subdir,time() + (86400 * 7));
 
 if ($subdir == "/") { $subdir = ""; }
 
+// If hidden folder appears in the path specified in URL parameter "fldr"
+$dirs = explode('/', $subdir);
+foreach($dirs as $dir){
+   if($dir !== '' && in_array($dir, $hidden_folders)){
+      // Ignore the path
+      $subdir = ""; 
+      break;
+   }
+}
+
 
 /***
  *SUB-DIR CODE
