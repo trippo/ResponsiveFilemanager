@@ -992,7 +992,7 @@ function swipe_reaction(event, direction, distance, duration, fingerCount) {
 
 function encodeURL(url){
 	var tmp=url.split('/');
-	for(var i=2;i<tmp.length;i++){
+	for(var i=3;i<tmp.length;i++){
 		tmp[i]=encodeURIComponent(tmp[i]);
 	}
 	return tmp.join('/');

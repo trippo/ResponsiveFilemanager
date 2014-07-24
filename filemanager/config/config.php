@@ -19,7 +19,12 @@ mb_internal_encoding('UTF-8');
 //    |   |   |   |- responsivefilemanager
 //    |   |   |   |   |- plugin.min.js
 
-$base_url ="http://".$_SERVER['HTTP_HOST'];  // DON'T TOUCH (base url (only domain) of site (without final /)).
+$base_url =
+   // Get HTTP/HTTPS
+   ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && !in_array(strtolower($_SERVER['HTTPS']),array('off','no'))) ? 'https' : 'http').
+   '://'.
+   // Get domain portion
+   $_SERVER['HTTP_HOST']; // DON'T TOUCH (base url (only domain) of site (without final /)).
 $upload_dir = '/source/'; // path from base_url to base of upload folder (with start and final /)
 $current_path = '../source/'; // relative path from filemanager folder to upload folder (with final /)
 //thumbs folder can't put inside upload folder
