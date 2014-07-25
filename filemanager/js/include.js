@@ -299,8 +299,13 @@ $(document).ready(function(){
     var sortDescending=$('#descending').val()=== 'true';
     $('.sorter').on('click',function(){
 	_this=$(this);
-	
-	sortDescending=!sortDescending;
+
+	if($('#sort_by').val() === _this.attr('data-sort')){
+		sortDescending = !sortDescending;
+	} else {
+		sortDescending = true;
+	}
+
 	if (js_script) {
 	    $.ajax({
 		url: "ajax_calls.php?action=sort&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending
@@ -313,6 +318,9 @@ $(document).ready(function(){
 		$('.sort-'+_this.attr('data-sort')).addClass("descending");
 	    else
 		$('.sort-'+_this.attr('data-sort')).addClass("ascending");
+
+		$('#sort_by').val(_this.attr('data-sort'));
+		$('#descending').val(sortDescending);
 	}else {
 	    window.location.href=$('#current_url').val()+"&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending;
 	}
