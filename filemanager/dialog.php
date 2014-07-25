@@ -164,7 +164,7 @@ else $filter = '';
 
 if (!isset($_SESSION['RF']['sort_by'])) 
 {
-	$_SESSION['RF']['sort_by'] = '';
+	$_SESSION['RF']['sort_by'] = 'name';
 }
 
 if (isset($_GET["sort_by"])) 
@@ -175,7 +175,7 @@ else $sort_by = $_SESSION['RF']['sort_by'];
 
 if (!isset($_SESSION['RF']['descending'])) 
 {
-	$_SESSION['RF']['descending'] = FALSE;
+	$_SESSION['RF']['descending'] = TRUE;
 }
 
 if (isset($_GET["descending"])) 
@@ -414,6 +414,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder; ?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
+	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
 	<?php $protocol = 'http'; ?>
 	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter),array(''),$protocol."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']); ?>" />
@@ -520,18 +521,18 @@ foreach($files as $k=>$file){
 		$size=0;
 	}
 	$file_ext=lang_Type_dir;
-	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
+	$sorted[$k]=array('file'=>$file,'file_lcase'=>strtolower($file),'date'=>$date,'size'=>$size,'extension'=>$file_ext,'extension_lcase'=>strtolower($file_ext));
     }else{
 	$file_path=$current_path.$rfm_subfolder.$subdir.$file;
 	$date=filemtime($file_path);
 	$size=filesize($file_path);
 	$file_ext = substr(strrchr($file,'.'),1);
-	$sorted[$k]=array('file'=>$file,'date'=>$date,'size'=>$size,'extension'=>$file_ext);
+	$sorted[$k]=array('file'=>$file,'file_lcase'=>strtolower($file),'date'=>$date,'size'=>$size,'extension'=>$file_ext,'extension_lcase'=>strtolower($file_ext));
     }
 }
 
 function filenameSort($x, $y) {
-    return $x['file'] <  $y['file'];
+    return $x['file_lcase'] <  $y['file_lcase'];
 }
 function dateSort($x, $y) {
     return $x['date'] <  $y['date'];
@@ -540,25 +541,22 @@ function sizeSort($x, $y) {
     return $x['size'] -  $y['size'];
 }
 function extensionSort($x, $y) {
-    return $x['extension'] <  $y['extension'];
+    return $x['extension_lcase'] <  $y['extension_lcase'];
 }
 
 switch($sort_by){
-    case 'name':
-	usort($sorted, 'filenameSort');
-	break;
-    case 'date':
-	usort($sorted, 'dateSort');
-	break;
-    case 'size':
-	usort($sorted, 'sizeSort');
-	break;
-    case 'extension':
-	usort($sorted, 'extensionSort');
-	break;
-    default:
-	break;
-    
+	case 'date':
+		usort($sorted, 'dateSort');
+		break;
+	case 'size':
+		usort($sorted, 'sizeSort');
+		break;
+	case 'extension':
+		usort($sorted, 'extensionSort');
+		break;
+	default:
+		usort($sorted, 'filenameSort');
+		break;  
 }
 
 if($descending){
