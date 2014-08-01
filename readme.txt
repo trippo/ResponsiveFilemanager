@@ -17,7 +17,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - BGR [Stanislav Panev]
 - BRA [paulomanrique]
 - CZE [jlusticky]
-- CHI [Richard Yang]
+- CHI [Vu Doan Thang]
 - ENG
 - ESP [Roberto Santamaria] 
 - FRA [Mathieu Ducharme]
@@ -25,6 +25,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - HUN [Novak Szabolcs]
 - IND [urayogi]
 - ITA
+- JPN [Vu Doan Thang]
 - MON [Tumenzul Batjargal]
 - NLD [Martijn van der Made]
 - NOR [Pål Schroeder]
