@@ -2,8 +2,8 @@
 define('lang_Select','Выбрать');
 define('lang_Erase','Удалить');
 define('lang_Open','Открыть');
-define('lang_Confirm_del','Уверены, что хотите удалить этот файл?');
-define('lang_All','Все');
+define('lang_Confirm_del','Вы уверены, что хотите удалить этот файл?');
+define('lang_All','Очистить фильтр');
 define('lang_Files','Файлы');
 define('lang_Images','Изображения');
 define('lang_Archives','Архивы');
@@ -13,17 +13,17 @@ define('lang_Upload_file','Загрузить файл');
 define('lang_Filters','Фильтр');
 define('lang_Videos','Видео');
 define('lang_Music','Музыка');
-define('lang_New_Folder','New folder');
+define('lang_New_Folder','Новая папка');
 define('lang_Folder_Created','Папка успешно создана');
 define('lang_Existing_Folder','Существующая папка');
-define('lang_Confirm_Folder_del','Уверены, что хотите удалить эту папку и все файлы в ней?');
+define('lang_Confirm_Folder_del','Вы уверены, что хотите удалить эту папку и все файлы в ней?');
 define('lang_Return_Files_List','Вернуться к списку файлов');
 define('lang_Preview','Просмотр');
 define('lang_Download','Загрузить');
 define('lang_Insert_Folder_Name','Введите имя папки:');
 define('lang_Root','Корневая папка');
 define('lang_Rename','Переименовать');
-define('lang_Back','назад');
+define('lang_Back','Назад');
 define('lang_View','Вид');
 define('lang_View_list','Список');
 define('lang_View_columns_list','Столбцы');
@@ -46,7 +46,7 @@ define('lang_Size','Размер');
 define('lang_Date','Дата');
 define('lang_Filename','Имя&nbsp;файла');
 define('lang_Operations','Действие');
-define('lang_Date_type','y-m-d');
+define('lang_Date_type','d-m-Y');
 define('lang_OK','OK');
 define('lang_Cancel','Отмена');
 define('lang_Sorting','Сортировка');
@@ -54,44 +54,44 @@ define('lang_Show_url','Показать URL');
 define('lang_Extract','Распаковать здесь');
 define('lang_File_info','Свойства файла');
 define('lang_Edit_image','Редактировать');
-define('lang_Duplicate','Duplicate');
-define('lang_Folders', 'Folders');
-define('lang_Copy','Copy');
-define('lang_Cut','Cut');
-define('lang_Paste','Paste');
-define('lang_CB', 'CB'); // clipboard
-define('lang_Paste_Here','Paste to this directory');
-define('lang_Paste_Confirm','Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.');
-define('lang_Paste_Failed','Failed to paste file(s)');
-define('lang_Clear_Clipboard','Clear clipboard');
-define('lang_Clear_Clipboard_Confirm','Are you sure you want to clear the clipboard?');
-define('lang_Files_ON_Clipboard','There are files on the clipboard.');
-define('lang_Copy_Cut_Size_Limit','The selected files/folders are too big to %s. Limit: %d MB/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Count_Limit','You selected too many files/folders to %s. Limit: %d files/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Not_Allowed','You are not allowed to %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
-define('lang_Aviary_No_Save', 'Could not save image');
-define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
-define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
-define('lang_Dir_No_Write', 'The directory you selected is not writable.');
-define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
-define('lang_File_Permission', 'File permission');
-define('lang_File_Permission_Not_Allowed', 'Changing %s permissions are not allowed.'); // %s = files or folders
-define('lang_File_Permission_Recursive', 'Apply recursively?');
-define('lang_File_Permission_Wrong_Mode', "The supplied permission mode is incorrect.");
-define('lang_User', 'User');
-define('lang_Group', 'Group');
-define('lang_Yes', 'Yes');
-define('lang_No', 'No');
-define('lang_Lang_Not_Found', 'Could not find language.');
-define('lang_Lang_Change', 'Change the language');
-define('lang_File_Not_Found', 'Could not find the file.');
-define('lang_File_Open_Edit_Not_Allowed', 'You are not allowed to %s this file.'); // %s = open or edit
-define('lang_Edit', 'Edit');
-define('lang_Edit_File', "Edit file's content");
-define('lang_File_Save_OK', "File successfully saved.");
-define('lang_File_Save_Error', "There was an error while saving the file.");
-define('lang_New_File','New File');
-define('lang_No_Extension','You have to add a file extension.'); 
-define('lang_Valid_Extensions','Valid extensions: %s'); // %s = txt,log etc.
+define('lang_Duplicate','Создать копию');
+define('lang_Folders', 'Папки');
+define('lang_Copy','Копировать');
+define('lang_Cut','Вырезать');
+define('lang_Paste','Вставить');
+define('lang_CB', 'Буфер обмена'); // clipboard
+define('lang_Paste_Here','Вставить в текущую папку');
+define('lang_Paste_Confirm','Вы хотите вставить в эту папку? При совпадении имён файлы будут перезаписаны');
+define('lang_Paste_Failed','Не удалось вставить файл(ы).');
+define('lang_Clear_Clipboard','Очистить буфер обмена');
+define('lang_Clear_Clipboard_Confirm','Очистить буфер обмена?');
+define('lang_Files_ON_Clipboard','Есть файлы в буфере обмена.');
+define('lang_Copy_Cut_Size_Limit','Выбранные файлы/папки слишком большие для %s. Ограничение: %d Мб за одну операцию'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','Выбрано слишком много файлов/папок для %s. Ограничение: %d файлов за одну операцию'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Вы не можете %s файлы.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Невозможно сохранить изображение.');
+define('lang_Zip_No_Extract', 'Извлечь невозможно. Возможно файл повреждён.');
+define('lang_Zip_Invalid', 'Это расширение не поддерживается.  Разрешённые: zip, gz, tar.');
+define('lang_Dir_No_Write', 'Выбранный каталог недоступен для записи.');
+define('lang_Function_Disabled', 'Функция %s была отключена на сервере.'); // %s = cut or copy
+define('lang_File_Permission', 'Разрешения на файл');
+define('lang_File_Permission_Not_Allowed', 'Изменение разрешений %s не допускается.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Применить рекурсивно?');
+define('lang_File_Permission_Wrong_Mode', "Выбранные режим разрешений некорректен.");
+define('lang_User', 'Пользователь');
+define('lang_Group', 'Группа');
+define('lang_Yes', 'Да');
+define('lang_No', 'Нет');
+define('lang_Lang_Not_Found', 'Невозможно найти язык');
+define('lang_Lang_Change', 'Сменить язык');
+define('lang_File_Not_Found', 'Невозможно найти файл');
+define('lang_File_Open_Edit_Not_Allowed', 'Вы не можете %s этот файл.'); // %s = open or edit
+define('lang_Edit', 'Редактировать');
+define('lang_Edit_File', "Редактировать содержимое файла");
+define('lang_File_Save_OK', "Файл успешно сохранён");
+define('lang_File_Save_Error', "Произошла ошибка при сохранении файла");
+define('lang_New_File','Новый файл');
+define('lang_No_Extension','Необходимо добавить расширение файла'); 
+define('lang_Valid_Extensions','Разрешённые расширения файла: %s'); // %s = txt,log etc.
 
 ?>
