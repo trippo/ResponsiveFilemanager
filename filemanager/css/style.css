@@ -571,6 +571,7 @@ ul.sorting.dropdown-menu > li > a.descending {
 /* Caption Style 2 */
 .grid figure .box {
   box-sizing: content-box;
+  cursor: pointer;
 }
 .list-view0.grid figure .box,
 .list-view1.grid figure .box,
