@@ -504,13 +504,6 @@ $(document).ready(function(){
 	
 	$(window).resize(function(){fix_colums(28); });
 	fix_colums(14);
-	
-        /* Old file link handler */
-	$('ul.grid').on('click','.link',function(){
-		var _this = $(this);
-		
-		window[_this.attr('data-function')](_this.attr('data-file'),_this.attr('data-field_id'));
-	});
 
 	// New link handler
 	function handleFileLink($el) {
