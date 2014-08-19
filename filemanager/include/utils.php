@@ -16,7 +16,7 @@ function duplicate_file($old_path,$name){
     if(file_exists($old_path)){
 	$info=pathinfo($old_path);
 	$new_path=$info['dirname']."/".$name.".".$info['extension'];
-	if(file_exists($new_path)) return false;
+	if(file_exists($new_path) && $old_path == $new_path) return false;
 	return copy($old_path,$new_path);
     }
 }
@@ -26,7 +26,7 @@ function rename_file($old_path,$name,$transliteration){
     if(file_exists($old_path)){
 	$info=pathinfo($old_path);
 	$new_path=$info['dirname']."/".$name.".".$info['extension'];
-	if(file_exists($new_path)) return false;
+	if(file_exists($new_path) && $old_path == $new_path) return false;
 	return rename($old_path,$new_path);
     }
 }
@@ -35,7 +35,7 @@ function rename_folder($old_path,$name,$transliteration){
     $name=fix_filename($name,$transliteration);
     if(file_exists($old_path)){
 	$new_path=fix_dirname($old_path)."/".$name;
-	if(file_exists($new_path)) return false;
+	if(file_exists($new_path) && $old_path == $new_path) return false;
 	return rename($old_path,$new_path);
     }
 }
