@@ -4,11 +4,16 @@ if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 
-$storeFolder = $_POST['path'];
-$storeFolderThumb = $_POST['path_thumb'];
-
+if(isset($_POST['path'])){
+   $storeFolder = $_POST['path'];
+   $storeFolderThumb = $_POST['path_thumb'];
+}else{
+   $storeFolder = $current_path.$_POST["fldr"]; // correct for when IE is in Compatibility mode
+   $storeFolderThumb = $thumbs_base_path.$_POST["fldr"];
+}
 $path_pos=strpos($storeFolder,$current_path);
-$thumb_pos=strpos($_POST['path_thumb'],$thumbs_base_path);
+$thumb_pos=strpos($storeFolderThumb,$thumbs_base_path);
+
 if($path_pos!==0 
     || $thumb_pos !==0
     || strpos($storeFolderThumb,'../',strlen($thumbs_base_path))!==FALSE
