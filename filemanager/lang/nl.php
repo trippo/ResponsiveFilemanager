@@ -46,7 +46,7 @@ define('lang_Size','Grootte');
 define('lang_Date','Datum');
 define('lang_Filename','Naam');
 define('lang_Operations','Bewerkingen');
-define('lang_Date_type','j-m-d');
+define('lang_Date_type','d-m-y');
 define('lang_OK','OK');
 define('lang_Cancel','Annuleren');
 define('lang_Sorting','Sorteren op');
