@@ -1,7 +1,6 @@
 {
     "name": "responsivefilemanager/responsivefilemanager",
     "description": "Responsive Filemanager",
-    "type": "component",
     "homepage": "http://www.responsivefilemanager.com/",
     "license": "CC-BY-NC-3.0",
     "support": {
@@ -16,5 +15,9 @@
 		    "name": "Sam Mousa",
             "email": "sam@befound.nl"
         }
-    ]
+    ],
+	"require" : {
+		"robloach/component-installer": "dev-master",
+		"components/jquery": "dev-master"
+	}
 }
