@@ -1,9 +1,5 @@
 <?php
-
-include('config/config.php');
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('Access Denied!');
-include('include/utils.php');
-
+if (!defined('INCLUDED')) die();
 if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
 	include($_SESSION['RF']['language_file']);
 }

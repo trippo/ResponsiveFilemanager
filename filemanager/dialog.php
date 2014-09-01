@@ -1,6 +1,6 @@
 <?php
-include('config/config.php');
-
+require_once('config/config.php');
+define('INCLUDED', true);
 if (USE_ACCESS_KEYS == TRUE){
 	if (!isset($_GET['akey'], $access_keys) || empty($access_keys)){
 		die('Access Denied!');
@@ -16,12 +16,25 @@ if (USE_ACCESS_KEYS == TRUE){
 
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 
-if(isset($_POST['submit'])){
+if(isset($_POST['submit']) || (isset($_GET['a']) && $_GET['a'] == 'upload')) {
 
 	include('upload.php');
 
 }
-else {
+elseif (isset($_GET['a']))
+{
+	switch($_GET['a']) {
+		case 'download':
+			include('force_download.php');
+			break;
+		case 'execute':
+			include('execute.php');
+			break;
+		case 'ajax':
+			include('ajax_calls.php');
+			break;
+	}
+} else {
 include('include/utils.php');
 
 if (isset($_GET['fldr'])
@@ -347,7 +360,7 @@ $get_params = http_build_query(array(
 		    dictResponseError: "SERVER ERROR",
 		    paramName: "file", // The name that will be used to transfer the file
 		    maxFilesize: <?php echo $MaxSizeUpload; ?>, // MB
-		    url: "upload.php",
+		    url: "dialog.php?a=upload",
 		    accept: function(file, done) {
 			    var extension=file.name.split('.').pop();
 			    extension=extension.toLowerCase();
@@ -372,7 +385,7 @@ $get_params = http_build_query(array(
 		    img.src = newURL;
 		    $.ajax({
 			type: "POST",
-			url: "ajax_calls.php?action=save_img",
+			url: "dialog.php?a=ajax&action=save_img",
 			data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').data('name') }
 		    }).done(function( msg ) {			
 			featherEditor.close();
@@ -918,7 +931,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<div class='img-dimension'><?php if($is_img){ echo $img_width."x".$img_height; } ?></div>
 				<div class='file-extension'><?php echo $extension_lower; ?></div>
 				<figcaption>
-				    <form action="force_download.php" method="post" class="download-form" id="form<?php echo $nu; ?>">
+				    <form action="dialog.php?a=download" method="post" class="download-form" id="form<?php echo $nu; ?>">
 					<input type="hidden" name="path" value="<?php echo $rfm_subfolder.$subdir?>"/>
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 					
@@ -927,10 +940,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <a class="tip-right preview" title="<?php echo lang_Preview?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
-					title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
+					title="<?php echo lang_Preview?>" data-url="dialog.php?a=ajax&action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 					<?php }elseif($preview_text_files === TRUE && in_array($extension_lower,$previewable_text_file_exts)){ ?>
-				    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
+				    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="dialog.php?a=ajax&action=get_file&sub_action=preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file;; ?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>

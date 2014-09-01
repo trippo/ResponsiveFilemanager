@@ -1,9 +1,5 @@
 <?php
-include('config/config.php');
-if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
-include('include/utils.php');
-
-
+if (!defined('INCLUDED')) die();
 $thumb_pos  = strpos($_POST['path_thumb'], $thumbs_base_path);
 
 if ($thumb_pos !=0
