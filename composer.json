@@ -17,7 +17,7 @@
         }
     ],
 	"require" : {
-		"robloach/component-installer": "dev-master",
+		"robloach/component-installer": "1.0.*@dev",
 		"components/jquery": "dev-master"
 	}
 }
