@@ -1,5 +1,5 @@
 {
-    "name": "components/responsivefilemanager",
+    "name": "responsivefilemanager/responsivefilemanager",
     "description": "Responsive Filemanager",
     "type": "component",
     "homepage": "http://www.responsivefilemanager.com/",
@@ -11,6 +11,11 @@
         {
             "name": "Alberto Peripolli",
             "email": "trippo@hotmail.it"
-        }
+        },
+		{
+		    "name": "Sam Mousa",
+            "email": "sam@befound.nl"
+        },
+		
     ],
 }
