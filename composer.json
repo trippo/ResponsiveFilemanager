@@ -1,0 +1,16 @@
+{
+    "name": "components/responsivefilemanager",
+    "description": "Responsive Filemanager",
+    "type": "component",
+    "homepage": "http://www.responsivefilemanager.com/",
+    "license": "CC-BY-NC-3.0",
+    "support": {
+        "source": "https://github.com/trippo/ResponsiveFilemanager"
+    },
+    "authors": [
+        {
+            "name": "Alberto Peripolli",
+            "email": "trippo@hotmail.it"
+        }
+    ],
+}
