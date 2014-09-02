@@ -40,7 +40,7 @@ $(document).ready(function(){
 			    var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
 			    $.ajax({
 				type: "POST",
-				url: "ajax_calls.php?action=extract",
+				url: "dialog.php?a=ajax&action=extract",
 				data: { path: m }
 			    }).done(function( msg ) {
 				if (msg!="")
@@ -308,7 +308,7 @@ $(document).ready(function(){
 
 	if (js_script) {
 	    $.ajax({
-		url: "ajax_calls.php?action=sort&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending
+		url: "dialog.php?a=ajax&action=sort&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending
 	    }).done(function( msg ) {
 		    
 	    });
@@ -412,7 +412,7 @@ $(document).ready(function(){
 		var folder_path_thumb=$('#cur_dir_thumb').val()+ name;
 		$.ajax({
 			  type: "POST",
-			  url: "execute.php?action=create_folder",
+			  url: "dialog.php?a=execute&a=execute&action=create_folder",
 			  data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
 				setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
@@ -431,7 +431,7 @@ $(document).ready(function(){
 	    _this.find('i').addClass('icon-white');
 	    
 	     $.ajax({
-		url: "ajax_calls.php?action=view&type="+_this.attr('data-value')
+		url: "dialog.php?a=ajax&action=view&type="+_this.attr('data-value')
 	    }).done(function( msg ) {
 		if (msg!="") {
 		    bootbox.alert(msg);
@@ -616,7 +616,7 @@ function create_text_file() {
                 	// post ajax
                 	$.ajax({
 					type: "POST",
-					url: "execute.php?action=create_file",
+					url: "dialog.php?a=execute&action=create_file",
 					data: {path: folder_path, path_thumb: folder_path_thumb, name: newFileName, new_content: newContent}
 					}).done(function( status_msg ) {
 						if (status_msg!=""){
@@ -643,7 +643,7 @@ function edit_text_file($trigger) {
 
 	$.ajax({
 	type: "POST",
-	url: "ajax_calls.php?action=get_file&sub_action=edit",
+	url: "dialog.php?a=ajax&action=get_file&sub_action=edit",
 	data: {path: full_path}
     }).done(function( init_content ) 
     {
@@ -661,7 +661,7 @@ function edit_text_file($trigger) {
                 	// post ajax
                 	$.ajax({
 					type: "POST",
-					url: "execute.php?action=save_text_file",
+					url: "dialog.php?a=execute&action=save_text_file",
 					data: {path: full_path, path_thumb: thumb_path, new_content: newContent}
 					}).done(function( status_msg ) {
 						if (status_msg!=""){
@@ -680,7 +680,7 @@ function edit_text_file($trigger) {
 function change_lang() {
 	$.ajax({
 	type: "POST",
-	url: "ajax_calls.php?action=get_lang",
+	url: "dialog.php?a=ajax&action=get_lang",
 	data: {}
     }).done(function( init_msg ) 
     {
@@ -699,7 +699,7 @@ function change_lang() {
                 	// post ajax
                 	$.ajax({
 					type: "POST",
-					url: "ajax_calls.php?action=change_lang",
+					url: "dialog.php?a=ajax&action=change_lang",
 					data: {choosen_lang: newLang}
 					}).done(function( error_msg ) {
 						if (error_msg!=""){
@@ -734,7 +734,7 @@ function chmod($trigger) {
     // ajax -> box -> ajax -> box -> mind blown
 	$.ajax({
 	type: "POST",
-	url: "ajax_calls.php?action=chmod",
+	url: "dialog.php?a=ajax&action=chmod",
 	data: { path: full_path, path_thumb: thumb_path }
     }).done(function( init_msg ) 
     {
@@ -761,7 +761,7 @@ function chmod($trigger) {
                     	// post ajax
                     	$.ajax({
 						type: "POST",
-						url: "execute.php?action=chmod",
+						url: "dialog.php?a=execute&action=chmod",
 						data: {path: full_path, path_thumb: thumb_path, new_mode: newPerm, is_recursive: recOpt}
 						}).done(function( status_msg ) {
 							if (status_msg!=""){
@@ -849,7 +849,7 @@ function clear_clipboard() {
 		if (result == true){
 			$.ajax({
 			type: "POST",
-			url: "ajax_calls.php?action=clear_clipboard",
+			url: "dialog.php?a=ajax&action=clear_clipboard",
 			data: {}
 			}).done(function( msg ) {
 			if (msg!="")
@@ -878,7 +878,7 @@ function copy_cut_clicked($trigger, atype) {
 
     $.ajax({
 	type: "POST",
-	url: "ajax_calls.php?action=copy_cut",
+	url: "dialog.php?a=ajax&action=copy_cut",
 	data: { path: full_path, path_thumb: thumb_path, sub_action: atype }
     }).done(function( msg ) {
 		if (msg!=""){
@@ -905,7 +905,7 @@ function paste_to_this_dir(dnd) {
 
 			$.ajax({
 			type: "POST",
-			url: "execute.php?action=paste_clipboard",
+			url: "dialog.php?a=execute&action=paste_clipboard",
 			data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
 				if (msg!=""){
@@ -935,7 +935,7 @@ function drag_n_drop_paste($trigger, dnd){
 
     $.ajax({
 	type: "POST",
-	url: "ajax_calls.php?action=copy_cut",
+	url: "dialog.php?a=ajax&action=copy_cut",
 	data: { path: full_path, path_thumb: thumb_path, sub_action: 'cut' }
     }).done(function( msg ) {
 		if (msg!=""){
@@ -953,7 +953,7 @@ function drag_n_drop_paste($trigger, dnd){
 
 			$.ajax({
 			type: "POST",
-			url: "execute.php?action=paste_clipboard",
+			url: "dialog.php?a=execute&action=paste_clipboard",
 			data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
 				if (msg!=""){
@@ -1393,7 +1393,7 @@ function execute_action(action,file1,file2,name,container,function_name){
 	name=fix_filename(name);
 	$.ajax({
 	    type: "POST",
-	    url: "execute.php?action="+action,
+	    url: "dialog.php?a=execute&action="+action,
 	    data: {path: file1, path_thumb: file2, name: name.replace('/','')}
 	}).done(function( msg ) {
 	    if (msg!="") {

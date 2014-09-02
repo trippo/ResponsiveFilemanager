@@ -1,7 +1,5 @@
 <?php
-include('config/config.php');
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
-include('include/utils.php');
+if (!defined('INCLUDED')) die();
 include('include/mime_type_lib.php');
 
 if(strpos($_POST['path'],'/')===0

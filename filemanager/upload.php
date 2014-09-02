@@ -1,9 +1,5 @@
 <?php
-include('config/config.php');
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
-include('include/utils.php');
-
-
+if (!defined('INCLUDED')) die();
 if(isset($_POST['path'])){
    $storeFolder = $_POST['path'];
    $storeFolderThumb = $_POST['path_thumb'];
