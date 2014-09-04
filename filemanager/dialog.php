@@ -531,7 +531,7 @@ foreach($files as $k=>$file){
 }
 
 // Should lazy loading be enabled
-$lazy_loading_enabled= ($lazy_loading_file_number_treshold == 0 || $lazy_loading_file_number_treshold != -1 && $n_files > $lazy_loading_file_number_treshold) ? true : false;
+$lazy_loading_enabled= ($lazy_loading_file_number_threshold == 0 || $lazy_loading_file_number_threshold != -1 && $n_files > $lazy_loading_file_number_threshold) ? true : false;
 
 function filenameSort($x, $y) {
     return $x['file_lcase'] <  $y['file_lcase'];
