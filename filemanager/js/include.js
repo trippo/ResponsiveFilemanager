@@ -1,4 +1,4 @@
-var version = "9.6.1";
+var version = "9.6.2";
 var active_contextmenu = true;
 if (loading_bar){   
 	if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
@@ -1048,6 +1048,9 @@ function apply(file,external){
     } else {
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
+			if(typeof window_parent.responsive_filemanager_callback == 'function'){
+				window_parent.responsive_filemanager_callback.call(target[0]);
+			}
 			close_window();
 		}
   }else{
@@ -1115,6 +1118,9 @@ function apply_link(file,external){
 	  } else {
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
+			if(typeof window_parent.responsive_filemanager_callback == 'function'){
+				window_parent.responsive_filemanager_callback.call(target[0]);
+			}
 			close_window();
 		}
 	}else{
@@ -1141,6 +1147,9 @@ function apply_img(file,external){
       } else {
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
+			if(typeof window_parent.responsive_filemanager_callback == 'function'){
+				window_parent.responsive_filemanager_callback.call(target[0]);
+			}
 			close_window();
 		}
   }else{
@@ -1167,6 +1176,9 @@ function apply_video(file,external){
     } else {
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
+			if(typeof window_parent.responsive_filemanager_callback == 'function'){
+				window_parent.responsive_filemanager_callback.call(target[0]);
+			}
 			close_window();
 		}
   }else{
