@@ -1037,7 +1037,7 @@ function apply(file,external){
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
 			if(typeof window_parent.responsive_filemanager_callback == 'function'){
-				window_parent.responsive_filemanager_callback.call(target[0]);
+				window_parent.responsive_filemanager_callback(external);
 			}
 			close_window();
 		}
@@ -1107,7 +1107,7 @@ function apply_link(file,external){
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
 			if(typeof window_parent.responsive_filemanager_callback == 'function'){
-				window_parent.responsive_filemanager_callback.call(target[0]);
+				window_parent.responsive_filemanager_callback(external);
 			}
 			close_window();
 		}
@@ -1136,7 +1136,7 @@ function apply_img(file,external){
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
 			if(typeof window_parent.responsive_filemanager_callback == 'function'){
-				window_parent.responsive_filemanager_callback.call(target[0]);
+				window_parent.responsive_filemanager_callback(external);
 			}
 			close_window();
 		}
@@ -1165,7 +1165,7 @@ function apply_video(file,external){
 			var target = $('#'+external, window_parent.document);
 			target.val(url).trigger('change');
 			if(typeof window_parent.responsive_filemanager_callback == 'function'){
-				window_parent.responsive_filemanager_callback.call(target[0]);
+				window_parent.responsive_filemanager_callback(external);
 			}
 			close_window();
 		}
