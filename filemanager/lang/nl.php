@@ -13,6 +13,7 @@ define('lang_Upload_file','Bestand uploaden');
 define('lang_Filters','Filter');
 define('lang_Videos','Videos');
 define('lang_Music','Muziek');
+define('lang_New_File','Nieuw bestand');
 define('lang_New_Folder','Nieuwe map');
 define('lang_Folder_Created','Map aangemaakt');
 define('lang_Existing_Folder','Bestaande map');
@@ -23,7 +24,7 @@ define('lang_Download','Download');
 define('lang_Insert_Folder_Name','Map naam:');
 define('lang_Root','root');
 define('lang_Rename','Hernoemen');
-define('lang_Back','terug');
+define('lang_Back','Terug');
 define('lang_View','Weergave');
 define('lang_View_list','Lijst weergave');
 define('lang_View_columns_list','Kolom-lijst weergave');
@@ -50,48 +51,47 @@ define('lang_Date_type','d-m-y');
 define('lang_OK','OK');
 define('lang_Cancel','Annuleren');
 define('lang_Sorting','Sorteren op');
-define('lang_Show_url','toon URL');
-define('lang_Extract','hier uitpakken');
-define('lang_File_info','bestands-info');
-define('lang_Edit_image','afbeelding bewerken');
-define('lang_Duplicate','Duplicate');
+define('lang_Show_url','Toon URL');
+define('lang_Extract','Hier uitpakken');
+define('lang_File_info','Bestands-info');
+define('lang_Edit_image','Afbeelding bewerken');
+define('lang_Duplicate','Dupliceren');
 define('lang_Folders', 'Folders');
-define('lang_Copy','Copy');
-define('lang_Cut','Cut');
-define('lang_Paste','Paste');
-define('lang_CB', 'CB'); // clipboard
-define('lang_Paste_Here','Paste to this directory');
-define('lang_Paste_Confirm','Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.');
-define('lang_Paste_Failed','Failed to paste file(s)');
-define('lang_Clear_Clipboard','Clear clipboard');
-define('lang_Clear_Clipboard_Confirm','Are you sure you want to clear the clipboard?');
-define('lang_Files_ON_Clipboard','There are files on the clipboard.');
-define('lang_Copy_Cut_Size_Limit','The selected files/folders are too big to %s. Limit: %d MB/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Count_Limit','You selected too many files/folders to %s. Limit: %d files/operation'); // %s = cut or copy
-define('lang_Copy_Cut_Not_Allowed','You are not allowed to %s files.'); // %s(1) = cut or copy, %s(2) = files or folders
-define('lang_Aviary_No_Save', 'Could not save image');
-define('lang_Zip_No_Extract', 'Could not extract. File might be corrupt.');
-define('lang_Zip_Invalid', 'This extension is not supported. Valid: zip, gz, tar.');
-define('lang_Dir_No_Write', 'The directory you selected is not writable.');
-define('lang_Function_Disabled', 'The %s function has been disabled by the server.'); // %s = cut or copy
-define('lang_File_Permission', 'File permission');
-define('lang_File_Permission_Not_Allowed', 'Changing %s permissions are not allowed.'); // %s = files or folders
-define('lang_File_Permission_Recursive', 'Apply recursively?');
-define('lang_File_Permission_Wrong_Mode', "The supplied permission mode is incorrect.");
-define('lang_User', 'User');
-define('lang_Group', 'Group');
-define('lang_Yes', 'Yes');
-define('lang_No', 'No');
-define('lang_Lang_Not_Found', 'Could not find language.');
-define('lang_Lang_Change', 'Change the language');
-define('lang_File_Not_Found', 'Could not find the file.');
-define('lang_File_Open_Edit_Not_Allowed', 'You are not allowed to %s this file.'); // %s = open or edit
-define('lang_Edit', 'Edit');
-define('lang_Edit_File', "Edit file's content");
-define('lang_File_Save_OK', "File successfully saved.");
-define('lang_File_Save_Error', "There was an error while saving the file.");
-define('lang_New_File','New File');
-define('lang_No_Extension','You have to add a file extension.'); 
-define('lang_Valid_Extensions','Valid extensions: %s'); // %s = txt,log etc.
-
+define('lang_Copy','Kopiëren');
+define('lang_Cut','Knippen');
+define('lang_Paste','Plakken');
+define('lang_CB', 'Klembord'); // clipboard
+define('lang_Paste_Here','Hier plakken');
+define('lang_Paste_Confirm','Weet u zeker dat u in deze map wilt plakken? Dit overschrijft mappen/bestanden met dezelfde naam indien deze voorkomen.');
+define('lang_Paste_Failed','Niet gelukt de bestanden te plakken');
+define('lang_Clear_Clipboard','Wis klembord');
+define('lang_Clear_Clipboard_Confirm','Weet u zeker dat u het klembord wilt wissen?');
+define('lang_Files_ON_Clipboard','Er staan bestanden op het klembord.');
+define('lang_Copy_Cut_Size_Limit','De geselecteerde mappen/bestanden zijn te groot om te %s. Maximaal: %d MB/operation'); // %s = cut or copy
+define('lang_Copy_Cut_Count_Limit','er zijn teveel mappen/bestanden geselecteerd om te %s. Maximaal: %d files/operation'); // %s = cut or copy
+define('lang_Copy_Cut_Not_Allowed','Het is niet toegestaan bestanden te %s.'); // %s(1) = cut or copy, %s(2) = files or folders
+define('lang_Aviary_No_Save', 'Kan de afbeelding niet opslaan');
+define('lang_Zip_No_Extract', 'Kan niet uitpakken. Bestand is wellicht beschadigt.');
+define('lang_Zip_Invalid', 'Deze extensie is niet toegestaan. Valid: zip, gz, tar.');
+define('lang_Dir_No_Write', 'De geselecteerde map is niet beschrijfbaar.');
+define('lang_Function_Disabled', 'De functie %s is uitgeschakeld door de server.'); // %s = cut or copy
+define('lang_File_Permission', 'Rechten');
+define('lang_File_Permission_Not_Allowed', 'Aanpassen van de rechten van %s is niet toegestaan.'); // %s = files or folders
+define('lang_File_Permission_Recursive', 'Toepassen voor alles binnen deze map?');
+define('lang_File_Permission_Wrong_Mode', "De gewenste rechten zijn niet juist.");
+define('lang_User', 'Gebruiker');
+define('lang_Group', 'Groep');
+define('lang_Yes', 'Ja');
+define('lang_No', 'Nee');
+define('lang_Lang_Not_Found', 'Kan de taal niet vinden.');
+define('lang_Lang_Change', 'Verander de taal');
+define('lang_File_Not_Found', 'Kan het bestand niet vinden.');
+define('lang_File_Open_Edit_Not_Allowed', 'Je bent niet bevoegd dit bestand te %s.'); // %s = open or edit
+define('lang_Edit', 'Bewerken');
+define('lang_Edit_File', "Bewerkt de inhoud van dit bestand");
+define('lang_File_Save_OK', "Bestand is opgeslagen.");
+define('lang_File_Save_Error', "Er is een fout opgetreden tijdens het opslaan van het bestand.");
+define('lang_New_File','Nieuw bestand');
+define('lang_No_Extension','Je moet een bestands-extensie toevoegen.');
+define('lang_Valid_Extensions','Geldige extensies: %s'); // %s = txt,log etc.
 ?>
