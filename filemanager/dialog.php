@@ -41,7 +41,7 @@ if($subdir == "")
 }
 
 //remember last position
-setcookie('last_position',$subdir,time() + (86400 * 7)); 
+setcookie('last_position',$subdir,time() + (86400 * 7));
 
 if ($subdir == "/") { $subdir = ""; }
 
@@ -530,6 +530,9 @@ foreach($files as $k=>$file){
     }
 }
 
+// Should lazy loading be enabled
+$lazy_loading_enabled= ($lazy_loading_file_number_treshold == 0 || $lazy_loading_file_number_treshold != -1 && $n_files > $lazy_loading_file_number_treshold) ? true : false;
+
 function filenameSort($x, $y) {
     return $x['file_lcase'] <  $y['file_lcase'];
 }
@@ -889,7 +892,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
 				    <div class="img-container">
 					    <span></span>
-					    <img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?> <?php echo $is_icon_thumb ? "icon" : "" ?>" src="<?php echo $src_thumb; ?>">
+					    <img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original ? "original" : "" ?><?php echo $is_icon_thumb ? " icon" : "" ?><?php echo $lazy_loading_enabled ? " lazy-loaded" : ""?>" <?php echo $lazy_loading_enabled ? "data-original" : "src"?>="<?php echo $src_thumb; ?>">
 				    </div>
 				</div>
 				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
@@ -897,7 +900,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <div class="img-container-mini">
 					<span></span>
 					<?php if($mini_src!=""){ ?>
-					<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original_mini ? "original" : "" ?> <?php echo $is_icon_thumb_mini ? "icon" : "" ?>" src="<?php echo $mini_src; ?>">
+					<img alt="<?php echo $filename." thumbnails";?>" class="<?php echo $show_original_mini ? "original" : "" ?><?php echo $is_icon_thumb_mini ? " icon" : "" ?><?php echo $lazy_loading_enabled ? " lazy-loaded" : ""?>" <?php echo $lazy_loading_enabled ? "data-original" : "src"?>="<?php echo $mini_src; ?>">
 					<?php } ?>
 				    </div>
 				</div>
@@ -992,6 +995,17 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     </div>
     <!-- player div end -->
     <img id='aviary_img' src='' class="hide"/>
+
+    <?php if ($lazy_loading_enabled) { ?>
+        <script src="js/jquery.lazyload.min.js" type="text/javascript"></script>
+
+        <script>
+            $(function() {
+                $(".lazy-loaded").lazyload();
+            });
+
+        </script>
+    <?php } ?>
 </body>
 </html>
 <?php } ?>

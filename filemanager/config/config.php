@@ -61,7 +61,7 @@ $MaxSizeUpload = 100; //Mb
 
 // SERVER OVERRIDE
 if ((int)(ini_get('post_max_size')) < $MaxSizeUpload){
-	$MaxSizeUpload = (int)(ini_get('post_max_size'));
+    $MaxSizeUpload = (int)(ini_get('post_max_size'));
 }
 
 $default_language 	= "en_EN"; //default language file name
@@ -75,6 +75,10 @@ $convert_spaces  = FALSE; //convert all spaces on files name and folders name wi
 //*******************************************
 //Images limit and resizing configuration
 //*******************************************
+
+// -1: There is no lazy loading at all, 0: Always lazy-load images, 0+: The minimum number of the files in a directory
+// when lazy loading should be turned on.
+$lazy_loading_file_number_treshold = -1;
 
 // set maximum pixel width and/or maximum pixel height for all images
 // If you set a maximum width or height, oversized images are converted to those limits. Images smaller than the limit(s) are unaffected
@@ -174,7 +178,7 @@ $hidden_folders = array();
 $hidden_files = array('config.php');
 
 /*******************
- * JAVA upload 
+ * JAVA upload
  *******************/
 $java_upload = TRUE;
 $JAVAMaxSizeUpload = 200; //Gb
