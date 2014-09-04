@@ -1,17 +1,5 @@
-var version = "9.6.2";
+var version = "9.7.0";
 var active_contextmenu = true;
-if (loading_bar){   
-	if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))){ 
-	    window.addEventListener('DOMContentLoaded', function() {
-	        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
-	    });
-	}
-	else {
-	    $(document).ready(function () {
-	        $("body").queryLoader2({ 'backgroundColor':'none','minimumTime':100,'percentage':true});
-	    });
-	}
-}
 $(document).ready(function(){
 	// Right click menu
     if (active_contextmenu) {
@@ -1188,34 +1176,42 @@ function apply_video(file,external){
 
 function apply_none(file,external){	
 	var _this=$('li[data-name="'+file+'"]').find('.preview');
-	
-	if (_this.html()!="" && _this.html()!==undefined) {
-	    
+
+	if (_this.html()!="" && _this.html()!==undefined){
 	  $('#full-img').attr('src',decodeURIComponent(_this.attr('data-url')));
 	  if (_this.hasClass('disabled')==false){
 			show_animation();
 			$('#previewLightbox').lightbox();
 	  }
 	}else {
-	  var _this=$('li[data-name="'+file+'"]').find('.modalAV');
-
-	  $('#previewAV').removeData("modal");
-	  $('#previewAV').modal({
-			backdrop: 'static',
-			keyboard: false
-	  });
-	  if (_this.hasClass('audio')) {
-			$(".body-preview").css('height','80px');
-	  }else {
-			$(".body-preview").css('height','345px');
-	  }
-	    
-	  $.ajax({
-			url: decodeURIComponent(_this.attr('data-url')),
-			success: function(data) {
-		  	$(".body-preview").html(data);
-			}
-	  });
+	  var _this=$('li[data-name="'+file+'"]').find('a.file-preview-btn');
+	  if (_this.html()!="" && _this.html()!==undefined){
+      $.ajax({
+          url: _this.attr('data-url'),
+          success: function(data) {
+						bootbox.alert(data);
+    			}
+      });
+		}else{
+			var _this=$('li[data-name="'+file+'"]').find('.modalAV');
+		  $('#previewAV').removeData("modal");
+		  $('#previewAV').modal({
+				backdrop: 'static',
+				keyboard: false
+		  });
+		  if (_this.hasClass('audio')) {
+				$(".body-preview").css('height','80px');
+		  }else {
+				$(".body-preview").css('height','345px');
+		  }
+		    
+		  $.ajax({
+				url: decodeURIComponent(_this.attr('data-url')),
+				success: function(data) {
+			  	$(".body-preview").html(data);
+				}
+		  });
+		}
 	}
 	return;
 }
