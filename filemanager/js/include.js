@@ -1,4 +1,4 @@
-var version = "9.7.0";
+var version = "9.7.1";
 var active_contextmenu = true;
 $(document).ready(function(){
 	// Right click menu
@@ -525,7 +525,6 @@ $(document).ready(function(){
 
 	// Drag & Drop
 	$('li.dir, li.file').draggable({ 
-		revert: true, 
 		distance: 20,
 		cursor: "move",
 
@@ -550,13 +549,13 @@ $(document).ready(function(){
 		}
 	});
 
-	$('li.dir').droppable({
-      accept: "ul.grid li",
-      activeClass: "ui-state-highlight",  
-  	hoverClass: "ui-state-highlight",
-	drop: function(event, ui){
-		drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
-	}
+	$('li.dir,li.back').droppable({
+    accept: "ul.grid li",
+    activeClass: "ui-state-highlight",  
+  	hoverClass: "ui-state-hover",
+		drop: function(event, ui){
+			drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
+		}
 	});
 
 	// file permissions window
@@ -913,26 +912,31 @@ function paste_to_this_dir(dnd) {
 // because of feedback and on error bahhhhh...
 function drag_n_drop_paste($trigger, dnd){
 	if (!$trigger.hasClass('directory')){
-    	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
-    	var full_path = $trigger.find('.rename-file').attr('data-path');
-    }
-    else {
-    	var thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
-    	var full_path = $trigger.find('.rename-folder').attr('data-path');
-    }
+  	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
+  	var full_path = $trigger.find('.rename-file').attr('data-path');
+  }
+  else {
+  	var thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
+  	var full_path = $trigger.find('.rename-folder').attr('data-path');
+  }
 
-    $.ajax({
-	type: "POST",
-	url: "ajax_calls.php?action=copy_cut",
-	data: { path: full_path, path_thumb: thumb_path, sub_action: 'cut' }
-    }).done(function( msg ) {
+	$.ajax({
+		type: "POST",
+		url: "ajax_calls.php?action=copy_cut",
+		data: { path: full_path, path_thumb: thumb_path, sub_action: 'cut' }
+	}).done(function( msg ) {
 		if (msg!=""){
-		    bootbox.alert(msg);
+		  bootbox.alert(msg);
 		}
 		else {
-		   if (typeof dnd != 'undefined'){
-				var folder_path = dnd.find('.rename-folder').attr('data-path');
-				var folder_path_thumb = dnd.find('.rename-folder').attr('data-thumb');
+		  if (typeof dnd != 'undefined'){
+		  	if(dnd.hasClass('back-directory')){
+		  		var folder_path=dnd.find('.path').val();
+		  		var folder_path_thumb=dnd.find('.path_thumb').val();
+		  	}else{
+		  		var folder_path = dnd.find('.rename-folder').attr('data-path');
+					var folder_path_thumb = dnd.find('.rename-folder').attr('data-thumb');	
+		  	}				
 			}
 			else {
 				var folder_path = $('#sub_folder').val()+$('#fldr_value').val();
@@ -940,9 +944,9 @@ function drag_n_drop_paste($trigger, dnd){
 			}
 
 			$.ajax({
-			type: "POST",
-			url: "execute.php?action=paste_clipboard",
-			data: {path: folder_path, path_thumb: folder_path_thumb}
+				type: "POST",
+				url: "execute.php?action=paste_clipboard",
+				data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
 				if (msg!=""){
 					bootbox.alert(msg);
@@ -950,11 +954,11 @@ function drag_n_drop_paste($trigger, dnd){
 				else {
 					$('#clipboard').val('0');
 					toggle_clipboard(false);
-					setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
+					$trigger.parent().remove();
 				}
 			});
 		}
-    });
+	});
 }
 
 function toggle_clipboard(lever) {

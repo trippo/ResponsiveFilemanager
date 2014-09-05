@@ -3,7 +3,6 @@ include('config/config.php');
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
-
 $thumb_pos  = strpos($_POST['path_thumb'], $thumbs_base_path);
 
 if ($thumb_pos !=0
@@ -126,15 +125,15 @@ if (isset($_GET['action']))
                 $name=str_replace('.','',$name);
 		
                 if (!empty($name)){
-                    if (!rename_folder($path,$name,$transliteration)) die(lang_Rename_existing_folder);
+                    if (!rename_folder($path,$name,$transliteration,$convert_spaces)) die(lang_Rename_existing_folder);
 
-                    rename_folder($path_thumb,$name,$transliteration);
+                    rename_folder($path_thumb,$name,$transliteration,$convert_spaces);
         		    if ($fixed_image_creation){
             			foreach($fixed_path_from_filemanager as $k=>$paths){
             			    if ($paths!="" && $paths[strlen($paths)-1] != "/") $paths.="/";
             			    
                             $base_dir=$paths.substr_replace($path, '', 0, strlen($current_path));
-            			    rename_folder($base_dir,$name,$transliteration);
+            			    rename_folder($base_dir,$name,$transliteration,$convert_spaces);
             			}
 		           }
                 }
@@ -286,7 +285,7 @@ if (isset($_GET['action']))
 
             // check for writability
             if (is_really_writable($path) === FALSE || is_really_writable($path_thumb) === FALSE){
-                die($path.'--'.$path_thumb.'--'.lang_Dir_No_Write);
+                die(lang_Dir_No_Write.'<br/>'.str_replace('../','',$path).'<br/>'.str_replace('../','',$path_thumb));
             }
 
             // check if server disables copy or rename

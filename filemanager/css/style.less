@@ -559,33 +559,26 @@ ul.sorting.dropdown-menu>li>a{
 
 .list-view0.grid,.list-view1.grid,.list-view2.grid{
 	figure{
-	.box{
-		max-width: 100%;
-		display: block;
-		position: relative;
-		overflow: hidden;
-		z-index: 1;
-		h4.ellipsis{
-			height:18px;
-			white-space: nowrap;
+		.box{
+			max-width: 100%;
+			display: block;
+			position: relative;
 			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		h4{
 			z-index: 1;
-			a{
+			h4.ellipsis{
+				height:18px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			h4{
 				z-index: 1;
+				a{
+					z-index: 1;
+				}
 			}
 		}
-	}
-	}
-	
-	.selected{
-		-webkit-box-shadow:  0px 0px 10px 5px rgba(0, 0, 0, 0.25);
-			box-shadow:  0px 0px 10px 5px rgba(0, 0, 0, 0.25);
-
-		//border: 1px solid #777777;
-	}
+		}
 }
 
 .no-touch .list-view0 figure .box{
@@ -594,8 +587,29 @@ ul.sorting.dropdown-menu>li>a{
 	-moz-transition: -moz-transform 0.3s;
 	transition: transform 0.3s;
 }
-.ui-state-highlight{
-	border:1px solid red;
+.list-view0.grid .ui-state-highlight .img-precontainer{
+	background: grey!important;
+}
+.list-view0.grid .ui-state-highlight .img-precontainer .img-container{
+	background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, 0.4) 5px, rgba(255, 255, 255, 0.3) 10px);
+	border:none;
+	overflow: hidden;
+}
+.list-view0.grid .ui-state-hover .img-precontainer .img-container{
+	background: #666;
+}
+.list-view1.grid, .list-view2.grid{
+	.ui-state-highlight:nth-child(odd) figure{
+		background:#dddddd!important;
+		border-bottom-color: #aaa!important;
+	}
+	.ui-state-highlight:nth-child(even) figure{
+		background:#cccccc!important;	
+		border-bottom-color: #aaa!important;
+	}
+	.ui-state-highlight.ui-state-hover figure{
+		background-color: #aaa!important;
+	}
 }
 
 .no-touch .list-view0 figure:hover .box,
@@ -713,6 +727,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
 	figcaption{
 		background:#ffffff;
 	}
+	.selected figure{
+		-webkit-box-shadow:  0px 0px 10px 5px rgba(0, 0, 0, 0.6);
+			box-shadow:  0px 0px 10px 5px rgba(0, 0, 0, 0.6);
+
+		//border: 1px solid #777777;
+	}
 }
 
 .list-view1.grid , .list-view2.grid {
@@ -825,9 +845,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
 		text-align: right;
 		
 	}
-	.selected{
-		-webkit-box-shadow:  0px 0px 3px 2px rgba(0, 0, 0, 0.2);
-			box-shadow:  0px 0px 3px 2px rgba(0, 0, 0, 0.2);
+	.selected figure{
+		background: #cccccc!important;
 	}
 }
 

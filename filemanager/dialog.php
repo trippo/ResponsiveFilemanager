@@ -11,7 +11,6 @@ if (USE_ACCESS_KEYS == TRUE){
 	if (!in_array($_GET['akey'], $access_keys)){
 		die('Access Denied!');
 	}
-
 }
 
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
@@ -39,7 +38,6 @@ if($subdir == "")
 	&& strpos($_COOKIE['last_position'],'.') === FALSE)
 	$subdir= trim($_COOKIE['last_position']);
 }
-
 //remember last position
 setcookie('last_position',$subdir,time() + (86400 * 7));
 
@@ -58,10 +56,10 @@ if(count($hidden_folders)){
 	}
 }
 
-
 /***
  *SUB-DIR CODE
  ***/
+
 if (!isset($_SESSION['RF']["subfolder"])) 
 { 
 	$_SESSION['RF']["subfolder"] = '';
@@ -76,11 +74,11 @@ if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],
 }
    
 if ($rfm_subfolder != "" && $rfm_subfolder[strlen($rfm_subfolder)-1] != "/") { $rfm_subfolder .= "/"; }
-   
-if (!file_exists($current_path . $rfm_subfolder.$subdir))
+
+if (!file_exists($current_path.$rfm_subfolder.$subdir))
 {
     $subdir = '';
-    if (!file_exists($current_path . $rfm_subfolder.$subdir))
+    if (!file_exists($current_path.$rfm_subfolder.$subdir))
     {
 		$rfm_subfolder = "";
     }
@@ -701,7 +699,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		
 		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 		foreach ($files as $file_array) {
-		    $file=$file_array['file'];
+		  $file=$file_array['file'];
 			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=lang_Type_dir) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $file!=".." && strpos($file,$filter)===false))
 			    continue;
 			$new_name=fix_filename($file,$transliteration);
@@ -714,14 +712,14 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			if (!file_exists($thumbs_path.$subdir.$file)) create_folder(false,$thumbs_path.$subdir.$file);
 			$class_ext = 3;			
 			if($file=='..' && trim($subdir) != '' ){
-			    $src = explode("/",$subdir);
-			    unset($src[count($src)-2]);
-			    $src=implode("/",$src);
-			    if($src=='') $src="/";
-			}
-			elseif ($file!='..') {
-			    $src = $subdir . $file."/";
-			}
+		    $src = explode("/",$subdir);
+		    unset($src[count($src)-2]);
+		    $src=implode("/",$src);
+		    if($src=='') $src="/";
+				}
+				elseif ($file!='..') {
+				    $src = $subdir . $file."/";
+				}
 			
 			?>
 			    <li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>><?php 
@@ -731,18 +729,22 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
 				$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
 			    }
-			    ?>	<figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
-				    <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>">
-				    <div class="img-precontainer">
-					<div class="img-container directory"><span></span>
-					<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.jpg" />
-					</div>
-				    </div>
+			    ?><figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-"; ?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
+			    <?php if($file==".."){ ?>
+			    	<input type="hidden" class="path" value="<?php echo str_replace('.','',dirname($rfm_subfolder.$subdir)); ?>"/>
+			    	<input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path.$subdir)."/"; ?>"/>
+			    <?php } ?>
+				  <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>">
+					  <div class="img-precontainer">
+							<div class="img-container directory"><span></span>
+							<img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.png" />
+							</div>
+					  </div>
 				    <div class="img-precontainer-mini directory">
-					<div class="img-container-mini">
-					    <span></span>
-					    <img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.png" />
-					</div>
+							<div class="img-container-mini">
+						    <span></span>
+						    <img class="directory-img"  src="img/<?php echo $icon_theme; ?>/folder<?php if($file==".."){ echo "_back"; }?>.png" />
+							</div>
 				    </div>
 			<?php if($file==".."){ ?>
 				    <div class="box no-effect">
