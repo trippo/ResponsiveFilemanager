@@ -65,7 +65,7 @@ if ((int)(ini_get('post_max_size')) < $MaxSizeUpload){
 }
 
 $default_language 	= "en_EN"; //default language file name
-$icon_theme			= "ico"; //ico or ico_dark you can cusatomize just putting a folder inside filemanager/img
+$icon_theme 		= "ico"; //ico or ico_dark you can cusatomize just putting a folder inside filemanager/img
 $show_folder_size	= TRUE; //Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
 $show_sorting_bar	= TRUE; //Show or not show sorting feature in filemanager
 $transliteration 	= FALSE; //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
@@ -86,11 +86,11 @@ $image_max_width  = 0;
 $image_max_height = 0;
 $image_max_mode   = 'auto';
 /*
-#             $option:     0 / exact = defined size;
-#                          1 / portrait = keep aspect set height;
-#                          2 / landscape = keep aspect set width;
-#                          3 / auto = auto;
-#                          4 / crop= resize and crop;
+#  $option:  0 / exact = defined size;
+#            1 / portrait = keep aspect set height;
+#            2 / landscape = keep aspect set width;
+#            3 / auto = auto;
+#            4 / crop= resize and crop;
  */
 
 //Automatic resizing //
@@ -98,7 +98,7 @@ $image_max_mode   = 'auto';
 // If you set width or height to 0 the script automatically calculates the other dimension
 // Is possible that if you upload very big images the script not work to overcome this increase the php configuration of memory and time limit
 $image_resizing 			= FALSE;
-$image_resizing_width  		= 0;
+$image_resizing_width 		= 0;
 $image_resizing_height 		= 0;
 $image_resizing_mode 		= 'auto'; // same as $image_max_mode
 $image_resizing_override 	= FALSE; 
@@ -133,7 +133,7 @@ $copy_cut_files		= TRUE; // for copy/cut files
 $copy_cut_dirs		= TRUE; // for copy/cut directories
 $chmod_files		= FALSE; // change file permissions
 $chmod_dirs			= FALSE; // change folder permissions
-$preview_text_files = TRUE; // eg.: txt, log etc.
+$preview_text_files	= TRUE; // eg.: txt, log etc.
 $edit_text_files 	= TRUE; // eg.: txt, log etc.
 $create_text_files 	= TRUE; // only create files with exts. defined in $editable_text_file_exts
 
