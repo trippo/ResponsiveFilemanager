@@ -119,9 +119,9 @@ function filescount($path) {
 function create_folder($path=false,$path_thumbs=false){
     $oldumask = umask(0);
     if ($path && !file_exists($path))
-        mkdir($path, 0777, true); // or even 01777 so you get the sticky bit set 
+        mkdir($path, 0755, true); // or even 01777 so you get the sticky bit set 
     if($path_thumbs && !file_exists($path_thumbs)) 
-        mkdir($path_thumbs, 0777, true) or die("$path_thumbs cannot be found"); // or even 01777 so you get the sticky bit set 
+        mkdir($path_thumbs, 0755, true) or die("$path_thumbs cannot be found"); // or even 01777 so you get the sticky bit set 
     umask($oldumask);
 }
 
@@ -343,7 +343,7 @@ function is_really_writable($dir){
         }
 
         fclose($fp);
-        @chmod($dir, 0777);
+        @chmod($dir, 0755);
         @unlink($dir);
         return TRUE;
     }
@@ -376,7 +376,7 @@ function rcopy($source, $destination, $is_rec = FALSE) {
             $destination = rtrim($destination, '/').DIRECTORY_SEPARATOR.$pinfo['basename'];
         }
         if (is_dir($destination) === FALSE){
-            mkdir($destination, 0777, true);
+            mkdir($destination, 0755, true);
         }
 
         $files = scandir($source);
@@ -412,7 +412,7 @@ function rrename($source, $destination, $is_rec = FALSE) {
             $destination = rtrim($destination, '/').DIRECTORY_SEPARATOR.$pinfo['basename'];
         }
         if (is_dir($destination) === FALSE){
-            mkdir($destination, 0777, true);
+            mkdir($destination, 0755, true);
         }
 
         $files = scandir($source);

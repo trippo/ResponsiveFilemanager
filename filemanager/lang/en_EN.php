@@ -53,7 +53,7 @@ define('lang_Sorting','sorting');
 define('lang_Show_url','Show URL');
 define('lang_Extract','Extract here');
 define('lang_File_info','file info');
-define('lang_Edit_image','edit image');
+define('lang_Edit_image','Edit image');
 define('lang_Duplicate','Duplicate');
 define('lang_Folders', 'Folders');
 define('lang_Copy','Copy');
