@@ -40,27 +40,19 @@ function rename_folder($old_path,$name,$transliteration){
     }
 }
 
-function create_img_gd($imgfile, $imgthumb, $newwidth, $newheight="",$option="crop") {
+function create_img($imgfile, $imgthumb, $newwidth, $newheight="",$option="crop") {
+    $timeLimit= ini_get('max_execution_time');
+    set_time_limit(30);
+    $result= false;
     if(image_check_memory_usage($imgfile,$newwidth,$newheight)){
-	require_once('php_image_magician.php');
-	$magicianObj = new imageLib($imgfile);
-	$magicianObj -> resizeImage($newwidth, $newheight, $option);
-	$magicianObj -> saveImage($imgthumb,80);
-	return true;
+        require_once('php_image_magician.php');
+        $magicianObj = new imageLib($imgfile);
+        $magicianObj -> resizeImage($newwidth, $newheight, $option);
+        $magicianObj -> saveImage($imgthumb,80);
+        $result= true;
     }
-    return false;
-}
-
-function create_img($imgfile, $imgthumb, $newwidth, $newheight="",$option="auto") {
-    if(image_check_memory_usage($imgfile,$newwidth,$newheight)){
-	require_once('php_image_magician.php');  
-	$magicianObj = new imageLib($imgfile);
-	$magicianObj -> resizeImage($newwidth, $newheight, $option);  
-	$magicianObj -> saveImage($imgthumb,80);
-	return true;
-    }else{
-	return false;
-    }
+    set_time_limit($timeLimit);
+    return $result;
 }
 
 function makeSize($size) {

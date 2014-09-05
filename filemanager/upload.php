@@ -67,7 +67,7 @@ if (!empty($_FILES)) {
 	
 	if($is_img){
 	    $memory_error=false;
-	    if(!create_img_gd($targetFile, $targetFileThumb, 122, 91)){
+	    if(!create_img($targetFile, $targetFileThumb, 122, 91)){
 		$memory_error=false;
 	    }else{
 		if(!new_thumbnails_creation($targetPath,$targetFile,$_FILES['file']['name'],$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$relative_image_creation_option,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option)){
@@ -90,7 +90,7 @@ if (!empty($_FILES)) {
 			}
 			$srcWidth=$image_resizing_width;
 			$srcHeight=$image_resizing_height;
-			create_img_gd($targetFile, $targetFile, $image_resizing_width, $image_resizing_height);
+			create_img($targetFile, $targetFile, $image_resizing_width, $image_resizing_height);
 		    }
 		    //max resizing limit control
 		    $resize=false;
@@ -105,7 +105,7 @@ if (!empty($_FILES)) {
 			$srcHeight =$image_max_height;
 		    }
 		    if($resize)
-			create_img_gd($targetFile, $targetFile, $srcWidth, $srcHeight);
+			create_img($targetFile, $targetFile, $srcWidth, $srcHeight);
 		}
 	    }		
 	    if($memory_error){
