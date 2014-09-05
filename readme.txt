@@ -54,6 +54,5 @@ Bootbox => http://bootboxjs.com/
 jQuery contextMenu => http://medialize.github.io/jQuery-contextMenu/
 Bootstrap-modal => https://github.com/jschr/bootstrap-modal
 jPlayer => http://jplayer.org/
-QueryLoader2 => http://www.gayadesign.com/diy/queryloader2-preload-your-images-with-ease/
 Lazy Load Plugin for jQuery => http://www.appelsiini.net/projects/lazyload
 *********************************************************
