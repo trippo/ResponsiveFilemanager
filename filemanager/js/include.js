@@ -1026,7 +1026,8 @@ function apply(file,external){
   var fill='';
   var ext_audio=new Array('ogg','mp3','wav');
   var ext_video=new Array('mp4','ogg','webm');
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative = $('#return_relative_path').val();
+  var url= encodeURL((is_return_relative == 1 ? "" : base_url)+path+file);
 
   if (external!=""){
 		if ($('#crossdomain').val()==1){
@@ -1096,7 +1097,8 @@ function apply_link(file,external){
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
   var base_url = $('#base_url').val();
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative = $('#return_relative_path').val();
+  var url= encodeURL((is_return_relative == 1 ? "" : base_url)+path+file);
 
 	if (external!=""){    	
 		if ($('#crossdomain').val()==1){
@@ -1125,7 +1127,8 @@ function apply_img(file,external){
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
   var base_url = $('#base_url').val();
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative = $('#return_relative_path').val();
+  var url= encodeURL((is_return_relative == 1 ? "" : base_url)+path+file);
 
   if (external!=""){
 		if ($('#crossdomain').val()==1){
@@ -1154,7 +1157,8 @@ function apply_video(file,external){
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
   var base_url = $('#base_url').val();
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative = $('#return_relative_path').val();
+  var url= encodeURL((is_return_relative == 1 ? "" : base_url)+path+file);
 
   if (external!=""){
 		if ($('#crossdomain').val()==1){

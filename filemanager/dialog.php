@@ -408,6 +408,8 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder; ?>"/>
+    <input type="hidden" id="return_relative_path" value="<?php echo $return_relative_path == true ? 1 : 0;?>"/>
+    <input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
