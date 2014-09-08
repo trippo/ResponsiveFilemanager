@@ -70,7 +70,7 @@ $show_folder_size	= TRUE; //Show or not show folder size in list view feature in
 $show_sorting_bar	= TRUE; //Show or not show sorting feature in filemanager
 $transliteration 	= FALSE; //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
 $convert_spaces  	= FALSE; //convert all spaces on files name and folders name with _
-$return_relative_path = FALSE; // Setting if returned URL-s should be relative (TRUE) or absolute (FALSE)
+$return_relative_url = FALSE; // Setting if returned URL-s should be relative (TRUE) or absolute (FALSE)
 
 // -1: There is no lazy loading at all, 0: Always lazy-load images, 0+: The minimum number of the files in a directory
 // when lazy loading should be turned on.
