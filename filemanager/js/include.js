@@ -1017,8 +1017,9 @@ function encodeURL(url){
 
 function apply(file,external){
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
-  var path = $('#cur_dir').val();    
+  var path = $('#cur_dir').val();
   //path = path.replace('\\', '/');
+  var subdir = $('#subdir').val();
   var base_url = $('#base_url').val();
   var alt_name=file.substr(0, file.lastIndexOf('.'));
   var ext=file.split('.').pop();
@@ -1026,7 +1027,8 @@ function apply(file,external){
   var fill='';
   var ext_audio=new Array('ogg','mp3','wav');
   var ext_video=new Array('mp4','ogg','webm');
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative_url = $('#return_relative_url').val();
+  var url= encodeURL((is_return_relative_url == 1 ? subdir : base_url+path)+file);
 
   if (external!=""){
 		if ($('#crossdomain').val()==1){
@@ -1095,8 +1097,11 @@ function apply_link(file,external){
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
+  var subdir = $('#subdir').val();
+  subdir = subdir.replace('\\', '/');
   var base_url = $('#base_url').val();
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative_url = $('#return_relative_url').val();
+  var url= encodeURL((is_return_relative_url == 1 ? subdir : base_url+path)+file);
 
 	if (external!=""){    	
 		if ($('#crossdomain').val()==1){
@@ -1124,8 +1129,11 @@ function apply_img(file,external){
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
+  var subdir = $('#subdir').val();
+  subdir = subdir.replace('\\', '/');
   var base_url = $('#base_url').val();
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative_url = $('#return_relative_url').val();
+  var url= encodeURL((is_return_relative_url == 1 ? subdir : base_url+path)+file);
 
   if (external!=""){
 		if ($('#crossdomain').val()==1){
@@ -1153,8 +1161,11 @@ function apply_video(file,external){
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
+  var subdir = $('#subdir').val();
+  subdir = subdir.replace('\\', '/');
   var base_url = $('#base_url').val();
-  var url= encodeURL(base_url+path+file);
+  var is_return_relative_url = $('#return_relative_url').val();
+  var url= encodeURL((is_return_relative_url == 1 ? subdir : base_url+path)+file);
 
   if (external!=""){
 		if ($('#crossdomain').val()==1){

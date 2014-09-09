@@ -1,7 +1,7 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
-*  RFM 9.7.1
+*  RFM 9.7.2
 *********************************************************
 
 ***** Major *****
@@ -9,6 +9,7 @@ Responsive Filemanager Changelog
 - Added lazy loading feature
 - Added options for auto and max image resizing
 - Lang. updates
+- Added support for returning relative URL-s
 - Bugfixes
 
 
@@ -23,6 +24,10 @@ Responsive Filemanager Changelog
 	In the past all images that was resized either with max_image or auto resize was cropped.
 	Now the user can specify to crop,exact,landscape or portrait options.
 	The max image size can be overridden by auto resize option
+
+- Added support for returning relative URL-s
+	Relative URL-s can be returned when selecting files from the filemanager: a 'relative_url' GET parameter should be
+	added to the request with a value of "1" when opening RFM. Otherwise returned URL-s will be absolute.
 
 - Bugfixes
 	Fixed css bugs
