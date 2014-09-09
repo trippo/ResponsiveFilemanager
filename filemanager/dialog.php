@@ -822,12 +822,15 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				$mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 				//add in thumbs folder if not exist
 				if(!file_exists($src_thumb)){
-				    try {
-					create_img($file_path, $src_thumb, 122, 91);
-					new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$relative_image_creation_option,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
-				    } catch (Exception $e) {
-					$src_thumb=$mini_src="";
-				    }
+			    try {
+			    	if(!create_img($file_path, $src_thumb, 122, 91)){
+							$src_thumb=$mini_src="";
+						}else{
+							new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,$relative_image_creation,$relative_path_from_current_pos,$relative_image_creation_name_to_prepend,$relative_image_creation_name_to_append,$relative_image_creation_width,$relative_image_creation_height,$relative_image_creation_option,$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
+						}
+			    } catch (Exception $e) {
+						$src_thumb=$mini_src="";
+			    }
 				}
 				$is_img=true;
 				//check if is smaller than thumb
