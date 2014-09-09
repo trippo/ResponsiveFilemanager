@@ -182,7 +182,7 @@ if (isset($_GET["descending"]))
 }
 else $descending = $_SESSION['RF']['descending'];
 
-$return_relative_url = isset($_GET['relative_urls']) && $_GET['relative_urls'] == "1" ? true : false;
+$return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
 
 // language
 if (!isset($_SESSION['RF']['language']) 
