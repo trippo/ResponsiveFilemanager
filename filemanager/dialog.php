@@ -852,7 +852,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    $show_original_mini=true;
 				}
 			    }
-			    
 			    $is_icon_thumb=false;
 			    $is_icon_thumb_mini=false;
 			    $no_thumb=false;
