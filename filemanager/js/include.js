@@ -1,4 +1,4 @@
-var version = "9.7.1";
+var version = "9.7.2";
 var active_contextmenu = true;
 $(document).ready(function(){
 	// Right click menu
@@ -441,6 +441,7 @@ $(document).ready(function(){
 		$('ul.grid li').css( "width",126);
 		$('ul.grid figure').css( "width",122);
 	    }
+        lazyLoad();
 	});
 	
 	if (!Modernizr.touch) {
@@ -1519,4 +1520,10 @@ function launchEditor(id, src) {
 	url: src
     });
    return false;
+}
+
+function lazyLoad() {
+    $(".lazy-loaded").lazyload({
+        event: 'scrollstop'
+    });
 }

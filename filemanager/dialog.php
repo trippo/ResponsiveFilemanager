@@ -1007,12 +1007,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 
     <?php if ($lazy_loading_enabled) { ?>
         <script src="js/jquery.lazyload.min.js" type="text/javascript"></script>
+        <script src="js/jquery.scrollstop.min.js" type="text/javascript"></script>
 
         <script>
-            $(function() {
-                $(".lazy-loaded").lazyload();
-            });
-
+            lazyLoad();
         </script>
     <?php } ?>
 </body>
