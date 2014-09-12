@@ -332,6 +332,7 @@ $get_params = http_build_query(array(
 	<![endif]-->
 	<script src="js/jquery.ui.position.min.js" type="text/javascript"></script>
 	<script src="js/jquery-ui-1.10.4.custom.js" type="text/javascript"></script>
+	<script src="js/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
 	<script src="js/jquery.contextMenu.min.js" type="text/javascript"></script>    
 	
 	<script>
