@@ -9,6 +9,7 @@ Responsive Filemanager Changelog
 - Added lazy loading feature
 - Added options for auto and max image resizing
 - Lang. updates
+- Added touch devices support for drag&drop
 - Added support for returning relative URL-s
 - Bugfixes
 
