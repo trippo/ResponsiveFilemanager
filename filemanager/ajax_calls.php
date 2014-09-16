@@ -23,6 +23,15 @@ if(isset($_GET['action']))
 				die('view type number missing');
 			}
 			break;
+		case 'filter':
+		  if(isset($_GET['type'])) {
+		  	if(isset($remember_text_filter) && $remember_text_filter)
+					$_SESSION['RF']["filter"] = $_GET['type'];
+			}
+			else {
+				die('view type number missing');
+			}
+			break;
 		case 'sort':
 			if(isset($_GET['sort_by'])) {
 				$_SESSION['RF']["sort_by"] = $_GET['sort_by'];

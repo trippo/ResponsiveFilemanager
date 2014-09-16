@@ -29,12 +29,13 @@ if (isset($_GET['fldr'])
     && strpos($_GET['fldr'],'./') === FALSE)
 {
     $subdir = urldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
+    $_SESSION['RF']["filter"]='';
 }
 else { $subdir = ''; }
 
 if($subdir == "")
 {
-    if(!empty($_COOKIE['last_position'])
+   if(!empty($_COOKIE['last_position'])
 	&& strpos($_COOKIE['last_position'],'.') === FALSE)
 	$subdir= trim($_COOKIE['last_position']);
 }
@@ -154,11 +155,17 @@ if (isset($_GET['view']))
 
 $view = $_SESSION['RF']["view_type"];
 
+//filter
+$filter = "";
+if(isset($_SESSION['RF']["filter"]))
+{ 
+	$filter = $_SESSION['RF']["filter"];
+}
+
 if(isset($_GET["filter"])) 
 {
 	$filter = fix_get_params($_GET["filter"]);
 }
-else $filter = '';
 
 if (!isset($_SESSION['RF']['sort_by'])) 
 {
@@ -394,13 +401,13 @@ $get_params = http_build_query(array(
 	    }
 	</script>
 	<script type="text/javascript" src="js/include.min.js"></script>
-    </head>
-    <body>
+</head>
+<body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
 	<input type="hidden" id="crossdomain" value="<?php echo $crossdomain; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
-    <input type="hidden" id="subdir" value="<?php echo $subdir; ?>" />
-    <input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
+  <input type="hidden" id="subdir" value="<?php echo $subdir; ?>" />
+  <input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
 	<input type="hidden" id="insert_folder_name" value="<?php echo lang_Insert_Folder_Name; ?>" />
 	<input type="hidden" id="new_folder" value="<?php echo lang_New_Folder; ?>" />
@@ -413,8 +420,8 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder; ?>"/>
-    <input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0;?>"/>
-    <input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
+  <input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0;?>"/>
+  <input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
@@ -704,12 +711,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	    <!--ul class="thumbnails ff-items"-->
 	    <ul class="grid cs-style-2 <?php echo "list-view".$view; ?>" id="main-item-container">
 		<?php
-		
 		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 		foreach ($files as $file_array) {
 		  $file=$file_array['file'];
-			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=lang_Type_dir) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $file!=".." && strpos($file,$filter)===false))
-			    continue;
+			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=lang_Type_dir) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && strpos($file,$filter)===false))
+			  continue;
 			$new_name=fix_filename($file,$transliteration);
 			if($file!='..' && $file!=$new_name){
 			    //rename
@@ -730,7 +736,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				}
 			
 			?>
-			    <li data-name="<?php echo $file ?>" <?php if($file=='..') echo 'class="back"'; else echo 'class="dir"'; ?>><?php 
+			    <li data-name="<?php echo $file ?>" class="<?php if($file=='..') echo 'back'; else echo 'dir'; ?>" <?php if(($filter!='' && strpos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php 
 			    $file_prevent_rename = false;
 			    $file_prevent_delete = false;
 			    if (isset($filePermissions[$file])) {
@@ -789,7 +795,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		    foreach ($files as $nu=>$file_array) {		
 			$file=$file_array['file'];
 		    
-			    if($file == '.' || $file == '..' || is_dir($current_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && strpos($file,$filter)===false))
+			    if($file == '.' || $file == '..' || is_dir($current_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && strpos($file,$filter)===false))
 				    continue;
 			    
 			    $file_path=$current_path.$rfm_subfolder.$subdir.$file;
@@ -885,7 +891,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }
 			    if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
 ?>
-		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>"><?php
+		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>" <?php if(($filter!='' && strpos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
 		    $file_prevent_rename = false;
 		    $file_prevent_delete = false;
 		    if (isset($filePermissions[$file])) {
@@ -1010,7 +1016,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
         <script src="js/jquery.scrollstop.min.js" type="text/javascript"></script>
 
         <script>
-            lazyLoad();
+        	$(function(){
+        		$(".lazy-loaded").lazyload({
+				        event: 'scrollstop'
+				    });	
+        	});			    
         </script>
     <?php } ?>
 </body>

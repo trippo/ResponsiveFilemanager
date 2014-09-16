@@ -243,4 +243,7 @@ $relative_image_creation_height         = array(200,''); //height of image (you 
  */
 $relative_image_creation_option         = array('crop','crop'); //set the type of the crop
 
+// Remember text filter after close filemanager for future session
+$remember_text_filter = FALSE;
+
 ?>

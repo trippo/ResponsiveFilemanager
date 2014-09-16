@@ -26,7 +26,7 @@ $mime_type = get_file_mime_type( $name ); // Get the correct MIME type depending
 
 header('Pragma: private');
 header('Cache-control: private, must-revalidate');
-header("Content-Type: $mime_type"); // Set the correct MIME type
+header("Content-Type: " . $mime_type); // Set the correct MIME type
 header("Content-Length: " . $img_size );
 header('Content-Disposition: attachment; filename="'.($name).'"');
 readfile($path.$name);
