@@ -70,7 +70,8 @@ $icon_theme 		= "ico"; //ico or ico_dark you can cusatomize just putting a folde
 $show_folder_size	= TRUE; //Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
 $show_sorting_bar	= TRUE; //Show or not show sorting feature in filemanager
 $transliteration 	= FALSE; //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
-$convert_spaces  	= FALSE; //convert all spaces on files name and folders name with _
+$convert_spaces  	= FALSE; //convert all spaces on files name and folders name with $replace_with variable
+$replace_with  	    = "_"; //convert all spaces on files name and folders name this value
 
 // -1: There is no lazy loading at all, 0: Always lazy-load images, 0+: The minimum number of the files in a directory
 // when lazy loading should be turned on.
