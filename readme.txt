@@ -13,20 +13,24 @@ Creator : info@albertoperipolli.com - tr1pp0
 *********************************************************
 ! Localization
 *********************************************************
-- AZE [Elshad Agayev]
+- AZE [Elshad Agayev] 
 - BGR [Stanislav Panev]
 - BRA [paulomanrique]
+- CAT [Manel Peña]
+- CHN [Vu Doan Thang]
+- CRO 
 - CZE [jlusticky]
-- CHI [Vu Doan Thang]
 - DAN [Morten Hesselberg Grove]
 - ENG
 - ESP [Roberto Santamaria] 
 - FRA [Mathieu Ducharme]
 - GER [Oliver Beta]
+- GRC [vkouvelis]
 - HUN [Novak Szabolcs]
 - IND [urayogi]
 - ITA
 - JPN [Vu Doan Thang]
+- LTU [Tomas Norkūnas]
 - MON [Tumenzul Batjargal]
 - NLD [Martijn van der Made]
 - NOR [Pål Schroeder]
@@ -35,6 +39,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - POR [Sérgio Lima]
 - RUS [vasromand] 
 - SLO [Roman Šovčík]
+- SVN [Peter Benko]
 - SWE [Jon Sten]
 - TUR [Ahmed Faruk Bora]
 - UKR [Sergey]
