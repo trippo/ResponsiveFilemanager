@@ -1,5 +1,17 @@
 Responsive Filemanager Changelog 
 
+
+*********************************************************
+*  RFM 9.8
+*********************************************************
+- added pdf, openoffice files preview with customized viewer.js
+- added other office file preview with google preview
+- fixed ordering bug
+- improved layout style
+- added copy to clipboard button on show url dialog
+- fixed a bug when download a file
+- fixed a bug in relative path images creation
+
 *********************************************************
 *  RFM 9.7.3
 *********************************************************

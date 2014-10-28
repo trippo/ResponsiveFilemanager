@@ -178,6 +178,7 @@ if (isset($_GET["sort_by"]))
 }
 else $sort_by = $_SESSION['RF']['sort_by'];
 
+
 if (!isset($_SESSION['RF']['descending'])) 
 {
 	$_SESSION['RF']['descending'] = TRUE;
@@ -188,6 +189,7 @@ if (isset($_GET["descending"]))
 	$descending = $_SESSION['RF']['descending'] = fix_get_params($_GET["descending"])==="true";
 }
 else $descending = $_SESSION['RF']['descending'];
+$boolarray = Array(false => 'false', true => 'true');
 
 $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
 
@@ -197,6 +199,7 @@ if (!isset($_SESSION['RF']['language'])
 	|| !is_readable($_SESSION['RF']['language_file'])) 
 {
 	$lang = $default_language;
+
 	if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='') 
 	{
    		$lang = fix_get_params($_GET['lang']);
@@ -254,13 +257,13 @@ $get_params = http_build_query(array(
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta name="robots" content="noindex,nofollow">
-        <title>Responsive FileManager</title>
+  <meta name="robots" content="noindex,nofollow">
+  <title>Responsive FileManager</title>
 	<link rel="shortcut icon" href="img/ico/favicon.ico">
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+  <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
 	<link href="css/dropzone.min.css" type="text/css" rel="stylesheet" />
 	<?php
 	$sprite_lang_file = 'img/spritemap_'.$lang.'.png';
@@ -325,6 +328,7 @@ $get_params = http_build_query(array(
 	<script type="text/javascript" src="js/bootstrap-modal.min.js"></script>   
 	<script type="text/javascript" src="js/bootstrap-modalmanager.min.js"></script>
 	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
+	<script type="text/javascript" src="js/ZeroClipboard.min.js"></script>
 	<?php
 	if ($aviary_active){
 	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
@@ -424,7 +428,7 @@ $get_params = http_build_query(array(
   <input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
-	<input type="hidden" id="descending" value="<?php echo $descending?"true":"false"; ?>" />
+	<input type="hidden" id="descending" value="<?php echo $descending?1:0; ?>" />
 	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter),array(''),$base_url.$_SERVER['REQUEST_URI']); ?>" />
 	<input type="hidden" id="lang_show_url" value="<?php echo lang_Show_url; ?>" />
 	<input type="hidden" id="copy_cut_files_allowed" value="<?php if($copy_cut_files) echo 1; else echo 0; ?>" />
@@ -456,7 +460,9 @@ $get_params = http_build_query(array(
 <!-- uploader div start -->
 
 <div class="uploader">
-    <center><button class="btn btn-inverse close-uploader"><i class="icon-backward icon-white"></i> <?php echo lang_Return_Files_List?></button></center>
+    <div class="text-center">
+    	<button class="btn btn-inverse close-uploader"><i class="icon-backward icon-white"></i> <?php echo lang_Return_Files_List?></button>
+    </div>
 	<div class="space10"></div><div class="space10"></div>
 	<div class="tabbable upload-tabbable"> <!-- Only required for left/right tabs -->
 		<?php if($java_upload){ ?>
@@ -477,7 +483,7 @@ $get_params = http_build_query(array(
 					<input type="hidden" name="view" value="<?php echo $view; ?>"/>
 					<input type="hidden" name="type" value="<?php echo $type_param; ?>"/>
 					<input type="hidden" name="field_id" value="<?php echo $field_id; ?>"/>
-                    <input type="hidden" name="relative_url" value="<?php echo $return_relative_url; ?>"/>
+          <input type="hidden" name="relative_url" value="<?php echo $return_relative_url; ?>"/>
 					<input type="hidden" name="popup" value="<?php echo $popup; ?>"/>
 					<input type="hidden" name="lang" value="<?php echo $lang; ?>"/>
 					<input type="hidden" name="filter" value="<?php echo $filter; ?>"/>
@@ -550,7 +556,7 @@ function dateSort($x, $y) {
     return $x['date'] <  $y['date'];
 }
 function sizeSort($x, $y) {
-    return $x['size'] -  $y['size'];
+    return $x['size'] <  $y['size'];
 }
 function extensionSort($x, $y) {
     return $x['extension_lcase'] <  $y['extension_lcase'];
@@ -571,7 +577,7 @@ switch($sort_by){
 		break;  
 }
 
-if($descending){
+if(!$descending){
     $sorted=array_reverse($sorted);
 }
 
@@ -674,7 +680,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		  <span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu pull-left sorting">
-		    <li><center><strong><?php echo lang_Sorting ?></strong></center></li>
+		    <li class="text-center"><strong><?php echo lang_Sorting ?></strong></li>
 		<li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo lang_Filename; ?></a></li>
 		<li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo lang_Date; ?></a></li>
 		<li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo lang_Size; ?></a></li>
@@ -771,7 +777,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <div class="box">
 					<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a class="folder-link" data-file="<?php echo $file ?>" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".uniqid() ?>"><?php echo $file; ?></a></h4>
 				    </div>
-				    <input type="hidden" class="name" value=""/>
+				    <input type="hidden" class="name" value="<?php echo $file_array['file_lcase'];  ?>"/>
 				    <input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
 				    <input type="hidden" class="size" value="<?php echo $file_array['size'];  ?>"/>
 				    <input type="hidden" class="extension" value="<?php echo lang_Type_dir; ?>"/>
@@ -930,7 +936,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>
 				<input type="hidden" class="size" value="<?php echo $file_array['size'] ?>"/>
 				<input type="hidden" class="extension" value="<?php echo $extension_lower; ?>"/>
-				<input type="hidden" class="name" value=""/>
+				<input type="hidden" class="name" value="<?php echo $file_array['file_lcase']; ?>"/>
 				<div class="file-date"><?php echo date(lang_Date_type,$file_array['date'])?></div>
 				<div class="file-size"><?php echo makeSize($file_array['size'])?></div>
 				<div class='img-dimension'><?php if($is_img){ echo $img_width."x".$img_height; } ?></div>
@@ -947,9 +953,17 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
 					title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file; ?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
-					<?php }elseif($preview_text_files === TRUE && in_array($extension_lower,$previewable_text_file_exts)){ ?>
-				    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file; ?>"
-					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
+						<?php }elseif($preview_text_files && in_array($extension_lower,$previewable_text_file_exts)){ ?>
+					    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=text&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file; ?>"
+						href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
+						<?php }elseif($googledoc_enabled && in_array($extension_lower,$googledoc_file_exts)){ ?>
+					    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=google&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file; ?>"
+						href="docs.google.com;" ><i class=" icon-eye-open"></i></a>	
+
+						<?php }elseif($viewerjs_enabled && in_array($extension_lower,$viewerjs_file_exts)){ ?>
+					    <a class="tip-right file-preview-btn" title="<?php echo lang_Preview?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=viewerjs&title=<?php echo $filename; ?>&file=<?php echo $current_path.$rfm_subfolder.$subdir.$file; ?>"
+						href="docs.google.com;" ><i class=" icon-eye-open"></i></a>			    
+						
 				    <?php }else{ ?>
 				    <a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 				    <?php } ?>
@@ -1004,7 +1018,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
       </div>
       <div class="modal-body">
       	<div class="row-fluid body-preview">
-	</div>
+				</div>
       </div>
       
     </div>

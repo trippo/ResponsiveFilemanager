@@ -1,5 +1,6 @@
-var version = "9.7.3";
+var version = "9.8.0";
 var active_contextmenu = true;
+var copy_count=0;
 $(document).ready(function(){
 	// Right click menu
     if (active_contextmenu) {
@@ -11,69 +12,89 @@ $(document).ready(function(){
 		var options = {
 		  callback: function(key, options) {
 		    switch (key) {
-			case "copy_url":
-			    var m ="";
-			    m+=$('#base_url').val()+$('#cur_dir').val();
-			    add=$trigger.find('a.link').attr('data-file');
-			    if (add!="" && add!=null) {
-						m+=add;
-			    }
-			    add=$trigger.find('h4 a.folder-link').attr('data-file');
-			    if (add!="" && add!=null) {
-						m+=add;
-			    }
-			    bootbox.alert('URL:<br/><br/><input type="text" style="height:30px; width:100%;" value="'+encodeURL(m)+'" />'); 	
-			    break;
-			case "unzip":
-			    var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
-			    $.ajax({
-				type: "POST",
-				url: "ajax_calls.php?action=extract",
-				data: { path: m }
-			    }).done(function( msg ) {
-				if (msg!="")
-				    bootbox.alert(msg);
-				else
-				    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
-			    });
-			    break;
-			case "edit_img":
-			    var filename=$trigger.attr('data-name');
-			    var full_path=$('#base_url_true').val()+$('#cur_dir').val()+filename;
-			    $('#aviary_img').attr('data-name',filename);
-			    $('#aviary_img').attr('src',full_path).load(launchEditor('aviary_img', full_path));
-			    
-			    break;
-			case "duplicate":
-			    var old_name=$trigger.find('h4').text().trim();
-			    bootbox.prompt($('#lang_duplicate').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-				if (name !== null){
-				    name=fix_filename(name);
-				    if (name!=old_name) {
-					var _this=$trigger.find('.rename-file');
-					execute_action('duplicate_file',_this.attr('data-path'),_this.attr('data-thumb'),name,_this,'apply_file_duplicate');
+					case "copy_url":
+				    var m =$('#base_url').val()+$('#cur_dir').val();
+				    add=$trigger.find('a.link').attr('data-file');
+				    if (add!="" && add!=null) {
+							m+=add;
 				    }
-				}
-			    },old_name);
+				    add=$trigger.find('h4 a.folder-link').attr('data-file');
+				    if (add!="" && add!=null) {
+							m+=add;
+				    }
+				    bootbox.alert('URL:<br/><div class="input-append" style="width:100%"><input id="url_text'+copy_count+'" type="text" style="width:80%; height:30px;" value="'+encodeURL(m)+'" /><button id="copy-button'+copy_count+'" class="btn btn-inverse copy-button" style="width:20%; height:30px;" data-clipboard-target="url_text'+copy_count+'" data-clipboard-text="Copy Me!" title="copy"></button></div>');
+				    $('#copy-button'+copy_count).html('<i class="icon icon-white icon-share"></i> '+$('#lang_copy').val());
 
-			    break;
-			case "copy":
-			    copy_cut_clicked($trigger, 'copy');
-				break;
-		    case "cut":
-				copy_cut_clicked($trigger, 'cut');
-				break;
-		    case "paste":
-		    	paste_to_this_dir();
-			    break;
-			case "chmod":
-				chmod($trigger);
-				break;
-			case "edit_text_file":
-				edit_text_file($trigger);
-				break;
-		  }},
-		  items: {}
+				    var client = new ZeroClipboard( $('#copy-button'+copy_count) );
+
+					  client.on( "ready", function( readyEvent ) {
+					  	console.log('ok');
+					  	client.on("wrongFlash noFlash", function() {
+							  ZeroClipboard.destroy();
+							});
+					    client.on( "aftercopy", function( event ) {
+					      // `this` === `client`
+					      // `event.target` === the element that was clicked
+					      // event.target.style.display = "none";
+					      console.log('copied');
+					      $('#copy-button'+copy_count).html('<i class="icon icon-ok"></i> '+$('#ok').val());
+					      $('#copy-button'+copy_count).attr('class','btn disabled');
+					      copy_count++;
+					    } );
+					    client.on( 'error', function(event) {
+        				console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+        			})
+					  } ); 	
+				    break;
+					case "unzip":
+					  var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
+					  $.ajax({
+							type: "POST",
+							url: "ajax_calls.php?action=extract",
+							data: { path: m }
+					  }).done(function( msg ) {
+							if (msg!="")
+						    bootbox.alert(msg);
+							else
+						    window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+					  });
+					  break;
+					case "edit_img":
+				    var filename=$trigger.attr('data-name');
+				    var full_path=$('#base_url_true').val()+$('#cur_dir').val()+filename;
+				    $('#aviary_img').attr('data-name',filename);
+				    $('#aviary_img').attr('src',full_path).load(launchEditor('aviary_img', full_path));
+				    break;
+					case "duplicate":
+					  var old_name=$trigger.find('h4').text().trim();
+					  bootbox.prompt($('#lang_duplicate').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+							if (name !== null){
+							  name=fix_filename(name);
+							  if (name!=old_name) {
+									var _this=$trigger.find('.rename-file');
+									execute_action('duplicate_file',_this.attr('data-path'),_this.attr('data-thumb'),name,_this,'apply_file_duplicate');
+							  }
+							}
+					  },old_name);
+
+					  break;
+					case "copy":
+				    copy_cut_clicked($trigger, 'copy');
+						break;
+			    case "cut":
+						copy_cut_clicked($trigger, 'cut');
+						break;
+			    case "paste":
+				    paste_to_this_dir();
+						break;
+					case "chmod":
+						chmod($trigger);
+						break;
+					case "edit_text_file":
+						edit_text_file($trigger);
+						break;
+		  	}},
+		  	items: {}
 		};
 		// tooltip options
 		// edit image/show url
@@ -270,7 +291,7 @@ $(document).ready(function(){
     
     // info btn
     $('#info').on('click',function(){
-	bootbox.alert('<center><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></center>');
+	bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></div>');
 	});
 
 	$('#change_lang_btn').on('click',function(){
@@ -295,21 +316,21 @@ $(document).ready(function(){
 	    $('.uploader').show(500);
     });
     
-    var sortDescending=$('#descending').val()=== 'true';
+    var sortDescending=$('#descending').val();
     $('.sorter').on('click',function(){
 			_this=$(this);
-
 			if($('#sort_by').val() === _this.attr('data-sort')){
-				sortDescending = !sortDescending;
+				if(sortDescending==0)
+					sortDescending=true;
+				else
+					sortDescending=false;
 			} else {
 				sortDescending = true;
 			}
 
 			if (js_script) {
 				$.ajax({
-					url: "ajax_calls.php?action=sort&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending
-				}).done(function( msg ) {
-			  
+					url: "ajax_calls.php?action=sort&sort_by="+_this.attr('data-sort')+"&descending="+(sortDescending ? 1 : 0)
 				});
 				sortUnorderedList('ul.grid',sortDescending,"."+_this.attr('data-sort'));
 				$(' a.sorter').removeClass('descending').removeClass('ascending');
@@ -319,10 +340,10 @@ $(document).ready(function(){
 					$('.sort-'+_this.attr('data-sort')).addClass("ascending");
 
 				$('#sort_by').val(_this.attr('data-sort'));
-				$('#descending').val(sortDescending);
+				$('#descending').val(sortDescending ? 1 : 0);
 				lazyLoad();
 			}else {
-				window.location.href=$('#current_url').val()+"&sort_by="+_this.attr('data-sort')+"&descending="+sortDescending;
+				window.location.href=$('#current_url').val()+"&sort_by="+_this.attr('data-sort')+"&descending="+(sortDescending ? 1 : 0);
 			}
 		});
 
@@ -643,37 +664,36 @@ function edit_text_file($trigger) {
 
 	$.ajax({
 	type: "POST",
-	url: "ajax_calls.php?action=get_file&sub_action=edit",
+	url: "ajax_calls.php?action=get_file&sub_action=edit&preview_mode=text",
 	data: {path: full_path}
-    }).done(function( init_content ) 
-    {
-		bootbox.dialog(init_content, 
-		[
+    }).done(function( init_content ){
+			bootbox.dialog(init_content, 
+			[
+				{
+					"label" : $('#cancel').val(),
+					"class" : "btn"
+				}, 
+				{
+					"label" : $('#ok').val(),
+					"class" : "btn-inverse",
+					"callback": function() {
+	                    var newContent = $('#textfile_edit_area').val();
+	                	// post ajax
+	                	$.ajax({
+						type: "POST",
+						url: "execute.php?action=save_text_file",
+						data: {path: full_path, path_thumb: thumb_path, new_content: newContent}
+						}).done(function( status_msg ) {
+							if (status_msg!=""){
+								bootbox.alert(status_msg);
+							}
+						});
+	                }
+				}
+			],
 			{
-				"label" : $('#cancel').val(),
-				"class" : "btn"
-			}, 
-			{
-				"label" : $('#ok').val(),
-				"class" : "btn-inverse",
-				"callback": function() {
-                    var newContent = $('#textfile_edit_area').val();
-                	// post ajax
-                	$.ajax({
-					type: "POST",
-					url: "execute.php?action=save_text_file",
-					data: {path: full_path, path_thumb: thumb_path, new_content: newContent}
-					}).done(function( status_msg ) {
-						if (status_msg!=""){
-							bootbox.alert(status_msg);
-						}
-					});
-                }
-			}
-		],
-		{
-			"header" : $trigger.find('.name_download').val()
-		});
+				"header" : $trigger.find('.name_download').val()
+			});
     });
 }
 
@@ -1447,71 +1467,70 @@ function execute_action(action,file1,file2,name,container,function_name){
 
 
 function sortUnorderedList(ul, sortDescending,sort_field) {
-    if (typeof ul == "string")
-      ul = $(ul);
-    var lis_dir = ul.find("li.dir");
-    var lis_file = ul.find("li.file");
-    var vals_dir = [];
-    var values_dir = [];
-    var vals_file = [];
-    var values_file = [];
-    
-    $.each(lis_dir,function(index){
-	var _this=$(this);
-	var value=_this.find(sort_field).val();
-	if ($.isNumeric(value)) {
-	    value=parseFloat(value);
-	    while (typeof vals_dir[value] !== "undefined" &&  vals_dir[value] ) {
-		value=parseFloat(parseFloat(value)+parseFloat(0.001));
-	    }
-	}else {
-	    value=value+"a"+_this.find('h4 a').attr('data-file');
-	}
-	vals_dir[value]=_this.html();
-	values_dir.push(value);
+  if (typeof ul == "string")
+    ul = $(ul);
+  var lis_dir = ul.find("li.dir");
+  var lis_file = ul.find("li.file");
+  var vals_dir = [];
+  var values_dir = [];
+  var vals_file = [];
+  var values_file = [];
+  $.each(lis_dir,function(index){
+		var _this=$(this);
+		var value=_this.find(sort_field).val();
+		if ($.isNumeric(value)) {
+		    value=parseFloat(value);
+		    while (typeof vals_dir[value] !== "undefined" &&  vals_dir[value] ) {
+					value=parseFloat(parseFloat(value)+parseFloat(0.001));
+		    }
+		}else {
+		    value=value+"a"+_this.find('h4 a').attr('data-file');
+		}
+		vals_dir[value]=_this.html();
+		values_dir.push(value);
 	});
     
-    $.each(lis_file,function(index){
-	var _this=$(this);
-	var value=_this.find(sort_field).val();
-	if ($.isNumeric(value)) {
+  $.each(lis_file,function(index){
+		var _this=$(this);
+		var value=_this.find(sort_field).val();
+		if ($.isNumeric(value)) {
 	    value=parseFloat(value);
 	    while (typeof vals_file[value] !== "undefined" &&  vals_file[value] ) {
-		value=parseFloat(parseFloat(value)+parseFloat(0.001));
-	    }
-	}else {
-	    value=value+"a"+_this.find('h4 a').attr('data-file');
-	}
-	vals_file[value]=_this.html();
-	values_file.push(value);
+				value=parseFloat(parseFloat(value)+parseFloat(0.001));
+		  }
+		}else {
+		  value=value+"a"+_this.find('h4 a').attr('data-file');
+		}
+		vals_file[value]=_this.html();
+		values_file.push(value);
 	});
     
-    if ($.isNumeric(values_dir[0])) {
-	values_dir.sort(function(a,b){return parseFloat(a)-parseFloat(b);});
-    }else {
-	values_dir.sort();
-    }
+  if ($.isNumeric(values_dir[0])) {
+		values_dir.sort(function(a,b){return parseFloat(a)-parseFloat(b);});
+  }else {
+		values_dir.sort();
+  }
     
-    if ($.isNumeric(values_file[0])) {
-	values_file.sort(function(a,b){return  parseFloat(a)-parseFloat(b); });
-    }else {
-	values_file.sort();
-    }
+  if ($.isNumeric(values_file[0])) {
+		values_file.sort(function(a,b){return  parseFloat(a)-parseFloat(b); });
+  }else {
+		values_file.sort();
+  }
     
-    if (sortDescending){
-	values_dir.reverse();
-	values_file.reverse();
-    }
+  if (sortDescending){
+		values_dir.reverse();
+		values_file.reverse();
+  }
     
-    $.each(lis_dir,function(index){
-	var _this=$(this);
-	_this.html(vals_dir[values_dir[index]]);
-    });
+  $.each(lis_dir,function(index){
+		var _this=$(this);
+		_this.html(vals_dir[values_dir[index]]);
+  });
     
-    $.each(lis_file,function(index){
-	var _this=$(this);
-	_this.html(vals_file[values_file[index]]);
-    });
+  $.each(lis_file,function(index){
+		var _this=$(this);
+		_this.html(vals_file[values_file[index]]);
+  });
 }
 
 function show_animation()

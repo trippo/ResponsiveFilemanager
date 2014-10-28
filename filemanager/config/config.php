@@ -1,6 +1,7 @@
 <?php
 session_start();
 mb_internal_encoding('UTF-8');
+date_default_timezone_set('Europe/Rome');
 //------------------------------------------------------------------------------
 // DON'T COPY THIS VARIABLES IN FOLDERS config.php FILES
 //------------------------------------------------------------------------------
@@ -138,13 +139,22 @@ $edit_text_files 	= TRUE; // eg.: txt, log etc.
 $create_text_files 	= TRUE; // only create files with exts. defined in $editable_text_file_exts
 
 // you can preview these type of files if $preview_text_files is true
-$previewable_text_file_exts = array('txt', 'log', 'xml');
+$previewable_text_file_exts = array('txt', 'log', 'xml','html','css','htm','js');
+$previewable_text_file_exts_no_prettify = array('txt', 'log');
 
 // you can edit these type of files if $edit_text_files is true (only text based files)
 // you can create these type of files if $create_text_files is true (only text based files)
 // if you want you can add html,css etc. 
 // but for security reasons it's NOT RECOMMENDED!
-$editable_text_file_exts = array('txt', 'log', 'xml');
+$editable_text_file_exts = array('txt', 'log', 'xml','html','css','htm','js');
+
+// Preview with Google Documents
+$googledoc_enabled = TRUE;
+$googledoc_file_exts = array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx');
+
+// Preview with Viewer.js
+$viewerjs_enabled = TRUE;
+$viewerjs_file_exts = array('pdf', 'odt', 'odp', 'ods');
 
 // defines size limit for paste in MB / operation
 // set 'FALSE' for no limit
@@ -242,6 +252,7 @@ $relative_image_creation_height         = array(200,''); //height of image (you 
 #                          4 / crop= resize and crop;
  */
 $relative_image_creation_option         = array('crop','crop'); //set the type of the crop
+
 
 // Remember text filter after close filemanager for future session
 $remember_text_filter = FALSE;
