@@ -11,6 +11,7 @@ Responsive Filemanager Changelog
 - added copy to clipboard button on show url dialog
 - fixed a bug when download a file
 - fixed a bug in relative path images creation
+- adding custom convert_spaces [by fungio]
 
 *********************************************************
 *  RFM 9.7.3
