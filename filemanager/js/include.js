@@ -44,7 +44,7 @@ $(document).ready(function(){
 					    client.on( 'error', function(event) {
         				console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
         			})
-					  } ); 	
+					  } );
 				    break;
 					case "unzip":
 					  var m=$('#sub_folder').val()+$('#fldr_value').val()+$trigger.find('a.link').attr('data-file');
@@ -108,19 +108,19 @@ $(document).ready(function(){
 		// extract
 		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('zip') ||
 		    $trigger.find('.img-precontainer-mini .filetype').hasClass('tar') ||
-		    $trigger.find('.img-precontainer-mini .filetype').hasClass('gz') ) 
+		    $trigger.find('.img-precontainer-mini .filetype').hasClass('gz') )
 		{
 		    options.items.unzip = {name: $('#lang_extract').val(),icon:"extract", disabled:false };
 		}
 
 		// edit file's content
-		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('edit-text-file-allowed') ) 
+		if ($trigger.find('.img-precontainer-mini .filetype').hasClass('edit-text-file-allowed') )
 		{
 		    options.items.edit_text_file = {name: $('#lang_edit_file').val(),icon:"edit", disabled:false };
 		}
 
 		// duplicate
-		if (!$trigger.hasClass('directory') && $('#duplicate').val()==1) 
+		if (!$trigger.hasClass('directory') && $('#duplicate').val()==1)
 		{
 		    options.items.duplicate = {name: $('#lang_duplicate').val(),icon:"duplicate", disabled:false };
 		}
@@ -159,27 +159,27 @@ $(document).ready(function(){
 		options.items.size = {name: $trigger.find('.file-size').html(),icon:"size", disabled:true };
 		options.items.date = {name: $trigger.find('.file-date').html(),icon:"date", disabled:true };
 
-	    
+
 		return options;
 	      },
 	      events: {
-		hide: function(opt){ 
+		hide: function(opt){
 		  $('figure').removeClass('selected');
 		}
 	    }
 	});
-	
+
 	$(document).on('contextmenu', function(e) {
 	    if (!$(e.target).is("figure"))
 	       return false;
-	});	
+	});
     }
-    
+
     // preview image
     $('#full-img').on('click',function(){
 	    $('#previewLightbox').lightbox('hide');
     });
-    
+
     $('ul.grid').on('click','.modalAV', function(e) {
 		_this=$(this);
         e.preventDefault();
@@ -189,13 +189,13 @@ $(document).ready(function(){
             backdrop: 'static',
             keyboard: false
         });
-		
+
 		if (_this.hasClass('audio')) {
 	    	$(".body-preview").css('height','80px');
 		}else {
 	    	$(".body-preview").css('height','345px');
 		}
-	
+
         $.ajax({
             url: _this.attr('data-url'),
             success: function(data) {
@@ -207,7 +207,7 @@ $(document).ready(function(){
     $('ul.grid').on('click','.file-preview-btn', function(e) {
 		_this=$(this);
         e.preventDefault();
-	
+
         $.ajax({
             url: _this.attr('data-url'),
             success: function(data) {
@@ -215,7 +215,7 @@ $(document).ready(function(){
 	    	}
         });
     });
-    
+
     // sorting
     $('input[name=radio-sort]').on('click',function(){
       var li=$(this).attr('data-item');
@@ -225,8 +225,8 @@ $(document).ready(function(){
 			$('#'+li).addClass("btn-inverse");
 			$('#'+li).find('i').addClass('icon-white');
 
-      if (li=='ff-item-type-all'){ 
-	    	$('.grid li').show(300); 
+      if (li=='ff-item-type-all'){
+	    	$('.grid li').show(300);
 			}
 			else {
         if ($(this).is(':checked')){
@@ -237,7 +237,7 @@ $(document).ready(function(){
 
 			lazyLoad();
     });
-    
+
     var delay = (function(){
 			var timer = 0;
 			return function(callback, ms){
@@ -245,10 +245,10 @@ $(document).ready(function(){
 			    timer = setTimeout(callback, ms);
 			};
     })();
-    
+
     if (parseInt($('#file_number').val()) > parseInt($('#file_number_limit_js').val())) var js_script=false;
     else var js_script=true;
-	
+
     $('#filter-input').on('keyup',function(){
 			$('.filters label').removeClass("btn-inverse");
 			$('.filters label').find('i').removeClass('icon-white');
@@ -267,13 +267,13 @@ $(document).ready(function(){
 				    }
 					});
 
-					lazyLoad();	
+					lazyLoad();
 					$.ajax({
 						url: "ajax_calls.php?action=filter&type="+val
 					}).done(function( msg ) {
 						if (msg!="") {
 						  bootbox.alert(msg);
-						}   
+						}
 			    });
 		    }
 			}, 300 );
@@ -282,13 +282,13 @@ $(document).ready(function(){
 			    $('#filter').trigger('click');
 			}
     });
-    
+
     // filtering
     $('#filter').on('click',function(){
 	var val=fix_filename($('#filter-input').val());
 	window.location.href=$('#current_url').val()+"&filter="+val;
     });
-    
+
     // info btn
     $('#info').on('click',function(){
 	bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></div>');
@@ -297,12 +297,12 @@ $(document).ready(function(){
 	$('#change_lang_btn').on('click',function(){
 		change_lang();
 	});
-    
+
     // upload btn
     $('#uploader-btn').on('click',function(){
 	    var path=$('#sub_folder').val()+$('#fldr_value').val()+"/";
 	    path=path.substring(0, path.length - 1);
-	    
+
 	    $('#iframe-container').html($('<iframe />', {
 		name: 'JUpload',
 		id:   'uploader_frame',
@@ -315,7 +315,7 @@ $(document).ready(function(){
     $('.upload-btn').on('click',function(){
 	    $('.uploader').show(500);
     });
-    
+
     var sortDescending=$('#descending').val();
     $('.sorter').on('click',function(){
 			_this=$(this);
@@ -360,46 +360,46 @@ $(document).ready(function(){
 			}
 			return true;
     });
-    
+
     $('body').on('keypress',function(e){
 	var c = String.fromCharCode(e.which);
 	if (c=="'" || c=='"' || c=="\\" || c=='/') {
 	    return false;
 	}
     });
-    
+
     $('ul.grid').on('click','.rename-file',function(){
 	var _this = $(this);
-	
+
 	var file_container=_this.parent().parent().parent();
 	var file_title=file_container.find('h4');
 	var old_name=$.trim(file_title.text());
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    if (name !== null){
 		name=fix_filename(name);
-		if (name!=old_name) {                                             
+		if (name!=old_name) {
 		    execute_action('rename_file',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_file_rename');
 		}
 	    }
 	},old_name);
     });
-    
+
     $('ul.grid').on('click','.rename-folder',function(){
 	var _this = $(this);
-	    
+
 	var file_container=_this.parent().parent().parent();
 	var file_title=file_container.find('h4');
 	var old_name=$.trim(file_title.text());
 	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
 	    if (name !== null){
 		name=fix_filename(name).replace('.','');
-		if (name!=old_name) {                                             
+		if (name!=old_name) {
 		    execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
 		}
 	    }
 	},old_name);
     });
-    
+
     $('ul.grid').on('click','.delete-file',function(){
 	var _this = $(this);
 	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
@@ -409,17 +409,17 @@ $(document).ready(function(){
 	    }
 	});
     });
-    
+
     $('ul.grid').on('click','.delete-folder',function(){
 	var _this = $(this);
-	
+
 	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
 	    if (result==true) {
 		execute_action('delete_folder',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
 		_this.parent().parent().parent().remove();
 	    }
 	});
-    });	
+    });
 
     $('.create-file-btn').on('click',function(){
     	create_text_file();
@@ -437,32 +437,32 @@ $(document).ready(function(){
 			  data: {path: folder_path, path_thumb: folder_path_thumb}
 			}).done(function( msg ) {
 				setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
-			
+
 			});
 	    }
 	},$('#new_folder').val());
     });
-    
+
     $('.view-controller button').on('click',function(){
 	    var _this = $(this);
-	    
+
 	    $('.view-controller button').removeClass('btn-inverse');
 	    $('.view-controller i').removeClass('icon-white');
 	    _this.addClass('btn-inverse');
 	    _this.find('i').addClass('icon-white');
-	    
+
 	    $.ajax({
 				url: "ajax_calls.php?action=view&type="+_this.attr('data-value')
 			    }).done(function( msg ) {
 				if (msg!="") {
 				  bootbox.alert(msg);
-				}   
+				}
 	    });
 	    if (typeof  $('ul.grid')[0] !== "undefined" &&  $('ul.grid')[0])
 		$('ul.grid')[0].className = $('ul.grid')[0].className.replace(/\blist-view.*?\b/g, '');
 	    if (typeof $('.sorter-container')[0] !== "undefined" && $('.sorter-container')[0])
 		$('.sorter-container')[0].className = $('.sorter-container')[0].className.replace(/\blist-view.*?\b/g, '');
-	    
+
 	    var value=_this.attr('data-value');
 	    $('#view').val(value);
 	    $('ul.grid').addClass('list-view'+value);
@@ -476,7 +476,7 @@ $(document).ready(function(){
 	    }
       lazyLoad();
 	});
-	
+
 	if (!Modernizr.touch) {
 	    $('.tip').tooltip({placement: "bottom"});
 	    $('.tip-top').tooltip({placement: "top"});
@@ -484,11 +484,11 @@ $(document).ready(function(){
 	    $('.tip-right').tooltip({placement: "right"});
 	    $('body').addClass('no-touch');
 	}else {
-	    
+
 	    $('#help').show();
 
 	    //Enable swiping...
-	    $(".box:not(.no-effect)").swipe( {		    
+	    $(".box:not(.no-effect)").swipe( {
 		    //Generic swipe handler for all directions
 		    swipeLeft:swipe_reaction,
 		    swipeRight:swipe_reaction,
@@ -508,7 +508,7 @@ $(document).ready(function(){
 	    	clear_clipboard();
 	    }
     });
-	
+
 	// reverted to jquery from Modernizr.csstransforms because drag&drop
 	if(!Modernizr.csstransforms) { // Test if CSS transform are supported
 		$('figure').on('mouseover',function(){
@@ -516,14 +516,14 @@ $(document).ready(function(){
 				$(this).find('.box:not(.no-effect)').animate({top: "-26px"} ,{queue:false,duration:300});
 			}
 		});
-		
+
 		$('figure').on('mouseout', function(){
 			if ($('#view').val()==0) {
 				$(this).find('.box:not(.no-effect)').animate({top: "0px"} ,{queue:false,duration:300});
 			}
 		});
 	}
-	
+
 	$(window).resize(function(){fix_colums(28); });
 	fix_colums(14);
 
@@ -558,7 +558,7 @@ $(document).ready(function(){
 	}
 
 	// Drag & Drop
-	$('li.dir, li.file').draggable({ 
+	$('li.dir, li.file').draggable({
 		distance: 20,
 		cursor: "move",
 
@@ -585,7 +585,7 @@ $(document).ready(function(){
 
 	$('li.dir,li.back').droppable({
     accept: "ul.grid li",
-    activeClass: "ui-state-highlight",  
+    activeClass: "ui-state-highlight",
   	hoverClass: "ui-state-hover",
 		drop: function(event, ui){
 			drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
@@ -593,17 +593,17 @@ $(document).ready(function(){
 	});
 
 	// file permissions window
-	$(document).on("keyup", '#chmod_form #chmod_value', function() 
+	$(document).on("keyup", '#chmod_form #chmod_value', function()
 	{
 		chmod_logic(true);
 	});
-	//safety 
-	$(document).on("focusout", '#chmod_form #chmod_value', function() 
+	//safety
+	$(document).on("focusout", '#chmod_form #chmod_value', function()
 	{
 		var chmod_temp_val = $('#chmod_form #chmod_value').val();
-		if (chmod_temp_val.match(/^[0-7]{3}$/) == null) 
+		if (chmod_temp_val.match(/^[0-7]{3}$/) == null)
 		{
-			var def_val = $('#chmod_form #chmod_value').attr('data-def-value'); 
+			var def_val = $('#chmod_form #chmod_value').attr('data-def-value');
 			$('#chmod_form #chmod_value').val(def_val);
 			chmod_logic(true);
 		}
@@ -616,12 +616,12 @@ function create_text_file() {
 
 	var init_form = $('#lang_filename').val() + ': <input type="text" id="create_text_file_name" style="min-height:30px"><br><hr><textarea id="textfile_create_area" style="width:100%;height:150px;"></textarea>';
 
-	bootbox.dialog(init_form, 
+	bootbox.dialog(init_form,
 	[
 		{
 			"label" : $('#cancel').val(),
 			"class" : "btn"
-		}, 
+		},
 		{
 			"label" : $('#ok').val(),
 			"class" : "btn-inverse",
@@ -629,7 +629,7 @@ function create_text_file() {
 				var newFileName = $('#create_text_file_name').val();
                 var newContent = $('#textfile_create_area').val();
 
-                if (newFileName !== null) 
+                if (newFileName !== null)
                 {
                 	newFileName = fix_filename(newFileName);
                 	var folder_path = $('#sub_folder').val()+$('#fldr_value').val()+ newFileName;
@@ -658,7 +658,7 @@ function create_text_file() {
 function edit_text_file($trigger) {
 	// remove to prevent duplicates
 	$('#textfile_edit_area').parent().parent().remove();
-	
+
 	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
 	var full_path = $trigger.find('.rename-file').attr('data-path');
 
@@ -667,12 +667,12 @@ function edit_text_file($trigger) {
 	url: "ajax_calls.php?action=get_file&sub_action=edit&preview_mode=text",
 	data: {path: full_path}
     }).done(function( init_content ){
-			bootbox.dialog(init_content, 
+			bootbox.dialog(init_content,
 			[
 				{
 					"label" : $('#cancel').val(),
 					"class" : "btn"
-				}, 
+				},
 				{
 					"label" : $('#ok').val(),
 					"class" : "btn-inverse",
@@ -702,14 +702,14 @@ function change_lang() {
 	type: "POST",
 	url: "ajax_calls.php?action=get_lang",
 	data: {}
-    }).done(function( init_msg ) 
+    }).done(function( init_msg )
     {
-		bootbox.dialog(init_msg, 
+		bootbox.dialog(init_msg,
 		[
 			{
 				"label" : $('#cancel').val(),
 				"class" : "btn"
-			}, 
+			},
 			{
 				"label" : $('#ok').val(),
 				"class" : "btn-inverse",
@@ -727,7 +727,7 @@ function change_lang() {
 						}
 						else {
 							setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},500);
-						} 
+						}
 					});
                 }
 			}
@@ -756,14 +756,14 @@ function chmod($trigger) {
 	type: "POST",
 	url: "ajax_calls.php?action=chmod",
 	data: { path: full_path, path_thumb: thumb_path }
-    }).done(function( init_msg ) 
+    }).done(function( init_msg )
     {
-		bootbox.dialog(init_msg, 
+		bootbox.dialog(init_msg,
 		[
 			{
 				"label" : $('#cancel').val(),
 				"class" : "btn"
-			}, 
+			},
 			{
 				"label" : $('#ok').val(),
 				"class" : "btn-inverse",
@@ -811,12 +811,12 @@ function chmod_logic(is_text) {
 		perm['user'] = newperm.substr(0,1);
 		perm['group'] = newperm.substr(1,1);
 		perm['all'] = newperm.substr(2,1);
-		
+
 		// check values for errors (empty,not num, not 0-7)
 		$.each(perm, function(index) {
-			if ( perm[index] == '' || 
-				$.isNumeric(perm[index]) == false || 
-				(parseInt(perm[index]) < 0 || parseInt(perm[index]) > 7) ) 
+			if ( perm[index] == '' ||
+				$.isNumeric(perm[index]) == false ||
+				(parseInt(perm[index]) < 0 || parseInt(perm[index]) > 7) )
 			{
 				perm[index] = "0";
 			}
@@ -938,7 +938,7 @@ function paste_to_this_dir(dnd) {
 				}
 			});
 		}
-	}); 
+	});
 }
 
 // Had to separate from copy_cut_clicked & paste_to_this_dir func
@@ -968,8 +968,8 @@ function drag_n_drop_paste($trigger, dnd){
 		  		var folder_path_thumb=dnd.find('.path_thumb').val();
 		  	}else{
 		  		var folder_path = dnd.find('.rename-folder').attr('data-path');
-					var folder_path_thumb = dnd.find('.rename-folder').attr('data-thumb');	
-		  	}				
+					var folder_path_thumb = dnd.find('.rename-folder').attr('data-thumb');
+		  	}
 			}
 			else {
 				var folder_path = $('#sub_folder').val()+$('#fldr_value').val();
@@ -1004,7 +1004,7 @@ function toggle_clipboard(lever) {
 }
 
 function fix_colums(adding) {
-	
+
     var width=$('.breadcrumb').width()+adding;
     $('.uploader').css('width',width);
     if ($('#view').val()>0){
@@ -1027,7 +1027,7 @@ function fix_colums(adding) {
 
 function swipe_reaction(event, direction, distance, duration, fingerCount) {
 	var _this = $(this);
-	
+
     if ($('#view').val()==0) {
 		if (_this.attr('toggle')==1) {
 			_this.attr('toggle',0);
@@ -1036,7 +1036,7 @@ function swipe_reaction(event, direction, distance, duration, fingerCount) {
 			_this.attr('toggle',1);
 			_this.animate({top: "-30px"} ,{queue:false,duration:300});
 		}
-		
+
     }
 }
 
@@ -1094,7 +1094,7 @@ function apply(file,external){
 					fill='<a href="'+url+'" title="'+alt_name+'">'+alt_name+'</a>';
 			  }
 			}
-		
+
 	  }
 
 		if ($('#crossdomain').val()==1){
@@ -1111,11 +1111,11 @@ function apply(file,external){
 			// tinymce 3.X
 			if ( parent.tinymce.majorVersion < 4 )
 			{
-				parent.tinymce.activeEditor.execCommand('mceInsertContent', false, fill); 
+				parent.tinymce.activeEditor.execCommand('mceInsertContent', false, fill);
 				parent.tinymce.activeEditor.windowManager.close( parent.tinymce.activeEditor.windowManager.params.mce_window_id );
 			}
 			// tinymce 4.X
-			else 
+			else
 			{
 				parent.tinymce.activeEditor.insertContent(fill);
 				parent.tinymce.activeEditor.windowManager.close();
@@ -1136,7 +1136,7 @@ function apply_link(file,external){
   var is_return_relative_url = $('#return_relative_url').val();
   var url= encodeURL((is_return_relative_url == 1 ? subdir : base_url+path)+file);
 
-	if (external!=""){    	
+	if (external!=""){
 		if ($('#crossdomain').val()==1){
 			window_parent.postMessage({
 					sender: 'responsivefilemanager',
@@ -1222,7 +1222,7 @@ function apply_video(file,external){
 	}
 }
 
-function apply_none(file,external){	
+function apply_none(file,external){
 	var _this=$('li[data-name="'+file+'"]').find('.preview');
 
 	if (_this.html()!="" && _this.html()!==undefined){
@@ -1252,7 +1252,7 @@ function apply_none(file,external){
 		  }else {
 				$(".body-preview").css('height','345px');
 		  }
-		    
+
 		  $.ajax({
 				url: decodeURIComponent(_this.attr('data-url')),
 				success: function(data) {
@@ -1289,7 +1289,7 @@ function apply_any(url) {
 		}
 	}
 
-	return false;	
+	return false;
 }
 
 function close_window() {
@@ -1297,7 +1297,7 @@ function close_window() {
 		window.close();
 	}else{
 		if(typeof parent.jQuery !== "undefined" && parent.jQuery) {
-		  parent.jQuery.fancybox.close();   
+		  parent.jQuery.fancybox.close();
 		}else{
 		  parent.$.fancybox.close();
 		}
@@ -1328,28 +1328,28 @@ function apply_file_rename(container,name) {
     link.each(function(){
 	$(this).attr('data-file',encodeURIComponent(name+"."+extension));
 	});
-    
+
     //thumbnails
     container.find('img').each(function(){
 		var src =$(this).attr('src');
 		$(this).attr('src',src.replace(old_name,name+"."+extension)+'?time=' + new Date().getTime());
 		$(this).attr('alt',name+" thumbnails");
     });
-    
+
     //preview link
     var link2=container.find('a.preview');
     var file= link2.attr('data-url');
     if (typeof file !=="undefined" && file) {
 	link2.attr('data-url',file.replace(encodeURIComponent(old_name),encodeURIComponent(name+"."+extension)));
     }
-    
+
     //li data-name
     container.parent().attr('data-name',name+"."+extension);
     container.attr('data-name',name+"."+extension);
-    
+
     //download link
     container.find('.name_download').val(name+"."+extension);
-    
+
     //rename link && delete link
     var link3=container.find('a.rename-file');
     var link4=container.find('a.delete-file');
@@ -1364,13 +1364,13 @@ function apply_file_rename(container,name) {
 }
 
 function apply_folder_rename(container,name) {
-    
+
     container.attr('data-name',name);
     container.find('figure').attr('data-name',name);
-    
+
     var old_name=container.find('h4').find('a').text();
     container.find('h4 > a').text(name);
-    
+
     //select link
     var link=container.find('.folder-link');
     var url=link.attr('href');
@@ -1379,7 +1379,7 @@ function apply_folder_rename(container,name) {
     link.each(function(){
 	$(this).attr('href',new_url);
     });
-    
+
     //rename link && delete link
     var link2=container.find('a.delete-folder');
     var link3=container.find('a.rename-folder');
@@ -1393,7 +1393,7 @@ function apply_folder_rename(container,name) {
     var new_path = thumb_old.substr(0, index + 1)+name;
     link2.attr('data-thumb',new_path);
     link3.attr('data-thumb',new_path);
-    
+
 }
 
 function replace_last(str,find,replace) {
@@ -1432,7 +1432,8 @@ function fix_filename(stri) {
 		    stri=stri.replace(/[^A-Za-z0-9\.\-\[\]\ \_]+/g, '');
 		}
 		if ($('#convert_spaces').val()=="true") {
-	      stri=stri.replace(' ','_');
+          stri=stri.replace(/ /g,$('#replace_with').val());
+          stri=stri.toLowerCase();
 	  }
 		stri=stri.replace('"','');
 		stri=stri.replace("'",'');
@@ -1489,7 +1490,7 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 		vals_dir[value]=_this.html();
 		values_dir.push(value);
 	});
-    
+
   $.each(lis_file,function(index){
 		var _this=$(this);
 		var value=_this.find(sort_field).val();
@@ -1504,29 +1505,29 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
 		vals_file[value]=_this.html();
 		values_file.push(value);
 	});
-    
+
   if ($.isNumeric(values_dir[0])) {
 		values_dir.sort(function(a,b){return parseFloat(a)-parseFloat(b);});
   }else {
 		values_dir.sort();
   }
-    
+
   if ($.isNumeric(values_file[0])) {
 		values_file.sort(function(a,b){return  parseFloat(a)-parseFloat(b); });
   }else {
 		values_file.sort();
   }
-    
+
   if (sortDescending){
 		values_dir.reverse();
 		values_file.reverse();
   }
-    
+
   $.each(lis_dir,function(index){
 		var _this=$(this);
 		_this.html(vals_dir[values_dir[index]]);
   });
-    
+
   $.each(lis_file,function(index){
 		var _this=$(this);
 		_this.html(vals_file[values_file[index]]);
@@ -1543,7 +1544,7 @@ function hide_animation()
 {
     $('#loading_container').fadeOut();
 }
-   
+
 function launchEditor(id, src) {
     featherEditor.launch({
 	image: id,

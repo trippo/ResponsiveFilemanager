@@ -456,6 +456,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="lang_extract" value="<?php echo lang_Extract; ?>" />
 	<input type="hidden" id="transliteration" value="<?php echo $transliteration?"true":"false"; ?>" />
 	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces?"true":"false"; ?>" />
+    <input type="hidden" id="replace_with" value="<?php echo $convert_spaces? $replace_with : ""; ?>" />
 <?php if($upload_files){ ?>
 <!-- uploader div start -->
 
