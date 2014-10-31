@@ -91,7 +91,6 @@ define('lang_Edit', 'Bewerken');
 define('lang_Edit_File', "Bewerkt de inhoud van dit bestand");
 define('lang_File_Save_OK', "Bestand is opgeslagen.");
 define('lang_File_Save_Error', "Er is een fout opgetreden tijdens het opslaan van het bestand.");
-define('lang_New_File','Nieuw bestand');
 define('lang_No_Extension','Je moet een bestands-extensie toevoegen.');
 define('lang_Valid_Extensions','Geldige extensies: %s'); // %s = txt,log etc.
 ?>
