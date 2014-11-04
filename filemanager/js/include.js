@@ -28,15 +28,10 @@ $(document).ready(function(){
 				    var client = new ZeroClipboard( $('#copy-button'+copy_count) );
 
 					  client.on( "ready", function( readyEvent ) {
-					  	console.log('ok');
 					  	client.on("wrongFlash noFlash", function() {
 							  ZeroClipboard.destroy();
 							});
 					    client.on( "aftercopy", function( event ) {
-					      // `this` === `client`
-					      // `event.target` === the element that was clicked
-					      // event.target.style.display = "none";
-					      console.log('copied');
 					      $('#copy-button'+copy_count).html('<i class="icon icon-ok"></i> '+$('#ok').val());
 					      $('#copy-button'+copy_count).attr('class','btn disabled');
 					      copy_count++;
