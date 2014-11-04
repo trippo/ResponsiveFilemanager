@@ -44,7 +44,7 @@ $path = $current_path.$_POST['path'];
 $path_thumb = $_POST['path_thumb'];
 if (isset($_POST['name']))
 {
-    $name = slugify($_POST['name']);
+    $name = fix_filename($_POST['name'],$transliteration,$convert_spaces, $replace_with);
     if (strpos($name,'../') !== FALSE) die('wrong name');
 }
 

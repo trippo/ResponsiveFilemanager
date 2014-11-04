@@ -176,7 +176,6 @@ function fix_filename($str, $transliteration, $convert_spaces = false, $replace_
 
     $str = str_replace(array('"', "'", "/", "\\"), "", $str);
     $str = strip_tags($str);
-//    $str = slugify($str);
 
     // Empty or incorrectly transliterated filename.
     // Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
@@ -551,32 +550,6 @@ function is_php($version = '5.0.0')
     }
 
     return $phpVer[$version];
-}
-
-function slugify($text)
-{
-    // replace non letter or digits by -
-    $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-
-    // trim
-    $text = trim($text, '-');
-
-    // transliterate
-    if (function_exists('iconv')) {
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-    }
-
-    // lowercase
-    $text = strtolower($text);
-
-    // remove unwanted characters
-    $text = preg_replace('~[^-\w]+~', '', $text);
-
-    if (empty($text)) {
-        return 'n-a';
-    }
-
-    return $text;
 }
 
 ?>
