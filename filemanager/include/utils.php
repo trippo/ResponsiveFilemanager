@@ -160,7 +160,6 @@ function fix_get_params($str)
 function fix_filename($str, $transliteration, $convert_spaces = false, $replace_with = "_")
 {
     if ($convert_spaces) {
-        $str = strtolower($str);
         $str = str_replace(' ', $replace_with, $str);
     }
 

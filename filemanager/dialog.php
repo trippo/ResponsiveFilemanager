@@ -371,11 +371,21 @@ $get_params = http_build_query(array(
 	    };
 	    if (image_editor) {
 	    var featherEditor = new Aviary.Feather({
-		apiKey: "<?php echo $aviary_key; ?>",
-		apiVersion: <?php echo $aviary_version; ?>,
-		language: "<?php echo $aviary_language; ?>",
-	       theme: 'light',
-	       tools: 'all',
+	       <?php
+	        if (empty($aviary_options) || !is_array($aviary_options)) { $aviary_options = array(); }
+	        // First load any old format options into the array as needed
+	        $aviary_config_defaults = array(
+	            'theme' => 'light',
+	            'tools' => 'all'
+	        );
+	        if (!empty($aviary_key)) { $aviary_config_defaults['apiKey'] = $aviary_key; }
+	        if (!empty($aviary_version)) { $aviary_config_defaults['apiVersion'] = $aviary_version; }
+	        if (!empty($aviary_language)) { $aviary_config_defaults['language'] = $aviary_language; }
+	        $aviary_config = array_merge($aviary_config_defaults, $aviary_options);
+	        foreach ($aviary_config as $aopt_key => $aopt_val) {
+	       ?>
+		   <?php echo $aopt_key; ?>: <?php echo json_encode($aopt_val); ?>,
+		  <?php } ?>
 	       onSave: function(imageID, newURL) {
 		    show_animation();
 		    var img = document.getElementById(imageID);
