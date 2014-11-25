@@ -1,4 +1,4 @@
-var version = "9.8.0";
+var version = "9.8.1";
 var active_contextmenu = true;
 var copy_count=0;
 $(document).ready(function(){

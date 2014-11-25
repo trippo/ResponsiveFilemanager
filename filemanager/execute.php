@@ -1,7 +1,7 @@
 <?php
-include('config/config.php');
+include 'config/config.php';
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
-include('include/utils.php');
+include 'include/utils.php';
 
 $thumb_pos  = strpos($_POST['path_thumb'], $thumbs_base_path);
 
@@ -15,7 +15,7 @@ if ($thumb_pos !=0
 }
 
 if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
-    require_once($_SESSION['RF']['language_file']);
+    require_once $_SESSION['RF']['language_file'];
 }
 else {
     die('Language file is missing!');
@@ -33,7 +33,7 @@ while($cycle && $i<$max_cycles)
 
     if (file_exists($path."config.php"))
     {
-        require_once($path."config.php");
+        require_once $path."config.php";
         $cycle = FALSE;
     }
     $path = fix_dirname($path)."/";

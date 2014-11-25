@@ -2,6 +2,13 @@ Responsive Filemanager Changelog
 
 
 *********************************************************
+*  RFM 9.8.1
+*********************************************************
+- add compatibility with free full resolution with aviary image editor
+- convert all include(); with include ‘’;
+- fix a problem with lowercase automatically change 
+
+*********************************************************
 *  RFM 9.8
 *********************************************************
 - added pdf, openoffice files preview with customized viewer.js

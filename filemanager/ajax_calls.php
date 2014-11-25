@@ -1,11 +1,11 @@
 <?php
 
-include('config/config.php');
+include 'config/config.php';
 if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('Access Denied!');
-include('include/utils.php');
+include 'include/utils.php';
 
 if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
-	include($_SESSION['RF']['language_file']);
+	include $_SESSION['RF']['language_file'];
 }
 else {
 	die('Language file is missing!');
@@ -366,7 +366,7 @@ if(isset($_GET['action']))
 				die(lang_Lang_Not_Found);
 			}
 
-			require_once('lang/languages.php');
+			require_once 'lang/languages.php';
 			if (!isset($languages) || !is_array($languages)){
 				die(lang_Lang_Not_Found);
 			}

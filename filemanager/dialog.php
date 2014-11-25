@@ -1,5 +1,5 @@
 <?php
-include('config/config.php');
+include 'config/config.php';
 
 if (USE_ACCESS_KEYS == TRUE){
 	if (!isset($_GET['akey'], $access_keys) || empty($access_keys)){
@@ -17,11 +17,11 @@ $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 
 if(isset($_POST['submit'])){
 
-	include('upload.php');
+	include 'upload.php';
 
 }
 else {
-include('include/utils.php');
+include 'include/utils.php';
 
 if (isset($_GET['fldr'])
     && !empty($_GET['fldr'])
@@ -109,7 +109,7 @@ while($cycle && $i < $max_cycles){
 
     if (file_exists($current_path.$parent."config.php"))
     {
-		require_once($current_path.$parent."config.php");
+		require_once $current_path.$parent."config.php";
 		$cycle = FALSE;
     }
     
@@ -371,7 +371,7 @@ $get_params = http_build_query(array(
 	    };
 	    if (image_editor) {
 	    var featherEditor = new Aviary.Feather({
-	       <?php
+		<?php
 	        if (empty($aviary_options) || !is_array($aviary_options)) { $aviary_options = array(); }
 	        // First load any old format options into the array as needed
 	        $aviary_config_defaults = array(

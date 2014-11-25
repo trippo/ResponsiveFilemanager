@@ -17,7 +17,7 @@ while($cycle && $i<$max_cycles){
     if($path==$current_path)  $cycle=false;
     
     if(file_exists($path."config.php")){
-	require_once($path."config.php");
+	require_once $path."config.php";
 	$cycle=false;
     }
     $path=fix_dirname($path)."/";
@@ -114,11 +114,8 @@ $classParameters = array(
         'destdir' => $path  //Where to store the files on the web
         //'errormail' => 'me@my.domain.org',
     );
-
-// If convert spaces is enabled, pass that option on to the uploader
 if (!empty($convert_spaces)) {
     $classParameters['convert_spaces'] = true;
-    $classParameters['spaces_in_subdirs'] = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
