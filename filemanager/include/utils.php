@@ -36,7 +36,7 @@ function rename_file($old_path, $name, $transliteration)
 
 function rename_folder($old_path, $name, $transliteration)
 {
-    $name = fix_filename($name, $transliteration);
+    $name = fix_filename($name, $transliteration, false, '_', true);
     if (file_exists($old_path)) {
         $new_path = fix_dirname($old_path) . "/" . $name;
         if (file_exists($new_path) && $old_path == $new_path) return false;
@@ -157,7 +157,7 @@ function fix_get_params($str)
     return strip_tags(preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
 }
 
-function fix_filename($str, $transliteration, $convert_spaces = false, $replace_with = "_")
+function fix_filename($str, $transliteration, $convert_spaces = false, $replace_with = "_", $is_folder = false)
 {
     if ($convert_spaces) {
         $str = str_replace(' ', $replace_with, $str);
@@ -179,7 +179,7 @@ function fix_filename($str, $transliteration, $convert_spaces = false, $replace_
     // Empty or incorrectly transliterated filename.
     // Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
     // So we add that default 'file' name to fix that issue.
-    if (strpos($str, '.') === 0) {
+    if (strpos($str, '.') === 0 && $is_folder === false) {
         $str = 'file' . $str;
     }
 
