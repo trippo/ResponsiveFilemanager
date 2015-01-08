@@ -53,22 +53,22 @@ if(isset($_GET['action']))
 		    $info=pathinfo($_POST['name']);
 
 		    if (strpos($_POST['path'], '/') === 0
-			|| strpos($_POST['path'], '../') !== FALSE
-			|| strpos($_POST['path'], './') === 0
-			|| strpos($_POST['url'], 'http://featherfiles.aviary.com/') !== 0
-			|| $_POST['name'] != fix_filename($_POST['name'], $transliteration,$convert_spaces,$replace_with)
-			|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
+					|| strpos($_POST['path'], '../') !== FALSE
+					|| strpos($_POST['path'], './') === 0
+					|| strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0
+					|| $_POST['name'] != fix_filename($_POST['name'], $transliteration,$convert_spaces,$replace_with)
+					|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
 		    {
 			    die('wrong data');
-			}
-
-		    $image_data = get_file_by_url($_POST['url']);
+				}
+		    $image_data = file_get_contents($_POST['url']);
 		    if ($image_data === FALSE) 
 		    {
-		        die(lang_Aviary_No_Save);
+		      die(lang_Aviary_No_Save);
 		    }
-
-		    file_put_contents($current_path.$_POST['path'].$_POST['name'],$image_data);
+		    $fp = fopen($current_path.$_POST['path'].$_POST['name'], "w");
+		    fwrite($fp, $image_data);
+				fclose($fp);
 
 		    create_img($current_path.$_POST['path'].$_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
 		    // TODO something with this function cause its blowing my mind

@@ -179,16 +179,18 @@ $ext = array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //all
 /******************
  * AVIARY config
 *******************/
-$aviary_active 	= TRUE;
-$aviary_secret	= "m6xaym5q42rpw433";
+$aviary_active  = TRUE;
+$aviary_apiKey  = "dvh8qudbp6yx2bnp";
+$aviary_secret  = "m6xaym5q42rpw433";
 // Add or modify the Aviary options below as needed - they will be json encoded when added to the configuration so arrays can be utilized as needed
 // For a list of options see: https://developers.aviary.com/docs/web/setup-guide#constructor-config
-$aviary_options = array(
-    'apiKey' => 'dvh8qudbp6yx2bnp',
+$aviary_defaults_config = array(
+    'apiKey' => $aviary_apiKey,
     'apiVersion' => 3,
-    'language' => 'en'
+    'language' => 'en',
+    'theme' => 'light',
+    'tools' => 'all'
 );
-
 
 //The filter and sorter are managed through both javascript and php scripts because if you have a lot of
 //file in a folder the javascript script can't sort all or filter all, so the filemanager switch to php script.

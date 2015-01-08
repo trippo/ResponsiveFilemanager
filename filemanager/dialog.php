@@ -372,44 +372,35 @@ $get_params = http_build_query(array(
 	    if (image_editor) {
 	    var featherEditor = new Aviary.Feather({
 		<?php
-	        if (empty($aviary_options) || !is_array($aviary_options)) { $aviary_options = array(); }
-	        // First load any old format options into the array as needed
-	        $aviary_config_defaults = array(
-	            'theme' => 'light',
-	            'tools' => 'all'
-	        );
-	        if (!empty($aviary_key)) { $aviary_config_defaults['apiKey'] = $aviary_key; }
-	        if (!empty($aviary_version)) { $aviary_config_defaults['apiVersion'] = $aviary_version; }
-	        if (!empty($aviary_language)) { $aviary_config_defaults['language'] = $aviary_language; }
-	        $aviary_config = array_merge($aviary_config_defaults, $aviary_options);
-	        foreach ($aviary_config as $aopt_key => $aopt_val) {
+	        foreach ($aviary_defaults_config as $aopt_key => $aopt_val) {
 	       ?>
 		   <?php echo $aopt_key; ?>: <?php echo json_encode($aopt_val); ?>,
 		  <?php } ?>
-	       onSave: function(imageID, newURL) {
-		    show_animation();
-		    var img = document.getElementById(imageID);
-		    img.src = newURL;
-		    $.ajax({
-			type: "POST",
-			url: "ajax_calls.php?action=save_img",
-			data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').data('name') }
-		    }).done(function( msg ) {			
-			featherEditor.close();
-			d = new Date();
-			$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('img').each(function(){
-			    $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
+	      onSave: function(imageID, newURL) {
+			    show_animation();
+			    var img = document.getElementById(imageID);
+			    img.src = newURL;
+			    $.ajax({
+						type: "POST",
+						url: "ajax_calls.php?action=save_img",
+						data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').data('name') }
+			    }).done(function( msg ) {			
+						featherEditor.close();
+						d = new Date();
+						$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('img').each(function(){
+						  $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
+						});
+						$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('figcaption a.preview').each(function(){
+						  $(this).attr('data-url',$(this).data('url')+"?"+d.getTime());
+				    });
+						hide_animation();
 			    });
-			$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('figcaption a.preview').each(function(){
-			    $(this).data('url',$(this).data('url')+"?"+d.getTime());
-			    });
-			hide_animation();
-		    });
-		    return false;
-	       },
-	       onError: function(errorObj) {
-		   bootbox.alert(errorObj.message);
-	       }
+			    return false;
+	      },
+	      onError: function(errorObj) {
+		   		bootbox.alert(errorObj.message);
+		   		hide_animation();
+	      }
 	    
 	   });
 	    }
