@@ -15,7 +15,7 @@
 		'hu_HU' => 'Magyar',
 		'id' => 'Bahasa Indonesia',
 		'it' => 'Italiano',
-		'ja' => '日本の',
+		'ja' => '日本',
 		'lt' => 'Lietuvių kalba',
 		'mn_MN' => 'монгол',
 		'nb_NO' => 'Norsk bokmål',
