@@ -16,7 +16,7 @@ function deleteDir($dir)
 function duplicate_file($old_path, $name)
 {
     if (file_exists($old_path)) {
-        $info = pathinfo($old_path);
+        $info = mb_pathinfo($old_path);
         $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
         if (file_exists($new_path) && $old_path == $new_path) return false;
         return copy($old_path, $new_path);
@@ -27,7 +27,7 @@ function rename_file($old_path, $name, $transliteration)
 {
     $name = fix_filename($name, $transliteration);
     if (file_exists($old_path)) {
-        $info = pathinfo($old_path);
+        $info = mb_pathinfo($old_path);
         $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
         if (file_exists($new_path) && $old_path == $new_path) return false;
         return rename($old_path, $new_path);
@@ -117,6 +117,7 @@ function filescount($path)
 function create_folder($path = false, $path_thumbs = false)
 {
     $oldumask = umask(0);
+    
     if ($path && !file_exists($path))
         mkdir($path, 0755, true); // or even 01777 so you get the sticky bit set 
     if ($path_thumbs && !file_exists($path_thumbs))
@@ -127,7 +128,7 @@ function create_folder($path = false, $path_thumbs = false)
 function check_files_extensions_on_path($path, $ext)
 {
     if (!is_dir($path)) {
-        $fileinfo = pathinfo($path);
+        $fileinfo = mb_pathinfo($path);
         if (!in_array(mb_strtolower($fileinfo['extension']), $ext))
             unlink($path);
     } else {
@@ -207,10 +208,19 @@ function fix_strtolower($str)
     else
         return strtolower($str);
 }
+function mb_pathinfo($filepath) {
+    preg_match('%^(.*?)[\\\\/]*(([^/\\\\]*?)(\.([^\.\\\\/]+?)|))[\\\\/\.]*$%im',$filepath,$m);
+    if($m[1]) $ret['dirname']=$m[1];
+    if($m[2]) $ret['basename']=$m[2];
+    if($m[5]) $ret['extension']=$m[5];
+    if($m[3]) $ret['filename']=$m[3];
+    return $ret;
+}
 
 function fix_path($path, $transliteration, $convert_spaces = false, $replace_with = "_")
 {
-    $info = pathinfo($path);
+    
+    $info = mb_pathinfo($path);
     $tmp_path = $info['dirname'];
     $str = fix_filename($info['filename'], $transliteration, $convert_spaces, $replace_with);
     if ($tmp_path != "")
@@ -285,7 +295,7 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
         foreach ($relative_path_from_current_pos as $k => $path) {
             if ($path != "" && $path[strlen($path) - 1] != "/") $path .= "/";
             if (!file_exists($targetPath . $path)) create_folder($targetPath . $path, false);
-            $info = pathinfo($name);
+            $info = mb_pathinfo($name);
             if (!endsWith($targetPath, $path))
                 if (!create_img($targetFile, $targetPath . $path . $relative_image_creation_name_to_prepend[$k] . $info['filename'] . $relative_image_creation_name_to_append[$k] . "." . $info['extension'], $relative_image_creation_width[$k], $relative_image_creation_height[$k], $relative_image_creation_option[$k]))
                     $all_ok = false;
@@ -298,7 +308,7 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
             if ($path != "" && $path[strlen($path) - 1] != "/") $path .= "/";
             $base_dir = $path . substr_replace($targetPath, '', 0, strlen($current_path));
             if (!file_exists($base_dir)) create_folder($base_dir, false);
-            $info = pathinfo($name);
+            $info = mb_pathinfo($name);
             if (!create_img($targetFile, $base_dir . $fixed_image_creation_name_to_prepend[$k] . $info['filename'] . $fixed_image_creation_to_append[$k] . "." . $info['extension'], $fixed_image_creation_width[$k], $fixed_image_creation_height[$k], $fixed_image_creation_option[$k]))
                 $all_ok = false;
         }
@@ -377,7 +387,7 @@ function rcopy($source, $destination, $is_rec = FALSE)
 {
     if (is_dir($source)) {
         if ($is_rec === FALSE) {
-            $pinfo = pathinfo($source);
+            $pinfo = mb_pathinfo($source);
             $destination = rtrim($destination, '/') . DIRECTORY_SEPARATOR . $pinfo['basename'];
         }
         if (is_dir($destination) === FALSE) {
@@ -393,7 +403,7 @@ function rcopy($source, $destination, $is_rec = FALSE)
     } else {
         if (file_exists($source)) {
             if (is_dir($destination) === TRUE) {
-                $pinfo = pathinfo($source);
+                $pinfo = mb_pathinfo($source);
                 $dest2 = rtrim($destination, '/') . DIRECTORY_SEPARATOR . $pinfo['basename'];
             } else {
                 $dest2 = $destination;
@@ -412,7 +422,7 @@ function rrename($source, $destination, $is_rec = FALSE)
 {
     if (is_dir($source)) {
         if ($is_rec === FALSE) {
-            $pinfo = pathinfo($source);
+            $pinfo = mb_pathinfo($source);
             $destination = rtrim($destination, '/') . DIRECTORY_SEPARATOR . $pinfo['basename'];
         }
         if (is_dir($destination) === FALSE) {
@@ -428,7 +438,7 @@ function rrename($source, $destination, $is_rec = FALSE)
     } else {
         if (file_exists($source)) {
             if (is_dir($destination) === TRUE) {
-                $pinfo = pathinfo($source);
+                $pinfo = mb_pathinfo($source);
                 $dest2 = rtrim($destination, '/') . DIRECTORY_SEPARATOR . $pinfo['basename'];
             } else {
                 $dest2 = $destination;
