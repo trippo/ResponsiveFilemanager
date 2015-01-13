@@ -11,6 +11,7 @@
 		'es' => 'Español',
 		'fa' => 'فارسی',
 		'fr_FR' => 'Français',
+        	'he' => 'עברית',
 		'hr' => 'Hrvatski jezik',
 		'hu_HU' => 'Magyar',
 		'id' => 'Bahasa Indonesia',
