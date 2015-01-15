@@ -246,7 +246,8 @@ if( ! function_exists( 'get_file_mime_type' ) ) {
 			'zip'     => 'application/zip'
 		);
 		
-		$ext = strtolower( array_pop( explode( '.', $filename ) ) );
+		$tmp_array=explode( '.', $filename );
+		$ext = strtolower( array_pop( $tmp_array ) );
 		
 		if ( ! empty( $mime_types[$ext] ) ) {
 			if ( true === $debug )
