@@ -940,14 +940,18 @@ function paste_to_this_dir(dnd) {
 // because of feedback and on error bahhhhh...
 function drag_n_drop_paste($trigger, dnd){
 	if (!$trigger.hasClass('directory')){
-  	var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
-  	var full_path = $trigger.find('.rename-file').attr('data-path');
-  }
-  else {
-  	var thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
-  	var full_path = $trigger.find('.rename-folder').attr('data-path');
-  }
+		var obj= $trigger.find('.rename-file');  	
+	}
+	else
+	{
+		var obj = $trigger.find('.rename-folder');
+	}
+	
+	var thumb_path = obj.attr('data-thumb');
+	var full_path = obj.attr('data-path');
 
+	$trigger.parent().hide(100);
+	
 	$.ajax({
 		type: "POST",
 		url: "ajax_calls.php?action=copy_cut",
@@ -978,6 +982,7 @@ function drag_n_drop_paste($trigger, dnd){
 			}).done(function( msg ) {
 				if (msg!=""){
 					bootbox.alert(msg);
+					$trigger.parent().show(100);
 				}
 				else {
 					$('#clipboard').val('0');
@@ -986,6 +991,9 @@ function drag_n_drop_paste($trigger, dnd){
 				}
 			});
 		}
+	})
+	.error(function(err){
+		$trigger.parent().show(100);
 	});
 }
 

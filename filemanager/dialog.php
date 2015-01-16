@@ -856,7 +856,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				}
 				$is_img=true;
 				//check if is smaller than thumb
-				list($img_width, $img_height, $img_type, $attr)=getimagesize($file_path);
+				list($img_width, $img_height, $img_type, $attr)=@getimagesize($file_path);
 				if($img_width<122 && $img_height<91){ 
 					$src_thumb=$current_path.$rfm_subfolder.$subdir.$file;
 					$show_original=true;
