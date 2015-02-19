@@ -727,7 +727,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			$new_name=fix_filename($file,$transliteration);
 			if($file!='..' && $file!=$new_name){
 			    //rename
-			    rename_folder($current_path.$subdir.$new_name,$new_name,$transliteration);
+			    rename_folder($current_path.$subdir.$file,$new_name,$transliteration);
 			    $file=$new_name;
 			}
 			//add in thumbs folder if not exist 
