@@ -1,6 +1,9 @@
 <?php
 
-include 'config/config.php';
+$config = include 'config/config.php';
+//TODO switch to array
+extract($config, EXTR_OVERWRITE);
+
 if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('Access Denied!');
 include 'include/utils.php';
 
@@ -11,9 +14,9 @@ else {
 	die('Language file is missing!');
 }
 
-if(isset($_GET['action'])) 
+if(isset($_GET['action']))
 {
-    switch($_GET['action']) 
+    switch($_GET['action'])
     {
 		case 'view':
 		    if(isset($_GET['type'])) {
@@ -36,14 +39,14 @@ if(isset($_GET['action']))
 			if(isset($_GET['sort_by'])) {
 				$_SESSION['RF']["sort_by"] = $_GET['sort_by'];
 			}
-			
+
 			if(isset($_GET['descending'])) {
 				$_SESSION['RF']["descending"] = $_GET['descending'] === "TRUE";
 			}
 			break;
 		case 'image_size': // not used
 	    	$pos = strpos($_POST['path'],$upload_dir);
-			if ($pos !== FALSE) 
+			if ($pos !== FALSE)
 			{
 				$info=getimagesize(substr_replace($_POST['path'],$current_path,$pos,strlen($upload_dir)));
 				echo json_encode($info);
@@ -62,7 +65,7 @@ if(isset($_GET['action']))
 			    die('wrong data');
 				}
 		    $image_data = file_get_contents($_POST['url']);
-		    if ($image_data === FALSE) 
+		    if ($image_data === FALSE)
 		    {
 		      die(lang_Aviary_No_Save);
 		    }
@@ -89,28 +92,28 @@ if(isset($_GET['action']))
 				    $zip = new ZipArchive;
 				    if ($zip->open($path) === TRUE) {
 						//make all the folders
-						for($i = 0; $i < $zip->numFiles; $i++) 
-						{ 
+						for($i = 0; $i < $zip->numFiles; $i++)
+						{
 						    $OnlyFileName = $zip->getNameIndex($i);
-						    $FullFileName = $zip->statIndex($i);    
+						    $FullFileName = $zip->statIndex($i);
 						    if (substr($FullFileName['name'], -1, 1) =="/")
 						    {
 								create_folder($base_folder.$FullFileName['name']);
 						    }
 						}
 						//unzip into the folders
-						for($i = 0; $i < $zip->numFiles; $i++) 
-						{ 
+						for($i = 0; $i < $zip->numFiles; $i++)
+						{
 						    $OnlyFileName = $zip->getNameIndex($i);
-						    $FullFileName = $zip->statIndex($i);    
-					    
+						    $FullFileName = $zip->statIndex($i);
+
 						    if (!(substr($FullFileName['name'], -1, 1) =="/"))
 						    {
 								$fileinfo = pathinfo($OnlyFileName);
 								if(in_array(strtolower($fileinfo['extension']),$ext))
 								{
-								    copy('zip://'. $path .'#'. $OnlyFileName , $base_folder.$FullFileName['name'] ); 
-								} 
+								    copy('zip://'. $path .'#'. $OnlyFileName , $base_folder.$FullFileName['name'] );
+								}
 						    }
 						}
 						$zip->close();
@@ -141,7 +144,7 @@ if(isset($_GET['action']))
 					die(lang_Zip_Invalid);
 		    }
 		    break;
-		case 'media_preview':    
+		case 'media_preview':
 			$preview_file = $_GET["file"];
 			$info = pathinfo($preview_file);
 			?>
@@ -198,11 +201,11 @@ if(isset($_GET['action']))
 
 				<script type="text/javascript">
 				    $(document).ready(function(){
-						
+
 				      $("#jquery_jplayer_1").jPlayer({
 				        ready: function () {
 				          $(this).jPlayer("setMedia", {
-					    title:"<?php $_GET['title']; ?>",  
+					    title:"<?php $_GET['title']; ?>",
 				            mp3: "<?php echo $preview_file; ?>",
 				            m4a: "<?php echo $preview_file; ?>",
 					    oga: "<?php echo $preview_file; ?>",
@@ -221,14 +224,14 @@ if(isset($_GET['action']))
 			<?php
 			} elseif(in_array(strtolower($info['extension']), $ext_video)) {
 			?>
-			    
+
 			    <script type="text/javascript">
 			    $(document).ready(function(){
-					
+
 			      $("#jquery_jplayer_1").jPlayer({
 			        ready: function () {
 			          $(this).jPlayer("setMedia", {
-				    title:"<?php $_GET['title']; ?>",  
+				    title:"<?php $_GET['title']; ?>",
 			            m4v: "<?php echo $preview_file; ?>",
 			            ogv: "<?php echo $preview_file; ?>"
 			          });
@@ -239,10 +242,10 @@ if(isset($_GET['action']))
 				smoothPlayBar: true,
 				keyEnabled: false
 			    });
-				  
+
 			    });
 			  </script>
-			    
+
 			<?php
 			}
 			break;
@@ -301,7 +304,7 @@ if(isset($_GET['action']))
 			{
 				die(sprintf(lang_File_Permission_Not_Allowed, (is_dir($path) ? lcfirst(lang_Folders) : lcfirst(lang_Files))));
 			}
-			else 
+			else
 			{
 				$perm = decoct(fileperms($path) & 0777);
 				$perm_user = substr($perm, 0, 1);
@@ -466,7 +469,7 @@ if(isset($_GET['action']))
 	    default: die('no action passed');
     }
 }
-else 
+else
 {
 	die('no action passed');
 }

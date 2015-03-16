@@ -1,6 +1,9 @@
 <?php
 
-include '../config/config.php';
+$config = include '../config/config.php';
+//TODO switch to array
+extract($config, EXTR_OVERWRITE);
+
 if(!$java_upload) die('forbidden');
 if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbidden');
 
@@ -15,7 +18,7 @@ $i=0;
 while($cycle && $i<$max_cycles){
     $i++;
     if($path==$current_path)  $cycle=false;
-    
+
     if(file_exists($path."config.php")){
 	require_once $path."config.php";
 	$cycle=false;
@@ -91,8 +94,8 @@ $appletParameters = array(
         'debugLevel' => 0 // 100 disables redirect after upload, so we keep it below. This still gives a lot of information, in case of problem.
     );
 
-// for htaccess protected folders 
-if((isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] != '') && $_SERVER['PHP_AUTH_USER'] != '' && $_SERVER['PHP_AUTH_USER'] != '') 
+// for htaccess protected folders
+if((isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] != '') && $_SERVER['PHP_AUTH_USER'] != '' && $_SERVER['PHP_AUTH_USER'] != '')
 {
 	$appletParameters['specificHeaders'] = 'Authorization: Basic '.base64_encode($_SERVER['PHP_AUTH_USER'].":".$_SERVER['PHP_AUTH_PW']);
 }

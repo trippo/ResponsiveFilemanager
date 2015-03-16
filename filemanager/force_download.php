@@ -1,5 +1,7 @@
 <?php
-include 'config/config.php';
+$config = include 'config/config.php';
+//TODO switch to array
+extract($config, EXTR_OVERWRITE);
 if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 include 'include/utils.php';
 include 'include/mime_type_lib.php';
