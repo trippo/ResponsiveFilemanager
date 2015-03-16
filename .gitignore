@@ -3,3 +3,5 @@ source/*
 !source/Source.txt
 thumbs/*
 !thumbs/thumbs.txt
+bower_components
+node_modules

@@ -1,6 +1,9 @@
 <?php
 
-include 'config/config.php';
+$config = include 'config/config.php';
+//TODO switch to array
+extract($config, EXTR_OVERWRITE);
+
 if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('Access Denied!');
 include 'include/utils.php';
 
@@ -11,9 +14,9 @@ else {
 	die('Language file is missing!');
 }
 
-if(isset($_GET['action'])) 
+if(isset($_GET['action']))
 {
-    switch($_GET['action']) 
+    switch($_GET['action'])
     {
 		case 'view':
 		    if(isset($_GET['type'])) {
@@ -36,14 +39,14 @@ if(isset($_GET['action']))
 			if(isset($_GET['sort_by'])) {
 				$_SESSION['RF']["sort_by"] = $_GET['sort_by'];
 			}
-			
+
 			if(isset($_GET['descending'])) {
 				$_SESSION['RF']["descending"] = $_GET['descending'] === "TRUE";
 			}
 			break;
 		case 'image_size': // not used
 	    	$pos = strpos($_POST['path'],$upload_dir);
-			if ($pos !== FALSE) 
+			if ($pos !== FALSE)
 			{
 				$info=getimagesize(substr_replace($_POST['path'],$current_path,$pos,strlen($upload_dir)));
 				echo json_encode($info);
@@ -62,9 +65,9 @@ if(isset($_GET['action']))
 			    die('wrong data');
 				}
 		    $image_data = file_get_contents($_POST['url']);
-		    if ($image_data === FALSE) 
+		    if ($image_data === FALSE)
 		    {
-		      die(lang_Aviary_No_Save);
+		      die(trans('Aviary_No_Save'));
 		    }
 		    $fp = fopen($current_path.$_POST['path'].$_POST['name'], "w");
 		    fwrite($fp, $image_data);
@@ -89,34 +92,34 @@ if(isset($_GET['action']))
 				    $zip = new ZipArchive;
 				    if ($zip->open($path) === TRUE) {
 						//make all the folders
-						for($i = 0; $i < $zip->numFiles; $i++) 
-						{ 
+						for($i = 0; $i < $zip->numFiles; $i++)
+						{
 						    $OnlyFileName = $zip->getNameIndex($i);
-						    $FullFileName = $zip->statIndex($i);    
+						    $FullFileName = $zip->statIndex($i);
 						    if (substr($FullFileName['name'], -1, 1) =="/")
 						    {
 								create_folder($base_folder.$FullFileName['name']);
 						    }
 						}
 						//unzip into the folders
-						for($i = 0; $i < $zip->numFiles; $i++) 
-						{ 
+						for($i = 0; $i < $zip->numFiles; $i++)
+						{
 						    $OnlyFileName = $zip->getNameIndex($i);
-						    $FullFileName = $zip->statIndex($i);    
-					    
+						    $FullFileName = $zip->statIndex($i);
+
 						    if (!(substr($FullFileName['name'], -1, 1) =="/"))
 						    {
 								$fileinfo = pathinfo($OnlyFileName);
 								if(in_array(strtolower($fileinfo['extension']),$ext))
 								{
-								    copy('zip://'. $path .'#'. $OnlyFileName , $base_folder.$FullFileName['name'] ); 
-								} 
+								    copy('zip://'. $path .'#'. $OnlyFileName , $base_folder.$FullFileName['name'] );
+								}
 						    }
 						}
 						$zip->close();
 				    }
 				    else {
-						die(lang_Zip_No_Extract);
+						die(trans('Zip_No_Extract'));
 				    }
 
 				    break;
@@ -138,10 +141,10 @@ if(isset($_GET['action']))
 				    break;
 
 				default:
-					die(lang_Zip_Invalid);
+					die(trans('Zip_Invalid'));
 		    }
 		    break;
-		case 'media_preview':    
+		case 'media_preview':
 			$preview_file = $_GET["file"];
 			$info = pathinfo($preview_file);
 			?>
@@ -198,11 +201,11 @@ if(isset($_GET['action']))
 
 				<script type="text/javascript">
 				    $(document).ready(function(){
-						
+
 				      $("#jquery_jplayer_1").jPlayer({
 				        ready: function () {
 				          $(this).jPlayer("setMedia", {
-					    title:"<?php $_GET['title']; ?>",  
+					    title:"<?php $_GET['title']; ?>",
 				            mp3: "<?php echo $preview_file; ?>",
 				            m4a: "<?php echo $preview_file; ?>",
 					    oga: "<?php echo $preview_file; ?>",
@@ -221,14 +224,14 @@ if(isset($_GET['action']))
 			<?php
 			} elseif(in_array(strtolower($info['extension']), $ext_video)) {
 			?>
-			    
+
 			    <script type="text/javascript">
 			    $(document).ready(function(){
-					
+
 			      $("#jquery_jplayer_1").jPlayer({
 			        ready: function () {
 			          $(this).jPlayer("setMedia", {
-				    title:"<?php $_GET['title']; ?>",  
+				    title:"<?php $_GET['title']; ?>",
 			            m4v: "<?php echo $preview_file; ?>",
 			            ogv: "<?php echo $preview_file; ?>"
 			          });
@@ -239,10 +242,10 @@ if(isset($_GET['action']))
 				smoothPlayBar: true,
 				keyEnabled: false
 			    });
-				  
+
 			    });
 			  </script>
-			    
+
 			<?php
 			}
 			break;
@@ -261,27 +264,27 @@ if(isset($_GET['action']))
 			{
 				// can't copy/cut dirs
 				if ($copy_cut_dirs === FALSE){
-					die(sprintf(lang_Copy_Cut_Not_Allowed, ($_POST['sub_action'] == 'copy' ? lcfirst(lang_Copy) : lcfirst(lang_Cut)), lang_Folders));
+					die(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Folders')));
 				}
 
 				// size over limit
 				if ($copy_cut_max_size !== FALSE && is_int($copy_cut_max_size)){
 					if (($copy_cut_max_size * 1024 * 1024) < foldersize($path)){
-						die(sprintf(lang_Copy_Cut_Size_Limit, ($_POST['sub_action'] == 'copy' ? lcfirst(lang_Copy) : lcfirst(lang_Cut)), $copy_cut_max_size));
+						die(sprintf(trans('Copy_Cut_Size_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_size));
 					}
 				}
 
 				// file count over limit
 				if ($copy_cut_max_count !== FALSE && is_int($copy_cut_max_count)){
 					if ($copy_cut_max_count < filescount($path)){
-						die(sprintf(lang_Copy_Cut_Count_Limit, ($_POST['sub_action'] == 'copy' ? lcfirst(lang_Copy) : lcfirst(lang_Cut)), $copy_cut_max_count));
+						die(sprintf(trans('Copy_Cut_Count_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_count));
 					}
 				}
 			}
 			else {
 				// can't copy/cut files
 				if ($copy_cut_files === FALSE){
-					die(sprintf(lang_Copy_Cut_Not_Allowed, ($_POST['sub_action'] == 'copy' ? lcfirst(lang_Copy) : lcfirst(lang_Cut)), lang_Files));
+					die(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Files')));
 				}
 			}
 
@@ -299,9 +302,9 @@ if(isset($_GET['action']))
 				 (is_file($path) && $chmod_files === FALSE) ||
 				 (is_function_callable("chmod") === FALSE) )
 			{
-				die(sprintf(lang_File_Permission_Not_Allowed, (is_dir($path) ? lcfirst(lang_Folders) : lcfirst(lang_Files))));
+				die(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files')))));
 			}
-			else 
+			else
 			{
 				$perm = decoct(fileperms($path) & 0777);
 				$perm_user = substr($perm, 0, 1);
@@ -321,19 +324,19 @@ if(isset($_GET['action']))
 						</thead>
 						<tbody>
 							<tr>
-								<td>'.lang_User.'</td>
+								<td>'.trans('User').'</td>
 								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
 								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
 								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
-								<td>'.lang_Group.'</td>
+								<td>'.trans('Group').'</td>
 								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
 								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
 								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
-								<td>'.lang_All.'</td>
+								<td>'.trans('All').'</td>
 								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
 								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
 								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
@@ -346,12 +349,12 @@ if(isset($_GET['action']))
 					</table>';
 
 				if (is_dir($path)){
-					$ret .= '<div>'.lang_File_Permission_Recursive.'
+					$ret .= '<div>'.trans('File_Permission_Recursive').'
 							<ul>
-								<li><input value="none" name="apply_recursive" type="radio" checked> '.lang_No.'</li>
-								<li><input value="files" name="apply_recursive" type="radio"> '.lang_Files.'</li>
-								<li><input value="folders" name="apply_recursive" type="radio"> '.lang_Folders.'</li>
-								<li><input value="both" name="apply_recursive" type="radio"> '.lang_Files.' & '.lang_Folders.'</li>
+								<li><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</li>
+								<li><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</li>
+								<li><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</li>
+								<li><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</li>
 							</ul>
 							</div>';
 				}
@@ -363,12 +366,12 @@ if(isset($_GET['action']))
 			break;
 		case 'get_lang':
 			if (!file_exists('lang/languages.php')){
-				die(lang_Lang_Not_Found);
+				die('Lang_Not_Found');
 			}
 
-			require_once 'lang/languages.php';
+			$languages = include 'lang/languages.php';
 			if (!isset($languages) || !is_array($languages)){
-				die(lang_Lang_Not_Found);
+				die('Lang_Not_Found');
 			}
 
 			$curr = $_SESSION['RF']['language'];
@@ -386,7 +389,7 @@ if(isset($_GET['action']))
 			$choosen_lang = $_POST['choosen_lang'];
 
 			if (!file_exists('lang/'.$choosen_lang.'.php')) {
-				die(lang_Lang_Not_Found);
+				die(trans('Lang_Not_Found'));
 			}
 
 			$_SESSION['RF']['language'] = $choosen_lang;
@@ -405,7 +408,7 @@ if(isset($_GET['action']))
 			$info = pathinfo($selected_file);
 
 			if (!file_exists($selected_file)) {
-				die(lang_File_Not_Found);
+				die(trans('File_Not_Found'));
 			}
 
 			if ($preview_mode == 'text') {
@@ -430,7 +433,7 @@ if(isset($_GET['action']))
 				|| $is_allowed === FALSE
 				|| !is_readable($selected_file))
 			{
-				die(sprintf(lang_File_Open_Edit_Not_Allowed, ($sub_action == 'preview' ? strtolower(lang_Open) : strtolower(lang_Edit))));
+				die(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))));
 			}
 
 			if ($sub_action == 'preview') {
@@ -447,7 +450,7 @@ if(isset($_GET['action']))
 
 				}
 				elseif ($preview_mode == 'viewerjs') {
-					echo '<iframe id="viewer" src="ViewerJS/#../'.$_GET["file"].'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+					echo '<iframe id="viewer" src="../bower_components/viewerjs/ViewerJS/#../'.$_GET["file"].'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
 
 				}
 				elseif ($preview_mode == 'google') {
@@ -466,9 +469,7 @@ if(isset($_GET['action']))
 	    default: die('no action passed');
     }
 }
-else 
+else
 {
 	die('no action passed');
 }
-
-?>
