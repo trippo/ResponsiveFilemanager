@@ -17,14 +17,14 @@ if (!function_exists('trans'))
 			$lang = trim($lang);
 		}
 
-		$language_file = '../lang/'.$default_language.'.php';
+		$language_file = dirname(__DIR__).'/lang/'.$default_language.'.php';
 		if ($lang != $default_language)
 		{
 			$path_parts = pathinfo($lang);
 
-			if (is_readable('../lang/' .$path_parts['basename']. '.php'))
+			if (is_readable(dirname(__DIR__).'/lang/' .$path_parts['basename']. '.php'))
 			{
-				$language_file = '../lang/' .$path_parts['basename']. '.php';
+				$language_file = dirname(__DIR__).'/lang/' .$path_parts['basename']. '.php';
 			}
 			else
 			{
@@ -44,6 +44,10 @@ if (!function_exists('trans'))
 
 	$lang_vars = include $language_file;
 
+	if (!is_array($lang_vars))
+	{
+		$lang_vars = array();
+	}
 	/**
 	 * Translate language variable
 	 *
