@@ -129,7 +129,6 @@ if (isset($_GET['popup']))
 	$popup = strip_tags($_GET['popup']);
 }
 else $popup=0;
-
 //Sanitize popup
 $popup=!!$popup;
 
@@ -199,12 +198,26 @@ $boolarray = Array(false => 'false', true => 'true');
 $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
 
 if (!isset($_GET['type'])) $_GET['type'] = 0;
+
+if (isset($_GET['editor']))
+{
+	$editor = strip_tags($_GET['editor']);
+}
+else{
+	if($_GET['type']==0){
+		$editor=false;
+	}else{
+		$editor='tinymce';
+	}
+}
+
 if (!isset($_GET['field_id'])) $_GET['field_id'] = '';
 
 $field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
 $type_param = fix_get_params($_GET['type']);
 
 $get_params = http_build_query(array(
+    'editor'    => $editor,
     'type'      => $type_param,
     'lang'      => $lang,
     'popup'     => $popup,
@@ -350,9 +363,10 @@ $get_params = http_build_query(array(
 <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
 	<input type="hidden" id="crossdomain" value="<?php echo $crossdomain; ?>" />
+	<input type="hidden" id="editor" value="<?php echo $editor; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
-  <input type="hidden" id="subdir" value="<?php echo $subdir; ?>" />
-  <input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
+  	<input type="hidden" id="subdir" value="<?php echo $subdir; ?>" />
+  	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
 	<input type="hidden" id="insert_folder_name" value="<?php echo trans('Insert_Folder_Name'); ?>" />
 	<input type="hidden" id="new_folder" value="<?php echo trans('New_Folder'); ?>" />
@@ -365,8 +379,8 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir; ?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder; ?>"/>
-  <input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0;?>"/>
-  <input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
+	<input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0;?>"/>
+	<input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?1:0; ?>" />
@@ -400,7 +414,6 @@ $get_params = http_build_query(array(
     <input type="hidden" id="replace_with" value="<?php echo $convert_spaces? $replace_with : ""; ?>" />
 <?php if($upload_files){ ?>
 <!-- uploader div start -->
-
 <div class="uploader">
     <div class="text-center">
     	<button class="btn btn-inverse close-uploader"><i class="icon-backward icon-white"></i> <?php echo trans('Return_Files_List')?></button>
