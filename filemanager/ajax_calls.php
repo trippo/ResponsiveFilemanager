@@ -473,5 +473,3 @@ else
 {
 	die('no action passed');
 }
-
-?>

@@ -975,4 +975,4 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     <?php } ?>
 </body>
 </html>
-<?php } ?>
+<?php }

@@ -377,5 +377,3 @@ if (isset($_GET['action']))
             die('wrong action');
     }
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 return array(
 
 	'az_AZ' => 'Azərbaycan dili',
