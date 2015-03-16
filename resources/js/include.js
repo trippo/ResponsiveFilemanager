@@ -1559,5 +1559,3 @@ function launchEditor(id, src) {
 function lazyLoad() {
     $(window).trigger("scroll");
 }
-
-//# sourceMappingURL=include.js.map

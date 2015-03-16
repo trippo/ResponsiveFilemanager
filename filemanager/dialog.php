@@ -215,23 +215,19 @@ $get_params = http_build_query(array(
 
 <!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="robots" content="noindex,nofollow">
-  <title>Responsive FileManager</title>
-	<link rel="shortcut icon" href="img/ico/favicon.ico">
-  <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-  <link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
-  <link href="css/bootstrap-lightbox.min.css" rel="stylesheet" type="text/css" />
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
-	<link href="css/dropzone.min.css" type="text/css" rel="stylesheet" />
-	<?php
-		$sprite_lang_file = 'img/spritemap_'.$lang.'.png';
-		$sprite_lang_file2 = 'img/spritemap@2x_'.$lang.'.png';
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="robots" content="noindex,nofollow">
+		<title>Responsive FileManager</title>
+		<link rel="shortcut icon" href="img/ico/favicon.ico">
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<?php
+			$sprite_lang_file = 'img/spritemap_'.$lang.'.png';
+			$sprite_lang_file2 = 'img/spritemap@2x_'.$lang.'.png';
 
-		if ( ! file_exists($sprite_lang_file) || ! file_exists($sprite_lang_file2)){
+			if ( ! file_exists($sprite_lang_file) || ! file_exists($sprite_lang_file2)){
 			//fallback
 			$sprite_lang_file = 'img/spritemap_en_EN.png';
 			$sprite_lang_file2 = 'img/spritemap@2x_en_EN.png';
@@ -240,73 +236,52 @@ $get_params = http_build_query(array(
 				echo '<script>console.log("Error: Spritemap not found!");</script>';
 				// exit();
 			}
-	}
-	?>
-	<style>
-		.dropzone .dz-default.dz-message,
-		.dropzone .dz-preview .dz-error-mark,
-		.dropzone-previews .dz-preview .dz-error-mark,
-		.dropzone .dz-preview .dz-success-mark,
-		.dropzone-previews .dz-preview .dz-success-mark,
-		.dropzone .dz-preview .dz-progress .dz-upload,
-		.dropzone-previews .dz-preview .dz-progress .dz-upload {
-			background-image: url(<?php echo trans('$sprite_file'); ?>);
 		}
-
-		@media all and (-webkit-min-device-pixel-ratio:1.5),(min--moz-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5/1),(min-device-pixel-ratio:1.5),(min-resolution:138dpi),(min-resolution:1.5dppx) {
-		  	.dropzone .dz-default.dz-message,
-		  	.dropzone .dz-preview .dz-error-mark,
+		?>
+		<style>
+			.dropzone .dz-default.dz-message,
+			.dropzone .dz-preview .dz-error-mark,
 			.dropzone-previews .dz-preview .dz-error-mark,
 			.dropzone .dz-preview .dz-success-mark,
 			.dropzone-previews .dz-preview .dz-success-mark,
 			.dropzone .dz-preview .dz-progress .dz-upload,
-  			.dropzone-previews .dz-preview .dz-progress .dz-upload {
-		    	background-image: url(<?php echo trans('$sprite_file'); ?>);
-		    }
-		}
-	</style>
-	<link href="css/jquery.contextMenu.min.css" rel="stylesheet" type="text/css" />
-	<link href="css/bootstrap-modal.min.css" rel="stylesheet" type="text/css" />
-	<link href="jPlayer/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css">
+			.dropzone-previews .dz-preview .dz-progress .dz-upload {
+				background-image: url(<?php echo trans('$sprite_file'); ?>);
+			}
+
+			@media all and (-webkit-min-device-pixel-ratio:1.5),(min--moz-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5/1),(min-device-pixel-ratio:1.5),(min-resolution:138dpi),(min-resolution:1.5dppx) {
+				.dropzone .dz-default.dz-message,
+				.dropzone .dz-preview .dz-error-mark,
+				.dropzone-previews .dz-preview .dz-error-mark,
+				.dropzone .dz-preview .dz-success-mark,
+				.dropzone-previews .dz-preview .dz-success-mark,
+				.dropzone .dz-preview .dz-progress .dz-upload,
+				.dropzone-previews .dz-preview .dz-progress .dz-upload {
+					background-image: url(<?php echo trans('$sprite_file'); ?>);
+				}
+			}
+		</style>
 	<!--[if lt IE 8]><style>
 	.img-container span, .img-container-mini span {
 	    display: inline-block;
 	    height: 100%;
 	}
 	</style><![endif]-->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript">
-	if (typeof jQuery === 'undefined')
-	{
-	  document.write(unescape("%3Cscript src='js/jquery.js' type='text/javascript'%3E%3C/script%3E"));
-	}
-	</script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap-lightbox.min.js"></script>
-	<script type="text/javascript" src="js/dropzone.min.js"></script>
-	<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
-	<script type="text/javascript" src="js/modernizr.custom.js"></script>
-	<script type="text/javascript" src="js/bootbox.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-modal.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-modalmanager.min.js"></script>
-	<script type="text/javascript" src="jPlayer/jquery.jplayer.min.js"></script>
-	<script type="text/javascript" src="js/ZeroClipboard.min.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="../bower_components/jPlayer/jquery.jplayer/jquery.jplayer.js"></script>
+	<script src="js/modernizr.custom.js"></script>
 	<?php
 	if ($aviary_active){
 	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
-	    <script type="text/javascript" src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
+	    <script src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
 	<?php }else{ ?>
-	    <script type="text/javascript" src="http://feather.aviary.com/js/feather.js "></script>
+	    <script src="http://feather.aviary.com/js/feather.js "></script>
 	<?php }} ?>
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
 	<![endif]-->
-	<script src="js/jquery.ui.position.min.js" type="text/javascript"></script>
-	<script src="js/jquery-ui-1.10.4.custom.js" type="text/javascript"></script>
-	<script src="js/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
-	<script src="js/jquery.contextMenu.min.js" type="text/javascript"></script>
 
 	<script>
 	    var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
@@ -367,7 +342,7 @@ $get_params = http_build_query(array(
 	   });
 	    }
 	</script>
-	<script type="text/javascript" src="js/include.min.js"></script>
+	<script src="js/include.js"></script>
 </head>
 <body>
 	<input type="hidden" id="popup" value="<?php echo $popup; ?>" />
@@ -990,9 +965,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
     <img id='aviary_img' src='' class="hide"/>
 
     <?php if ($lazy_loading_enabled) { ?>
-        <script src="js/jquery.lazyload.min.js" type="text/javascript"></script>
-        <script src="js/jquery.scrollstop.min.js" type="text/javascript"></script>
-
         <script>
         	$(function(){
         		$(".lazy-loaded").lazyload({
