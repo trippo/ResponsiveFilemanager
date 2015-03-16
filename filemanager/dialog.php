@@ -188,9 +188,12 @@ if (!isset($_SESSION['RF']['descending']))
 
 if (isset($_GET["descending"]))
 {
-	$descending = $_SESSION['RF']['descending'] = fix_get_params($_GET["descending"])==="true";
+	$descending = $_SESSION['RF']['descending'] = fix_get_params($_GET["descending"])==1;
 }
-else $descending = $_SESSION['RF']['descending'];
+else{
+	$descending = $_SESSION['RF']['descending'];	
+} 
+
 $boolarray = Array(false => 'false', true => 'true');
 
 $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
@@ -246,7 +249,7 @@ $get_params = http_build_query(array(
 			.dropzone-previews .dz-preview .dz-success-mark,
 			.dropzone .dz-preview .dz-progress .dz-upload,
 			.dropzone-previews .dz-preview .dz-progress .dz-upload {
-				background-image: url(<?php echo trans('$sprite_file'); ?>);
+				background-image: url(<?php echo $sprite_lang_file; ?>);
 			}
 
 			@media all and (-webkit-min-device-pixel-ratio:1.5),(min--moz-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5/1),(min-device-pixel-ratio:1.5),(min-resolution:138dpi),(min-resolution:1.5dppx) {
@@ -257,7 +260,7 @@ $get_params = http_build_query(array(
 				.dropzone-previews .dz-preview .dz-success-mark,
 				.dropzone .dz-preview .dz-progress .dz-upload,
 				.dropzone-previews .dz-preview .dz-progress .dz-upload {
-					background-image: url(<?php echo trans('$sprite_file'); ?>);
+					background-image: url(<?php echo $sprite_lang_file2; ?>);
 				}
 			}
 		</style>
@@ -356,7 +359,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="ok" value="<?php echo trans('OK'); ?>" />
 	<input type="hidden" id="cancel" value="<?php echo trans('Cancel'); ?>" />
 	<input type="hidden" id="rename" value="<?php echo trans('Rename'); ?>" />
-	<input type="hidden" id="trans('duplicate')" value="<?php echo trans('Duplicate'); ?>" />
+	<input type="hidden" id="lang_duplicate" value="<?php echo trans('Duplicate'); ?>" />
 	<input type="hidden" id="duplicate" value="<?php if($duplicate_files) echo 1; else echo 0; ?>" />
 	<input type="hidden" id="base_url" value="<?php echo $base_url?>"/>
 	<input type="hidden" id="base_url_true" value="<?php echo base_url(); ?>"/>
@@ -367,31 +370,31 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js; ?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by; ?>" />
 	<input type="hidden" id="descending" value="<?php echo $descending?1:0; ?>" />
-	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter),array(''),$base_url.$_SERVER['REQUEST_URI']); ?>" />
-	<input type="hidden" id="trans('show_url')" value="<?php echo trans('Show_url'); ?>" />
+	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter,'&sort_by='.$sort_by,'&descending='.intval($descending)),array(''),$base_url.$_SERVER['REQUEST_URI']); ?>" />
+	<input type="hidden" id="lang_show_url" value="<?php echo trans('Show_url'); ?>" />
 	<input type="hidden" id="copy_cut_files_allowed" value="<?php if($copy_cut_files) echo 1; else echo 0; ?>" />
 	<input type="hidden" id="copy_cut_dirs_allowed" value="<?php if($copy_cut_dirs) echo 1; else echo 0; ?>" />
 	<input type="hidden" id="copy_cut_max_size" value="<?php echo $copy_cut_max_size; ?>" />
 	<input type="hidden" id="copy_cut_max_count" value="<?php echo $copy_cut_max_count; ?>" />
-	<input type="hidden" id="trans('copy')" value="<?php echo trans('Copy'); ?>" />
-	<input type="hidden" id="trans('cut')" value="<?php echo trans('Cut'); ?>" />
-	<input type="hidden" id="trans('paste')" value="<?php echo trans('Paste'); ?>" />
-	<input type="hidden" id="trans('paste_here')" value="<?php echo trans('Paste_Here'); ?>" />
-	<input type="hidden" id="trans('paste_confirm')" value="<?php echo trans('Paste_Confirm'); ?>" />
-	<input type="hidden" id="trans('files_on_clipboard')" value="<?php echo trans('Files_ON_Clipboard'); ?>" />
+	<input type="hidden" id="lang_copy" value="<?php echo trans('Copy'); ?>" />
+	<input type="hidden" id="lang_cut" value="<?php echo trans('Cut'); ?>" />
+	<input type="hidden" id="lang_paste" value="<?php echo trans('Paste'); ?>" />
+	<input type="hidden" id="lang_paste_here" value="<?php echo trans('Paste_Here'); ?>" />
+	<input type="hidden" id="lang_paste_confirm" value="<?php echo trans('Paste_Confirm'); ?>" />
+	<input type="hidden" id="lang_files_on_clipboard" value="<?php echo trans('Files_ON_Clipboard'); ?>" />
 	<input type="hidden" id="clipboard" value="<?php echo ((isset($_SESSION['RF']['clipboard']['path']) && trim($_SESSION['RF']['clipboard']['path']) != null) ? 1 : 0); ?>" />
-	<input type="hidden" id="trans('clear_clipboard_confirm')" value="<?php echo trans('Clear_Clipboard_Confirm'); ?>" />
-	<input type="hidden" id="trans('file_permission')" value="<?php echo trans('File_Permission'); ?>" />
+	<input type="hidden" id="lang_clear_clipboard_confirm" value="<?php echo trans('Clear_Clipboard_Confirm'); ?>" />
+	<input type="hidden" id="lang_file_permission" value="<?php echo trans('File_Permission'); ?>" />
 	<input type="hidden" id="chmod_files_allowed" value="<?php if($chmod_files) echo 1; else echo 0; ?>" />
 	<input type="hidden" id="chmod_dirs_allowed" value="<?php if($chmod_dirs) echo 1; else echo 0; ?>" />
-	<input type="hidden" id="trans('change')" value="<?php echo trans('Lang_Change'); ?>" />
+	<input type="hidden" id="lang_lang_change" value="<?php echo trans('Lang_Change'); ?>" />
 	<input type="hidden" id="edit_text_files_allowed" value="<?php if($edit_text_files) echo 1; else echo 0; ?>" />
-	<input type="hidden" id="trans('edit_file')" value="<?php echo trans('Edit_File'); ?>" />
-	<input type="hidden" id="trans('new_file')" value="<?php echo trans('New_File'); ?>" />
-	<input type="hidden" id="trans('filename')" value="<?php echo trans('Filename'); ?>" />
-	<input type="hidden" id="trans('file_info')" value="<?php echo fix_strtoupper(trans('File_info')); ?>" />
-	<input type="hidden" id="trans('edit_image')" value="<?php echo trans('Edit_image'); ?>" />
-	<input type="hidden" id="trans('extract')" value="<?php echo trans('Extract'); ?>" />
+	<input type="hidden" id="lang_edit_file" value="<?php echo trans('Edit_File'); ?>" />
+	<input type="hidden" id="lang_new_file" value="<?php echo trans('New_File'); ?>" />
+	<input type="hidden" id="lang_filename" value="<?php echo trans('Filename'); ?>" />
+	<input type="hidden" id="lang_file_info" value="<?php echo fix_strtoupper(trans('File_info')); ?>" />
+	<input type="hidden" id="lang_edit_image" value="<?php echo trans('Edit_image'); ?>" />
+	<input type="hidden" id="lang_extract" value="<?php echo trans('Extract'); ?>" />
 	<input type="hidden" id="transliteration" value="<?php echo $transliteration?"true":"false"; ?>" />
 	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces?"true":"false"; ?>" />
     <input type="hidden" id="replace_with" value="<?php echo $convert_spaces? $replace_with : ""; ?>" />
@@ -574,7 +577,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    <input accesskey="f" type="text" class="filter-input <?php echo (($_GET['type']!=1 && $_GET['type']!=3) ? '' : 'filter-input-notype'); ?>" id="filter-input" name="filter" placeholder="<?php echo fix_strtolower(trans('Text_filter')); ?>..." value="<?php echo $filter; ?>"/><?php if($n_files>$file_number_limit_js){ ?><label id="filter" class="btn"><i class="icon-play"></i></label><?php } ?>
 
 			    <input id="select-type-all" name="radio-sort" type="radio" data-item="ff-item-type-all" class="hide"  />
-			     <label id="ff-item-type-all" title="<?php echo trans('All'); ?>" <?php if($_GET['type']==1 || $_GET['type']==3){ ?>style="visibility: hidden;" <?php } ?> data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-align-justify icon-white"></i></label>
+			     <label id="ff-item-type-all" title="<?php echo trans('All'); ?>" <?php if($_GET['type']==1 || $_GET['type']==3){ ?>style="visibility: hidden;" <?php } ?> data-item="ff-item-type-all" for="select-type-all" style="margin-rigth:0px;" class="tip btn btn-inverse ff-label-type-all"><i class="icon-remove icon-white"></i></label>
 
 			</div>
 		    </div>
@@ -609,7 +612,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	}
 	?>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
-	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="trans('change_btn')"><i class="icon-globe"></i></a></li>
+	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="change_lang_btn"><i class="icon-globe"></i></a></li>
 	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 
 	<li class="pull-right">

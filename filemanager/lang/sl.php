@@ -40,7 +40,7 @@ return array(
 	'Swipe_help' => 'Izmakni ime datoteke/mape za prikaz možnosti',
 	'Upload_base' => 'Osnovni način',
 	'Upload_java' => 'JAVA prenos (za velike datoteke)',
-	'Upload_java_help',"Če se Java ne zažene, preverite če imate Javo naloženo (če je nimate jo <a href='http://java.com/en/download/'>[naložite]</a>) in preverite da je ne blokira vaš požarni zid.",
+	'Upload_java_help' => "Če se Java ne zažene, preverite če imate Javo naloženo (če je nimate jo <a href='http://java.com/en/download/'>[naložite]</a>) in preverite da je ne blokira vaš požarni zid.",
 	'Upload_base_help' => 'Povlecite in spustite datoteke ali kliknite v okvir (pri sodobnih brskalnikih) in izberite datoteke. Ko bo nalaganje končano, kliknite gumb "Nazaj na seznam datotek".',
 	'Type_dir' => 'Mapa',
 	'Type' => 'Vrsta',

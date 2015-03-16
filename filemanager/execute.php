@@ -127,7 +127,7 @@ if (isset($_GET['action']))
                 $name=str_replace('.','',$name);
 
                 if (!empty($name)){
-                    if (!rename_folder($path,$name,$transliteration,$convert_spaces)) die(lang_Rename_existing_folder);
+                    if (!rename_folder($path,$name,$transliteration,$convert_spaces)) die(trans('Rename_existing_folder'));
 
                     rename_folder($path_thumb,$name,$transliteration,$convert_spaces);
                     if ($fixed_image_creation){
@@ -140,13 +140,13 @@ if (isset($_GET['action']))
                     }
                 }
                 else {
-                    die(lang_Empty_name);
+                    die(trans('Empty_name'));
                 }
             }
             break;
         case 'create_file':
             if ($create_text_files === FALSE) {
-                die(sprintf(lang_File_Open_Edit_Not_Allowed, strtolower(lang_Edit)));
+                die(sprintf(trans('File_Open_Edit_Not_Allowed'), strtolower(trans('Edit'))));
             }
 
             if (!isset($editable_text_file_exts) || !is_array($editable_text_file_exts)){
@@ -155,7 +155,7 @@ if (isset($_GET['action']))
 
             // check if user supplied extension
             if (strpos($name, '.') === FALSE){
-                die(lang_No_Extension.' '.sprintf(lang_Valid_Extensions, implode(', ', $editable_text_file_exts)));
+                die(trans('No_Extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $editable_text_file_exts)));
             }
 
             // correct name
@@ -163,13 +163,13 @@ if (isset($_GET['action']))
             $name=fix_filename($name,$transliteration,$convert_spaces, $replace_with);
             if (empty($name))
             {
-                die(lang_Empty_name);
+                die(trans('Empty_name'));
             }
 
             // check extension
             $parts = explode('.', $name);
             if (!in_array(end($parts), $editable_text_file_exts)) {
-                die(lang_Error_extension.' '.sprintf(lang_Valid_Extensions, implode(', ', $editable_text_file_exts)));
+                die(trans('Error_extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $editable_text_file_exts)));
             }
 
             // correct paths
@@ -178,19 +178,19 @@ if (isset($_GET['action']))
 
             // file already exists
             if (file_exists($path)) {
-                die(lang_Rename_existing_file);
+                die(trans('Rename_existing_file'));
             }
 
             $content = $_POST['new_content'];
 
             if (@file_put_contents($path, $content) === FALSE) {
-                die(lang_File_Save_Error);
+                die(trans('File_Save_Error'));
             }
             else {
                 if (is_function_callable('chmod') !== FALSE){
                     chmod($path, 0644);
                 }
-                echo lang_File_Save_OK;
+                echo trans('File_Save_OK');
             }
 
             break;
@@ -199,7 +199,7 @@ if (isset($_GET['action']))
                 $name=fix_filename($name,$transliteration,$convert_spaces, $replace_with);
                 if (!empty($name))
                 {
-                    if (!rename_file($path,$name,$transliteration)) die(lang_Rename_existing_file);
+                    if (!rename_file($path,$name,$transliteration)) die(trans('Rename_existing_file'));
 
                     rename_file($path_thumb,$name,$transliteration);
 
@@ -220,7 +220,7 @@ if (isset($_GET['action']))
                     }
                 }
                 else {
-                    die(lang_Empty_name);
+                    die(trans('Empty_name'));
                 }
             }
             break;
@@ -230,7 +230,7 @@ if (isset($_GET['action']))
                 $name=fix_filename($name,$transliteration,$convert_spaces, $replace_with);
                 if (!empty($name))
                 {
-                    if (!duplicate_file($path,$name)) die(lang_Rename_existing_file);
+                    if (!duplicate_file($path,$name)) die(trans('Rename_existing_file'));
 
                     duplicate_file($path_thumb,$name);
 
@@ -252,7 +252,7 @@ if (isset($_GET['action']))
                 }
                 else
                 {
-                    die(lang_Empty_name);
+                    die(trans('Empty_name'));
                 }
             }
             break;
@@ -287,12 +287,12 @@ if (isset($_GET['action']))
 
             // check for writability
             if (is_really_writable($path) === FALSE || is_really_writable($path_thumb) === FALSE){
-                die(lang_Dir_No_Write.'<br/>'.str_replace('../','',$path).'<br/>'.str_replace('../','',$path_thumb));
+                die(trans('Dir_No_Write').'<br/>'.str_replace('../','',$path).'<br/>'.str_replace('../','',$path_thumb));
             }
 
             // check if server disables copy or rename
             if (is_function_callable(($action == 'copy' ? 'copy' : 'rename')) === FALSE){
-                die(sprintf(lang_Function_Disabled, ($action == 'copy' ? lcfirst(lang_Copy) : lcfirst(lang_Cut))));
+                die(sprintf(trans('Function_Disabled'), ($action == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut')))));
             }
 
             if ($action == 'copy')
@@ -326,12 +326,12 @@ if (isset($_GET['action']))
 
             // check perm
             if ($chmod_perm === FALSE) {
-                die(sprintf(lang_File_Permission_Not_Allowed, (is_dir($path) ? lcfirst(lang_Folders) : lcfirst(lang_Files))));
+                die(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files')) )));
             }
 
             // check mode
             if (!preg_match("/^[0-7]{3}$/", $mode)){
-                die(lang_File_Permission_Wrong_Mode);
+                die(trans('File_Permission_Wrong_Mode'));
             }
 
             // check recursive option
@@ -341,7 +341,7 @@ if (isset($_GET['action']))
 
             // check if server disabled chmod
             if (is_function_callable('chmod') === FALSE){
-                die(sprintf(lang_Function_Disabled, 'chmod'));
+                die(sprintf(trans('Function_Disabled'), 'chmod'));
             }
 
             $mode = "0".$mode;
@@ -357,19 +357,19 @@ if (isset($_GET['action']))
 
             // no file
             if (!file_exists($path)) {
-                die(lang_File_Not_Found);
+                die(trans('File_Not_Found'));
             }
 
             // not writable or edit not allowed
             if (!is_writable($path) || $edit_text_files === FALSE) {
-                die(sprintf(lang_File_Open_Edit_Not_Allowed, strtolower(lang_Edit)));
+                die(sprintf(trans('File_Open_Edit_Not_Allowed'), strtolower(trans('Edit'))));
             }
 
             if (@file_put_contents($path, $content) === FALSE) {
-                die(lang_File_Save_Error);
+                die(trans('File_Save_Error'));
             }
             else {
-                echo lang_File_Save_OK;
+                echo trans('File_Save_OK');
             }
 
             break;

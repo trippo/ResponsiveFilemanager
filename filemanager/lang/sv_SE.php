@@ -40,8 +40,8 @@ return array(
 	'Swipe_help' => 'Svep över filnamnet/katalognamnet för att visa åtgärder', // Swipe the name of file/folder to show options
 	'Upload_base' => 'Basal uppladdning', // Base upload
 	'Upload_java' => 'JAVA uppladdning (för stora filer)', // JAVA upload (big size files)
-	'Upload_java_help',"Om Java Appleten inte laddar, 1. säkerställ att Java är installerat, <a href='http://java.com/en/download/'>ladda hem</a> och installera om det saknas  2. säkerställ att programmet inte blokeras av din brandvägg", // If the Java Applet doesn't load, 1. make sure you have Java installed, otherwise <a href='http://java.com/en/download/'>[download link]</a>   2. make sure nothing is blocked by your firewall
-	'Upload_base_help',"Dra och släpa filer eller klicka ovan och välj en eller flera filer. När uppladningen är klar, klicka på 'Tillbaka till filvisaren' knappen.", // Drag & Drop files or click in the area above (modern browsers) and select the file(s). When the upload is complete, click the 'Return to files list' button.
+	'Upload_java_help' => "Om Java Appleten inte laddar, 1. säkerställ att Java är installerat, <a href='http://java.com/en/download/'>ladda hem</a> och installera om det saknas  2. säkerställ att programmet inte blokeras av din brandvägg", // If the Java Applet doesn't load, 1. make sure you have Java installed, otherwise <a href='http://java.com/en/download/'>[download link]</a>   2. make sure nothing is blocked by your firewall
+	'Upload_base_help' => "Dra och släpa filer eller klicka ovan och välj en eller flera filer. När uppladningen är klar, klicka på 'Tillbaka till filvisaren' knappen.", // Drag & Drop files or click in the area above (modern browsers) and select the file(s). When the upload is complete, click the 'Return to files list' button.
 	'Type_dir' => 'katalog', // dir
 	'Type' => 'Typ', // Type
 	'Dimension' => 'Dimension', // Dimension

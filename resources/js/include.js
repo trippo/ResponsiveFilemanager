@@ -1,4 +1,4 @@
-var version = "10.0.0";
+var version = "9.9.0";
 var active_contextmenu = true;
 var copy_count=0;
 $(document).ready(function(){
