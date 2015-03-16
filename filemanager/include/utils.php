@@ -2,6 +2,63 @@
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
 
+if (!function_exists('trans'))
+{
+	// language
+	if (!isset($_SESSION['RF']['language'])
+		|| file_exists($_SESSION['RF']['language_file']) === FALSE
+		|| !is_readable($_SESSION['RF']['language_file']))
+	{
+		$lang = $default_language;
+
+		if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang']!='')
+		{
+			$lang = fix_get_params($_GET['lang']);
+			$lang = trim($lang);
+		}
+
+		$language_file = '../lang/'.$default_language.'.php';
+		if ($lang != $default_language)
+		{
+			$path_parts = pathinfo($lang);
+
+			if (is_readable('../lang/' .$path_parts['basename']. '.php'))
+			{
+				$language_file = '../lang/' .$path_parts['basename']. '.php';
+			}
+			else
+			{
+				echo "<script>console.log('The ".$lang." language file is not readable! Falling back...');</script>";
+			}
+		}
+
+		// add lang file to session for easy include
+		$_SESSION['RF']['language'] = $lang;
+		$_SESSION['RF']['language_file'] = $language_file;
+	}
+	else
+	{
+		$lang = $_SESSION['RF']['language'];
+		$language_file = $_SESSION['RF']['language_file'];
+	}
+
+	$lang_vars = include $language_file;
+
+	/**
+	 * Translate language variable
+	 *
+	 * @param $var string name
+	 *
+	 * @return string translated variable
+	 */
+	function trans($var)
+	{
+		global $lang_vars;
+
+		return (array_key_exists($var, $lang_vars)) ? $lang_vars[$var] : $var;
+	}
+}
+
 function deleteDir($dir)
 {
     if (!file_exists($dir)) return true;
@@ -118,9 +175,9 @@ function create_folder($path = false, $path_thumbs = false)
 {
     $oldumask = umask(0);
     if ($path && !file_exists($path))
-        mkdir($path, 0755, true); // or even 01777 so you get the sticky bit set 
+        mkdir($path, 0755, true); // or even 01777 so you get the sticky bit set
     if ($path_thumbs && !file_exists($path_thumbs))
-        mkdir($path_thumbs, 0755, true) or die("$path_thumbs cannot be found"); // or even 01777 so you get the sticky bit set 
+        mkdir($path_thumbs, 0755, true) or die("$path_thumbs cannot be found"); // or even 01777 so you get the sticky bit set
     umask($oldumask);
 }
 
