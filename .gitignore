@@ -9,3 +9,4 @@ node_modules
 #Exclude compiled scripts and styles from repository
 filemanager/js/*
 filemanager/css/*
+resources/tmp/*
