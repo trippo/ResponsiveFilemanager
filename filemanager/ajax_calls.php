@@ -4,8 +4,13 @@ $config = include 'config/config.php';
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
 
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('Access Denied!');
 include 'include/utils.php';
+
+if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
+{
+	response('forbiden', 403)->send();
+	exit;
+}
 
 if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
 	include $_SESSION['RF']['language_file'];
@@ -23,7 +28,8 @@ if(isset($_GET['action']))
 				$_SESSION['RF']["view_type"] = $_GET['type'];
 			}
 			else {
-				die('view type number missing');
+				response('view type number missing', 400)->send();
+				exit;
 			}
 			break;
 		case 'filter':
@@ -32,7 +38,8 @@ if(isset($_GET['action']))
 					$_SESSION['RF']["filter"] = $_GET['type'];
 			}
 			else {
-				die('view type number missing');
+				response('view type number missing', 400);
+				exit;
 			}
 			break;
 		case 'sort':
@@ -49,7 +56,8 @@ if(isset($_GET['action']))
 			if ($pos !== FALSE)
 			{
 				$info=getimagesize(substr_replace($_POST['path'],$current_path,$pos,strlen($upload_dir)));
-				echo json_encode($info);
+				response($info)->send();
+				exit;
 			}
 	    	break;
 		case 'save_img':
@@ -62,12 +70,14 @@ if(isset($_GET['action']))
 					|| $_POST['name'] != fix_filename($_POST['name'], $transliteration,$convert_spaces,$replace_with)
 					|| !in_array(strtolower($info['extension']), array('jpg','jpeg','png')))
 		    {
-			    die('wrong data');
+			    response('wrong data', 400)->send();
+				exit;
 				}
 		    $image_data = file_get_contents($_POST['url']);
 		    if ($image_data === FALSE)
 		    {
-		      die(trans('Aviary_No_Save'));
+		      	response(trans('Aviary_No_Save'), 400)->send();
+				exit;
 		    }
 		    $fp = fopen($current_path.$_POST['path'].$_POST['name'], "w");
 		    fwrite($fp, $image_data);
@@ -79,7 +89,8 @@ if(isset($_GET['action']))
 		    break;
 		case 'extract':
 		    if(strpos($_POST['path'],'/')===0 || strpos($_POST['path'],'../')!==FALSE || strpos($_POST['path'],'./')===0) {
-				die('wrong path');
+				response('wrong path', 400)->send();
+				exit;
 			}
 
 		    $path = $current_path.$_POST['path'];
@@ -119,7 +130,8 @@ if(isset($_GET['action']))
 						$zip->close();
 				    }
 				    else {
-						die(trans('Zip_No_Extract'));
+						response(trans('Zip_No_Extract'), 500)->send();
+						exit;
 				    }
 
 				    break;
@@ -141,12 +153,14 @@ if(isset($_GET['action']))
 				    break;
 
 				default:
-					die(trans('Zip_Invalid'));
+					response(trans('Zip_Invalid'), 400)->send();
+					exit;
 		    }
 		    break;
 		case 'media_preview':
 			$preview_file = $_GET["file"];
 			$info = pathinfo($preview_file);
+			ob_start();
 			?>
 			<div id="jp_container_1" class="jp-video " style="margin:0 auto;">
 			    <div class="jp-type-single">
@@ -248,14 +262,19 @@ if(isset($_GET['action']))
 
 			<?php
 			}
+			$content = ob_get_clean();
+			response($content)->send();
+			exit;
 			break;
 		case 'copy_cut':
 			if ($_POST['sub_action'] != 'copy' && $_POST['sub_action'] != 'cut') {
-				die('wrong sub-action');
+				response('wrong sub-action', 400)->send();
+				exit;
 			}
 
 			if (trim($_POST['path']) == '' || trim($_POST['path_thumb']) == '') {
-				die('no path');
+				response('no path', 400)->send();
+				exit;
 			}
 
 			$path = $current_path.$_POST['path'];
@@ -264,27 +283,31 @@ if(isset($_GET['action']))
 			{
 				// can't copy/cut dirs
 				if ($copy_cut_dirs === FALSE){
-					die(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Folders')));
+					response(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Folders')), 403)->send();
+					exit;
 				}
 
 				// size over limit
 				if ($copy_cut_max_size !== FALSE && is_int($copy_cut_max_size)){
 					if (($copy_cut_max_size * 1024 * 1024) < foldersize($path)){
-						die(sprintf(trans('Copy_Cut_Size_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_size));
+						response(sprintf(trans('Copy_Cut_Size_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_size), 400)->send();
+						exit;
 					}
 				}
 
 				// file count over limit
 				if ($copy_cut_max_count !== FALSE && is_int($copy_cut_max_count)){
 					if ($copy_cut_max_count < filescount($path)){
-						die(sprintf(trans('Copy_Cut_Count_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_count));
+						response(sprintf(trans('Copy_Cut_Count_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_count), 400)->send();
+						exit;
 					}
 				}
 			}
 			else {
 				// can't copy/cut files
 				if ($copy_cut_files === FALSE){
-					die(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Files')));
+					response(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Files')), 403)->send();
+					exit;
 				}
 			}
 
@@ -302,7 +325,8 @@ if(isset($_GET['action']))
 				 (is_file($path) && $chmod_files === FALSE) ||
 				 (is_function_callable("chmod") === FALSE) )
 			{
-				die(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files')))));
+				response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files'))), 403), 400)->send();
+				exit;
 			}
 			else
 			{
@@ -366,12 +390,14 @@ if(isset($_GET['action']))
 			break;
 		case 'get_lang':
 			if (!file_exists('lang/languages.php')){
-				die('Lang_Not_Found');
+				response('Lang_Not_Found', 404)->send();
+				exit;
 			}
 
 			$languages = include 'lang/languages.php';
 			if (!isset($languages) || !is_array($languages)){
-				die('Lang_Not_Found');
+				response('Lang_Not_Found', 404)->send();
+				exit;
 			}
 
 			$curr = $_SESSION['RF']['language'];
@@ -389,7 +415,8 @@ if(isset($_GET['action']))
 			$choosen_lang = $_POST['choosen_lang'];
 
 			if (!file_exists('lang/'.$choosen_lang.'.php')) {
-				die(trans('Lang_Not_Found'));
+				response(trans('Lang_Not_Found'), 404)->send();
+				exit;
 			}
 
 			$_SESSION['RF']['language'] = $choosen_lang;
@@ -401,14 +428,16 @@ if(isset($_GET['action']))
 			$preview_mode = $_GET["preview_mode"];
 
 			if ($sub_action != 'preview' && $sub_action != 'edit'){
-				die("wrong action");
+				response("wrong action")->send();
+				exit;
 			}
 
 			$selected_file = ($sub_action == 'preview' ? $_GET['file'] : $current_path.$_POST['path']);
 			$info = pathinfo($selected_file);
 
 			if (!file_exists($selected_file)) {
-				die(trans('File_Not_Found'));
+				response(trans('File_Not_Found'), 404)->send();
+				exit;
 			}
 
 			if ($preview_mode == 'text') {
@@ -433,7 +462,8 @@ if(isset($_GET['action']))
 				|| $is_allowed === FALSE
 				|| !is_readable($selected_file))
 			{
-				die(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))));
+				response(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))), 403)->send();
+				exit;
 			}
 
 			if ($sub_action == 'preview') {
@@ -466,10 +496,12 @@ if(isset($_GET['action']))
 			}
 
 			break;
-	    default: die('no action passed');
+	    default: response('no action passed', 400)->send();
+			exit;
     }
 }
 else
 {
-	die('no action passed');
+	response('no action passed', 400)->send();
+	exit;
 }
