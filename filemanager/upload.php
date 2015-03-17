@@ -2,9 +2,14 @@
 $config = include 'config/config.php';
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
+
 include 'include/utils.php';
 
+if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
+{
+	response('forbiden', 403)->send();
+	exit;
+}
 
 if (isset($_POST['path']))
 {

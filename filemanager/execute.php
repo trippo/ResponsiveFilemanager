@@ -2,8 +2,14 @@
 $config = include 'config/config.php';
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
-if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
+
 include 'include/utils.php';
+
+if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
+{
+	response('forbiden', 403)->send();
+	exit;
+}
 
 $thumb_pos  = strpos($_POST['path_thumb'], $thumbs_base_path);
 
@@ -13,14 +19,19 @@ if ($thumb_pos !=0
     || strpos($_POST['path'],'../')!==FALSE
     || strpos($_POST['path'],'./')===0)
 {
-    die('wrong path');
+    response('wrong path')->send();
+	exit;
 }
 
-if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file'])){
+if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file']))
+{
+	//TODO Very bad practice
     require_once $_SESSION['RF']['language_file'];
 }
-else {
-    die('Language file is missing!');
+else
+{
+    response('Language file is missing!', 500)->send();
+	exit;
 }
 
 $base = $current_path;
@@ -47,13 +58,18 @@ $path_thumb = $_POST['path_thumb'];
 if (isset($_POST['name']))
 {
     $name = fix_filename($_POST['name'],$transliteration,$convert_spaces, $replace_with);
-    if (strpos($name,'../') !== FALSE) die('wrong name');
+    if (strpos($name,'../') !== FALSE)
+	{
+		response('wrong name', 400)->send();
+		exit;
+	}
 }
 
 $info = pathinfo($path);
 if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action']=='delete_folder') && !in_array(strtolower($info['extension']), $ext) && $_GET['action'] != 'create_file')
 {
-    die('wrong extension');
+	response('wrong extension', 400)->send();
+	exit;
 }
 
 if (isset($_GET['action']))
@@ -127,7 +143,11 @@ if (isset($_GET['action']))
                 $name=str_replace('.','',$name);
 
                 if (!empty($name)){
-                    if (!rename_folder($path,$name,$transliteration,$convert_spaces)) die(trans('Rename_existing_folder'));
+                    if (!rename_folder($path,$name,$transliteration,$convert_spaces))
+					{
+						response(trans('Rename_existing_folder'), 403)->send();
+						exit;
+					}
 
                     rename_folder($path_thumb,$name,$transliteration,$convert_spaces);
                     if ($fixed_image_creation){
@@ -140,13 +160,15 @@ if (isset($_GET['action']))
                     }
                 }
                 else {
-                    die(trans('Empty_name'));
+                    response(trans('Empty_name'), 400)->send();
+					exit;
                 }
             }
             break;
         case 'create_file':
             if ($create_text_files === FALSE) {
-                die(sprintf(trans('File_Open_Edit_Not_Allowed'), strtolower(trans('Edit'))));
+                response(sprintf(trans('File_Open_Edit_Not_Allowed'), strtolower(trans('Edit'))), 403)->send();
+				exit;
             }
 
             if (!isset($editable_text_file_exts) || !is_array($editable_text_file_exts)){
@@ -155,7 +177,8 @@ if (isset($_GET['action']))
 
             // check if user supplied extension
             if (strpos($name, '.') === FALSE){
-                die(trans('No_Extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $editable_text_file_exts)));
+                response(trans('No_Extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $editable_text_file_exts)), 400)->send();
+				exit;
             }
 
             // correct name
@@ -163,13 +186,15 @@ if (isset($_GET['action']))
             $name=fix_filename($name,$transliteration,$convert_spaces, $replace_with);
             if (empty($name))
             {
-                die(trans('Empty_name'));
+                response(trans('Empty_name'), 400)->send();
+				exit;
             }
 
             // check extension
             $parts = explode('.', $name);
             if (!in_array(end($parts), $editable_text_file_exts)) {
-                die(trans('Error_extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $editable_text_file_exts)));
+                response(trans('Error_extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $editable_text_file_exts)), 400)->send();
+				exit;
             }
 
             // correct paths
@@ -178,19 +203,22 @@ if (isset($_GET['action']))
 
             // file already exists
             if (file_exists($path)) {
-                die(trans('Rename_existing_file'));
+                response(trans('Rename_existing_file'), 403)->send();
+				exit;
             }
 
             $content = $_POST['new_content'];
 
             if (@file_put_contents($path, $content) === FALSE) {
-                die(trans('File_Save_Error'));
+                response(trans('File_Save_Error'), 500)->send();
+				exit;
             }
             else {
                 if (is_function_callable('chmod') !== FALSE){
                     chmod($path, 0644);
                 }
-                echo trans('File_Save_OK');
+                response(trans('File_Save_OK'))->send();
+				exit;
             }
 
             break;
@@ -199,7 +227,11 @@ if (isset($_GET['action']))
                 $name=fix_filename($name,$transliteration,$convert_spaces, $replace_with);
                 if (!empty($name))
                 {
-                    if (!rename_file($path,$name,$transliteration)) die(trans('Rename_existing_file'));
+                    if (!rename_file($path,$name,$transliteration))
+					{
+						response(trans('Rename_existing_file'), 403)->send();
+						exit;
+					}
 
                     rename_file($path_thumb,$name,$transliteration);
 
@@ -220,7 +252,8 @@ if (isset($_GET['action']))
                     }
                 }
                 else {
-                    die(trans('Empty_name'));
+                    response(trans('Empty_name'), 400)->send();
+					exit;
                 }
             }
             break;
@@ -230,7 +263,11 @@ if (isset($_GET['action']))
                 $name=fix_filename($name,$transliteration,$convert_spaces, $replace_with);
                 if (!empty($name))
                 {
-                    if (!duplicate_file($path,$name)) die(trans('Rename_existing_file'));
+                    if (!duplicate_file($path,$name))
+					{
+						response(trans('Rename_existing_file'), 403)->send();
+						exit;
+					}
 
                     duplicate_file($path_thumb,$name);
 
@@ -252,7 +289,8 @@ if (isset($_GET['action']))
                 }
                 else
                 {
-                    die(trans('Empty_name'));
+                    response(trans('Empty_name'), 400)->send();
+					exit;
                 }
             }
             break;
@@ -262,7 +300,8 @@ if (isset($_GET['action']))
                 || $_SESSION['RF']['clipboard']['path'] == ''
                 || $_SESSION['RF']['clipboard']['path_thumb'] == '')
             {
-                die();
+                response()->send();
+				exit;
             }
 
             $action = $_SESSION['RF']['clipboard_action'];
@@ -272,27 +311,32 @@ if (isset($_GET['action']))
 
             // user wants to paste to the same dir. nothing to do here...
             if ($pinfo['dirname'] == rtrim($path, '/')) {
-                die();
+                response()->send();
+				exit;
             }
 
             // user wants to paste folder to it's own sub folder.. baaaah.
             if (is_dir($data['path']) && strpos($path, $data['path']) !== FALSE){
-                die();
+                response()->send();
+				exit;
             }
 
             // something terribly gone wrong
             if ($action != 'copy' && $action != 'cut'){
-                die('no action');
+                response('no action', 400)->send();
+				exit;
             }
 
             // check for writability
             if (is_really_writable($path) === FALSE || is_really_writable($path_thumb) === FALSE){
-                die(trans('Dir_No_Write').'<br/>'.str_replace('../','',$path).'<br/>'.str_replace('../','',$path_thumb));
+                response(trans('Dir_No_Write').'<br/>'.str_replace('../','',$path).'<br/>'.str_replace('../','',$path_thumb), 403)->send();
+				exit;
             }
 
             // check if server disables copy or rename
             if (is_function_callable(($action == 'copy' ? 'copy' : 'rename')) === FALSE){
-                die(sprintf(trans('Function_Disabled'), ($action == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut')))));
+                response(sprintf(trans('Function_Disabled'), ($action == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut')))), 403)->send();
+				exit;
             }
 
             if ($action == 'copy')
@@ -326,22 +370,26 @@ if (isset($_GET['action']))
 
             // check perm
             if ($chmod_perm === FALSE) {
-                die(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files')) )));
+                response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files')) )), 403)->send();
+				exit;
             }
 
             // check mode
             if (!preg_match("/^[0-7]{3}$/", $mode)){
-                die(trans('File_Permission_Wrong_Mode'));
+                response(trans('File_Permission_Wrong_Mode'), 400)->send();
+				exit;
             }
 
             // check recursive option
             if (!in_array($rec_option, $valid_options)){
-                die("wrong option");
+                response("wrong option", 400)->send();
+				exit;
             }
 
             // check if server disabled chmod
             if (is_function_callable('chmod') === FALSE){
-                die(sprintf(trans('Function_Disabled'), 'chmod'));
+                response(sprintf(trans('Function_Disabled'), 'chmod'), 403)->send();
+				exit;
             }
 
             $mode = "0".$mode;
@@ -357,23 +405,28 @@ if (isset($_GET['action']))
 
             // no file
             if (!file_exists($path)) {
-                die(trans('File_Not_Found'));
+                response(trans('File_Not_Found'), 404)->send();
+				exit;
             }
 
             // not writable or edit not allowed
             if (!is_writable($path) || $edit_text_files === FALSE) {
-                die(sprintf(trans('File_Open_Edit_Not_Allowed'), strtolower(trans('Edit'))));
+                response(sprintf(trans('File_Open_Edit_Not_Allowed'), strtolower(trans('Edit'))), 403)->send();
+				exit;
             }
 
             if (@file_put_contents($path, $content) === FALSE) {
-                die(trans('File_Save_Error'));
+                response(trans('File_Save_Error'), 500)->send();
+				exit;
             }
             else {
-                echo trans('File_Save_OK');
+                response(trans('File_Save_OK'))->send();
+				exit;
             }
 
             break;
         default:
-            die('wrong action');
+            response('wrong action', 400)->send();
+			exit;
     }
 }
