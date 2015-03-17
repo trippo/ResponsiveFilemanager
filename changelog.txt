@@ -3,11 +3,11 @@ Responsive Filemanager Changelog
 *********************************************************
 *  RFM 9.9.0
 *********************************************************
-- add compatibility with CKEditor
+- add compatibility with CKEditor (thanks to dennis.buijs)
 - fix ordering and filtering bugs (in js and php)
 - Refactoring of configuration and language files (thanks to rkgrep)
 - updated libraries via bower dependency management (thanks to rkgrep)
-- add Assets compilation via gulp for developing; 
+- add Assets compilation via gulp for developing (thanks to rkgrep)
 
 
 *********************************************************

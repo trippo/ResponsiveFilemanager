@@ -435,14 +435,14 @@ if(isset($_GET['action']))
 		case 'get_lang':
 			if ( ! file_exists('lang/languages.php'))
 			{
-				response('Lang_Not_Found', 404)->send();
+				response(trans('Lang_Not_Found'), 404)->send();
 				exit;
 			}
 
 			$languages = include 'lang/languages.php';
 			if ( ! isset($languages) || ! is_array($languages))
 			{
-				response('Lang_Not_Found', 404)->send();
+				response(trans('Lang_Not_Found'), 404)->send();
 				exit;
 			}
 
