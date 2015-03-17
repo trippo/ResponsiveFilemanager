@@ -18,8 +18,136 @@
 
   var FileManager = {
 
+    contextActions: {
+
+      copy_url : function($trigger)
+      {
+        var m = $('#base_url').val() + $('#cur_dir').val();
+        var add = $trigger.find('a.link').attr('data-file');
+
+        if (add != "" && add != null)
+        {
+          m += add;
+        }
+
+        add = $trigger.find('h4 a.folder-link').attr('data-file');
+
+        if (add != "" && add != null)
+        {
+          m += add;
+        }
+
+        bootbox.alert(
+          'URL:<br/>' +
+          '<div class="input-append" style="width:100%">' +
+          '<input id="url_text' + copy_count + '" type="text" style="width:80%; height:30px;" value="' + encodeURL(m) + '" />' +
+          '<button id="copy-button' + copy_count + '" class="btn btn-inverse copy-button" style="width:20%; height:30px;" data-clipboard-target="url_text' + copy_count + '" data-clipboard-text="Copy Me!" title="copy">' +
+          '</button>' +
+          '</div>'
+        );
+
+        $('#copy-button' + copy_count).html('<i class="icon icon-white icon-share"></i> ' + $('#lang_copy').val());
+
+        var client = new ZeroClipboard($('#copy-button' + copy_count));
+
+        client.on("ready", function (readyEvent)
+        {
+
+          client.on("wrongFlash noFlash", function ()
+          {
+            ZeroClipboard.destroy();
+          });
+
+          client.on("aftercopy", function (event)
+          {
+            $('#copy-button' + copy_count).html('<i class="icon icon-ok"></i> ' + $('#ok').val());
+            $('#copy-button' + copy_count).attr('class', 'btn disabled');
+            copy_count++;
+          });
+
+          client.on('error', function (event) {});
+
+        });
+      },
+
+      unzip: function($trigger)
+      {
+        var m = $('#sub_folder').val() + $('#fldr_value').val() + $trigger.find('a.link').attr('data-file');
+        $.ajax({
+          type: "POST",
+          url: "ajax_calls.php?action=extract",
+          data: {
+            path: m
+          }
+        }).done(function (msg)
+        {
+          if (msg != "")
+          {
+            bootbox.alert(msg);
+          }
+          else
+          {
+            window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+          }
+        });
+      },
+
+      edit_img: function($trigger)
+      {
+        var filename = $trigger.attr('data-name');
+        var full_path = $('#base_url_true').val() + $('#cur_dir').val() + filename;
+
+        var aviaryElement = $('#aviary_img');
+
+        aviaryElement.attr('data-name', filename);
+        aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));
+      },
+
+      duplicate: function($trigger)
+      {
+        var old_name = $trigger.find('h4').text().trim();
+
+        bootbox.prompt($('#lang_duplicate').val(), $('#cancel').val(), $('#ok').val(), function (name)
+        {
+          if (name !== null)
+          {
+            name = fix_filename(name);
+            if (name != old_name)
+            {
+              var _this = $trigger.find('.rename-file');
+              execute_action('duplicate_file', _this.attr('data-path'), _this.attr('data-thumb'), name, _this, 'apply_file_duplicate');
+            }
+          }
+        }, old_name);
+      },
+
+      copy: function($trigger)
+      {
+        copy_cut_clicked($trigger, 'copy');
+      },
+      cut: function($trigger)
+      {
+        copy_cut_clicked($trigger, 'cut');
+      },
+      paste: function()
+      {
+        paste_to_this_dir();
+      },
+      chmod: function($trigger)
+      {
+        chmod($trigger);
+      },
+      edit_text_file: function($trigger)
+      {
+        edit_text_file($trigger);
+      }
+
+    },
+
     makeContextMenu: function()
     {
+      var fm = this;
+
       $.contextMenu({
         selector: 'figure:not(.back-directory), .list-view2 figure:not(.back-directory)',
         autoHide: true,
@@ -31,141 +159,7 @@
           var options = {
             callback: function (key, options)
             {
-              switch (key)
-              {
-                case "copy_url":
-
-                  var m = $('#base_url').val() + $('#cur_dir').val();
-                  var add = $trigger.find('a.link').attr('data-file');
-
-                  if (add != "" && add != null)
-                  {
-                    m += add;
-                  }
-
-                  add = $trigger.find('h4 a.folder-link').attr('data-file');
-
-                  if (add != "" && add != null)
-                  {
-                    m += add;
-                  }
-
-                  bootbox.alert(
-                    'URL:<br/>' +
-                    '<div class="input-append" style="width:100%">' +
-                    '<input id="url_text' + copy_count + '" type="text" style="width:80%; height:30px;" value="' + encodeURL(m) + '" />' +
-                    '<button id="copy-button' + copy_count + '" class="btn btn-inverse copy-button" style="width:20%; height:30px;" data-clipboard-target="url_text' + copy_count + '" data-clipboard-text="Copy Me!" title="copy">' +
-                    '</button>' +
-                    '</div>'
-                  );
-
-                  $('#copy-button' + copy_count).html('<i class="icon icon-white icon-share"></i> ' + $('#lang_copy').val());
-
-                  var client = new ZeroClipboard($('#copy-button' + copy_count));
-
-                  client.on("ready", function (readyEvent)
-                  {
-
-                    client.on("wrongFlash noFlash", function ()
-                    {
-                      ZeroClipboard.destroy();
-                    });
-
-                    client.on("aftercopy", function (event)
-                    {
-                      $('#copy-button' + copy_count).html('<i class="icon icon-ok"></i> ' + $('#ok').val());
-                      $('#copy-button' + copy_count).attr('class', 'btn disabled');
-                      copy_count++;
-                    });
-
-                    client.on('error', function (event) {});
-
-                  });
-                  break;
-
-                case "unzip":
-
-                  var m = $('#sub_folder').val() + $('#fldr_value').val() + $trigger.find('a.link').attr('data-file');
-                  $.ajax({
-                    type: "POST",
-                    url: "ajax_calls.php?action=extract",
-                    data: {
-                      path: m
-                    }
-                  }).done(function (msg)
-                  {
-                    if (msg != "")
-                    {
-                      bootbox.alert(msg);
-                    }
-                    else
-                    {
-                      window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
-                    }
-                  });
-
-                  break;
-
-                case "edit_img":
-
-                  var filename = $trigger.attr('data-name');
-                  var full_path = $('#base_url_true').val() + $('#cur_dir').val() + filename;
-
-                  var aviaryElement = $('#aviary_img');
-
-                  aviaryElement.attr('data-name', filename);
-                  aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));
-
-                  break;
-
-                case "duplicate":
-
-                  var old_name = $trigger.find('h4').text().trim();
-
-                  bootbox.prompt($('#lang_duplicate').val(), $('#cancel').val(), $('#ok').val(), function (name)
-                  {
-                    if (name !== null)
-                    {
-                      name = fix_filename(name);
-                      if (name != old_name)
-                      {
-                        var _this = $trigger.find('.rename-file');
-                        execute_action('duplicate_file', _this.attr('data-path'), _this.attr('data-thumb'), name, _this, 'apply_file_duplicate');
-                      }
-                    }
-                  }, old_name);
-
-                  break;
-                case "copy":
-
-                  copy_cut_clicked($trigger, 'copy');
-
-                  break;
-
-                case "cut":
-
-                  copy_cut_clicked($trigger, 'cut');
-
-                  break;
-
-                case "paste":
-
-                  paste_to_this_dir();
-
-                  break;
-
-                case "chmod":
-
-                  chmod($trigger);
-
-                  break;
-
-                case "edit_text_file":
-
-                  edit_text_file($trigger);
-
-                  break;
-              }
+              fm.contextActions[key]($trigger);
             },
             items: {}
           };
@@ -1952,7 +1946,7 @@
     //rename link && delete link
     var link3 = container.find('a.rename-file');
     var link4 = container.find('a.delete-file');
-    
+
     var path_old = link3.attr('data-path');
     var path_thumb = link3.attr('data-thumb');
     var new_path = path_old.replace(old_name, name + "." + extension);
