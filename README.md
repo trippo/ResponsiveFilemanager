@@ -23,6 +23,7 @@ Creator : info@albertoperipolli.com - tr1pp0
 - FRA [Mathieu Ducharme]
 - GER [Oliver Beta]
 - GRC [vkouvelis]
+- Hebrew [sagie212]
 - HUN [Novak Szabolcs]
 - IND [urayogi]
 - ITA

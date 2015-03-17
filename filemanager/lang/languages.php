@@ -17,6 +17,7 @@ return array(
 	'hr' => 'Hrvatski jezik',
 	'hu_HU' => 'Magyar',
 	'id' => 'Bahasa Indonesia',
+	'he_IL' => 'Hebrew (Israel)',
 	'it' => 'Italiano',
 	'ja' => '日本',
 	'lt' => 'Lietuvių kalba',
