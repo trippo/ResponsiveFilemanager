@@ -5,3 +5,7 @@ thumbs/*
 !thumbs/thumbs.txt
 bower_components
 node_modules
+
+#Exclude compiled scripts and styles from repository
+filemanager/js/*
+filemanager/css/*
