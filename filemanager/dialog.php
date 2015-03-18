@@ -239,44 +239,7 @@ $get_params = http_build_query(array(
 		<title>Responsive FileManager</title>
 		<link rel="shortcut icon" href="img/ico/favicon.ico">
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
-		<?php
-			$sprite_lang_file = 'img/spritemap_'.$lang.'.png';
-			$sprite_lang_file2 = 'img/spritemap@2x_'.$lang.'.png';
-
-			if ( ! file_exists($sprite_lang_file) || ! file_exists($sprite_lang_file2)){
-			//fallback
-			$sprite_lang_file = 'img/spritemap_en_EN.png';
-			$sprite_lang_file2 = 'img/spritemap@2x_en_EN.png';
-			if ( ! file_exists($sprite_lang_file) || ! file_exists($sprite_lang_file2)){
-				// we are in deep ****
-				echo '<script>console.log("Error: Spritemap not found!");</script>';
-				// exit();
-			}
-		}
-		?>
-		<style>
-			.dropzone .dz-default.dz-message,
-			.dropzone .dz-preview .dz-error-mark,
-			.dropzone-previews .dz-preview .dz-error-mark,
-			.dropzone .dz-preview .dz-success-mark,
-			.dropzone-previews .dz-preview .dz-success-mark,
-			.dropzone .dz-preview .dz-progress .dz-upload,
-			.dropzone-previews .dz-preview .dz-progress .dz-upload {
-				background-image: url(<?php echo $sprite_lang_file; ?>);
-			}
-
-			@media all and (-webkit-min-device-pixel-ratio:1.5),(min--moz-device-pixel-ratio:1.5),(-o-min-device-pixel-ratio:1.5/1),(min-device-pixel-ratio:1.5),(min-resolution:138dpi),(min-resolution:1.5dppx) {
-				.dropzone .dz-default.dz-message,
-				.dropzone .dz-preview .dz-error-mark,
-				.dropzone-previews .dz-preview .dz-error-mark,
-				.dropzone .dz-preview .dz-success-mark,
-				.dropzone-previews .dz-preview .dz-success-mark,
-				.dropzone .dz-preview .dz-progress .dz-upload,
-				.dropzone-previews .dz-preview .dz-progress .dz-upload {
-					background-image: url(<?php echo $sprite_lang_file2; ?>);
-				}
-			}
-		</style>
+		<link href="js/jPlayer/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css">
 	<!--[if lt IE 8]><style>
 	.img-container span, .img-container-mini span {
 	    display: inline-block;
@@ -284,7 +247,7 @@ $get_params = http_build_query(array(
 	}
 	</style><![endif]-->
 	<script src="js/plugins.js"></script>
-	<script src="../bower_components/jPlayer/jquery.jplayer/jquery.jplayer.js"></script>
+	<script src="js/jPlayer/jquery.jplayer/jquery.jplayer.js"></script>
 	<script src="js/modernizr.custom.js"></script>
 	<?php
 	if ($aviary_active){
@@ -326,9 +289,8 @@ $get_params = http_build_query(array(
 	    var featherEditor = new Aviary.Feather({
 		<?php
 	        foreach ($aviary_defaults_config as $aopt_key => $aopt_val) {
-	       ?>
-		   <?php echo $aopt_key; ?>: <?php echo json_encode($aopt_val); ?>,
-		  <?php } ?>
+	        	echo $aopt_key.": ".json_encode($aopt_val).",";
+			} ?>
 	      onSave: function(imageID, newURL) {
 			    show_animation();
 			    var img = document.getElementById(imageID);
@@ -432,7 +394,7 @@ $get_params = http_build_query(array(
 				    <input type="hidden" name="path" value="<?php echo $cur_path?>"/>
 				    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
 				    <div class="fallback">
-					<?php echo  trans('Upload_file')?>:<br/>
+					<h3><?php echo  trans('Upload_file')?>:</h3><br/>
 					<input name="file" type="file" />
 					<input type="hidden" name="fldr" value="<?php echo $subdir; ?>"/>
 					<input type="hidden" name="view" value="<?php echo $view; ?>"/>
@@ -547,12 +509,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 	    </button>
-	    <div class="brand"><?php echo trans('Toolbar'); ?> -></div>
+	    <div class="brand"><?php echo trans('Toolbar'); ?></div>
 	    <div class="nav-collapse collapse">
 		<div class="filters">
 		    <div class="row-fluid">
 			<div class="span4 half">
-				  <span class="mobile-inline-visible"><?php echo trans('Operations'); ?>:</span>
 			    <?php if($upload_files){ ?>
 						    <button class="tip btn upload-btn" title="<?php echo  trans('Upload_file'); ?>"><i class="rficon-upload"></i></button>
 			    <?php } ?>
@@ -568,12 +529,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<?php } ?>
 			</div>
 			<div class="span2 half view-controller">
-				  <span class="mobile-inline-visible"><?php echo trans('View'); ?>:</span>
 			    <button class="btn tip<?php if($view==0) echo " btn-inverse"; ?>" id="view0" data-value="0" title="<?php echo trans('View_boxes'); ?>"><i class="icon-th <?php if($view==0) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==1) echo " btn-inverse"; ?>" id="view1" data-value="1" title="<?php echo trans('View_list'); ?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white"; ?>"></i></button>
 			    <button class="btn tip<?php if($view==2) echo " btn-inverse"; ?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list'); ?>"><i class="icon-fire <?php if($view==2) echo "icon-white"; ?>"></i></button>
 			</div>
-			<div class="span6 half types">
+			<div class="span6 entire types">
 				<span><?php echo trans('Filters'); ?>:</span>
 			    <?php if($_GET['type']!=1 && $_GET['type']!=3){ ?>
 			    <input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
@@ -675,7 +635,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 		foreach ($files as $file_array) {
 		  $file=$file_array['file'];
-			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=trans('Type_dir')) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && strpos($file,$filter)===false))
+			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=trans('Type_dir')) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false))
 			  continue;
 			$new_name=fix_filename($file,$transliteration);
 			if($file!='..' && $file!=$new_name){
@@ -697,7 +657,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				}
 
 			?>
-			    <li data-name="<?php echo $file ?>" class="<?php if($file=='..') echo 'back'; else echo 'dir'; ?>" <?php if(($filter!='' && strpos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
+			    <li data-name="<?php echo $file ?>" class="<?php if($file=='..') echo 'back'; else echo 'dir'; ?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
 			    $file_prevent_rename = false;
 			    $file_prevent_delete = false;
 			    if (isset($filePermissions[$file])) {
@@ -756,7 +716,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		    foreach ($files as $nu=>$file_array) {
 			$file=$file_array['file'];
 
-			    if($file == '.' || $file == '..' || is_dir($current_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && strpos($file,$filter)===false))
+			    if($file == '.' || $file == '..' || is_dir($current_path.$rfm_subfolder.$subdir.$file) || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
 				    continue;
 
 			    $file_path=$current_path.$rfm_subfolder.$subdir.$file;
@@ -852,7 +812,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			    }
 			    if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
 ?>
-		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>" <?php if(($filter!='' && strpos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
+		    <li class="ff-item-type-<?php echo $class_ext; ?> file"  data-name="<?php echo $file; ?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"'; ?>><?php
 		    $file_prevent_rename = false;
 		    $file_prevent_delete = false;
 		    if (isset($filePermissions[$file])) {
@@ -902,7 +862,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 
 				    <a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu; ?>').submit();"><i class="icon-download"></i></a>
-				    <?php if($is_img && $src_thumb!=""){ ?>
+				    <?php if($is_img && $src_thumb!="" && $extension_lower!="tiff" && $extension_lower!="tif"){ ?>
 				    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 				    <?php }elseif(($is_video || $is_audio) && in_array($extension_lower,$jplayer_ext)){ ?>
 				    <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"

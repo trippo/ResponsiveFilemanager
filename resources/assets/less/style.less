@@ -429,10 +429,16 @@ ul.sorting.dropdown-menu>li>a{
 		padding-bottom: 4px;
 	}
 	.filters{
-		div.span3.half,div.span2.half,div.span4.half,div.half.span6{
-			float:none;
-			width:100%;
+		div.span3.half,div.span2.half,div.span4.half{
+			float:left;
+			width: auto;
+			margin-right: 10px;
 
+		}		
+		div.entire{
+			float: none;
+			width: 100%;
+			clear: both;
 		}
 	}
 
@@ -1044,9 +1050,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
   margin-top: -61.5px;
   top: 50%;
   left: 50%;
-}
-.dropzone .dz-default.dz-message span{
-	display: none;
 }
 
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]{
