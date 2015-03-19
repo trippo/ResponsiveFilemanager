@@ -4,6 +4,8 @@ Responsive FileManager is a free open-source file manager made with the jQuery l
 
 DEMO AND DOCUMENTATION: http://www.responsivefilemanager.com/
 
+PRODUCTION VERSION DOWNLOAD: https://github.com/trippo/ResponsiveFilemanager/releases
+
 Released under Creative Commons Attribution-NonCommercial 3.0 Unported License.
 
 Creator : info@albertoperipolli.com - tr1pp0

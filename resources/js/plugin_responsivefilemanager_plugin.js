@@ -26,6 +26,14 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
 	}
     
 	function openmanager() {
+
+		var width = $(window).width()-20;
+		var height = $(window).height()-60;
+		if(width > 1800) width=1800;
+		if(height > 1200) height=1200;
+		var width_reduce = (width - 20) % 138;
+		width = width - width_reduce;
+
 		editor.focus(true);
 		var title="RESPONSIVE FileManager";
 		if (typeof editor.settings.filemanager_title !== "undefined" && editor.settings.filemanager_title) {
@@ -62,8 +70,8 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
 		win = editor.windowManager.open({
 			title: title,
 			file: editor.settings.external_filemanager_path+'dialog.php?type=4&descending='+descending+sort_by+fldr+crossdomain+'&lang='+editor.settings.language+'&akey='+akey,
-			width: 860,
-			height: 570,
+			width: width,
+			height: height,
 			inline: 1,
 			resizable: true,
 			maximizable: true

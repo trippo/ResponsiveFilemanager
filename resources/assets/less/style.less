@@ -1024,12 +1024,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
 
 
 .dropzone {
-  border: 1px solid rgba(0,0,0,0.03);
-  min-height: 360px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  background: rgba(0,0,0,0.03);
-  padding: 23px;
+	border: 1px solid rgba(0,0,0,0.03);
+	min-height: 360px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background: rgba(0,0,0,0.03);
+	padding: 23px;
+	.dz-success *{
+		cursor: pointer !important;
+	}
 }
 .dropzone .dz-default.dz-message {
   opacity: 1;
@@ -1040,7 +1043,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
   -o-transition: opacity 0.3s ease-in-out;
   -ms-transition: opacity 0.3s ease-in-out;
   transition: opacity 0.3s ease-in-out;
-  /*background-image: url("../img/spritemap.png");*/
   background-repeat: no-repeat;
   background-position: 0 0;
   position: absolute;
@@ -1051,6 +1053,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#40ffffff', e
   top: 50%;
   left: 50%;
 }
+
+
 
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled]{
 	background-color: #333;

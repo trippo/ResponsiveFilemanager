@@ -216,6 +216,12 @@ if (!isset($_GET['field_id'])) $_GET['field_id'] = '';
 $field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
 $type_param = fix_get_params($_GET['type']);
 
+if ($type_param==1) 	 $apply = 'apply_img';
+elseif($type_param==2) $apply = 'apply_link';
+elseif($type_param==0 && $_GET['field_id']=='') $apply = 'apply_none';
+elseif($type_param==3) $apply = 'apply_video';
+else $apply = 'apply';
+
 $get_params = http_build_query(array(
     'editor'    => $editor,
     'type'      => $type_param,
@@ -267,13 +273,22 @@ $get_params = http_build_query(array(
 	    var allowed_ext=new Array('<?php echo implode("','", $ext)?>');
 	    var image_editor=<?php echo $aviary_active?"true":"false"; ?>;
 	    //dropzone config
-	    Dropzone.options.myAwesomeDropzone = {
+	    Dropzone.options.rfmDropzone = {
 		    dictInvalidFileType: "<?php echo trans('Error_extension');?>",
 		    dictFileTooBig: "<?php echo trans('Error_Upload'); ?>",
 		    dictResponseError: "SERVER ERROR",
 		    paramName: "file", // The name that will be used to transfer the file
 		    maxFilesize: <?php echo $MaxSizeUpload; ?>, // MB
 		    url: "upload.php",
+		    <?php if($apply!="apply_none"){ ?>
+		    init: function() {
+			    this.on("success", function(file,res) { 
+			    	file.previewElement.addEventListener("click", function() {
+						<?php echo $apply; ?>(res,'<?php echo $field_id; ?>');
+					});
+			    });
+			},
+			<?php } ?>
 		    accept: function(file, done) {
 			    var extension=file.name.split('.').pop();
 			    extension=extension.toLowerCase();
@@ -328,6 +343,8 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="editor" value="<?php echo $editor; ?>" />
 	<input type="hidden" id="view" value="<?php echo $view; ?>" />
   	<input type="hidden" id="subdir" value="<?php echo $subdir; ?>" />
+  	<input type="hidden" id="field_id" value="<?php echo $field_id; ?>" />
+  	<input type="hidden" id="type_param" value="<?php echo $type_param; ?>" />
   	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir; ?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir; ?>" />
 	<input type="hidden" id="insert_folder_name" value="<?php echo trans('Insert_Folder_Name'); ?>" />
@@ -370,6 +387,7 @@ $get_params = http_build_query(array(
 	<input type="hidden" id="lang_filename" value="<?php echo trans('Filename'); ?>" />
 	<input type="hidden" id="lang_file_info" value="<?php echo fix_strtoupper(trans('File_info')); ?>" />
 	<input type="hidden" id="lang_edit_image" value="<?php echo trans('Edit_image'); ?>" />
+	<input type="hidden" id="lang_select" value="<?php echo trans('Select'); ?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo trans('Extract'); ?>" />
 	<input type="hidden" id="transliteration" value="<?php echo $transliteration?"true":"false"; ?>" />
 	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces?"true":"false"; ?>" />
@@ -390,7 +408,7 @@ $get_params = http_build_query(array(
 	    <div class="tab-content">
 			<div class="tab-pane active" id="tab1">
 		    	<?php } ?>
-				<form action="dialog.php" method="post" enctype="multipart/form-data" id="myAwesomeDropzone" class="dropzone">
+				<form action="dialog.php" method="post" enctype="multipart/form-data" id="rfmDropzone" class="dropzone">
 				    <input type="hidden" name="path" value="<?php echo $cur_path?>"/>
 				    <input type="hidden" name="path_thumb" value="<?php echo $thumbs_path.$subdir?>"/>
 				    <div class="fallback">
@@ -428,12 +446,6 @@ $get_params = http_build_query(array(
 
 $class_ext = '';
 $src = '';
-
-if ($_GET['type']==1) 	 $apply = 'apply_img';
-elseif($_GET['type']==2) $apply = 'apply_link';
-elseif($_GET['type']==0 && $_GET['field_id']=='') $apply = 'apply_none';
-elseif($_GET['type']==3) $apply = 'apply_video';
-else $apply = 'apply';
 
 $files = scandir($current_path.$rfm_subfolder.$subdir);
 $n_files=count($files);
@@ -823,7 +835,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
 		    }
             ?>		<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
-				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $field_id; ?>" data-function="<?php echo $apply; ?>">
+				<a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-function="<?php echo $apply; ?>">
 				<div class="img-precontainer">
 				    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $extension_lower ?></div><?php } ?>
 				    <div class="img-container">
@@ -845,7 +857,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<?php } ?>
 				</a>
 				<div class="box">
-				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-field_id="<?php echo $field_id; ?>" data-function="<?php echo $apply; ?>">
+				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file; ?>" data-function="<?php echo $apply; ?>">
 				<?php echo $filename; ?></a> </h4>
 				</div>
 				<input type="hidden" class="date" value="<?php echo $file_array['date']; ?>"/>

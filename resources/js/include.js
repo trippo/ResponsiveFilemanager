@@ -1,10 +1,9 @@
-var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_video,apply_link,apply_file_rename,apply_file_duplicate,apply_folder_rename;
-
+var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_video,apply_link,apply_file_rename,apply_file_duplicate,apply_folder_rename;
 (function ($, Modernizr, image_editor)
 {
   "use strict";
 
-  var version = "9.9.1";
+  var version = "9.9.2";
   var active_contextmenu = true;
   var copy_count = 0;
 
@@ -18,26 +17,32 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
     };
   })();
 
+  var getLink = function($trigger)
+  {
+    var m = $('#base_url').val() + $('#cur_dir').val();
+    var add = $trigger.find('a.link').attr('data-file');
+
+    if (add != "" && add != null)
+    {
+      m += add;
+    }
+
+    add = $trigger.find('h4 a.folder-link').attr('data-file');
+
+    if (add != "" && add != null)
+    {
+      m += add;
+    }
+    return m;
+  }
+
   var FileManager = {
 
     contextActions: {
 
       copy_url : function($trigger)
       {
-        var m = $('#base_url').val() + $('#cur_dir').val();
-        var add = $trigger.find('a.link').attr('data-file');
-
-        if (add != "" && add != null)
-        {
-          m += add;
-        }
-
-        add = $trigger.find('h4 a.folder-link').attr('data-file');
-
-        if (add != "" && add != null)
-        {
-          m += add;
-        }
+        var m = getLink($trigger);
 
         bootbox.alert(
           'URL:<br/>' +
@@ -123,6 +128,40 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
         }, old_name);
       },
 
+      select: function($trigger)
+      {   
+        var url = getLink($trigger);
+        var external = $('#field_id').val();
+        if (external != "")
+        {
+          if ($('#crossdomain').val() == 1)
+          {
+            windowParent.postMessage({
+                sender: 'responsivefilemanager',
+                url: url,
+                field_id: external
+              },
+              '*'
+            );
+          }
+          else
+          {
+            var target = $('#' + external, windowParent.document);
+            target.val(url).trigger('change');
+            if (typeof windowParent.responsive_filemanager_callback == 'function')
+            {
+              windowParent.responsive_filemanager_callback(external);
+            }
+            close_window();
+          }
+        }
+        else
+        {
+          apply_any(url);
+        }
+      
+        
+      },
       copy: function($trigger)
       {
         copy_cut_clicked($trigger, 'copy');
@@ -180,6 +219,16 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
               disabled: false
             };
           }
+          // select folder
+          if ($trigger.hasClass('directory') && $('#type_param').val()!=4)
+          {
+            options.items.select = {
+              name: $('#lang_select').val(),
+              icon: "",
+              disabled: false
+            };
+          }
+
           options.items.copy_url = {
             name: $('#lang_show_url').val(),
             icon: "url",
@@ -206,6 +255,7 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
               disabled: false
             };
           }
+
 
           // duplicate
           if (!$trigger.hasClass('directory') && $('#duplicate').val() == 1)
@@ -452,7 +502,7 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
 
       function handleFileLink($el)
       {
-        window[ $el.attr('data-function') ]($el.attr('data-file'), $el.attr('data-field_id'));
+        window[ $el.attr('data-function') ]($el.attr('data-file'), $('#field_id').val());
       }
 
       $('ul.grid').on('click','.link',function ()
@@ -507,7 +557,6 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
               }
             });
 
-            lazyLoad();
             $.ajax({
               url: "ajax_calls.php?action=filter&type=" + val
             }).done(function (msg)
@@ -521,6 +570,8 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
             {
               var sortDescending = $('#descending').val() != 0 ? true : false;
               sortUnorderedList(sortDescending, "." + $('#sort_by').val());
+
+              lazyLoad();
             }, 500);
 
           }, 300);
@@ -656,6 +707,12 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
 
   $(document).ready(function ()
   {
+
+    $('#rfmDropzone').on('click','.dz-success .dz-detail',function(){
+      var _this = $(this);
+      alert(_this.find('.dz-filename span').tex());
+    });
+
     // Right click menu
     if (active_contextmenu)
     {
@@ -1514,7 +1571,7 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
     }
   }
 
-  function encodeURL(url)
+  encodeURL = function(url)
   {
     var tmp = url.split('/');
     for (var i = 3; i < tmp.length; i++)
@@ -1637,11 +1694,11 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
   {
     if ($('#popup').val() == 1)
     {
-      var window_parent = window.opener;
+      var windowParent = window.opener;
     }
     else
     {
-      var window_parent = window.parent;
+      var windowParent = window.parent;
     }
     var path = $('#cur_dir').val();
     path = path.replace('\\', '/');
@@ -1655,7 +1712,7 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
     {
       if ($('#crossdomain').val() == 1)
       {
-        window_parent.postMessage({
+        windowParent.postMessage({
             sender: 'responsivefilemanager',
             url: url,
             field_id: external
@@ -1665,11 +1722,11 @@ var show_animation,hide_animation,apply,apply_none,apply_img,apply_any,apply_vid
       }
       else
       {
-        var target = $('#' + external, window_parent.document);
+        var target = $('#' + external, windowParent.document);
         target.val(url).trigger('change');
-        if (typeof window_parent.responsive_filemanager_callback == 'function')
+        if (typeof windowParent.responsive_filemanager_callback == 'function')
         {
-          window_parent.responsive_filemanager_callback(external);
+          windowParent.responsive_filemanager_callback(external);
         }
         close_window();
       }

@@ -161,6 +161,7 @@ if ( ! empty($_FILES))
 				exit();
 			}
 		}
+		echo $_FILES['file']['name'];
 	}
 	else // file ext. is not in the allowed list
 	{
