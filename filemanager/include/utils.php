@@ -419,7 +419,7 @@ function fix_filename($str, $transliteration, $convert_spaces = false, $replace_
 	{
 		if (function_exists('transliterator_transliterate'))
 		{
-			$str = transliterator_transliterate('Accents-Any', $str);
+			 $str = transliterator_transliterate('Accents-Any', utf8_encode($str));
 		}
 		else
 		{

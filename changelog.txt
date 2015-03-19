@@ -6,6 +6,7 @@ Responsive Filemanager Changelog
 - added file selection directly from dropzone upload area (you can now select file directly after upload)
 - folder selection in context menu (you can now select also a folder)
 - responsive filemanager modal open on tinyMCE (the dimension of modal depend on window dimension)
+- utf8 translitteration fix
 
 *********************************************************
 *  RFM 9.9.1
