@@ -42,14 +42,14 @@ if ( ! function_exists('trans'))
 			$lang = trim($lang);
 		}
 
-		$language_file = dirname(__FILE__) . '/lang/' . $default_language . '.php';
+		$language_file = dirname(dirname(__FILE__)) . '/lang/' . $default_language . '.php';
 		if ($lang != $default_language)
 		{
 			$path_parts = pathinfo($lang);
 
-			if (is_readable(dirname(__FILE__) . '/lang/' . $path_parts['basename'] . '.php'))
+			if (is_readable(dirname(dirname(__FILE__)) . '/lang/' . $path_parts['basename'] . '.php'))
 			{
-				$language_file = dirname(__FILE__) . '/lang/' . $path_parts['basename'] . '.php';
+				$language_file = dirname(dirname(__FILE__)) . '/lang/' . $path_parts['basename'] . '.php';
 			}
 			else
 			{
