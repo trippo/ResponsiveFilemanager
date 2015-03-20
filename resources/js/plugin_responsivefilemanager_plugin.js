@@ -27,12 +27,16 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
     
 	function openmanager() {
 
-		var width = $(window).width()-20;
-		var height = $(window).height()-60;
+		var width = window.innerWidth-30;
+		var height = window.innerHeight-60;
 		if(width > 1800) width=1800;
 		if(height > 1200) height=1200;
 		var width_reduce = (width - 20) % 138;
-		width = width - width_reduce;
+		width = width - width_reduce + 10;
+		if(width>600){
+			var width_reduce = (width - 20) % 138;
+			width = width - width_reduce + 10;
+		}
 
 		editor.focus(true);
 		var title="RESPONSIVE FileManager";

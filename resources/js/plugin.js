@@ -28,12 +28,14 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 	}
 	
 	function filemanager (id, value, type, win) {
-		var width = $(window).width()-20;
-		var height = $(window).height()-60;
+		var width = window.innerWidth-30;
+		var height = window.innerHeight-60;
 		if(width > 1800) width=1800;
 		if(height > 1200) height=1200;
-		var width_reduce = (width - 20) % 138;
-		width = width - width_reduce;
+		if(width>600){
+			var width_reduce = (width - 20) % 138;
+			width = width - width_reduce + 10;
+		}
 
 		// DEFAULT AS FILE
 		urltype=2;
