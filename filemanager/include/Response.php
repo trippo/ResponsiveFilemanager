@@ -1,5 +1,4 @@
-<?php namespace tripo\Filemanager;
-
+<?php 
 
 /**
  * Class Response
