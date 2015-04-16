@@ -132,6 +132,19 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       {   
         var url = getLink($trigger);
         var external = $('#field_id').val();
+
+		var windowParent;
+
+        if ($('#popup').val() == 1)
+        {
+        	windowParent = window.opener;
+        }
+        else
+        {
+        	windowParent = window.parent;
+        }     
+
+
         if (external != "")
         {
           if ($('#crossdomain').val() == 1)
