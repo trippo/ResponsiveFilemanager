@@ -132,19 +132,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       {   
         var url = getLink($trigger);
         var external = $('#field_id').val();
-
-		var windowParent;
-
+        var windowParent;
         if ($('#popup').val() == 1)
         {
-        	windowParent = window.opener;
+          windowParent = window.opener;
         }
         else
         {
-        	windowParent = window.parent;
-        }     
-
-
+          windowParent = window.parent;
+        }
         if (external != "")
         {
           if ($('#crossdomain').val() == 1)
@@ -1909,13 +1905,19 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     }
     else
     {
+      parent.$('.modal').modal('hide');
       if (typeof parent.jQuery !== "undefined" && parent.jQuery)
       {
-        parent.jQuery.fancybox.close();
+        if(typeof parent.jQuery.fancybox == 'function'){
+          parent.jQuery.fancybox.close();
+        }
+
       }
       else
       {
-        parent.$.fancybox.close();
+        if(typeof parent.$.fancybox == 'function'){
+          parent.$.fancybox.close();
+        }
       }
     }
   }
