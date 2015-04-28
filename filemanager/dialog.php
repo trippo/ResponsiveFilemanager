@@ -230,13 +230,13 @@ $get_params = array(
     'crossdomain' => $crossdomain,
     'field_id'  => $field_id,
     'relative_url' => $return_relative_url,
-    'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key'),
-    'fldr'      => ''
+    'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
 );
 if(isset($_GET['CKEditorFuncNum'])){
     $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
     $get_params['CKEditor'] = (isset($_GET['CKEditor'])? $_GET['CKEditor'] : '');
 }
+$get_params['fldr'] ='';
 
 $get_params = http_build_query($get_params);
 

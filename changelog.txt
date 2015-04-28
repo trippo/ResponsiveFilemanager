@@ -5,6 +5,7 @@ Responsive Filemanager Changelog
 *********************************************************
 - Fixed the problem with undefined windowParent
 - Fixed a problem with selection on CKeditor
+- Add bootstrap modal default support
 
 *********************************************************
 *  RFM 9.9.2
