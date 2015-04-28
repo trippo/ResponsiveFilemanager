@@ -78,6 +78,7 @@ if(isset($_GET['action']))
 				|| strpos($_POST['path'], '../') !== false
 				|| strpos($_POST['path'], './') === 0
 				|| strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0
+				|| strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0
 				|| $_POST['name'] != fix_filename($_POST['name'], $transliteration, $convert_spaces, $replace_with)
 				|| ! in_array(strtolower($info['extension']), array( 'jpg', 'jpeg', 'png' ))
 			)

@@ -222,7 +222,7 @@ elseif($type_param==0 && $_GET['field_id']=='') $apply = 'apply_none';
 elseif($type_param==3) $apply = 'apply_video';
 else $apply = 'apply';
 
-$get_params = http_build_query(array(
+$get_params = array(
     'editor'    => $editor,
     'type'      => $type_param,
     'lang'      => $lang,
@@ -232,9 +232,15 @@ $get_params = http_build_query(array(
     'relative_url' => $return_relative_url,
     'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key'),
     'fldr'      => ''
-));
-?>
+);
+if(isset($_GET['CKEditorFuncNum'])){
+    $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
+    $get_params['CKEditor'] = (isset($_GET['CKEditor'])? $_GET['CKEditor'] : '');
+}
 
+$get_params = http_build_query($get_params);
+
+?>
 <!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml">
 	<head>
