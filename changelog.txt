@@ -1,6 +1,12 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.9.3
+*********************************************************
+- Fixed the problem with undefined windowParent
+- Fixed a problem with selection on CKeditor
+
+*********************************************************
 *  RFM 9.9.2
 *********************************************************
 - added file selection directly from dropzone upload area (you can now select file directly after upload)
