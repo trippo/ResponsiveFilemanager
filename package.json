@@ -1,0 +1,15 @@
+{
+  "name": "ResponsiveFilemanager",
+  "version": "10.0.0",
+  "author": {
+    "name": "Alberto Peripolli",
+    "email": "info@albertoperipolli.com"
+  },
+  "license": "Creative Commons Attribution - NonCommercial 3.0 Unported License",
+  "github": "https://github.com/trippo/ResponsiveFilemanager",
+  "homepage": "http://www.responsivefilemanager.com/",
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "laravel-elixir": "*"
+  }
+}

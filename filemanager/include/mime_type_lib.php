@@ -1,19 +1,19 @@
 <?php
 
 /********************************
-	The following commented code can be uncommented if you wish
-	to quickly find information about your system's MIME setup.
-	
-	Simply remove the "REMOVE ME TO TEST" lines below to have
-	the code run when this file runs.
-	
-	In addition to these tests, you'll find some commented code
-	at the bottom of the file that can be used to test the
-	function.
-	
-	Run the code with this command:
-	php mime_type_lib.php
-********************************/
+ * The following commented code can be uncommented if you wish
+ * to quickly find information about your system's MIME setup.
+ *
+ * Simply remove the "REMOVE ME TO TEST" lines below to have
+ * the code run when this file runs.
+ *
+ * In addition to these tests, you'll find some commented code
+ * at the bottom of the file that can be used to test the
+ * function.
+ *
+ * Run the code with this command:
+ * php mime_type_lib.php
+ ********************************/
 
 
 /* REMOVE ME TO TEST
@@ -31,30 +31,41 @@ else
 REMOVE ME TO TEST */
 
 
+if ( ! function_exists('get_file_mime_type'))
+{
+	function get_file_mime_type($filename, $debug = false)
+	{
+		if (function_exists('finfo_open') && function_exists('finfo_file') && function_exists('finfo_close'))
+		{
+			$fileinfo = finfo_open(FILEINFO_MIME);
+			$mime_type = finfo_file($fileinfo, $filename);
+			finfo_close($fileinfo);
 
-if( ! function_exists( 'get_file_mime_type' ) ) {
-	function get_file_mime_type( $filename, $debug = false ) {
-		if ( function_exists( 'finfo_open' ) && function_exists( 'finfo_file' ) && function_exists( 'finfo_close' ) ) {
-			$fileinfo = finfo_open( FILEINFO_MIME );
-			$mime_type = finfo_file( $fileinfo, $filename );
-			finfo_close( $fileinfo );
-			
-			if ( ! empty( $mime_type ) ) {
-				if ( true === $debug )
+			if ( ! empty($mime_type))
+			{
+				if (true === $debug)
+				{
 					return array( 'mime_type' => $mime_type, 'method' => 'fileinfo' );
+				}
+
 				return $mime_type;
 			}
 		}
-		if ( function_exists( 'mime_content_type' ) ) {
-			$mime_type = mime_content_type( $filename );
-			
-			if ( ! empty( $mime_type ) ) {
-				if ( true === $debug )
+		if (function_exists('mime_content_type'))
+		{
+			$mime_type = mime_content_type($filename);
+
+			if ( ! empty($mime_type))
+			{
+				if (true === $debug)
+				{
 					return array( 'mime_type' => $mime_type, 'method' => 'mime_content_type' );
+				}
+
 				return $mime_type;
 			}
 		}
-		
+
 		$mime_types = array(
 			'ai'      => 'application/postscript',
 			'aif'     => 'audio/x-aiff',
@@ -245,40 +256,45 @@ if( ! function_exists( 'get_file_mime_type' ) ) {
 			'xyz'     => 'chemical/x-xyz',
 			'zip'     => 'application/zip'
 		);
-		
-		$ext = strtolower( array_pop( explode( '.', $filename ) ) );
-		
-		if ( ! empty( $mime_types[$ext] ) ) {
-			if ( true === $debug )
-				return array( 'mime_type' => $mime_types[$ext], 'method' => 'from_array' );
-			return $mime_types[$ext];
+
+		$tmp_array = explode('.', $filename);
+		$ext = strtolower(array_pop($tmp_array));
+
+		if ( ! empty($mime_types[ $ext ]))
+		{
+			if (true === $debug)
+			{
+				return array( 'mime_type' => $mime_types[ $ext ], 'method' => 'from_array' );
+			}
+
+			return $mime_types[ $ext ];
 		}
-		
-		if ( true === $debug )
+
+		if (true === $debug)
+		{
 			return array( 'mime_type' => 'application/octet-stream', 'method' => 'last_resort' );
+		}
+
 		return 'application/octet-stream';
 	}
 }
 
 
-
 /********************
-	The following code can be used to test the function.
-	First put a plain text file named "test.txt" and a
-	JPEG image file named "image.jpg" in the same folder
-	as this file.
-	
-	Simply remove the "REMOVE ME TO TEST" lines below to have
-	the code run when this file runs.
-	
-	Run the code with this command:
-	php mime_type_lib.php
-********************/
+ * The following code can be used to test the function.
+ * First put a plain text file named "test.txt" and a
+ * JPEG image file named "image.jpg" in the same folder
+ * as this file.
+ *
+ * Simply remove the "REMOVE ME TO TEST" lines below to have
+ * the code run when this file runs.
+ *
+ * Run the code with this command:
+ * php mime_type_lib.php
+ ********************/
 
 
 /* REMOVE ME TO TEST
 echo get_file_mime_type( 'test.txt' ) . "\n";
 echo print_r( get_file_mime_type( 'image.jpg', true ), true ) . "\n";
 REMOVE ME TO TEST */
-
-?>
