@@ -1,6 +1,13 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.9.4
+*********************************************************
+- Upgrade Aviary Image Editor with new Adobe Creative SDK without size limitation
+- Add files and folders counter on each folder
+- Fixed a problem with folder selection on relative url
+
+*********************************************************
 *  RFM 9.9.3
 *********************************************************
 - Fixed the problem with undefined windowParent
