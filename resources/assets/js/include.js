@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
   "use strict";
 
-  var version = "9.9.3";
+  var version = "9.9.4";
   var active_contextmenu = true;
   var copy_count = 0;
 
@@ -133,6 +133,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         var url = getLink($trigger);
         var external = $('#field_id').val();
         var windowParent;
+        var is_return_relative_url = $('#return_relative_url').val();
+        console.log(url);
+        url = url.replace($('#base_url').val(), '');
+        url = url.replace($('#cur_dir').val(), '');
         if ($('#popup').val() == 1)
         {
           windowParent = window.opener;
@@ -229,7 +233,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
             };
           }
           // select folder
-          if ($trigger.hasClass('directory') && $('#type_param').val()!=4)
+          if ($trigger.hasClass('directory') && $('#type_param').val()!=0)
           {
             options.items.select = {
               name: $('#lang_select').val(),
@@ -352,11 +356,20 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
               disabled: true
             };
           }
-          options.items.size = {
-            name: $trigger.find('.file-size').html(),
-            icon: "size",
-            disabled: true
-          };
+          if ($trigger.hasClass('directory')){
+            options.items.size = {
+              name: $trigger.find('.file-size').html()+" - "+$trigger.find('.nfiles').val()+" "+$('#lang_files').val()+" - "+$trigger.find('.nfolders').val()+" "+$('#lang_folders').val(),
+              icon: "size",
+              disabled: true
+            };
+          }else{
+
+            options.items.size = {
+              name: $trigger.find('.file-size').html(),
+              icon: "size",
+              disabled: true
+            };
+          }
           options.items.date = {
             name: $trigger.find('.file-date').html(),
             icon: "date",
@@ -490,6 +503,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
           if (result == true)
           {
             execute_action('delete_file', _this.attr('data-path'), _this.attr('data-thumb'), '', '', '');
+            var fil = $('#files_number');
+            fil.text(parseInt(fil.text())-1);
             _this.parent().parent().parent().parent().remove();
           }
         });
@@ -504,6 +519,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
           if (result == true)
           {
             execute_action('delete_folder', _this.attr('data-path'), _this.attr('data-thumb'), '', '', '');
+            var fol = $('#folders_number');
+            fol.text(parseInt(fol.text())-1);
             _this.parent().parent().parent().remove();
           }
         });
@@ -808,7 +825,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
           });
         }
-      }, $('#new_folder').val());
+      });
     });
 
     $('.view-controller button').on('click', function ()
@@ -1899,27 +1916,30 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
   function close_window()
   {
-    if ($('#popup').val() == 1)
-    {
-      window.close();
-    }
-    else
-    {
-      parent.$('.modal').modal('hide');
-      if (typeof parent.jQuery !== "undefined" && parent.jQuery)
-      {
-        if(typeof parent.jQuery.fancybox == 'function'){
-          parent.jQuery.fancybox.close();
-        }
-
-      }
-      else
-      {
-        if(typeof parent.$.fancybox == 'function'){
-          parent.$.fancybox.close();
-        }
-      }
-    }
+	if ($('#popup').val() == 1)
+	{
+		window.close();
+	}
+	else
+	{
+		if (typeof parent.$('.modal').modal == "function"){
+			parent.$('.modal').modal('hide');
+		}
+	  
+		if (typeof parent.jQuery !== "undefined" && parent.jQuery)
+		{
+			if(typeof parent.jQuery.fancybox == 'function'){
+				parent.jQuery.fancybox.close();
+			}
+		
+		}
+		else
+		{
+			if(typeof parent.$.fancybox == 'function'){
+				parent.$.fancybox.close();
+			}
+		}
+	}
   }
 
   apply_file_duplicate = function(container, name)

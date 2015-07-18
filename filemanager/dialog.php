@@ -264,9 +264,9 @@ $get_params = http_build_query($get_params);
 	<?php
 	if ($aviary_active){
 	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
-	    <script src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>
+	    <script src="https://dme0ih8comzn4.cloudfront.net/imaging/v2/editor.js"></script>
 	<?php }else{ ?>
-	    <script src="http://feather.aviary.com/js/feather.js "></script>
+	    <script src="http://feather.aviary.com/imaging/v2/editor.js"></script>
 	<?php }} ?>
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -380,6 +380,8 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="lang_paste" value="<?php echo trans('Paste'); ?>" />
 	<input type="hidden" id="lang_paste_here" value="<?php echo trans('Paste_Here'); ?>" />
 	<input type="hidden" id="lang_paste_confirm" value="<?php echo trans('Paste_Confirm'); ?>" />
+	<input type="hidden" id="lang_files" value="<?php echo trans('Files'); ?>" />
+	<input type="hidden" id="lang_folders" value="<?php echo trans('Folders'); ?>" />
 	<input type="hidden" id="lang_files_on_clipboard" value="<?php echo trans('Files_ON_Clipboard'); ?>" />
 	<input type="hidden" id="clipboard" value="<?php echo ((isset($_SESSION['RF']['clipboard']['path']) && trim($_SESSION['RF']['clipboard']['path']) != null) ? 1 : 0); ?>" />
 	<input type="hidden" id="lang_clear_clipboard_confirm" value="<?php echo trans('Clear_Clipboard_Confirm'); ?>" />
@@ -460,24 +462,36 @@ $n_files=count($files);
 $sorted=array();
 $current_folder=array();
 $prev_folder=array();
+$current_files_number = 0;
+$current_folders_number = 0;
 foreach($files as $k=>$file){
     if($file==".") $current_folder=array('file'=>$file);
     elseif($file=="..") $prev_folder=array('file'=>$file);
     elseif(is_dir($current_path.$rfm_subfolder.$subdir.$file)){
-	$date=filemtime($current_path.$rfm_subfolder.$subdir. $file);
-	if($show_folder_size){
-		$size=foldersize($current_path.$rfm_subfolder.$subdir. $file);
-	} else {
-		$size=0;
-	}
-	$file_ext=trans('Type_dir');
-	$sorted[$k]=array('file'=>$file,'file_lcase'=>strtolower($file),'date'=>$date,'size'=>$size,'extension'=>$file_ext,'extension_lcase'=>strtolower($file_ext));
+		$date=filemtime($current_path.$rfm_subfolder.$subdir. $file);
+		if($show_folder_size){
+			list($size,$nfiles,$nfolders) = folder_info($current_path.$rfm_subfolder.$subdir. $file);
+			$current_folders_number++;
+		} else {
+			$size=0;
+		}
+		$file_ext=trans('Type_dir');
+		$sorted[$k]=array(
+			'file'=>$file,
+			'file_lcase'=>strtolower($file),
+			'date'=>$date,
+			'size'=>$size,
+			'nfiles'=>$nfiles,
+			'nfolders'=>$nfolders,
+			'extension'=>$file_ext,
+			'extension_lcase'=>strtolower($file_ext));
     }else{
-	$file_path=$current_path.$rfm_subfolder.$subdir.$file;
-	$date=filemtime($file_path);
-	$size=filesize($file_path);
-	$file_ext = substr(strrchr($file,'.'),1);
-	$sorted[$k]=array('file'=>$file,'file_lcase'=>strtolower($file),'date'=>$date,'size'=>$size,'extension'=>$file_ext,'extension_lcase'=>strtolower($file_ext));
+    	$current_files_number++;
+		$file_path=$current_path.$rfm_subfolder.$subdir.$file;
+		$date=filemtime($file_path);
+		$size=filesize($file_path);
+		$file_ext = substr(strrchr($file,'.'),1);
+		$sorted[$k]=array('file'=>$file,'file_lcase'=>strtolower($file),'date'=>$date,'size'=>$size,'extension'=>$file_ext,'extension_lcase'=>strtolower($file_ext));
     }
 }
 
@@ -602,6 +616,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	<?php }
 	}
 	?>
+
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="change_lang_btn"><i class="icon-globe"></i></a></li>
 	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
@@ -621,6 +636,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		</ul>
 	      </div>
 	</li>
+	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders'); ?>)</small></li>
 	</ul>
     </div>
     <!-- breadcrumb div end -->
@@ -715,7 +731,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				    <input type="hidden" class="size" value="<?php echo $file_array['size'];  ?>"/>
 				    <input type="hidden" class="extension" value="<?php echo trans('Type_dir'); ?>"/>
 				    <div class="file-date"><?php echo date(trans('Date_type'),$file_array['date'])?></div>
-				    <?php if($show_folder_size){ ?><div class="file-size"><?php echo makeSize($file_array['size'])?></div><?php } ?>
+				    <?php if($show_folder_size){ ?>
+				    	<div class="file-size"><?php echo makeSize($file_array['size'])?></div>
+					    <input type="hidden" class="nfiles" value="<?php echo $file_array['nfiles'];  ?>"/>
+					    <input type="hidden" class="nfolders" value="<?php echo $file_array['nfolders'];  ?>"/>
+				    <?php } ?>
 				    <div class='file-extension'><?php echo trans('Type_dir'); ?></div>
 				    <figcaption>
 					    <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_folders && !$file_prevent_rename) echo "rename-folder"; ?>" title="<?php echo trans('Rename')?>" data-path="<?php echo $rfm_subfolder.$subdir.$file; ?>" data-thumb="<?php echo $thumbs_path.$subdir.$file; ?>">

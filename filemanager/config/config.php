@@ -258,8 +258,10 @@ $config = array(
 	 * AVIARY config
 	 *******************/
 	'aviary_active'                           => true,
-	'aviary_apiKey'                           => "dvh8qudbp6yx2bnp",
-	'aviary_secret'                           => "m6xaym5q42rpw433",
+	'aviary_apiKey'                           => "2444282ef4344e3dacdedc7a78f8877d",
+	'aviary_language'                         => "en",
+	'aviary_theme'                            => "light",
+	'aviary_tools'                            => "all",
 	// Add or modify the Aviary options below as needed - they will be json encoded when added to the configuration so arrays can be utilized as needed
 
 	//The filter and sorter are managed through both javascript and php scripts because if you have a lot of
@@ -316,9 +318,9 @@ $config = array(
 	// The image creation path is always relative so if i'm inside source/test/test1 and I upload an image, the path start from here
 	//
 	'relative_image_creation'                 => false, //activate or not the creation of one or more image resized with relative path from upload folder
-	'relative_path_from_current_pos'          => array( 'thumb/', 'thumb/' ), //relative path of the image folder from the current position on upload folder
-	'relative_image_creation_name_to_prepend' => array( '', 'test_' ), //name to prepend on filename
-	'relative_image_creation_name_to_append'  => array( '_test', '' ), //name to append on filename
+	'relative_path_from_current_pos'          => array( './', './' ), //relative path of the image folder from the current position on upload folder
+	'relative_image_creation_name_to_prepend' => array( '', '' ), //name to prepend on filename
+	'relative_image_creation_name_to_append'  => array( '_thumb', '_thumb1' ), //name to append on filename
 	'relative_image_creation_width'           => array( 300, 400 ), //width of image (you can leave empty if you set height)
 	'relative_image_creation_height'          => array( 200, '' ), //height of image (you can leave empty if you set width)
 	/*
@@ -351,10 +353,9 @@ return array_merge(
 		// For a list of options see: https://developers.aviary.com/docs/web/setup-guide#constructor-config
 		'aviary_defaults_config' => array(
 			'apiKey'     => $config['aviary_apiKey'],
-			'apiVersion' => 3,
-			'language'   => 'en',
-			'theme'      => 'light',
-			'tools'      => 'all'
+			'language'   => $config['aviary_language'],
+			'theme'      => $config['aviary_theme'],
+			'tools'      => $config['aviary_tools']
 		),
 	)
 );
