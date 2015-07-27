@@ -107,6 +107,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         var aviaryElement = $('#aviary_img');
 
         aviaryElement.attr('data-name', filename);
+        show_animation();
         aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));
       },
 
@@ -1916,30 +1917,30 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
   function close_window()
   {
-	if ($('#popup').val() == 1)
-	{
-		window.close();
-	}
-	else
-	{
-		if (typeof parent.$('.modal').modal == "function"){
-			parent.$('.modal').modal('hide');
-		}
-	  
-		if (typeof parent.jQuery !== "undefined" && parent.jQuery)
-		{
-			if(typeof parent.jQuery.fancybox == 'function'){
-				parent.jQuery.fancybox.close();
-			}
-		
-		}
-		else
-		{
-			if(typeof parent.$.fancybox == 'function'){
-				parent.$.fancybox.close();
-			}
-		}
-	}
+  	if ($('#popup').val() == 1)
+  	{
+  		window.close();
+  	}
+  	else
+  	{
+  		if (typeof parent.$('.modal').modal == "function"){
+  			parent.$('.modal').modal('hide');
+  		}
+  	  
+  		if (typeof parent.jQuery !== "undefined" && parent.jQuery)
+  		{
+  			if(typeof parent.jQuery.fancybox == 'function'){
+  				parent.jQuery.fancybox.close();
+  			}
+  		
+  		}
+  		else
+  		{
+  			if(typeof parent.$.fancybox == 'function'){
+  				parent.$.fancybox.close();
+  			}
+  		}
+  	}
   }
 
   apply_file_duplicate = function(container, name)

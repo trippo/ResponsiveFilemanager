@@ -92,11 +92,10 @@ if(isset($_GET['action']))
 				response(trans('Aviary_No_Save'), 400)->send();
 				exit;
 			}
-			$fp = fopen($current_path . $_POST['path'] . $_POST['name'], "w");
-			fwrite($fp, $image_data);
-			fclose($fp);
-
-		    create_img($current_path.$_POST['path'].$_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
+			require_once('include/php_image_magician.php');
+			$magicianObj = new imageLib($_POST['url']);
+			$magicianObj->saveImage($current_path . $_POST['path'] . $_POST['name']);
+			create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
 		    // TODO something with this function cause its blowing my mind
 		    new_thumbnails_creation(
 				$current_path.$_POST['path'],
@@ -193,7 +192,7 @@ if(isset($_GET['action']))
 			}
 			break;
 		case 'media_preview':
-			$preview_file = $_GET["file"];
+			$preview_file = $current_path . $_GET["file"];
 			$info = pathinfo($preview_file);
 			ob_start();
 			?>
@@ -483,7 +482,7 @@ if(isset($_GET['action']))
 				exit;
 			}
 
-			$selected_file = ($sub_action == 'preview' ? $_GET['file'] : $current_path . $_POST['path']);
+			$selected_file = ($sub_action == 'preview' ? $current_path . $_GET['file'] : $current_path . $_POST['path']);
 			$info = pathinfo($selected_file);
 
 			if ( ! file_exists($selected_file))
