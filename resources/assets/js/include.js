@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
   "use strict";
 
-  var version = "9.9.4";
+  var version = "9.9.5";
   var active_contextmenu = true;
   var copy_count = 0;
 
@@ -105,7 +105,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         var full_path = $('#base_url_true').val() + $('#cur_dir').val() + filename;
 
         var aviaryElement = $('#aviary_img');
-
         aviaryElement.attr('data-name', filename);
         show_animation();
         aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));

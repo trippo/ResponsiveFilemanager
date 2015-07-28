@@ -262,6 +262,7 @@ $config = array(
 	'aviary_language'                         => "en",
 	'aviary_theme'                            => "light",
 	'aviary_tools'                            => "all",
+	'aviary_maxSize'                          => "1400",
 	// Add or modify the Aviary options below as needed - they will be json encoded when added to the configuration so arrays can be utilized as needed
 
 	//The filter and sorter are managed through both javascript and php scripts because if you have a lot of
@@ -355,7 +356,8 @@ return array_merge(
 			'apiKey'     => $config['aviary_apiKey'],
 			'language'   => $config['aviary_language'],
 			'theme'      => $config['aviary_theme'],
-			'tools'      => $config['aviary_tools']
+			'tools'      => $config['aviary_tools'],
+			'maxSize'    => $config['aviary_maxSize']
 		),
 	)
 );

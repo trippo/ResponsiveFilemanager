@@ -322,14 +322,14 @@ $get_params = http_build_query($get_params);
 				$.ajax({
 					type: "POST",
 					url: "ajax_calls.php?action=save_img",
-					data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').data('name') }
+					data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').attr('data-name') }
 				}).done(function( msg ) {
 					featherEditor.close();
 					d = new Date();
-					$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('img').each(function(){
+					$("figure[data-name='"+$('#aviary_img').attr('data-name')+"']").find('img').each(function(){
 					  $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
 					});
-					$("figure[data-name='"+$('#aviary_img').data('name')+"']").find('figcaption a.preview').each(function(){
+					$("figure[data-name='"+$('#aviary_img').attr('data-name')+"']").find('figcaption a.preview').each(function(){
 					  $(this).attr('data-url',$(this).data('url')+"?"+d.getTime());
 				    });
 					hide_animation();
