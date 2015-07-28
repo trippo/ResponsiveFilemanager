@@ -1,5 +1,15 @@
 Responsive Filemanager Changelog 
 
+
+*********************************************************
+*  RFM 9.9.5
+*********************************************************
+- fixed a Adobe Creative SDK issue
+- fixed a problem when you edit multiple image in the same session
+- fixed a problem with security issue in some server configurations
+- added maxSize config to Adobe Creative SDK export image (default now is 1400)
+
+
 *********************************************************
 *  RFM 9.9.4
 *********************************************************
