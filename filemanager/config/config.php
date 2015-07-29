@@ -336,7 +336,10 @@ $config = array(
 
 	// Remember text filter after close filemanager for future session
 	'remember_text_filter'                    => false,
-
+	
+	
+	//Include $upload_dir in return path when select a file
+	'return_include_upload_dir'				  => false,
 );
 
 return array_merge(
