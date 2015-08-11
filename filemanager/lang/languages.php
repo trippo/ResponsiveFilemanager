@@ -33,6 +33,7 @@ return array(
 	'sv_SE' => 'Svenska',
 	'tr_TR' => 'Türkçe',
 	'uk_UA' => 'Yкраїнська мова',
+	'vi' => 'Tiếng Việt',
 	'zh_CN' => '中文 (Zhōngwén), 汉语, 漢語',
 
 	// source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
