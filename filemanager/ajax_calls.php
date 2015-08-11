@@ -379,7 +379,7 @@ if(isset($_GET['action']))
 
 				$ret = '<div id="files_permission_start">
 				<form id="chmod_form">
-					<table class="file-perms-table">
+					<table class="table file-perms-table">
 						<thead>
 							<tr>
 								<td></td>
@@ -391,25 +391,25 @@ if(isset($_GET['action']))
 						<tbody>
 							<tr>
 								<td>'.trans('User').'</td>
-								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
-								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
-								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
+								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" '.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
+								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" '.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
+								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" '.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
 								<td>'.trans('Group').'</td>
-								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
-								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
-								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
+								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" '.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
+								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" '.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
+								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" '.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
 								<td>'.trans('All').'</td>
-								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
-								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
-								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
+								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" '.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
+								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" '.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
+								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" '.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
 								<td></td>
-								<td colspan="3"><input type="text" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
+								<td colspan="3"><input type="text" class="input-block-level" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
 							</tr>
 						</tbody>
 					</table>';
