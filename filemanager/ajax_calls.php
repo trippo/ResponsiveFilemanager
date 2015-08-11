@@ -416,12 +416,12 @@ if(isset($_GET['action']))
 
 				if (is_dir($path))
 				{
-					$ret .= '<div>'.trans('File_Permission_Recursive').'
-							<ul>
-								<li><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</li>
-								<li><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</li>
-								<li><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</li>
-								<li><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</li>
+					$ret .= '<div class="hero-unit" style="padding:10px;">'.trans('File_Permission_Recursive').'<br/><br/>
+							<ul class="unstyled">
+								<li><label class="radio"><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</label></li>
+								<li><label class="radio"><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</label></li>
+								<li><label class="radio"><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</label></li>
+								<li><label class="radio"><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</label></li>
 							</ul>
 							</div>';
 				}
