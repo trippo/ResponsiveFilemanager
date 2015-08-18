@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
   "use strict";
 
-  var version = "9.9.6";
+  var version = "9.9.5";
   var active_contextmenu = true;
   var copy_count = 0;
 
@@ -122,7 +122,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
             if (name != old_name)
             {
               var _this = $trigger.find('.rename-file');
-              execute_action('duplicate_file', _this.attr('data-path'), name, _this, 'apply_file_duplicate');
+              execute_action('duplicate_file', _this.attr('data-path'), _this.attr('data-thumb'), name, _this, 'apply_file_duplicate');
             }
           }
         }, old_name);
@@ -469,7 +469,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
             name = fix_filename(name);
             if (name != old_name)
             {
-              execute_action('rename_file', _this.attr('data-path'), name, file_container, 'apply_file_rename');
+              execute_action('rename_file', _this.attr('data-path'), _this.attr('data-thumb'), name, file_container, 'apply_file_rename');
             }
           }
         }, old_name);
@@ -489,7 +489,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
             name = fix_filename(name).replace('.', '');
             if (name != old_name)
             {
-              execute_action('rename_folder', _this.attr('data-path'), name, file_container, 'apply_folder_rename');
+              execute_action('rename_folder', _this.attr('data-path'), _this.attr('data-thumb'), name, file_container, 'apply_folder_rename');
             }
           }
         }, old_name);
@@ -502,7 +502,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         {
           if (result == true)
           {
-            execute_action('delete_file', _this.attr('data-path'), '', '', '');
+            execute_action('delete_file', _this.attr('data-path'), _this.attr('data-thumb'), '', '', '');
             var fil = $('#files_number');
             fil.text(parseInt(fil.text())-1);
             _this.parent().parent().parent().parent().remove();
@@ -518,7 +518,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         {
           if (result == true)
           {
-            execute_action('delete_folder', _this.attr('data-path'), '', '', '');
+            execute_action('delete_folder', _this.attr('data-path'), _this.attr('data-thumb'), '', '', '');
             var fol = $('#folders_number');
             fol.text(parseInt(fol.text())-1);
             _this.parent().parent().parent().remove();
@@ -772,7 +772,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     // info btn
     $('#info').on('click', function ()
     {
-      bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.' + version + '</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></div>');
+      bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.'+version+'</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small>Commercial License</small></p></div>');
     });
 
     $('#change_lang_btn').on('click', function ()
@@ -807,12 +807,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         if (name !== null)
         {
           name = fix_filename(name).replace('.', '');
-          var folder_path = $('#fldr_value').val() + name;
+          var folder_path = $('#sub_folder').val() + $('#fldr_value').val() + name;
+          var folder_path_thumb = $('#cur_dir_thumb').val() + name;
           $.ajax({
             type: "POST",
             url: "execute.php?action=create_folder",
             data: {
-              path: folder_path
+              path: folder_path,
+              path_thumb: folder_path_thumb
             }
           }).done(function (msg)
           {
@@ -1049,13 +1051,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
             if (newFileName !== null)
             {
               newFileName = fix_filename(newFileName);
-              var folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+              var folder_path = $('#sub_folder').val() + $('#fldr_value').val() + newFileName;
+              var folder_path_thumb = $('#cur_dir_thumb').val() + newFileName;
               // post ajax
               $.ajax({
                 type: "POST",
                 url: "execute.php?action=create_file",
                 data: {
                   path: folder_path,
+                  path_thumb: folder_path_thumb,
                   name: newFileName,
                   new_content: newContent
                 }
@@ -1086,6 +1090,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     // remove to prevent duplicates
     $('#textfile_edit_area').parent().parent().remove();
 
+    var thumb_path = $trigger.find('.rename-file').attr('data-thumb');
     var full_path = $trigger.find('.rename-file').attr('data-path');
 
     $.ajax({
@@ -1112,6 +1117,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
                 url: "execute.php?action=save_text_file",
                 data: {
                   path: full_path,
+                  path_thumb: thumb_path,
                   new_content: newContent
                 }
               }).done(function (status_msg)
@@ -1188,10 +1194,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
     if (!$trigger.hasClass('directory'))
     {
+      thumb_path = $trigger.find('.rename-file').attr('data-thumb');
       full_path = $trigger.find('.rename-file').attr('data-path');
     }
     else
     {
+      thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
       full_path = $trigger.find('.rename-folder').attr('data-path');
     }
 
@@ -1200,7 +1208,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       type: "POST",
       url: "ajax_calls.php?action=chmod",
       data: {
-        path: full_path
+        path: full_path,
+        path_thumb: thumb_path
       }
     }).done(function (init_msg)
     {
@@ -1232,6 +1241,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
                   url: "execute.php?action=chmod",
                   data: {
                     path: full_path,
+                    path_thumb: thumb_path,
                     new_mode: newPerm,
                     is_recursive: recOpt
                   }
@@ -1359,10 +1369,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
     if (!$trigger.hasClass('directory'))
     {
+      thumb_path = $trigger.find('.rename-file').attr('data-thumb');
       full_path = $trigger.find('.rename-file').attr('data-path');
     }
     else
     {
+      thumb_path = $trigger.find('.rename-folder').attr('data-thumb');
       full_path = $trigger.find('.rename-folder').attr('data-path');
     }
 
@@ -1371,6 +1383,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       url: "ajax_calls.php?action=copy_cut",
       data: {
         path: full_path,
+        path_thumb: thumb_path,
         sub_action: atype
       }
     }).done(function (msg)
@@ -1393,21 +1406,24 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     {
       if (result == true)
       {
-        var folder_path;
+        var folder_path, folder_path_thumb;
         if (typeof dnd != 'undefined')
         {
           folder_path = dnd.find('.rename-folder').attr('data-path');
+          folder_path_thumb = dnd.find('.rename-folder').attr('data-thumb');
         }
         else
         {
           folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+          folder_path_thumb = $('#cur_dir_thumb').val();
         }
 
         $.ajax({
           type: "POST",
           url: "execute.php?action=paste_clipboard",
           data: {
-            path: folder_path
+            path: folder_path,
+            path_thumb: folder_path_thumb
           }
         }).done(function (msg)
         {
@@ -1444,6 +1460,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       obj = $trigger.find('.rename-folder');
     }
 
+    var thumb_path = obj.attr('data-thumb');
     var full_path = obj.attr('data-path');
 
     $trigger.parent().hide(100);
@@ -1453,6 +1470,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       url: "ajax_calls.php?action=copy_cut",
       data: {
         path: full_path,
+        path_thumb: thumb_path,
         sub_action: 'cut'
       }
     }).done(function (msg)
@@ -1463,28 +1481,32 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       }
       else
       {
-        var folder_path;
+        var folder_path, folder_path_thumb;
         if (typeof dnd != 'undefined')
         {
           if (dnd.hasClass('back-directory'))
           {
             folder_path = dnd.find('.path').val();
+            folder_path_thumb = dnd.find('.path_thumb').val();
           }
           else
           {
             folder_path = dnd.find('.rename-folder').attr('data-path');
+            folder_path_thumb = dnd.find('.rename-folder').attr('data-thumb');
           }
         }
         else
         {
           folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+          folder_path_thumb = $('#cur_dir_thumb').val();
         }
 
         $.ajax({
           type: "POST",
           url: "execute.php?action=paste_clipboard",
           data: {
-            path: folder_path
+            path: folder_path,
+            path_thumb: folder_path_thumb
           }
         }).done(function (msg)
         {
@@ -1901,30 +1923,30 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
   function close_window()
   {
-  	if ($('#popup').val() == 1)
-  	{
-  		window.close();
-  	}
-  	else
-  	{
-  		if (typeof parent.$('.modal').modal == "function"){
-  			parent.$('.modal').modal('hide');
-  		}
-  	  
-  		if (typeof parent.jQuery !== "undefined" && parent.jQuery)
-  		{
-  			if(typeof parent.jQuery.fancybox == 'function'){
-  				parent.jQuery.fancybox.close();
-  			}
-  		
-  		}
-  		else
-  		{
-  			if(typeof parent.$.fancybox == 'function'){
-  				parent.$.fancybox.close();
-  			}
-  		}
-  	}
+    if ($('#popup').val() == 1)
+    {
+      window.close();
+    }
+    else
+    {
+      if (typeof parent.$('.modal').modal == "function"){
+        parent.$('.modal').modal('hide');
+      }
+      
+      if (typeof parent.jQuery !== "undefined" && parent.jQuery)
+      {
+        if(typeof parent.jQuery.fancybox == 'function'){
+          parent.jQuery.fancybox.close();
+        }
+      
+      }
+      else
+      {
+        if(typeof parent.$.fancybox == 'function'){
+          parent.$.fancybox.close();
+        }
+      }
+    }
   }
 
   apply_file_duplicate = function(container, name)
@@ -1994,10 +2016,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     var link4 = container.find('a.delete-file');
 
     var path_old = link3.attr('data-path');
+    var path_thumb = link3.attr('data-thumb');
     var new_path = path_old.replace(old_name, name + "." + extension);
+    var new_thumb = path_thumb.replace(old_name, name + "." + extension);
 
     link3.attr('data-path', new_path);
+    link3.attr('data-thumb', new_thumb);
     link4.attr('data-path', new_path);
+    link4.attr('data-thumb', new_thumb);
   }
 
   apply_folder_rename = function (container, name)
@@ -2023,10 +2049,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     var link2 = container.find('a.delete-folder');
     var link3 = container.find('a.rename-folder');
     var path_old = link3.attr('data-path');
+    var thumb_old = link3.attr('data-thumb');
     var index = path_old.lastIndexOf('/');
     var new_path = path_old.substr(0, index + 1) + name;
     link2.attr('data-path', new_path);
     link3.attr('data-path', new_path);
+    var index = thumb_old.lastIndexOf('/');
+    var new_path = thumb_old.substr(0, index + 1) + name;
+    link2.attr('data-thumb', new_path);
+    link3.attr('data-thumb', new_path);
 
   }
 
@@ -2084,7 +2115,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     return null;
   }
 
-  function execute_action(action, file, name, container, function_name)
+  function execute_action(action, file1, file2, name, container, function_name)
   {
     if (name !== null)
     {
@@ -2093,7 +2124,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         type: "POST",
         url: "execute.php?action=" + action,
         data: {
-          path: file,
+          path: file1,
+          path_thumb: file2,
           name: name.replace('/', '')
         }
       }).done(function (msg)

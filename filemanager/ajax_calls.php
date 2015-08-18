@@ -305,7 +305,7 @@ if(isset($_GET['action']))
 				exit;
 			}
 
-			if (trim($_POST['path']) == '' || trim($_POST['path_thumb']) == '')
+			if (trim($_POST['path']) == '')
 			{
 				response('no path', 400)->send();
 				exit;
@@ -353,7 +353,6 @@ if(isset($_GET['action']))
 			}
 
 			$_SESSION['RF']['clipboard']['path'] = $_POST['path'];
-			$_SESSION['RF']['clipboard']['path_thumb'] = $_POST['path_thumb'];
 			$_SESSION['RF']['clipboard_action'] = $_POST['sub_action'];
 			break;
 		case 'clear_clipboard':
