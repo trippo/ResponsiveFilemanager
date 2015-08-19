@@ -3,7 +3,7 @@ Responsive Filemanager Changelog
 *********************************************************
 *  RFM 9.9.6
 *********************************************************
-- fixed a security vulnerability
+- fixed a security vulnerability (thanks to securitum.pl)
 - code refactoring removed thumb path to ajax calls
 - improve file/folder permission layout and fixed a error
 - fixed a problem with image editor
