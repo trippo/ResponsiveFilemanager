@@ -7,7 +7,7 @@ return array(
 	'Open' => 'Apri',
 	'Confirm_del' => 'Sei sicuro di volere cancellare questo file?',
 	'All' => 'Tutti',
-	'Files' => 'Files',
+	'Files' => 'File',
 	'Images' => 'Immagini',
 	'Archives' => 'Archivi',
 	'Error_Upload' => 'Il file caricato supera i limiti imposti.',
@@ -58,7 +58,7 @@ return array(
 	'File_info' => 'informazioni file',
 	'Edit_image' => 'Modifica immagine',
 	'Duplicate' => 'Duplica',
-	'Folders' => 'Folders',
+	'Folders' => 'Cartelle',
 	'Copy' => 'Copia',
 	'Cut' => 'Taglia',
 	'Paste' => 'Incolla',
@@ -70,8 +70,8 @@ return array(
 	'Clear_Clipboard_Confirm' => 'Sei sicuro di voler cancellare la clipboard?',
 	'Files_ON_Clipboard' => 'Ci sono file nella clipboard.',
 	'Copy_Cut_Size_Limit' => 'I file o cartelle selezionati sono troppo grandi per %s. Il limite è: %d MB/operazione', // %s = cut or copy
-	'Copy_Cut_Count_Limit' => 'Hai selezionato troppi files/cartelle da %s. Il limite è: %d files/operazione', // %s = cut or copy
-	'Copy_Cut_Not_Allowed' => 'Non hai i permessi per %s files.', // %s(1) = cut or copy, %s(2) = files or folders
+	'Copy_Cut_Count_Limit' => 'Hai selezionato troppi file/cartelle da %s. Il limite è: %d file/operazione', // %s = cut or copy
+	'Copy_Cut_Not_Allowed' => 'Non hai i permessi per %s %s.', // %s(1) = cut or copy, %s(2) = files or folders
 	'Aviary_No_Save' => 'Non è stato possibile salvare l\'immagine',
 	'Zip_No_Extract' => 'Non si può estrarre il pacchetto perchè sembra corrotto',
 	'Zip_Invalid' => 'Questa estensione non è supportata. Le estensioni valide sono: zip, gz, tar.',
