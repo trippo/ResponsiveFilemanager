@@ -2707,7 +2707,7 @@ class imageLib {
 		#
 	{
 
-		if ( ! file_exists($file) && ! $this->checkStringStartsWith('http://', $file))
+		if ( ! file_exists($file) && ! $this->checkStringStartsWith('http://', $file) && ! $this->checkStringStartsWith('https://', $file) )
 		{
 			if ($this->debug)
 			{

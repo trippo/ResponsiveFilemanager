@@ -305,7 +305,7 @@ if(isset($_GET['action']))
 				exit;
 			}
 
-			if (trim($_POST['path']) == '' || trim($_POST['path_thumb']) == '')
+			if (trim($_POST['path']) == '')
 			{
 				response('no path', 400)->send();
 				exit;
@@ -353,7 +353,6 @@ if(isset($_GET['action']))
 			}
 
 			$_SESSION['RF']['clipboard']['path'] = $_POST['path'];
-			$_SESSION['RF']['clipboard']['path_thumb'] = $_POST['path_thumb'];
 			$_SESSION['RF']['clipboard_action'] = $_POST['sub_action'];
 			break;
 		case 'clear_clipboard':
@@ -379,7 +378,7 @@ if(isset($_GET['action']))
 
 				$ret = '<div id="files_permission_start">
 				<form id="chmod_form">
-					<table class="file-perms-table">
+					<table class="table file-perms-table">
 						<thead>
 							<tr>
 								<td></td>
@@ -391,37 +390,37 @@ if(isset($_GET['action']))
 						<tbody>
 							<tr>
 								<td>'.trans('User').'</td>
-								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
-								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
-								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" onChange="chmod_logic();"'.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
+								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" '.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
+								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" '.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
+								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" '.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
 								<td>'.trans('Group').'</td>
-								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
-								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
-								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" onChange="chmod_logic();"'.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
+								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" '.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
+								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" '.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
+								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" '.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
 								<td>'.trans('All').'</td>
-								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
-								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
-								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" onChange="chmod_logic();"'.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
+								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" '.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
+								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" '.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
+								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" '.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
 							</tr>
 							<tr>
 								<td></td>
-								<td colspan="3"><input type="text" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
+								<td colspan="3"><input type="text" class="input-block-level" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
 							</tr>
 						</tbody>
 					</table>';
 
 				if (is_dir($path))
 				{
-					$ret .= '<div>'.trans('File_Permission_Recursive').'
-							<ul>
-								<li><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</li>
-								<li><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</li>
-								<li><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</li>
-								<li><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</li>
+					$ret .= '<div class="hero-unit" style="padding:10px;">'.trans('File_Permission_Recursive').'<br/><br/>
+							<ul class="unstyled">
+								<li><label class="radio"><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</label></li>
+								<li><label class="radio"><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</label></li>
+								<li><label class="radio"><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</label></li>
+								<li><label class="radio"><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</label></li>
 							</ul>
 							</div>';
 				}

@@ -1,6 +1,25 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.9.6
+*********************************************************
+- fixed a security vulnerability
+- code refactoring removed thumb path to ajax calls
+- improve file/folder permission layout and fixed a error
+- fixed a problem with image editor
+- added vitnamese language
+
+
+*********************************************************
+*  RFM 9.9.5
+*********************************************************
+- fixed a Adobe Creative SDK issue
+- fixed a problem when you edit multiple image in the same session
+- fixed a problem with security issue in some server configurations
+- added maxSize config to Adobe Creative SDK export image (default now is 1400)
+
+
+*********************************************************
 *  RFM 9.9.4
 *********************************************************
 - Upgrade Aviary Image Editor with new Adobe Creative SDK without size limitation
