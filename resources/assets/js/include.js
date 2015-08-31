@@ -807,12 +807,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         if (name !== null)
         {
           name = fix_filename(name).replace('.', '');
-          var folder_path = $('#fldr_value').val() + name;
+          var folder_path = $('#fldr_value').val() + $('#sub_folder').val();
           $.ajax({
             type: "POST",
             url: "execute.php?action=create_folder",
             data: {
-              path: folder_path
+              path: folder_path,
+              name: name
             }
           }).done(function (msg)
           {

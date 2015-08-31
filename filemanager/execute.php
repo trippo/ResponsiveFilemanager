@@ -31,7 +31,7 @@ else
 }
 
 $base = $current_path;
-$path = $current_path.$_POST['path'];
+$path = $base.$_POST['path'];
 $cycle = TRUE;
 $max_cycles = 50;
 $i = 0;
@@ -130,6 +130,10 @@ if (isset($_GET['action']))
         case 'create_folder':
             if ($create_folders)
             {
+
+                $name = fix_filename($_POST['name'],$transliteration,$convert_spaces, $replace_with);
+                $path .= $name;
+                $path_thumb .= $name;
                 create_folder(fix_path($path,$transliteration,$convert_spaces, $replace_with),fix_path($path_thumb,$transliteration,$convert_spaces, $replace_with));
             }
             break;
