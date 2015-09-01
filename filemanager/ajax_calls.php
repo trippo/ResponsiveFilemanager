@@ -543,7 +543,7 @@ if(isset($_GET['action']))
 				}
 				elseif ($preview_mode == 'viewerjs')
 				{
-					$ret = '<iframe id="viewer" src="js/ViewerJS/#../../'.$_GET["file"].'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+					$ret = '<iframe id="viewer" src="js/ViewerJS/../../'.$_GET["file"].'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
 
 				}
 				elseif ($preview_mode == 'google')
