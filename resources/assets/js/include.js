@@ -807,7 +807,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
         if (name !== null)
         {
           name = fix_filename(name).replace('.', '');
-          var folder_path = $('#fldr_value').val() + $('#sub_folder').val();
+          var folder_path = $('#sub_folder').val() + $('#fldr_value').val();
           $.ajax({
             type: "POST",
             url: "execute.php?action=create_folder",
