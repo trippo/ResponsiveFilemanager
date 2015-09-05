@@ -86,15 +86,13 @@ if(isset($_GET['action']))
 				response('wrong data', 400)->send();
 				exit;
 			}
-			$image_data = file_get_contents($_POST['url']);
+			$image_data = get_file_by_url($_POST['url']);
 			if ($image_data === false)
 			{
 				response(trans('Aviary_No_Save'), 400)->send();
 				exit;
 			}
-			require_once('include/php_image_magician.php');
-			$magicianObj = new imageLib($_POST['url']);
-			$magicianObj->saveImage($current_path . $_POST['path'] . $_POST['name']);
+			file_put_contents($current_path . $_POST['path'] . $_POST['name'],$image_data);
 			create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
 		    // TODO something with this function cause its blowing my mind
 		    new_thumbnails_creation(
@@ -526,13 +524,13 @@ if(isset($_GET['action']))
 				if ($preview_mode == 'text')
 				{
 					// get and sanities
-					$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
+					$data = stripslashes(htmlspecialchars(get_file_by_url($selected_file)));
 
 					$ret = '';
 
 					if ( ! in_array($info['extension'],$previewable_text_file_exts_no_prettify))
 					{
-						$ret .= '<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang='.$info['extension'].'&skin=sunburst"></script>';
+						$ret .= '<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang='.$info['extension'].'&skin=sunburst"></script>';
 						$ret .= '<div class="text-center"><strong>'.$info['basename'].'</strong></div><pre class="prettyprint">'.$data.'</pre>';
 					}
 					else
@@ -556,7 +554,7 @@ if(isset($_GET['action']))
 			}
 			else
 			{
-				$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
+				$data = stripslashes(htmlspecialchars(get_file_by_url($selected_file)));
 				$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
 			}
 

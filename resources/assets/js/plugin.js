@@ -7,6 +7,15 @@
  * Contributing: https://github.com/trippo/ResponsiveFilemanager
  */
 
+/**
+ * plugin.js
+ *
+ * Copyright, Alberto Peripolli
+ * Released under Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ *
+ * Contributing: https://github.com/trippo/ResponsiveFilemanager
+ */
+
 tinymce.PluginManager.add('filemanager', function(editor) {
 
 	tinymce.activeEditor.settings.file_browser_callback = filemanager;
