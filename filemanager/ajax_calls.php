@@ -319,13 +319,12 @@ if(isset($_GET['action']))
 					response(sprintf(trans('Copy_Cut_Not_Allowed'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), trans('Folders')), 403)->send();
 					exit;
 				}
-
-				// size over limit
-				if ($copy_cut_max_size !== false && is_int($copy_cut_max_size))
-				{
-					if (($copy_cut_max_size * 1024 * 1024) < foldersize($path))
-					{
-						response(sprintf(trans('Copy_Cut_Size_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_size), 400)->send();
+				
+				// size over limit 
+				if ($copy_cut_max_size !== false && is_int($copy_cut_max_size)) {
+					list($sizeFolderToCopy,$fileNum,$foldersCount) = folder_info($path);
+					if (($copy_cut_max_size * 1024 * 1024) < $sizeFolderToCopy) {
+						response(sprintf(trans('Copy_Cut_Size_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_size), 400)->send(); 
 						exit;
 					}
 				}
