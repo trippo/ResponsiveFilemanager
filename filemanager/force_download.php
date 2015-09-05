@@ -53,7 +53,7 @@ $img_size = (string) (filesize($path . $name)); // Get the image size as string
 
 $mime_type = get_file_mime_type($path . $name); // Get the correct MIME type depending on the file.
 
-response(get_file_by_url($path . $name), 200, array(
+response(file_get_contents($path . $name), 200, array(
 	'Pragma'              => 'private',
 	'Cache-control'       => 'private, must-revalidate',
 	'Content-Type'        => $mime_type,

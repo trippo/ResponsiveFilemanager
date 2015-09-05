@@ -518,13 +518,14 @@ if(isset($_GET['action']))
 				response(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))), 403)->send();
 				exit;
 			}
-
+			echo $sub_action ;
+			echo $preview_mode;
 			if ($sub_action == 'preview')
 			{
 				if ($preview_mode == 'text')
 				{
 					// get and sanities
-					$data = stripslashes(htmlspecialchars(get_file_by_url($selected_file)));
+					$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
 
 					$ret = '';
 
@@ -554,7 +555,7 @@ if(isset($_GET['action']))
 			}
 			else
 			{
-				$data = stripslashes(htmlspecialchars(get_file_by_url($selected_file)));
+				$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
 				$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
 			}
 
