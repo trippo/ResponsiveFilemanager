@@ -434,6 +434,7 @@ $get_params = http_build_query($get_params);
 					<input type="hidden" name="lang" value="<?php echo $lang; ?>"/>
 					<input type="hidden" name="filter" value="<?php echo $filter; ?>"/>
 					<input type="submit" name="submit" value="<?php echo trans('OK')?>" />
+				    </div>
 				</form>
 			</div>
 		    <div class="upload-help"><?php echo trans('Upload_base_help'); ?></div>
