@@ -94,13 +94,13 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 			setUrl: function (url) {
 				var fieldElm = win.document.getElementById(id);
 				fieldElm.value = editor.convertURL(url);
-				if ("fireEvent" in fieldElm) {
-					fieldElm.fireEvent("onchange")
-				} else {
-					var evt = document.createEvent("HTMLEvents");
-					evt.initEvent("change", false, true);
-					fieldElm.dispatchEvent(evt);
-				}
+			        if ("createEvent" in document) {
+			          var evt = document.createEvent("HTMLEvents");
+			          evt.initEvent("change", false, true);
+			          fieldElm.dispatchEvent(evt)
+			        } else {
+			          fieldElm.fireEvent("onchange")
+			        }
 			}
 		});
 	};
