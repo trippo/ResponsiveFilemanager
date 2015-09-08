@@ -1,6 +1,6 @@
 {
   "name": "ResponsiveFilemanager",
-  "version": "10.0.0",
+  "version": "9.9.7",
   "author": {
     "name": "Alberto Peripolli",
     "email": "info@albertoperipolli.com"
@@ -9,7 +9,7 @@
   "github": "https://github.com/trippo/ResponsiveFilemanager",
   "homepage": "http://www.responsivefilemanager.com/",
   "devDependencies": {
-    "gulp": "^3.8.8",
+    "gulp": "^3.9.0",
     "laravel-elixir": "*"
   }
 }
