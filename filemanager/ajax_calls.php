@@ -56,21 +56,21 @@ if (isset($_GET['action'])) {
             break;
         case 'save_img':
             $info = pathinfo($_POST['name']);
-
             if (
                     strpos($_POST['path'], '/') === 0 || strpos($_POST['path'], '../') !== false || strpos($_POST['path'], './') === 0 || (strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0 && strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0) || $_POST['name'] != fix_filename($_POST['name'], $transliteration, $convert_spaces, $replace_with) || !in_array(strtolower($info['extension']), array('jpg', 'jpeg', 'png'))
             ) {
                 response('wrong data', 400)->send();
                 exit;
             }
-            $image_data = file_get_contents($_POST['url']);
+
+            $image_data = get_file_by_url($_POST['url']);
             if ($image_data === false) {
                 response(trans('Aviary_No_Save'), 400)->send();
                 exit;
             }
-            require_once('include/php_image_magician.php');
-            $magicianObj = new imageLib($_POST['url']);
-            $magicianObj->saveImage($current_path . $_POST['path'] . $_POST['name']);
+
+
+            file_put_contents($current_path . $_POST['path'] . $_POST['name'], $image_data);
             create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path . $_POST['path'] . $_POST['name'], 122, 91);
             // TODO something with this function cause its blowing my mind
             new_thumbnails_creation(
@@ -239,7 +239,7 @@ if (isset($_GET['action'])) {
                     });
                 </script>
 
-            <?php
+                <?php
             endif;
 
             $content = ob_get_clean();
@@ -270,7 +270,8 @@ if (isset($_GET['action'])) {
 
                 // size over limit
                 if ($copy_cut_max_size !== false && is_int($copy_cut_max_size)) {
-                    if (($copy_cut_max_size * 1024 * 1024) < foldersize($path)) {
+                    list($sizeFolderToCopy, $fileNum, $foldersCount) = folder_info($path);
+                    if (($copy_cut_max_size * 1024 * 1024) < $sizeFolderToCopy) {
                         response(sprintf(trans('Copy_Cut_Size_Limit'), ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut'))), $copy_cut_max_size), 400)->send();
                         exit;
                     }
@@ -440,7 +441,7 @@ if (isset($_GET['action'])) {
 
             if ($sub_action == 'preview') {
                 if ($preview_mode == 'text') {
-                    // get and sanities
+                    // get and sanities                    
                     $data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
 
                     $ret = '';
@@ -453,7 +454,7 @@ if (isset($_GET['action'])) {
                         $ret .= '<div class="text-center"><strong>' . $info['basename'] . '</strong></div><pre class="no-prettify">' . $data . '</pre>';
                     }
                 } elseif ($preview_mode == 'viewerjs') {
-                    $ret = '<iframe id="viewer" src="js/ViewerJS/#../../' . $_GET["file"] . '" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+                    $ret = '<iframe id="viewer" src="js/ViewerJS/../../' . $_GET["file"] . '" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
                 } elseif ($preview_mode == 'google') {
                     $url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
                     $googledoc_url = urlencode($url_file);

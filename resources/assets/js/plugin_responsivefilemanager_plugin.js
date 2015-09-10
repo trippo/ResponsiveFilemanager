@@ -26,9 +26,8 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
 	}
     
 	function openmanager() {
-
-		var width = window.innerWidth-30;
-		var height = window.innerHeight-60;
+		var width = $(window).innerWidth()-30;
+		var height = $(window).innerHeight()-60;
 		if(width > 1800) width=1800;
 		if(height > 1200) height=1200;
 		var width_reduce = (width - 20) % 138;

@@ -2024,15 +2024,6 @@ span {
 .margin100 {
     margin: 6.25rem;
 }
-.opacity {
-    opacity: .9;
-}
-.half-opacity {
-    opacity: .5;
-}
-.hi-opacity {
-    opacity: .2;
-}
 .element-selected {
     border: 4px #4390df solid !important;
 }
@@ -3692,204 +3683,7 @@ hr.fat {
 .m-menu li:hover > .dropdown-toggle:before {
     border-color: #ffffff;
 }
-.h-menu {
-    text-align: left;
-    display: block;
-    height: auto !important;
-    list-style: none inside none;
-    margin: 0;
-    padding: 0;
-}
-.h-menu:before,
-.h-menu:after {
-    display: table;
-    content: "";
-}
-.h-menu:after {
-    clear: both;
-}
-.h-menu > li {
-    display: block;
-    float: left;
-    position: relative;
-}
-.h-menu > li:hover {
-    background-color: #59cde2;
-    color: #ffffff;
-}
-.h-menu > li:hover > a {
-    color: #ffffff;
-}
-.h-menu > li.no-hovered {
-    background-color: inherit;
-    color: inherit;
-}
-.h-menu > li:first-child {
-    margin-left: 0;
-}
-.h-menu > li > a {
-    display: block;
-    float: left;
-    position: relative;
-    font-weight: normal;
-    color: #727272;
-    font-size: .875rem;
-    outline: none;
-    text-decoration: none;
-    padding: 1.125rem 1.625rem;
-    border: 0 !important;
-    border: none !important;
-}
-.h-menu > li > a:hover {
-    background-color: #59cde2;
-    color: #ffffff;
-}
-.h-menu > li.active a {
-    background-color: #59cde2;
-    color: #ffffff;
-}
-.h-menu > li > .d-menu {
-    left: 0;
-    top: 100%;
-}
-.v-menu {
-    text-align: left;
-    background: #ffffff;
-    max-width: 15.625rem;
-    list-style: none inside none;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    width: auto;
-    float: left;
-}
-.v-menu li {
-    display: block;
-    float: none;
-    position: relative;
-}
-.v-menu li:before,
-.v-menu li:after {
-    display: table;
-    content: "";
-}
-.v-menu li:after {
-    clear: both;
-}
-.v-menu li a {
-    color: #727272;
-    font-size: .875rem;
-    display: block;
-    float: none;
-    padding: .75rem 2rem .75rem 2.5rem;
-    text-decoration: none;
-    vertical-align: middle;
-    position: relative;
-    white-space: nowrap;
-    min-width: 12.5rem;
-    border: 0 !important;
-    border: none !important;
-}
-.v-menu li a img,
-.v-menu li a .icon {
-    position: absolute;
-    left: .875rem;
-    top: 50%;
-    margin-top: -0.5625rem;
-    color: #262626;
-    max-height: 1.125rem;
-    font-size: 1.125rem;
-    display: inline-block;
-    margin-right: .3125rem;
-    vertical-align: middle;
-    text-align: center;
-}
-.v-menu li.active {
-    border-left: 2px solid;
-    border-color: #1ba1e2;
-}
-.v-menu li.active > a {
-    background-color: #59cde2;
-    color: #ffffff;
-    font-weight: bold;
-}
-.v-menu li:hover {
-    text-decoration: none;
-    background: #59cde2;
-}
-.v-menu li:hover > a,
-.v-menu li:hover .icon {
-    color: #ffffff;
-}
-.v-menu .divider {
-    padding: 0;
-    height: 1px;
-    margin: 0 1px;
-    overflow: hidden;
-    background-color: #f2f2f2;
-}
-.v-menu .divider:hover {
-    background-color: #f2f2f2;
-}
-.v-menu.subdown .d-menu {
-    min-width: 0 !important;
-    position: relative;
-    width: 100%;
-    left: 0 !important;
-    right: 0 !important;
-    top: 100%;
-    box-shadow: none;
-}
-.v-menu .item-block {
-    display: block;
-    padding: .625rem;
-    background-color: #eeeeee;
-}
-.v-menu .d-menu {
-    left: 100%;
-    top: -10%;
-}
-.v-menu .menu-title {
-    background-color: #f6f7f8;
-    font-size: 12px;
-    line-height: 14px;
-    padding: 4px 8px;
-    border: 0;
-    color: #646464;
-}
-.v-menu .menu-title:first-child {
-    margin: 0;
-    border-top-width: 0;
-}
-.v-menu .menu-title:first-child:hover {
-    border-top-width: 0;
-}
-.v-menu .menu-title:hover {
-    background-color: #f6f7f8;
-    cursor: default;
-    border: 0;
-}
-.v-menu .dropdown-toggle:before {
-    -webkit-transform: rotate(-135deg);
-    transform: rotate(-135deg);
-    margin-top: -2px;
-}
-.v-menu.subdown .dropdown-toggle:before {
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    margin-left: -1.25rem;
-}
-.v-menu li.disabled a {
-    color: #eeeeee;
-}
-.v-menu li.disabled:hover {
-    background-color: inherit;
-    cursor: default !important;
-    border: 0;
-}
-.v-menu li.disabled:hover a {
-    cursor: inherit;
-}
+
 .d-menu {
     text-align: left;
     background: #ffffff;
@@ -6071,6 +5865,7 @@ div.square-button.big-button {
 }
 .input-control.textarea {
     height: auto;
+    overflow: auto;
 }
 .input-control.select {
     position: relative;

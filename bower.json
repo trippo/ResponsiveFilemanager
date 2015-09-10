@@ -1,32 +1,33 @@
 {
-  "name": "ResponsiveFilemanager",
-  "version": "9.9.7",
-  "homepage": "http://www.responsivefilemanager.com/",
-  "authors": [
-    "tr1pp0 <info@albertoperipolli.com>"
-  ],
-  "license": "Creative Commons Attribution - NonCommercial 3.0 Unported License",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "jquery": "1.9.1",
-    "jquery_lazyload": "git@github.com:tuupola/jquery_lazyload.git",    
-    "jQuery-contextMenu": "~1.6.6",    
-    "jquery-touchswipe": "~1.6.8",
-    "dropzone": "~4.0.1",
-    "zeroclipboard": "2.1.6",    
-    "jquery-ui": "1.10.4",
-    "jqueryui-touch-punch": "*",
-    "jPlayer": "git@github.com:happyworm/jPlayer.git#2.4.0",
-    "html5shiv": "3.6.2",
-    "viewerjs": "~0.5.5"
-  },
-  "resolutions": {
-    "jquery": "1.9.1"    
-  }
+    "name": "ResponsiveFilemanager",
+    "version": "9.9.7",
+    "homepage": "http://www.responsivefilemanager.com/",
+    "authors": [
+        "tr1pp0 <info@albertoperipolli.com>"
+    ],
+    "license": "Creative Commons Attribution - NonCommercial 3.0 Unported License",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "jquery": "1.9.1",
+        "jquery_lazyload": "git@github.com:tuupola/jquery_lazyload.git",
+        "jquery-scrollstop": "git@github.com:ssorallen/jquery-scrollstop.git",
+        "jQuery-contextMenu": "~1.7.0",
+        "jquery-touchswipe": "~1.6.8",
+        "dropzone": "~4.0.1",
+        "zeroclipboard": "2.1.6",
+        "jquery-ui": "1.10.4",
+        "jqueryui-touch-punch": "*",
+        "jPlayer": "git@github.com:happyworm/jPlayer.git#2.4.0",
+        "html5shiv": "3.6.2",
+        "viewerjs": "~0.5.5"
+    },
+    "resolutions": {
+        "jquery": "1.9.1"
+    }
 }

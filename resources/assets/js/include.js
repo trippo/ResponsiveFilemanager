@@ -97,12 +97,12 @@ var encodeURL, show_animation, hide_animation, apply, apply_none, apply_img, app
             edit_img: function($trigger)
             {
                 var filename = $trigger.attr('data-name');
-                var full_path = $('#base_url_true').val() + $('#cur_dir').val() + filename + '?t=' + new Date().getTime();
+                var full_path = $('#base_url_true').val() + $('#cur_dir').val() + filename + '?' + new Date().getTime();
 
                 var aviaryElement = $('#aviary_img');
                 aviaryElement.attr('data-name', filename);
                 show_animation();
-                aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));
+                aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path, filename));
             },
             duplicate: function($trigger)
             {
@@ -800,12 +800,13 @@ var encodeURL, show_animation, hide_animation, apply, apply_none, apply_img, app
                 if (name !== null && name !== "")
                 {
                     name = fix_filename(name).replace('.', '');
-                    var folder_path = $('#fldr_value').val() + name;
+                    var folder_path = $('#sub_folder').val() + $('#fldr_value').val();
                     $.ajax({
                         type: "POST",
                         url: "execute.php?action=create_folder",
                         data: {
-                            path: folder_path
+                            path: folder_path,
+                            name: name
                         }
                     }).done(function(msg)
                     {
@@ -2162,8 +2163,8 @@ var encodeURL, show_animation, hide_animation, apply, apply_none, apply_img, app
 
     show_animation = function()
     {
-        $('#loading_container').css('display', 'block');
-        $('#loading').css('opacity', '.7');
+        $('#loading_container').css('display', 'table');
+        //$('#loading').css('opacity', '.7');
     }
 
     hide_animation = function()
@@ -2171,11 +2172,14 @@ var encodeURL, show_animation, hide_animation, apply, apply_none, apply_img, app
         $('#loading_container').fadeOut();
     }
 
-    function launchEditor(id, src)
+    function launchEditor(id, src, fileName)
     {
+        var extension = fileName.substr((fileName.lastIndexOf('.') + 1));
+        console.log(id + " " + src + "," + extension);
         featherEditor.launch({
             image: id,
-            url: src
+            url: src,
+            fileFormat: extension
         });
         return false;
     }

@@ -299,6 +299,7 @@ if (isset($_POST['submit'])) {
         echo $aopt_key . ": " . json_encode($aopt_val) . ",";
     }
     ?>
+
                 onReady: function() {
                 hide_animation();
                 },
@@ -311,7 +312,8 @@ if (isset($_POST['submit'])) {
                                         url: "ajax_calls.php?action=save_img",
                                         data: { url: newURL, path:$('#sub_folder').val() + $('#fldr_value').val(), name:$('#aviary_img').attr('data-name') }
                                 }).done(function(msg) {
-                        featherEditor.close();
+                        console.log(msg);
+                                featherEditor.close();
                                 d = new Date();
                                 $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('img').each(function(){
                         $(this).attr('src', $(this).attr('src') + "?" + d.getTime());
@@ -320,11 +322,12 @@ if (isset($_POST['submit'])) {
                         $(this).attr('data-url', $(this).data('url') + "?" + d.getTime());
                         });
                                 hide_animation();
-                        });
+                        }).error(function(msg) {
+                        console.log(msg); });
                                 return false;
                         },
                         onError: function(errorObj) {
-                        bootbox.alert(errorObj.message);
+                        console.log(errorObj.message);
                                 hide_animation();
                         }
 
@@ -332,10 +335,10 @@ if (isset($_POST['submit'])) {
                 }
             </script>
 
-                                                                                                                                                                                                                                                                                                                                                                                                        <!--            <script src="js/include.js"></script>-->
-            <script src="../resources/assets/js/metro.js"></script>
-            <script src="../resources/assets/js/include.js"></script>
-            <script src="../resources/assets/js/custom.js"></script>
+            <script src="js/include.js"></script>
+    <!--            <script src="../resources/assets/js/metro.js"></script>
+    <script src="../resources/assets/js/include.js"></script>
+    <script src="../resources/assets/js/custom.js"></script>-->
 
 
         </head>
@@ -714,23 +717,23 @@ if (isset($_POST['submit'])) {
                                         if ($sort_by == "name") {
                                             echo ($descending) ? "descending" : "ascending";
                                         }
-                                        ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename'); ?></a></div>
+                                        ?>" href="javascript:void('')" data-sort="name"><span class="indicator"></span> <?php echo trans('Filename'); ?></a></div>
                                     <div class="file-date"><a class="sorter sort-date <?php
                                         if ($sort_by == "date") {
                                             echo ($descending) ? "descending" : "ascending";
                                         }
-                                        ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date'); ?></a></div>
+                                        ?>" href="javascript:void('')" data-sort="date"><span class="indicator"></span> <?php echo trans('Date'); ?></a></div>
                                     <div class="file-size"><a class="sorter sort-size <?php
                                         if ($sort_by == "size") {
                                             echo ($descending) ? "descending" : "ascending";
                                         }
-                                        ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size'); ?></a></div>
+                                        ?>" href="javascript:void('')" data-sort="size"><span class="indicator"></span> <?php echo trans('Size'); ?></a></div>
                                     <div class='img-dimension'><?php echo trans('Dimension'); ?></div>
                                     <div class='file-extension'><a class="sorter sort-extension <?php
                                         if ($sort_by == "extension") {
                                             echo ($descending) ? "descending" : "ascending";
                                         }
-                                        ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type'); ?></a></div>
+                                        ?>" href="javascript:void('')" data-sort="extension"><span class="indicator"></span> <?php echo trans('Type'); ?></a></div>
                                     <div class='file-operations'><?php echo trans('Operations'); ?></div>
                                 </div>
                             <?php } ?>
@@ -1140,7 +1143,7 @@ if (isset($_POST['submit'])) {
                     <div class="cell" style="margin: auto;float: none;">
                         <div class="image-container bordered image-format-hd">
                             <div class="frame">
-                                <img id="full-img" src="img/storing_animation.gif" class="" style="margin: auto;">  
+                                <img id="full-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="" style="margin: auto;">  
                             </div>
                         </div>
 
@@ -1152,9 +1155,13 @@ if (isset($_POST['submit'])) {
         <!-- lightbox div end -->
 
         <!-- loading div start -->
-        <div id="loading_container" style="display:none;">
-            <div id="loading" style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:100000"></div>
-            <img id="loading_animation" src="img/storing_animation.gif" alt="loading" style="z-index:10001; margin-left:-32px; margin-top:-32px; position:fixed; left:50%; top:50%"/>        
+        <!--        <div id="loading_container" style="display:block;">
+                    <div id="loading" style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:10000;opacity: .7"></div>
+                    <div data-role="preloader" data-type="ring" style="margin: auto;z-index:10001;" class="preloader-ring"></div>            
+                </div>-->
+        <div id="loading_container" style="display: none;">
+            <div id="loading"></div>
+            <div data-role="preloader" data-type="ring" class="preloader-ring"></div>            
         </div>
         <!-- loading div end -->
 
