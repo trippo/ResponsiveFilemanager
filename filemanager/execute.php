@@ -300,8 +300,8 @@ if (isset($_GET['action']))
 
             $action = $_SESSION['RF']['clipboard_action'];
             $data = $_SESSION['RF']['clipboard'];
-            $data['path'] = $current_path.$data['path'];
             $data['path_thumb'] = $thumbs_base_path.$data['path'];
+            $data['path'] = $current_path.$data['path'];
             $pinfo = pathinfo($data['path']);
 
             // user wants to paste to the same dir. nothing to do here...
