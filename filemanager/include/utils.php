@@ -58,8 +58,17 @@ if ( ! function_exists('trans'))
 		}
 
 		// add lang file to session for easy include
-		$_SESSION['RF']['language'] = $lang;
-		$_SESSION['RF']['language_file'] = $language_file;
+		// add lang file to session for easy include
+		if(
+			!isset($_SESSION['RF']['language'])
+			|| !isset($_SESSION['RF']['language_file'])
+			|| (isset($_SESSION['RF']['language']) 
+				&& isset($_SESSION['RF']['language_file']) 
+				&& $lang != $_SESSION['RF']['language'])
+		) {
+			$_SESSION['RF']['language'] = $lang;
+			$_SESSION['RF']['language_file'] = $language_file;
+		}
 	}
 	else
 	{
