@@ -32,6 +32,7 @@ if ( ! function_exists('trans'))
 	if ( ! isset($_SESSION['RF']['language'])
 		|| file_exists($_SESSION['RF']['language_file']) === false
 		|| ! is_readable($_SESSION['RF']['language_file'])
+		|| isset($_GET['lang'])
 	)
 	{
 		$lang = $default_language;
