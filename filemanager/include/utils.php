@@ -143,6 +143,7 @@ function duplicate_file($old_path, $name)
 	}
 }
 
+
 /**
  * Rename file
  *
@@ -206,19 +207,20 @@ function rename_folder($old_path, $name, $transliteration)
  */
 function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop")
 {
-	$timeLimit = ini_get('max_execution_time');
-	set_time_limit(30);
 	$result = false;
-	if (image_check_memory_usage($imgfile, $newwidth, $newheight))
-	{
-		require_once('php_image_magician.php');
-		$magicianObj = new imageLib($imgfile);
-		$magicianObj->resizeImage($newwidth, $newheight, $option);
-		$magicianObj->saveImage($imgthumb, 80);
-		$result = true;
+	if(file_exists($imgfile) || strpos($imgfile,'http')===0){
+		$timeLimit = ini_get('max_execution_time');
+		set_time_limit(30);
+		if (strpos($imgfile,'http')===0 || image_check_memory_usage($imgfile, $newwidth, $newheight))
+		{
+			require_once('php_image_magician.php');
+			$magicianObj = new imageLib($imgfile);
+			$magicianObj->resizeImage($newwidth, $newheight, $option);
+			$magicianObj->saveImage($imgthumb, 80);
+			$result = true;
+		}
+		set_time_limit($timeLimit);
 	}
-	set_time_limit($timeLimit);
-
 	return $result;
 }
 
