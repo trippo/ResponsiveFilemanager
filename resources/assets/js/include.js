@@ -129,14 +129,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       },
 
       select: function($trigger)
-      {   
+      {
         var url = getLink($trigger);
         var external = $('#field_id').val();
         var windowParent;
         var is_return_relative_url = $('#return_relative_url').val();
-        console.log(url);
-        url = url.replace($('#base_url').val(), '');
-        url = url.replace($('#cur_dir').val(), '');
+
+        if(is_return_relative_url==1){
+          url = url.replace($('#base_url').val(), '');
+          url = url.replace($('#cur_dir').val(), '');
+        }
         if ($('#popup').val() == 1)
         {
           windowParent = window.opener;
@@ -1087,7 +1089,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
     // remove to prevent duplicates
     $('#textfile_edit_area').parent().parent().remove();
 
-    var full_path = $trigger.find('.rename-file').attr('data-path');
+    var full_path = $trigger.find('.rename-file-paths').attr('data-path');
 
     $.ajax({
       type: "POST",
@@ -1189,11 +1191,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
     if (!$trigger.hasClass('directory'))
     {
-      full_path = $trigger.find('.rename-file').attr('data-path');
+      full_path = $trigger.find('.rename-file-paths').attr('data-path');
     }
     else
     {
-      full_path = $trigger.find('.rename-folder').attr('data-path');
+      full_path = $trigger.find('.rename-file-paths').attr('data-path');
     }
 
     // ajax -> box -> ajax -> box -> mind blown
@@ -1360,11 +1362,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
     if (!$trigger.hasClass('directory'))
     {
-      full_path = $trigger.find('.rename-file').attr('data-path');
+      full_path = $trigger.find('.rename-file-paths').attr('data-path');
     }
     else
     {
-      full_path = $trigger.find('.rename-folder').attr('data-path');
+      full_path = $trigger.find('.rename-file-paths').attr('data-path');
     }
 
     $.ajax({
