@@ -199,6 +199,14 @@ $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == 
 
 if (!isset($_GET['type'])) $_GET['type'] = 0;
 
+
+if (isset($_GET['lang']))
+{
+	$lang = strip_tags($_GET['lang']);
+	$_SESSION['RF']['language'] = $lang;
+	$_SESSION['RF']['language_file'] = 'lang/' . $lang . '.php';
+}
+
 if (isset($_GET['editor']))
 {
 	$editor = strip_tags($_GET['editor']);
