@@ -517,8 +517,6 @@ if(isset($_GET['action']))
 				response(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))), 403)->send();
 				exit;
 			}
-			echo $sub_action ;
-			echo $preview_mode;
 			if ($sub_action == 'preview')
 			{
 				if ($preview_mode == 'text')
@@ -541,7 +539,7 @@ if(isset($_GET['action']))
 				}
 				elseif ($preview_mode == 'viewerjs')
 				{
-					$ret = '<iframe id="viewer" src="js/ViewerJS/../../'.$_GET["file"].'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+					$ret = '<iframe id="viewer" src="js/ViewerJS/../../'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
 
 				}
 				elseif ($preview_mode == 'google')
