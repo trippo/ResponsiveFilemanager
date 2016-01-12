@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
   "use strict";
 
-  var version = "9.9.6";
+  var version = "9.9.7";
   var active_contextmenu = true;
   var copy_count = 0;
 

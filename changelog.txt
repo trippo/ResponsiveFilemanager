@@ -1,6 +1,19 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.9.7
+*********************************************************
+- fixed pdf preview
+- fixed a bug with session subfolder folder creation
+- fixed a bug with folder creation
+- fixed a problem with ie and allow_url_fopen server config
+- fixed a problem with folder copy
+- fixed a problem with relative folder url export
+- fixed error 'TypeError: $ is not a function'
+- fixed a problem with lang in query string
+- fixed a problem with drag&drop on android
+
+*********************************************************
 *  RFM 9.9.6
 *********************************************************
 - fixed a security vulnerability (thanks to securitum.pl)
