@@ -529,17 +529,17 @@ if(isset($_GET['action']))
 					if ( ! in_array($info['extension'],$previewable_text_file_exts_no_prettify))
 					{
 						$ret .= '<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang='.$info['extension'].'&skin=sunburst"></script>';
-						$ret .= '<div class="text-center"><strong>'.$info['basename'].'</strong></div><pre class="prettyprint">'.$data.'</pre>';
+						$ret .= '<pre class="prettyprint">'.$data.'</pre>';
 					}
 					else
 					{
-						$ret .= '<div class="text-center"><strong>'.$info['basename'].'</strong></div><pre class="no-prettify">'.$data.'</pre>';
+						$ret .= '<pre class="no-prettify">'.$data.'</pre>';
 					}
 
 				}
 				elseif ($preview_mode == 'viewerjs')
 				{
-					$ret = '<iframe id="viewer" src="js/ViewerJS/../../'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+					$ret = '<iframe id="viewer" src="js/ViewerJS/#../../'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
 
 				}
 				elseif ($preview_mode == 'google')
@@ -547,7 +547,7 @@ if(isset($_GET['action']))
 					$url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
 					$googledoc_url = urlencode($url_file);
 					$googledoc_html = "<iframe src=\"http://docs.google.com/viewer?url=" . $googledoc_url . "&embedded=true\" class=\"google-iframe\"></iframe>";
-					$ret = '<div class="text-center"><strong>' . $info['basename'] . '</strong></div>' . $googledoc_html . '';
+					$ret = $googledoc_html;
 				}
 			}
 			else
