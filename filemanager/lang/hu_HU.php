@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Új fájl',
 	'No_Extension' => 'Meg kell adnod a fájl kiterjesztését.',
 	'Valid_Extensions' => 'Elfogadott kiterjesztések: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

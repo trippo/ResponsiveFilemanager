@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Neue Datei',
 	'No_Extension' => 'Dateiendung muss hinzugef&uuml;gt werden.',
 	'Valid_Extensions' => 'Erlaubte Dateiendungen: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

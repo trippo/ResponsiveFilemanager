@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Nový soubor',
 	'No_Extension' => 'Musíte přidat příponu souboru.',
 	'Valid_Extensions' => 'Platné přípony: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Pro nahrání přetáhněte soubor(y) sem",
 );

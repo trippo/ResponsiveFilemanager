@@ -96,4 +96,5 @@ return array(
 	'File_Save_Error' => "Er is een fout opgetreden tijdens het opslaan van het bestand.",
 	'No_Extension' => 'Je moet een bestands-extensie toevoegen.',
 	'Valid_Extensions' => 'Geldige extensies: %s', // %s = txt,log etc.
+	'Upload_message' => "Drop file here to upload",
 );

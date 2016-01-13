@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Yeni Dosya',
 	'No_Extension' => 'Lütfen bir dosya uzantısı ekleyiniz.',
 	'Valid_Extensions' => 'Geçerli eklentiler: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

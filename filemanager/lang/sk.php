@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Nový súbor',
 	'No_Extension' => 'Musíte pridať príponu súboru.',
 	'Valid_Extensions' => 'Povolené prípony: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

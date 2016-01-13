@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Tạo File mới',
 	'No_Extension' => 'You have to add a file extension.',
 	'Valid_Extensions' => 'Extension được chấp nhận: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

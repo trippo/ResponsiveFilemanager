@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Nuovo file',
 	'No_Extension',"Non hai inserito l'estensione del file.",
 	'Valid_Extensions' => 'Estensioni valide: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Trascina qui i file per l'upload",
 );

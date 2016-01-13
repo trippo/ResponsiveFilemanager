@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Ny fil',
 	'No_Extension' => 'Du må legge til et fil-etternavn.',
 	'Valid_Extensions' => 'Gyldige fil-etternavn: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

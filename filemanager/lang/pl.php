@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Utwórz plik',
 	'No_Extension' => 'Musisz dodać rozszerzenie do pliku.',
 	'Valid_Extensions' => 'Poprawne rozszerzenia: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

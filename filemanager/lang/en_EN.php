@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'New File',
 	'No_Extension' => 'You have to add a file extension.',
 	'Valid_Extensions' => 'Valid extensions: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

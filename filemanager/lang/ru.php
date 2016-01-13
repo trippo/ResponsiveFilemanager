@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Новый файл',
 	'No_Extension' => 'Необходимо добавить расширение файла',
 	'Valid_Extensions' => 'Разрешённые расширения файла: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

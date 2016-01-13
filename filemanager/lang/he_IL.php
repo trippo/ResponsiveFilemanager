@@ -96,6 +96,6 @@ return array(
 	'New_File' => 'קובץ חדש',
 	'No_Extension' => 'חובה לציין את סיומת הקובץ.', 
 	'Valid_Extensions' => 'סיומות חוקיות: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );
 

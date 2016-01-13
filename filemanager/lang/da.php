@@ -96,5 +96,5 @@ return array(
 	'New_File' => 'Opret ny fil',
 	'No_Extension' => 'Husk at tilføje filtype.',
 	'Valid_Extensions' => 'Gyldige filtyper er: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );

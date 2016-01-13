@@ -96,5 +96,5 @@ return array(
 	'New_File' => '新規ファイル',
 	'No_Extension' => 'ファイルの拡張子を指定してください。',
 	'Valid_Extensions' => '有効な拡張子: %s', // %s = txt,log etc.
-
+	'Upload_message' => "Drop file here to upload",
 );
