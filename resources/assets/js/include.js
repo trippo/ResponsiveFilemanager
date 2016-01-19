@@ -437,12 +437,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       {
         var _this = $(this);
         e.preventDefault();
-
         $.ajax({
           url: _this.attr('data-url'),
           success: function (data)
           {
-            bootbox.alert(data);
+            bootbox.modal(data, " "+_this.parent().parent().parent().find('.name').val());
           }
         });
       });
@@ -2075,6 +2074,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
       if ($('#convert_spaces').val() == "true")
       {
         stri = stri.replace(/ /g, $('#replace_with').val());
+      }
+      if($('#lower_case').val() == "true")
+      {
         stri = stri.toLowerCase();
       }
       stri = stri.replace('"', '');

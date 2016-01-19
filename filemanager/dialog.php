@@ -412,6 +412,7 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="transliteration" value="<?php echo $transliteration?"true":"false"; ?>" />
 	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces?"true":"false"; ?>" />
     <input type="hidden" id="replace_with" value="<?php echo $convert_spaces? $replace_with : ""; ?>" />
+    <input type="hidden" id="lower_case" value="<?php echo $lower_case?"true":"false"; ?>" />
 <?php if($upload_files){ ?>
 <!-- uploader div start -->
 <div class="uploader">
