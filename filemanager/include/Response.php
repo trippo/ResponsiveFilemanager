@@ -192,7 +192,7 @@ class Response {
 	 */
 	public function setContent($content)
 	{
-		if ($content instanceof \ArrayObject || is_array($content))
+		if ($content instanceof ArrayObject || is_array($content))
 		{
 			$this->headers['Content-Type'] = array('application/json');
 
@@ -240,7 +240,7 @@ class Response {
 	{
 		$this->statusCode = $code = (int) $code;
 		if ($this->isInvalid()) {
-			throw new \InvalidArgumentException(sprintf('The HTTP status code "%s" is not valid.', $code));
+			throw new InvalidArgumentException(sprintf('The HTTP status code "%s" is not valid.', $code));
 		}
 
 		if (null === $text) {

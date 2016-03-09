@@ -12,6 +12,8 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 	exit;
 }
 
+include 'include/mime_type_lib.php';
+
 if (isset($_POST['path']))
 {
    $storeFolder = $_POST['path'];
@@ -55,14 +57,23 @@ while ($cycle && $i < $max_cycles)
 if ( ! empty($_FILES))
 {
 	$info = pathinfo($_FILES['file']['name']);
+	$mime_type = get_file_mime_type($_FILES['file']['tmp_name']);
+	$extension = get_extension_from_mime($mime_type);
+	if($extension===''){
+		$extension = $info['extension'];
+	}
 
-	if (in_array(fix_strtolower($info['extension']), $ext))
+	if (in_array(fix_strtolower($extension), $ext))
 	{
 		$tempFile = $_FILES['file']['tmp_name'];
 		$targetPath = $storeFolder;
 		$targetPathThumb = $storeFolderThumb;
-		$_FILES['file']['name'] = fix_filename($_FILES['file']['name'],$transliteration,$convert_spaces, $replace_with);
-
+		$_FILES['file']['name'] = fix_filename($info['filename'].".".$extension,$transliteration,$convert_spaces, $replace_with);
+		// Lower
+		if ($lower_case)
+		{
+			$_FILES['file']['name'] = fix_strtolower($_FILES['file']['name'];
+		}
 	 	// Gen. new file name if exists
 		if (file_exists($targetPath.$_FILES['file']['name']))
 		{
@@ -70,22 +81,22 @@ if ( ! empty($_FILES))
 			$info = pathinfo($_FILES['file']['name']);
 
 			// append number
-			while(file_exists($targetPath.$info['filename']."_".$i.".".$info['extension'])) {
+			while(file_exists($targetPath.$info['filename']."_".$i.".".$extension)) {
 				$i++;
 			}
-			$_FILES['file']['name'] = $info['filename']."_".$i.".".$info['extension'];
+			$_FILES['file']['name'] = $info['filename']."_".$i.".".$extension;
 		}
 
 		$targetFile =  $targetPath. $_FILES['file']['name'];
 		$targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
 
 		// check if image (and supported)
-		if (in_array(fix_strtolower($info['extension']),$ext_img)) $is_img=TRUE;
+		if (in_array(fix_strtolower($extension),$ext_img)) $is_img=TRUE;
 		else $is_img=FALSE;
 
 		// upload
 		move_uploaded_file($tempFile,$targetFile);
-		chmod($targetFile, 0755);
+		chmod($targetFile, 0766);
 
 		if ($is_img)
 		{
