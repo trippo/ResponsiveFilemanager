@@ -1,6 +1,20 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.10.0
+*********************************************************
+- added total max size control to limit the size of all files into
+source folder (you can control it in config.php) (thanks to Stephane MERCIER)
+- improved the error messages (thanks to Stephane MERCIER)
+- update jplayer
+- fixed a incorrect closing of upload modal
+- fixed lowercase on convert_spaces active and add lower_case option on config.php
+- add mimetype control on upload (ex. if i renane img.jpg to img.pdf and upload to filemananger the system check the time type and converte it to img.jpg)
+- fixed permission error on files and folders
+- other fix
+
+
+*********************************************************
 *  RFM 9.9.7
 *********************************************************
 - fixed pdf preview
