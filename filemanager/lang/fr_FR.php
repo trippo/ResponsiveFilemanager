@@ -69,9 +69,9 @@ return array(
 	'Clear_Clipboard' => 'Vider le presse-papiers',
 	'Clear_Clipboard_Confirm' => 'Êtes-vous sûr de vouloir vider le presse-papiers ?',
 	'Files_ON_Clipboard' => 'Le presse-papiers contient des fichiers.',
-	'Copy_Cut_Size_Limit' => 'Les fichiers/dossiers sélectionnés sont trop gros dans %s. Limite: %d MB/opération', // %s = cut or copy
-	'Copy_Cut_Count_Limit' => 'Vous avez sélectionné trop de fichiers/dossier dans %s. Limite: %d fichiers/opération', // %s = cut or copy
-	'Copy_Cut_Not_Allowed' => 'Vous n\'êtes pas autorisé à manipuler %s.', // %s(1) = cut or copy, %s(2) = files or folders
+	'Copy_Cut_Size_Limit' => 'Les fichiers/dossiers sélectionnés sont trop gros pour %1$s. Limite: %2$d MB/opération', // %1$s = cut or copy, %2$d = max size
+	'Copy_Cut_Count_Limit' => 'Vous avez sélectionné trop de fichiers/dossier pour %1$s. Limite: %2$d fichiers/opération', // %1$s = cut or copy, %2$d = max count
+	'Copy_Cut_Not_Allowed' => 'Vous n\'êtes pas autorisé à %1$s des %2$s.', // %12$s = cut or copy, %2$s = files or folders
 	'Aviary_No_Save' => 'Impossible d\'enregistrer l\'image',
 	'Zip_No_Extract' => 'Extraction impossible. Le fichier est peut-être corrompu.',
 	'Zip_Invalid' => 'Cette extension n\'est pas supportée. Extensions valides: zip, gz, tar.',
@@ -85,7 +85,7 @@ return array(
 	'Group' => 'Groupe',
 	'Yes' => 'Oui',
 	'No' => 'Non',
-	'Lang_Not_Found' => 'La langue est introuvable.',
+	'Lang_Not_Found' => 'Le fichier de langue est introuvable.',
 	'Lang_Change' => 'Changer la langue',
 	'File_Not_Found' => 'Le fichier est introuvable.',
 	'File_Open_Edit_Not_Allowed' => 'Vous ne disposez pas des autorisations sur le fichier %s.', // %s = open or edit
@@ -96,5 +96,27 @@ return array(
 	'New_File' => 'Nouveau fichier',
 	'No_Extension' => 'Vous devez ajouter une extension au fichier.',
 	'Valid_Extensions' => 'Extensions valides: %s', // %s = txt,log etc.
-	'Upload_message' => "Drop file here to upload",
+	'Upload_message' => "Glissez les fichier ici pour les ajouter",
+
+	'SERVER ERROR' => "ERREUR SERVEUR",
+	'forbiden' => "Interdit",
+	'wrong path' => "Chemin invalide",
+	'wrong name' => "Nom invalide",
+	'wrong extension' => "Extension invalide",
+	'wrong option' => "Option invalide",
+	'wrong data' => "Données invalides",
+	'wrong action' => "Action invalide",
+	'wrong sub-action' => "Sous-action invalide",
+	'no action passed' => "Aucune action demandée",
+	'no path' => "Chemin manquant",
+	'no file' => "Fichier manquant",
+	'view type number missing' => "Type de vue manquant",
+	'Not enought Memory' => "Mémoire insuffisante",
+	'max_size_reached' => "Votre répertoire d'image a déjà atteind sa taille maximale de %d mo.", //%d = max overall size
+	'B' => "o",
+	'KB' => "ko",
+	'MB' => "mo",
+	'GB' => "go",
+	'TB' => "to",
+	'total size' => "Taille totale",
 );

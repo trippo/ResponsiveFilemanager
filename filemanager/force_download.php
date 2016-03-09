@@ -9,7 +9,7 @@ include 'include/utils.php';
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
-	response('forbiden', 403)->send();
+	response(trans('forbiden').AddErrorLocation(), 403)->send();
 	exit;
 }
 
@@ -21,14 +21,14 @@ if (
 	|| strpos($_POST['path'], './') === 0
 )
 {
-	response('wrong path', 400)->send();
+	response(trans('wrong path'.AddErrorLocation()), 400)->send();
 	exit;
 }
 
 
 if (strpos($_POST['name'], '/') !== false)
 {
-	response('wrong path', 400)->send();
+	response(trans('wrong path'.AddErrorLocation()), 400)->send();
 	exit;
 }
 
@@ -39,13 +39,13 @@ $info = pathinfo($name);
 
 if ( ! in_array(fix_strtolower($info['extension']), $ext))
 {
-	response('wrong extension', 400)->send();
+	response(trans('wrong extension'.AddErrorLocation()), 400)->send();
 	exit;
 }
 
 if ( ! file_exists($path . $name))
 {
-	response('File not found', 404)->send();
+	response(trans('File_Not_Found'.AddErrorLocation()), 404)->send();
 	exit;
 }
 
@@ -62,3 +62,4 @@ response(file_get_contents($path . $name), 200, array(
 ))->send();
 
 exit;
+?>

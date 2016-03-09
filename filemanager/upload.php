@@ -8,7 +8,7 @@ include 'include/utils.php';
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
-	response('forbiden', 403)->send();
+	response(trans('forbiden').AddErrorLocation(), 403)->send();
 	exit;
 }
 
@@ -34,8 +34,10 @@ if ($path_pos!==0
 	|| strpos($storeFolderThumb,'./',strlen($thumbs_base_path)) !== FALSE
 	|| strpos($storeFolder,'../',strlen($current_path)) !== FALSE
 	|| strpos($storeFolder,'./',strlen($current_path)) !== FALSE )
-		die('wrong path');
-
+{
+	response(trans('wrong path'.AddErrorLocation()))->send();
+	exit;
+}
 
 $path = $storeFolder;
 $cycle = TRUE;
@@ -69,7 +71,7 @@ if ( ! empty($_FILES))
 		$targetPath = $storeFolder;
 		$targetPathThumb = $storeFolderThumb;
 		$_FILES['file']['name'] = fix_filename($info['filename'].".".$extension,$transliteration,$convert_spaces, $replace_with);
-		// Lower
+		// LowerCase
 		if ($lower_case)
 		{
 			$_FILES['file']['name'] = fix_strtolower($_FILES['file']['name'];
@@ -94,9 +96,14 @@ if ( ! empty($_FILES))
 		if (in_array(fix_strtolower($extension),$ext_img)) $is_img=TRUE;
 		else $is_img=FALSE;
 
+		if (!checkresultingsize($_FILES['file']['size'])) {
+			response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation(), 406)->send();
+			exit;
+		}
+
 		// upload
 		move_uploaded_file($tempFile,$targetFile);
-		chmod($targetFile, 0766);
+		chmod($targetFile, 0755);
 
 		if ($is_img)
 		{
@@ -169,7 +176,7 @@ if ( ! empty($_FILES))
 			if ($memory_error)
 			{
 				unlink($targetFile);
-				header('HTTP/1.1 406 Not enought Memory',TRUE,406);
+				response(trans("Not enought Memory").AddErrorLocation(), 406)->send();
 				exit();
 			}
 		}
@@ -177,13 +184,13 @@ if ( ! empty($_FILES))
 	}
 	else // file ext. is not in the allowed list
 	{
-		header('HTTP/1.1 406 file not permitted',TRUE,406);
+		response(trans("Error_extension").AddErrorLocation(), 406)->send();
 		exit();
 	}
 }
 else // no files to upload
 {
-	header('HTTP/1.1 405 Bad Request', TRUE, 405);
+	response(trans("no file").AddErrorLocation(), 405)->send();
 	exit();
 }
 
@@ -193,7 +200,7 @@ if (isset($_POST['submit']))
 	$query = http_build_query(array(
 		'type'	  	=> $_POST['type'],
 		'lang'	  	=> $_POST['lang'],
-		'popup'	 	=> $_POST['popup'],
+		'popup'			=> $_POST['popup'],
 		'field_id'  => $_POST['field_id'],
 		'fldr'	  	=> $_POST['fldr'],
 	));
