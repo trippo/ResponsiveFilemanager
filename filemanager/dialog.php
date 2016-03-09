@@ -411,6 +411,7 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="convert_spaces" value="<?php echo $convert_spaces?"true":"false";?>" />
 	<input type="hidden" id="replace_with" value="<?php echo $convert_spaces? $replace_with : "";?>" />
 	<input type="hidden" id="lower_case" value="<?php echo $lower_case?"true":"false";?>" />
+	<input type="hidden" id="show_folder_size" value="<?php echo $show_folder_size;?>" />
 <?php if($upload_files){ ?>
 <!-- uploader div start -->
 <div class="uploader">
@@ -481,9 +482,10 @@ foreach($files as $k=>$file){
 	elseif($file=="..") $prev_folder=array('file'=>$file);
 	elseif(is_dir($current_path.$rfm_subfolder.$subdir.$file)){
 		$date=filemtime($current_path.$rfm_subfolder.$subdir. $file);
+		$current_folders_number++;
 		if($show_folder_size){
 			list($size,$nfiles,$nfolders) = folder_info($current_path.$rfm_subfolder.$subdir.$file,false);
-			$current_folders_number++;
+			
 		} else {
 			$size=0;
 		}
@@ -493,10 +495,12 @@ foreach($files as $k=>$file){
 			'file_lcase'=>strtolower($file),
 			'date'=>$date,
 			'size'=>$size,
-			'nfiles'=>$nfiles,
-			'nfolders'=>$nfolders,
 			'extension'=>$file_ext,
 			'extension_lcase'=>strtolower($file_ext));
+		if($show_folder_size){
+			$sorted[$k]['nfiles'] = $nfiles;
+			$sorted[$k]['nfolders'] = $nfolders;
+		}
 	}else{
 		$current_files_number++;
 		$file_path=$current_path.$rfm_subfolder.$subdir.$file;
@@ -570,9 +574,6 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<?php if($copy_cut_files || $copy_cut_dirs){ ?>
 				<button class="tip btn paste-here-btn" title="<?php echo trans('Paste_Here');?>"><i class="rficon-clipboard-apply"></i></button>
 				<button class="tip btn clear-clipboard-btn" title="<?php echo trans('Clear_Clipboard');?>"><i class="rficon-clipboard-clear"></i></button>
-				<?php } ?>
-				<?php if($show_total_size){ ?>
-				<span title="<?php echo trans('total size').$MaxSizeTotal;?>"><?php echo makeSize($sizeCurrentFolder).(($MaxSizeTotal !== false && is_int($MaxSizeTotal))? '/'.$MaxSizeTotal.' '.trans('MB'):'');?></span>
 				<?php } ?>
 			</div>
 			<div class="span2 half view-controller">
@@ -662,6 +663,10 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		</div>
 	</li>
 	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
+	<?php if($show_total_size){ ?>
+	<li><small class="hidden-phone"><span title="<?php echo trans('total size').$MaxSizeTotal;?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($MaxSizeTotal !== false && is_int($MaxSizeTotal))? '/'.$MaxSizeTotal.' '.trans('MB'):'');?></span></small>
+	</li>
+	<?php } ?>
 	</ul>
 	</div>
 	<!-- breadcrumb div end -->

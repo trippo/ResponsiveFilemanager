@@ -288,16 +288,17 @@ if(isset($_GET['action']))
 				$("#jquery_jplayer_1").jPlayer({
 					ready: function () {
 					$(this).jPlayer("setMedia", {
-					title:"<?php $_GET['title']; ?>",
+						title:"<?php $_GET['title']; ?>",
 						m4v: "<?php echo $preview_file; ?>",
-						ogv: "<?php echo $preview_file; ?>"
+						ogv: "<?php echo $preview_file; ?>",
+						flv: "<?php echo $preview_file; ?>"
 					});
 					},
 					swfPath: "js",
-				solution:"html,flash",
+					solution:"html,flash",
 					supplied: "mp4, m4v, ogv, flv, webmv, webm",
-				smoothPlayBar: true,
-				keyEnabled: false
+					smoothPlayBar: true,
+					keyEnabled: false
 				});
 
 				});
@@ -324,7 +325,7 @@ if(isset($_GET['action']))
 				exit;
 			}
 
-			$msg_sub_action = ($_POST['sub_action'] == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut')));
+			$msg_sub_action = ($_POST['sub_action'] == 'copy' ? trans('Copy') : trans('Cut'));
 			$path = $current_path . $_POST['path'];
 
 			if (is_dir($path))
@@ -382,7 +383,7 @@ if(isset($_GET['action']))
 				|| (is_file($path) && $chmod_files === false)
 				|| (is_function_callable("chmod") === false) )
 			{
-				response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files'))), 403).AddErrorLocation())->send();
+				response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
 				exit;
 			} else {
 				$perm = decoct(fileperms($path) & 0777);

@@ -74,7 +74,7 @@ if ( ! empty($_FILES))
 		// LowerCase
 		if ($lower_case)
 		{
-			$_FILES['file']['name'] = fix_strtolower($_FILES['file']['name'];
+			$_FILES['file']['name'] = fix_strtolower($_FILES['file']['name']);
 		}
 	 	// Gen. new file name if exists
 		if (file_exists($targetPath.$_FILES['file']['name']))

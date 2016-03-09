@@ -358,19 +358,21 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
               disabled: true
             };
           }
-          if ($trigger.hasClass('directory')){
-            options.items.size = {
-              name: $trigger.find('.file-size').html()+" - "+$trigger.find('.nfiles').val()+" "+$('#lang_files').val()+" - "+$trigger.find('.nfolders').val()+" "+$('#lang_folders').val(),
-              icon: "size",
-              disabled: true
-            };
-          }else{
+          if(($('#show_folder_size').val()==='true' || $('#show_folder_size').val()==='true')){
+            if ($trigger.hasClass('directory')){
+              options.items.size = {
+                name: $trigger.find('.file-size').html()+" - "+$trigger.find('.nfiles').val()+" "+$('#lang_files').val()+" - "+$trigger.find('.nfolders').val()+" "+$('#lang_folders').val(),
+                icon: "size",
+                disabled: true
+              };
+            }else{
 
-            options.items.size = {
-              name: $trigger.find('.file-size').html(),
-              icon: "size",
-              disabled: true
-            };
+              options.items.size = {
+                name: $trigger.find('.file-size').html(),
+                icon: "size",
+                disabled: true
+              };
+            }
           }
           options.items.date = {
             name: $trigger.find('.file-date').html(),

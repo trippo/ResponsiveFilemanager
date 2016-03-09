@@ -333,7 +333,7 @@ if (isset($_GET['action']))
 
 			// check if server disables copy or rename
 			if (is_function_callable(($action == 'copy' ? 'copy' : 'rename')) === FALSE){
-				response(sprintf(trans('Function_Disabled'), ($action == 'copy' ? lcfirst(trans('Copy')) : lcfirst(trans('Cut')))).AddErrorLocation())->send();
+				response(sprintf(trans('Function_Disabled'), ($action == 'copy' ? (trans('Copy')) : (trans('Cut')))).AddErrorLocation())->send();
 				exit;
 			}
 
@@ -370,7 +370,7 @@ if (isset($_GET['action']))
 
 			// check perm
 			if ($chmod_perm === FALSE) {
-				response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? lcfirst(trans('Folders')) : lcfirst(trans('Files')) )).AddErrorLocation())->send();
+				response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? (trans('Folders')) : (trans('Files')) )).AddErrorLocation())->send();
 				exit;
 			}
 
