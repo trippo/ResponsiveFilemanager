@@ -55,7 +55,7 @@ if(isset($_GET['action']))
 
 			if (isset($_GET['descending']))
 			{
-				$_SESSION['RF']["descending"] = $_GET['descending'] === "TRUE";
+				$_SESSION['RF']["descending"] = $_GET['descending'];
 			}
 			break;
 		case 'image_size': // not used

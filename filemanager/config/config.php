@@ -153,11 +153,16 @@ $config = array(
 	'icon_theme' => "ico",
 
 
+	//Show or not total size in filemanager (is possible to greatly increase the calculations)
+	'show_total_size'						=> false,
 	//Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
-	'show_total_size'						=> true,
-	'show_folder_size'						=> true,
+	'show_folder_size'						=> false,
 	//Show or not show sorting feature in filemanager
 	'show_sorting_bar'						=> true,
+	//Show or not show filters button in filemanager
+	'show_filter_buttons'						=> true,
+	//Show or not language selection feature in filemanager
+	'show_language_selection'				=> false,
 	//active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
 	'transliteration'						=> false,
 	//convert all spaces on files name and folders name with $replace_with variable

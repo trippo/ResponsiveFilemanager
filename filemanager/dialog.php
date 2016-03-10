@@ -198,6 +198,14 @@ $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == 
 
 if (!isset($_GET['type'])) $_GET['type'] = 0;
 
+if (isset($_GET['extensions'])){
+	$extensions = json_decode($_GET['extensions']);
+	if($extensions){
+		$_GET['type'] = 0;
+		$ext = $extensions;
+		$show_filter_buttons = false;
+	}
+}
 
 if (isset($_GET['lang']))
 {
@@ -245,7 +253,6 @@ if(isset($_GET['CKEditorFuncNum'])){
 $get_params['fldr'] ='';
 
 $get_params = http_build_query($get_params);
-
 ?>
 <!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml">
@@ -583,7 +590,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 			</div>
 			<div class="span6 entire types">
 				<span><?php echo trans('Filters');?>:</span>
-				<?php if($_GET['type']!=1 && $_GET['type']!=3){ ?>
+				<?php if($_GET['type']!=1 && $_GET['type']!=3 && $show_filter_buttons){ ?>
 					<?php if(count($ext_file)>0 or false){ ?>
 				<input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
 				<label id="ff-item-type-1" title="<?php echo trans('Files');?>" for="select-type-1" class="tip btn ff-label-type-1"><i class="icon-file"></i></label>
@@ -644,7 +651,9 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 	?>
 
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="info"><i class="icon-question-sign"></i></a></li>
+	<?php if($show_language_selection){ ?>
 	<li class="pull-right"><a class="btn-small" href="javascript:void('')" id="change_lang_btn"><i class="icon-globe"></i></a></li>
+	<?php } ?>
 	<li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 
 	<li class="pull-right">
@@ -698,7 +707,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 		<?php
 		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 		foreach ($files as $file_array) {
-		$file=$file_array['file'];
+			$file=$file_array['file'];
 			if($file == '.' || (isset($file_array['extension']) && $file_array['extension']!=trans('Type_dir')) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false))
 			continue;
 			$new_name=fix_filename($file,$transliteration);
@@ -912,10 +921,11 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				<div class="cover"></div>
 				<?php } ?>
 				</a>
+				<a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
 				<div class="box">
-				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>"><a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
-				<?php echo $filename;?></a> </h4>
-				</div>
+				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>">
+				<?php echo $filename;?></h4>
+				</div></a>
 				<input type="hidden" class="date" value="<?php echo $file_array['date'];?>"/>
 				<input type="hidden" class="size" value="<?php echo $file_array['size'] ?>"/>
 				<input type="hidden" class="extension" value="<?php echo $extension_lower;?>"/>
