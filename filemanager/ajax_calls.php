@@ -1,9 +1,10 @@
 <?php
+
 $config = include 'config/config.php';
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
 
-include 'include/utils.php';
+require_once 'include/utils.php';
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
