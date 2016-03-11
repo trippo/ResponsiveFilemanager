@@ -198,6 +198,7 @@ $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == 
 
 if (!isset($_GET['type'])) $_GET['type'] = 0;
 
+$extensions='';
 if (isset($_GET['extensions'])){
 	$extensions = json_decode($_GET['extensions']);
 	if($extensions){
@@ -242,6 +243,7 @@ $get_params = array(
 	'lang'      => $lang,
 	'popup'     => $popup,
 	'crossdomain' => $crossdomain,
+	'extensions' => json_encode($extensions),
 	'field_id'  => $field_id,
 	'relative_url' => $return_relative_url,
 	'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
