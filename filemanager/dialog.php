@@ -202,7 +202,6 @@ $extensions='';
 if (isset($_GET['extensions'])){
 	$extensions = json_decode($_GET['extensions']);
 	if($extensions){
-		$_GET['type'] = 0;
 		$ext = $extensions;
 		$show_filter_buttons = false;
 	}
