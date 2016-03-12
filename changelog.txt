@@ -8,6 +8,9 @@ Responsive Filemanager Changelog
 - remember filter and sort after refresh
 - added config toggle to show/hide filter buttons and language selection button
 - fixed a problem when you click on namefile label (previously was equal to click two times)
+- fixed a problem with relative path with folder (thanks to gordon-matt)
+- fixed a problem with mimetype in some cases
+- fixed a problem with cache on image editor include
 
 *********************************************************
 *  RFM 9.10.0

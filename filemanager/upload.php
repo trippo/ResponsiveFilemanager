@@ -61,7 +61,7 @@ if ( ! empty($_FILES))
 	$info = pathinfo($_FILES['file']['name']);
 	$mime_type = get_file_mime_type($_FILES['file']['tmp_name']);
 	$extension = get_extension_from_mime($mime_type);
-	if($extension===''){
+	if($extension==='' || $extension=='so'){
 		$extension = $info['extension'];
 	}
 
