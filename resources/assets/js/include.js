@@ -1635,7 +1635,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var ext_video = ['mp4', 'ogg', 'webm'];
 		var is_return_relative_url = $('#return_relative_url').val();
 		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
-		url=url + "?" + new Date().getTime();
 
 		if (external != "")
 		{
@@ -1662,8 +1661,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 		else
 		{
+
 			if ($.inArray(ext, ext_img) > -1)
 			{
+				url = url + "?" + new Date().getTime();
 				fill = '<img src="' + url + '" alt="' + alt_name + '" />';
 			}
 			else
@@ -1787,7 +1788,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var base_url = $('#base_url').val();
 		var is_return_relative_url = $('#return_relative_url').val();
 		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
-		url=url + "?" + new Date().getTime();
 
 		if (external != "")
 		{
@@ -1814,6 +1814,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 		else
 		{
+			url = url + "?" + new Date().getTime();
 			apply_any(url);
 		}
 	}
