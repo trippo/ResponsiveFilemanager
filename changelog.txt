@@ -11,6 +11,7 @@ Responsive Filemanager Changelog
 - fixed a problem with relative path with folder (thanks to gordon-matt)
 - fixed a problem with mimetype in some cases
 - fixed a problem with cache on image editor include
+- fixed a problem with + char on folders name
 
 *********************************************************
 *  RFM 9.10.0

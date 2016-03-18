@@ -30,7 +30,7 @@ if (isset($_GET['fldr'])
 	&& strpos($_GET['fldr'],'../') === FALSE
 	&& strpos($_GET['fldr'],'./') === FALSE)
 {
-	$subdir = urldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
+	$subdir = rawurldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
 	$_SESSION['RF']["filter"]='';
 }
 else { $subdir = ''; }
