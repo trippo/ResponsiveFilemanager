@@ -1634,7 +1634,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var ext_audio = ['ogg', 'mp3', 'wav'];
 		var ext_video = ['mp4', 'ogg', 'webm'];
 		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+    var is_return_include_upload_dir = $('#return_include_upload_dir').val();
+    var url = encodeURL((is_return_relative_url == 1 ? (is_return_include_upload_dir == 1? path : subdir) : base_url + path) + file);
 
 		if (external != "")
 		{
@@ -1738,7 +1739,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		subdir = subdir.replace('\\', '/');
 		var base_url = $('#base_url').val();
 		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+    var is_return_include_upload_dir = $('#return_include_upload_dir').val();
+    var url = encodeURL((is_return_relative_url == 1 ? (is_return_include_upload_dir == 1? path : subdir) : base_url + path) + file);
 
 		if (external != "")
 		{
@@ -1787,7 +1789,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		subdir = subdir.replace('\\', '/');
 		var base_url = $('#base_url').val();
 		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+    var is_return_include_upload_dir = $('#return_include_upload_dir').val();
+    var url = encodeURL((is_return_relative_url == 1 ? (is_return_include_upload_dir == 1? path : subdir) : base_url + path) + file);
 
 		if (external != "")
 		{
@@ -1836,7 +1839,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		subdir = subdir.replace('\\', '/');
 		var base_url = $('#base_url').val();
 		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+    var is_return_include_upload_dir = $('#return_include_upload_dir').val();
+    var url = encodeURL((is_return_relative_url == 1 ? (is_return_include_upload_dir == 1? path : subdir) : base_url + path) + file);
 
 		if (external != "")
 		{

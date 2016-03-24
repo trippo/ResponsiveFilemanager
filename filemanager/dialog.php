@@ -383,6 +383,7 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="fldr_value" value="<?php echo $subdir;?>"/>
 	<input type="hidden" id="sub_folder" value="<?php echo $rfm_subfolder;?>"/>
 	<input type="hidden" id="return_relative_url" value="<?php echo $return_relative_url == true ? 1 : 0;?>"/>
+	<input type="hidden" id="return_include_upload_dir" value="<?php echo $return_include_upload_dir == true ? 1 : 0;?>"/>
 	<input type="hidden" id="lazy_loading_file_number_threshold" value="<?php echo $lazy_loading_file_number_threshold?>"/>
 	<input type="hidden" id="file_number_limit_js" value="<?php echo $file_number_limit_js;?>" />
 	<input type="hidden" id="sort_by" value="<?php echo $sort_by;?>" />
