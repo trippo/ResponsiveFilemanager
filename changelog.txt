@@ -1,6 +1,46 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.10.1
+*********************************************************
+- now you can pass available extensions list in url (ex. you can show only excel files)
+- fixed a problem with php<5.3
+- remember filter and sort after refresh
+- added config toggle to show/hide filter buttons and language selection button
+- fixed a problem when you click on namefile label (previously was equal to click two times)
+- fixed a problem with relative path with folder (thanks to gordon-matt)
+- fixed a problem with mimetype in some cases
+- fixed a problem with cache on image editor include
+- fixed a problem with + char on folders name
+
+*********************************************************
+*  RFM 9.10.0
+*********************************************************
+- added total max size control to limit the size of all files into
+source folder (you can control it in config.php) (thanks to Stephane MERCIER)
+- improved the error messages (thanks to Stephane MERCIER)
+- update jplayer
+- fixed a incorrect closing of upload modal
+- fixed lowercase on convert_spaces active and add lower_case option on config.php
+- add mimetype control on upload (ex. if i renane img.jpg to img.pdf and upload to filemananger the system check the time type and converte it to img.jpg)
+- fixed permission error on files and folders
+- other fix
+
+
+*********************************************************
+*  RFM 9.9.7
+*********************************************************
+- fixed pdf preview
+- fixed a bug with session subfolder folder creation
+- fixed a bug with folder creation
+- fixed a problem with ie and allow_url_fopen server config
+- fixed a problem with folder copy
+- fixed a problem with relative folder url export
+- fixed error 'TypeError: $ is not a function'
+- fixed a problem with lang in query string
+- fixed a problem with drag&drop on android
+
+*********************************************************
 *  RFM 9.9.6
 *********************************************************
 - fixed a security vulnerability (thanks to securitum.pl)

@@ -96,5 +96,27 @@ return array(
 	'New_File' => '新規ファイル',
 	'No_Extension' => 'ファイルの拡張子を指定してください。',
 	'Valid_Extensions' => '有効な拡張子: %s', // %s = txt,log etc.
+	'Upload_message' => "Drop file here to upload",
 
+	'SERVER ERROR' => "SERVER ERROR",
+	'forbiden' => "Forbiden",
+	'wrong path' => "Wrong path",
+	'wrong name' => "Wrong name",
+	'wrong extension' => "Wrong extension",
+	'wrong option' => "Wrong option",
+	'wrong data' => "Wrong data",
+	'wrong action' => "Wrong action",
+	'wrong sub-action' => "Wrong sub-actio",
+	'no action passed' => "No action passed",
+	'no path' => "No path",
+	'no file' => "No file",
+	'view type number missing' => "View type number missing",
+	'Not enought Memory' => "Not enought Memory",
+	'max_size_reached' => "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
+	'B' => "B",
+	'KB' => "KB",
+	'MB' => "MB",
+	'GB' => "GB",
+	'TB' => "TB",
+	'total size' => "Total size",
 );

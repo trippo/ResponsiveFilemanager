@@ -8,9 +8,11 @@ include 'include/utils.php';
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
-	response('forbiden', 403)->send();
+	response(trans('forbiden').AddErrorLocation(), 403)->send();
 	exit;
 }
+
+include 'include/mime_type_lib.php';
 
 if (isset($_POST['path']))
 {
@@ -32,8 +34,10 @@ if ($path_pos!==0
 	|| strpos($storeFolderThumb,'./',strlen($thumbs_base_path)) !== FALSE
 	|| strpos($storeFolder,'../',strlen($current_path)) !== FALSE
 	|| strpos($storeFolder,'./',strlen($current_path)) !== FALSE )
-		die('wrong path');
-
+{
+	response(trans('wrong path'.AddErrorLocation()))->send();
+	exit;
+}
 
 $path = $storeFolder;
 $cycle = TRUE;
@@ -55,14 +59,23 @@ while ($cycle && $i < $max_cycles)
 if ( ! empty($_FILES))
 {
 	$info = pathinfo($_FILES['file']['name']);
+	$mime_type = get_file_mime_type($_FILES['file']['tmp_name']);
+	$extension = get_extension_from_mime($mime_type);
+	if($extension==='' || $extension=='so'){
+		$extension = $info['extension'];
+	}
 
-	if (in_array(fix_strtolower($info['extension']), $ext))
+	if (in_array(fix_strtolower($extension), $ext))
 	{
 		$tempFile = $_FILES['file']['tmp_name'];
 		$targetPath = $storeFolder;
 		$targetPathThumb = $storeFolderThumb;
-		$_FILES['file']['name'] = fix_filename($_FILES['file']['name'],$transliteration,$convert_spaces, $replace_with);
-
+		$_FILES['file']['name'] = fix_filename($info['filename'].".".$extension,$transliteration,$convert_spaces, $replace_with);
+		// LowerCase
+		if ($lower_case)
+		{
+			$_FILES['file']['name'] = fix_strtolower($_FILES['file']['name']);
+		}
 	 	// Gen. new file name if exists
 		if (file_exists($targetPath.$_FILES['file']['name']))
 		{
@@ -70,18 +83,23 @@ if ( ! empty($_FILES))
 			$info = pathinfo($_FILES['file']['name']);
 
 			// append number
-			while(file_exists($targetPath.$info['filename']."_".$i.".".$info['extension'])) {
+			while(file_exists($targetPath.$info['filename']."_".$i.".".$extension)) {
 				$i++;
 			}
-			$_FILES['file']['name'] = $info['filename']."_".$i.".".$info['extension'];
+			$_FILES['file']['name'] = $info['filename']."_".$i.".".$extension;
 		}
 
 		$targetFile =  $targetPath. $_FILES['file']['name'];
 		$targetFileThumb =  $targetPathThumb. $_FILES['file']['name'];
 
 		// check if image (and supported)
-		if (in_array(fix_strtolower($info['extension']),$ext_img)) $is_img=TRUE;
+		if (in_array(fix_strtolower($extension),$ext_img)) $is_img=TRUE;
 		else $is_img=FALSE;
+
+		if (!checkresultingsize($_FILES['file']['size'])) {
+			response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation(), 406)->send();
+			exit;
+		}
 
 		// upload
 		move_uploaded_file($tempFile,$targetFile);
@@ -158,7 +176,7 @@ if ( ! empty($_FILES))
 			if ($memory_error)
 			{
 				unlink($targetFile);
-				header('HTTP/1.1 406 Not enought Memory',TRUE,406);
+				response(trans("Not enought Memory").AddErrorLocation(), 406)->send();
 				exit();
 			}
 		}
@@ -166,13 +184,13 @@ if ( ! empty($_FILES))
 	}
 	else // file ext. is not in the allowed list
 	{
-		header('HTTP/1.1 406 file not permitted',TRUE,406);
+		response(trans("Error_extension").AddErrorLocation(), 406)->send();
 		exit();
 	}
 }
 else // no files to upload
 {
-	header('HTTP/1.1 405 Bad Request', TRUE, 405);
+	response(trans("no file").AddErrorLocation(), 405)->send();
 	exit();
 }
 
@@ -182,7 +200,7 @@ if (isset($_POST['submit']))
 	$query = http_build_query(array(
 		'type'	  	=> $_POST['type'],
 		'lang'	  	=> $_POST['lang'],
-		'popup'	 	=> $_POST['popup'],
+		'popup'			=> $_POST['popup'],
 		'field_id'  => $_POST['field_id'],
 		'fldr'	  	=> $_POST['fldr'],
 	));

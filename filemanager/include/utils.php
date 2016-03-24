@@ -4,20 +4,19 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
 	die('forbiden');
 }
-
 require dirname(__FILE__) . '/Response.php';
 
 if ( ! function_exists('response'))
 {
 	/**
-	 * Response construction helper
-	 *
-	 * @param string $content
-	 * @param int    $statusCode
-	 * @param array  $headers
-	 *
-	 * @return \Response|\Illuminate\Http\Response
-	 */
+	* Response construction helper
+	*
+	* @param string $content
+	* @param int    $statusCode
+	* @param array  $headers
+	*
+	* @return \Response|\Illuminate\Http\Response
+	*/
 	function response($content = '', $statusCode = 200, $headers = array())
 	{
 		$responseClass = class_exists('Illuminate\Http\Response') ? '\Illuminate\Http\Response' : 'Response';
@@ -74,12 +73,12 @@ if ( ! function_exists('trans'))
 		$lang_vars = array();
 	}
 	/**
-	 * Translate language variable
-	 *
-	 * @param $var string name
-	 *
-	 * @return string translated variable
-	 */
+	* Translate language variable
+	*
+	* @param $var string name
+	*
+	* @return string translated variable
+	*/
 	function trans($var)
 	{
 		global $lang_vars;
@@ -89,12 +88,12 @@ if ( ! function_exists('trans'))
 }
 
 /**
- * Delete directory
- *
- * @param  string  $dir
- *
- * @return  bool
- */
+* Delete directory
+*
+* @param  string  $dir
+*
+* @return  bool
+*/
 function deleteDir($dir)
 {
 	if ( ! file_exists($dir))
@@ -121,13 +120,13 @@ function deleteDir($dir)
 }
 
 /**
- * Make a file copy
- *
- * @param  string  $old_path
- * @param  string  $name      New file name without extension
- *
- * @return  bool
- */
+* Make a file copy
+*
+* @param  string  $old_path
+* @param  string  $name      New file name without extension
+*
+* @return  bool
+*/
 function duplicate_file($old_path, $name)
 {
 	if (file_exists($old_path))
@@ -145,14 +144,14 @@ function duplicate_file($old_path, $name)
 
 
 /**
- * Rename file
- *
- * @param  string  $old_path         File to rename
- * @param  string  $name             New file name without extension
- * @param  bool    $transliteration
- *
- * @return bool
- */
+* Rename file
+*
+* @param  string  $old_path         File to rename
+* @param  string  $name             New file name without extension
+* @param  bool    $transliteration
+*
+* @return bool
+*/
 function rename_file($old_path, $name, $transliteration)
 {
 	$name = fix_filename($name, $transliteration);
@@ -170,14 +169,14 @@ function rename_file($old_path, $name, $transliteration)
 }
 
 /**
- * Rename directory
- *
- * @param  string  $old_path         Directory to rename
- * @param  string  $name             New directory name
- * @param  bool    $transliteration
- *
- * @return bool
- */
+* Rename directory
+*
+* @param  string  $old_path         Directory to rename
+* @param  string  $name             New directory name
+* @param  bool    $transliteration
+*
+* @return bool
+*/
 function rename_folder($old_path, $name, $transliteration)
 {
 	$name = fix_filename($name, $transliteration, false, '_', true);
@@ -194,17 +193,17 @@ function rename_folder($old_path, $name, $transliteration)
 }
 
 /**
- * Create new image from existing file
- *
- * @param  string  $imgfile    Source image file name
- * @param  string  $imgthumb   Thumbnail file name
- * @param  int     $newwidth   Thumbnail width
- * @param  int     $newheight  Optional thumbnail height
- * @param  string  $option     Type of resize
- *
- * @return bool
- * @throws \Exception
- */
+* Create new image from existing file
+*
+* @param  string  $imgfile    Source image file name
+* @param  string  $imgthumb   Thumbnail file name
+* @param  int     $newwidth   Thumbnail width
+* @param  int     $newheight  Optional thumbnail height
+* @param  string  $option     Type of resize
+*
+* @return bool
+* @throws \Exception
+*/
 function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop")
 {
 	$result = false;
@@ -225,12 +224,12 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
 }
 
 /**
- * Convert convert size in bytes to human readable
- *
- * @param  int  $size
- *
- * @return  string
- */
+* Convert convert size in bytes to human readable
+*
+* @param  int  $size
+*
+* @return  string
+*/
 function makeSize($size)
 {
 	$units = array( 'B', 'KB', 'MB', 'GB', 'TB' );
@@ -241,18 +240,19 @@ function makeSize($size)
 		$u++;
 	}
 
-	return (number_format($size, 0) . " " . $units[ $u ]);
+	return (number_format($size, 0) . " " . trans($units[ $u ]));
 }
 
 /**
- * Determine directory size
- *
- * @param  string  $path
- *
- * @return  int
- */
-function folder_info($path)
+* Determine directory size
+*
+* @param  string  $path
+*
+* @return  int
+*/
+function folder_info($path,$count_hidden=true)
 {
+	global $hidden_folders,$hidden_files;
 	$total_size = 0;
 	$files = scandir($path);
 	$cleanPath = rtrim($path, '/') . '/';
@@ -262,34 +262,37 @@ function folder_info($path)
 	{
 		if ($t != "." && $t != "..")
 		{
-			$currentFile = $cleanPath . $t;
-			if (is_dir($currentFile))
+			if ($count_hidden or !(in_array($t,$hidden_folders) or in_array($t,$hidden_files)))
 			{
-				list($size,$tmp,$tmp1) = folder_info($currentFile);
-				$total_size += $size;
-				$folders_count ++;
-			}
-			else
-			{
-				$size = filesize($currentFile);
-				$total_size += $size;
-				$files_count++;
+				$currentFile = $cleanPath . $t;
+				if (is_dir($currentFile))
+				{
+					list($size,$tmp,$tmp1) = folder_info($currentFile);
+					$total_size += $size;
+					$folders_count ++;
+				}
+				else
+				{
+					$size = filesize($currentFile);
+					$total_size += $size;
+					$files_count++;
+				}
 			}
 		}
 	}
 
 	return array($total_size,$files_count,$folders_count);
 }
-
 /**
- * Get number of files in a directory
- *
- * @param  string  $path
- *
- * @return  int
- */
-function filescount($path)
+* Get number of files in a directory
+*
+* @param  string  $path
+*
+* @return  int
+*/
+function filescount($path,$count_hidden=true)
 {
+	global $hidden_folders,$hidden_files;
 	$total_count = 0;
 	$files = scandir($path);
 	$cleanPath = rtrim($path, '/') . '/';
@@ -298,48 +301,70 @@ function filescount($path)
 	{
 		if ($t != "." && $t != "..")
 		{
-			$currentFile = $cleanPath . $t;
-			if (is_dir($currentFile))
+			if ($count_hidden or !(in_array($t,$hidden_folders) or in_array($t,$hidden_files)))
 			{
-				$size = filescount($currentFile);
-				$total_count += $size;
-			}
-			else
-			{
-				$total_count += 1;
+				$currentFile = $cleanPath . $t;
+				if (is_dir($currentFile))
+				{
+					$size = filescount($currentFile);
+					$total_count += $size;
+				}
+				else
+				{
+					$total_count += 1;
+				}
 			}
 		}
 	}
 
 	return $total_count;
 }
+/**
+* check if the current folder size plus the added size is over the overall size limite
+*
+* @param  int  $sizeAdded
+*
+* @return  bool
+*/
+function checkresultingsize($sizeAdded)
+{
+	global $MaxSizeTotal,$current_path;
+	if ($MaxSizeTotal !== false && is_int($MaxSizeTotal)) {
+		list($sizeCurrentFolder,$fileCurrentNum,$foldersCurrentCount) = folder_info($current_path,false);
+		// overall size over limit
+		if (($MaxSizeTotal * 1024 * 1024) < ($sizeCurrentFolder + $sizeAdded)) {
+			return false;
+		}
+	}
+	return true;
+}
 
 /**
- * Create directory for images and/or thumbnails
- *
- * @param  string  $path
- * @param  string  $path_thumbs
- */
+* Create directory for images and/or thumbnails
+*
+* @param  string  $path
+* @param  string  $path_thumbs
+*/
 function create_folder($path = null, $path_thumbs = null)
 {
 	$oldumask = umask(0);
 	if ($path && ! file_exists($path))
 	{
-		mkdir($path, 0755, true);
+		mkdir($path, 0766, true);
 	} // or even 01777 so you get the sticky bit set
 	if ($path_thumbs && ! file_exists($path_thumbs))
 	{
-		mkdir($path_thumbs, 0755, true) or die("$path_thumbs cannot be found");
+		mkdir($path_thumbs, 0766, true) or die("$path_thumbs cannot be found");
 	} // or even 01777 so you get the sticky bit set
 	umask($oldumask);
 }
 
 /**
- * Get file extension present in directory
- *
- * @param  string  $path
- * @param  string  $ext
- */
+* Get file extension present in directory
+*
+* @param  string  $path
+* @param  string  $ext
+*/
 function check_files_extensions_on_path($path, $ext)
 {
 	if ( ! is_dir($path))
@@ -361,13 +386,13 @@ function check_files_extensions_on_path($path, $ext)
 }
 
 /**
- * Get file extension present in PHAR file
- *
- * @param  string  $phar
- * @param  array   $files
- * @param  string  $basepath
- * @param  string  $ext
- */
+* Get file extension present in PHAR file
+*
+* @param  string  $phar
+* @param  array   $files
+* @param  string  $basepath
+* @param  string  $ext
+*/
 function check_files_extensions_on_phar($phar, &$files, $basepath, $ext)
 {
 	foreach ($phar as $file)
@@ -391,28 +416,28 @@ function check_files_extensions_on_phar($phar, &$files, $basepath, $ext)
 }
 
 /**
- * Cleanup input
- *
- * @param  string  $str
- *
- * @return  string
- */
+* Cleanup input
+*
+* @param  string  $str
+*
+* @return  string
+*/
 function fix_get_params($str)
 {
 	return strip_tags(preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
 }
 
 /**
- * Cleanup filename
- *
- * @param  string  $str
- * @param  bool    $transliteration
- * @param  bool    $convert_spaces
- * @param  string  $replace_with
- * @param  bool    $is_folder
- *
- * @return string
- */
+* Cleanup filename
+*
+* @param  string  $str
+* @param  bool    $transliteration
+* @param  bool    $convert_spaces
+* @param  string  $replace_with
+* @param  bool    $is_folder
+*
+* @return string
+*/
 function fix_filename($str, $transliteration, $convert_spaces = false, $replace_with = "_", $is_folder = false)
 {
 	if ($convert_spaces)
@@ -424,7 +449,7 @@ function fix_filename($str, $transliteration, $convert_spaces = false, $replace_
 	{
 		if (function_exists('transliterator_transliterate'))
 		{
-			 $str = transliterator_transliterate('Accents-Any', utf8_encode($str));
+			$str = transliterator_transliterate('Accents-Any', utf8_encode($str));
 		}
 		else
 		{
@@ -449,24 +474,24 @@ function fix_filename($str, $transliteration, $convert_spaces = false, $replace_
 }
 
 /**
- * Cleanup directory name
- *
- * @param  string  $str
- *
- * @return  string
- */
+* Cleanup directory name
+*
+* @param  string  $str
+*
+* @return  string
+*/
 function fix_dirname($str)
 {
 	return str_replace('~', ' ', dirname(str_replace(' ', '~', $str)));
 }
 
 /**
- * Correct strtoupper handling
- *
- * @param  string  $str
- *
- * @return  string
- */
+* Correct strtoupper handling
+*
+* @param  string  $str
+*
+* @return  string
+*/
 function fix_strtoupper($str)
 {
 	if (function_exists('mb_strtoupper'))
@@ -480,12 +505,12 @@ function fix_strtoupper($str)
 }
 
 /**
- * Correct strtolower handling
- *
- * @param  string  $str
- *
- * @return  string
- */
+* Correct strtolower handling
+*
+* @param  string  $str
+*
+* @return  string
+*/
 function fix_strtolower($str)
 {
 	if (function_exists('mb_strtoupper'))
@@ -514,10 +539,10 @@ function fix_path($path, $transliteration, $convert_spaces = false, $replace_wit
 }
 
 /**
- * Get current base url
- *
- * @return  string
- */
+* Get current base url
+*
+* @return  string
+*/
 function base_url()
 {
 	return sprintf(
@@ -528,11 +553,11 @@ function base_url()
 }
 
 /**
- * @param  $current_path
- * @param  $fld
- *
- * @return  bool
- */
+* @param  $current_path
+* @param  $fld
+*
+* @return  bool
+*/
 function config_loading($current_path, $fld)
 {
 	if (file_exists($current_path . $fld . ".config"))
@@ -551,14 +576,14 @@ function config_loading($current_path, $fld)
 }
 
 /**
- * Check if memory is enough to process image
- *
- * @param  string  $img
- * @param  int     $max_breedte
- * @param  int     $max_hoogte
- *
- * @return bool
- */
+* Check if memory is enough to process image
+*
+* @param  string  $img
+* @param  int     $max_breedte
+* @param  int     $max_hoogte
+*
+* @return bool
+*/
 function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 {
 	if (file_exists($img))
@@ -569,9 +594,9 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 		$image_properties = getimagesize($img);
 		$image_width = $image_properties[0];
 		$image_height = $image_properties[1];
-		if (isset($image_properties['bits'])) 
-			$image_bits = $image_properties['bits']; 
-		else 
+		if (isset($image_properties['bits']))
+			$image_bits = $image_properties['bits'];
+		else
 			$image_bits = 0;
 		$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits) * 2);
 		$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits) * 2);
@@ -601,42 +626,42 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 }
 
 /**
- * Check is string is ended with needle
- *
- * @param  string  $haystack
- * @param  string  $needle
- *
- * @return  bool
- */
+* Check is string is ended with needle
+*
+* @param  string  $haystack
+* @param  string  $needle
+*
+* @return  bool
+*/
 function endsWith($haystack, $needle)
 {
 	return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
 }
 
 /**
- * TODO REFACTOR THIS!
- *
- * @param $targetPath
- * @param $targetFile
- * @param $name
- * @param $current_path
- * @param $relative_image_creation
- * @param $relative_path_from_current_pos
- * @param $relative_image_creation_name_to_prepend
- * @param $relative_image_creation_name_to_append
- * @param $relative_image_creation_width
- * @param $relative_image_creation_height
- * @param $relative_image_creation_option
- * @param $fixed_image_creation
- * @param $fixed_path_from_filemanager
- * @param $fixed_image_creation_name_to_prepend
- * @param $fixed_image_creation_to_append
- * @param $fixed_image_creation_width
- * @param $fixed_image_creation_height
- * @param $fixed_image_creation_option
- *
- * @return bool
- */
+* TODO REFACTOR THIS!
+*
+* @param $targetPath
+* @param $targetFile
+* @param $name
+* @param $current_path
+* @param $relative_image_creation
+* @param $relative_path_from_current_pos
+* @param $relative_image_creation_name_to_prepend
+* @param $relative_image_creation_name_to_append
+* @param $relative_image_creation_width
+* @param $relative_image_creation_height
+* @param $relative_image_creation_option
+* @param $fixed_image_creation
+* @param $fixed_path_from_filemanager
+* @param $fixed_image_creation_name_to_prepend
+* @param $fixed_image_creation_to_append
+* @param $fixed_image_creation_width
+* @param $fixed_image_creation_height
+* @param $fixed_image_creation_option
+*
+* @return bool
+*/
 function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path, $relative_image_creation, $relative_path_from_current_pos, $relative_image_creation_name_to_prepend, $relative_image_creation_name_to_append, $relative_image_creation_width, $relative_image_creation_height, $relative_image_creation_option, $fixed_image_creation, $fixed_path_from_filemanager, $fixed_image_creation_name_to_prepend, $fixed_image_creation_to_append, $fixed_image_creation_width, $fixed_image_creation_height, $fixed_image_creation_option)
 {
 	//create relative thumbs
@@ -691,12 +716,12 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
 
 
 /**
- * Get a remote file, using whichever mechanism is enabled
- *
- * @param  string  $url
- *
- * @return  bool|mixed|string
- */
+* Get a remote file, using whichever mechanism is enabled
+*
+* @param  string  $url
+*
+* @return  bool|mixed|string
+*/
 function get_file_by_url($url)
 {
 	if (ini_get('allow_url_fopen'))
@@ -721,12 +746,12 @@ function get_file_by_url($url)
 }
 
 /**
- * test for dir/file writability properly
- *
- * @param  string  $dir
- *
- * @return  bool
- */
+* test for dir/file writability properly
+*
+* @param  string  $dir
+*
+* @return  bool
+*/
 function is_really_writable($dir)
 {
 	$dir = rtrim($dir, '/');
@@ -747,7 +772,7 @@ function is_really_writable($dir)
 		}
 
 		fclose($fp);
-		@chmod($dir, 0755);
+		@chmod($dir, 0766);
 		@unlink($dir);
 
 		return true;
@@ -763,13 +788,13 @@ function is_really_writable($dir)
 }
 
 /**
- * Check if a function is callable.
- * Some servers disable copy,rename etc.
- *
- * @parm  string  $name
- *
- * @return  bool
- */
+* Check if a function is callable.
+* Some servers disable copy,rename etc.
+*
+* @parm  string  $name
+*
+* @return  bool
+*/
 function is_function_callable($name)
 {
 	if (function_exists($name) === false)
@@ -782,12 +807,12 @@ function is_function_callable($name)
 }
 
 /**
- * recursivly copies everything
- *
- * @param  string  $source
- * @param  string  $destination
- * @param  bool    $is_rec
- */
+* recursivly copies everything
+*
+* @param  string  $source
+* @param  string  $destination
+* @param  bool    $is_rec
+*/
 function rcopy($source, $destination, $is_rec = false)
 {
 	if (is_dir($source))
@@ -799,7 +824,7 @@ function rcopy($source, $destination, $is_rec = false)
 		}
 		if (is_dir($destination) === false)
 		{
-			mkdir($destination, 0755, true);
+			mkdir($destination, 0766, true);
 		}
 
 		$files = scandir($source);
@@ -834,16 +859,16 @@ function rcopy($source, $destination, $is_rec = false)
 
 
 /**
- * recursivly renames everything
- *
- * I know copy and rename could be done with just one function
- * but i split the 2 because sometimes rename fails on windows
- * Need more feedback from users and refactor if needed
- *
- * @param  string  $source
- * @param  string  $destination
- * @param  bool    $is_rec
- */
+* recursivly renames everything
+*
+* I know copy and rename could be done with just one function
+* but i split the 2 because sometimes rename fails on windows
+* Need more feedback from users and refactor if needed
+*
+* @param  string  $source
+* @param  string  $destination
+* @param  bool    $is_rec
+*/
 function rrename($source, $destination, $is_rec = false)
 {
 	if (is_dir($source))
@@ -855,7 +880,7 @@ function rrename($source, $destination, $is_rec = false)
 		}
 		if (is_dir($destination) === false)
 		{
-			mkdir($destination, 0755, true);
+			mkdir($destination, 0766, true);
 		}
 
 		$files = scandir($source);
@@ -912,12 +937,12 @@ function rrename_after_cleaner($source)
 }
 
 /**
- * Recursive chmod
- * @param  string  $source
- * @param  int     $mode
- * @param  string  $rec_option
- * @param  bool    $is_rec
- */
+* Recursive chmod
+* @param  string  $source
+* @param  int     $mode
+* @param  string  $rec_option
+* @param  bool    $is_rec
+*/
 function rchmod($source, $mode, $rec_option = "none", $is_rec = false)
 {
 	if ($rec_option == "none")
@@ -958,13 +983,13 @@ function rchmod($source, $mode, $rec_option = "none", $is_rec = false)
 }
 
 /**
- * Check if chmod is valid
- *
- * @param  $perm
- * @param  $val
- *
- * @return  bool
- */
+* Check if chmod is valid
+*
+* @param  $perm
+* @param  $val
+*
+* @return  bool
+*/
 function chmod_logic_helper($perm, $val)
 {
 	$valid = array(
@@ -984,10 +1009,10 @@ function chmod_logic_helper($perm, $val)
 }
 
 /**
- * @param  string  $input
- * @param  bool    $trace
- * @param  bool    $halt
- */
+* @param  string  $input
+* @param  bool    $trace
+* @param  bool    $halt
+*/
 function debugger($input, $trace = false, $halt = false)
 {
 	ob_start();
@@ -1029,10 +1054,10 @@ function debugger($input, $trace = false, $halt = false)
 }
 
 /**
- * @param  string  $version
- *
- * @return  bool
- */
+* @param  string  $version
+*
+* @return  bool
+*/
 function is_php($version = '5.0.0')
 {
 	static $phpVer;
@@ -1045,3 +1070,19 @@ function is_php($version = '5.0.0')
 
 	return $phpVer[ $version ];
 }
+
+/**
+* Return the caller location if set in config.php
+* @param  string  $version
+*
+* @return  bool
+*/
+function AddErrorLocation()
+{
+	if (defined('DEBUG_ERROR_MESSAGE') and DEBUG_ERROR_MESSAGE) {
+		$pile=debug_backtrace();
+		return " (@".$pile[0]["file"]."#".$pile[0]["line"].")";
+	}
+	return "";
+}
+?>
