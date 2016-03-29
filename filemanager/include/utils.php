@@ -447,9 +447,13 @@ function fix_filename($str, $transliteration, $convert_spaces = false, $replace_
 
 	if ($transliteration)
 	{
+		if (!mb_detect_encoding($str, 'UTF-8', true))
+		{
+			$str = utf8_encode($str);
+		}
 		if (function_exists('transliterator_transliterate'))
 		{
-			$str = transliterator_transliterate('Accents-Any', utf8_encode($str));
+			$str = transliterator_transliterate('Any-Latin; Latin-ASCII', $str);
 		}
 		else
 		{
