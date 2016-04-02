@@ -1624,6 +1624,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			windowParent = window.parent;
 		}
+		var callback=$('#callback').val();
 		var path = $('#cur_dir').val();
 		var subdir = $('#subdir').val();
 		var base_url = $('#base_url').val();
@@ -1652,10 +1653,18 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				var target = $('#' + external, windowParent.document);
 				target.val(url).trigger('change');
-				if (typeof windowParent.responsive_filemanager_callback == 'function')
+				if(callback==0)
 				{
-					windowParent.responsive_filemanager_callback(external);
-				}
+					if (typeof windowParent.responsive_filemanager_callback == 'function')
+					{
+					  windowParent.responsive_filemanager_callback(external);
+					}
+				}else{
+					if (typeof windowParent[callback] == 'function')
+					{
+					  windowParent[callback](external);
+					}			
+				}				
 				close_window();
 			}
 		}
@@ -1732,6 +1741,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			var windowParent = window.parent;
 		}
+		var callback=$('#callback').val();
 		var path = $('#cur_dir').val();
 		path = path.replace('\\', '/');
 		var subdir = $('#subdir').val();
@@ -1756,10 +1766,18 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				var target = $('#' + external, windowParent.document);
 				target.val(url).trigger('change');
-				if (typeof windowParent.responsive_filemanager_callback == 'function')
+				if(callback==0)
 				{
-					windowParent.responsive_filemanager_callback(external);
-				}
+					if (typeof windowParent.responsive_filemanager_callback == 'function')
+					{
+					  windowParent.responsive_filemanager_callback(external);
+					}
+				}else{
+					if (typeof windowParent[callback] == 'function')
+					{
+					  windowParent[callback](external);
+					}			
+				}				
 				close_window();
 			}
 		}
@@ -1781,6 +1799,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			windowParent = window.parent;
 		}
+		var callback=$('#callback').val();
 		var path = $('#cur_dir').val();
 		path = path.replace('\\', '/');
 		var subdir = $('#subdir').val();
@@ -1805,10 +1824,18 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				var target = $('#' + external, windowParent.document);
 				target.val(url).trigger('change');
-				if (typeof windowParent.responsive_filemanager_callback == 'function')
+				if(callback==0)
 				{
-					windowParent.responsive_filemanager_callback(external);
-				}
+					if (typeof windowParent.responsive_filemanager_callback == 'function')
+					{
+					  windowParent.responsive_filemanager_callback(external);
+					}
+				}else{
+					if (typeof windowParent[callback] == 'function')
+					{
+					  windowParent[callback](external);
+					}			
+				}				
 				close_window();
 			}
 		}
@@ -1830,6 +1857,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			windowParent = window.parent;
 		}
+		var callback=$('#callback').val();
 		var path = $('#cur_dir').val();
 		path = path.replace('\\', '/');
 		var subdir = $('#subdir').val();
@@ -1854,10 +1882,18 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				var target = $('#' + external, windowParent.document);
 				target.val(url).trigger('change');
-				if (typeof windowParent.responsive_filemanager_callback == 'function')
+				if(callback==0)
 				{
-					windowParent.responsive_filemanager_callback(external);
-				}
+					if (typeof windowParent.responsive_filemanager_callback == 'function')
+					{
+					  windowParent.responsive_filemanager_callback(external);
+					}
+				}else{
+					if (typeof windowParent[callback] == 'function')
+					{
+					  windowParent[callback](external);
+					}			
+				}					
 				close_window();
 			}
 		}
