@@ -1,8 +1,19 @@
 <?php
-if (session_id() == '') session_start();
+if (session_id() == '') session_start(); error_reporting(0);
 
 mb_internal_encoding('UTF-8');
 date_default_timezone_set('Europe/Rome');
+
+/*
+|--------------------------------------------------------------------------
+| Optional DB Authentication
+|--------------------------------------------------------------------------
+|
+| if you want only authenticated users can access then set it to TRUE
+|
+*/
+
+define('USE_DB_AUTHENTICATION', true); // TRUE or FALSE
 
 /*
 |--------------------------------------------------------------------------
@@ -381,4 +392,41 @@ return array_merge(
 		),
 	)
 );
+
+if(isset($_GET['logout'])){
+    session_destroy();
+    header('Location: dialog.php');
+    exit();
+}
+
+if(!isset($_SESSION['authorized_user'])){
+	if(isset($_POST['submit'])){
+		$db = 'your_db_name';
+		$uname = 'your_db_username';
+		$pass = 'your_password';
+
+		$db = new PDO("mysql:host=localhost;dbname=".$db, $uname,$pass);
+		$stmt = $db->prepare("SELECT password FROM users WHERE username=?");// AND password=?
+		$stmt->bindValue(1, $_POST['username'], PDO::PARAM_STR);
+		// $stmt->bindValue(2, password_hash($_POST['password'],CRYPT_BLOWFISH ), PDO::PARAM_STR);
+		$stmt->execute();
+		$rows = $stmt->fetch(PDO::FETCH_ASSOC);
+		if (version_compare(PHP_VERSION, '5.5.9') >= 0) {
+		}else{
+		       //include this library https://github.com/ircmaxell/password_compat 
+		      require_once 'passwordLib.php';	
+		}
+		
+	    if( password_verify($_POST['password'],$rows['password']) ){
+	        $_SESSION['authorized_user'] = true;
+	        header('Location: dialog.php');
+	        exit();
+	    }
+	}
 ?>
+<form method='post' autocomplete='off'>
+<p>Email: <input type="text" name="username" value=""></p>
+<p>Password: <input type="password" name="password" value=""></p>
+<p><input type="submit" name="submit" value="Login"></p>    
+</form>
+<?php exit();}?>
