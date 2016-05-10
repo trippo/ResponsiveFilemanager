@@ -1,7 +1,7 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
-*  RFM 9.10.1
+*  RFM 9.10.2
 *********************************************************
 - Fixed Download of large file
 - Fixed problem with base_url function
