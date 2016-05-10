@@ -3,6 +3,13 @@ Responsive Filemanager Changelog
 *********************************************************
 *  RFM 9.10.1
 *********************************************************
+- Fixed Download of large file
+- Fixed problem with base_url function
+- Remove set_time_limit call
+
+*********************************************************
+*  RFM 9.10.1
+*********************************************************
 - now you can pass available extensions list in url (ex. you can show only excel files)
 - fixed a problem with php<5.3
 - remember filter and sort after refresh

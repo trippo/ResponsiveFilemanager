@@ -208,8 +208,6 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
 {
 	$result = false;
 	if(file_exists($imgfile) || strpos($imgfile,'http')===0){
-		$timeLimit = ini_get('max_execution_time');
-		set_time_limit(30);
 		if (strpos($imgfile,'http')===0 || image_check_memory_usage($imgfile, $newwidth, $newheight))
 		{
 			require_once('php_image_magician.php');
@@ -218,7 +216,6 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
 			$magicianObj->saveImage($imgthumb, 80);
 			$result = true;
 		}
-		set_time_limit($timeLimit);
 	}
 	return $result;
 }
@@ -543,20 +540,6 @@ function fix_path($path, $transliteration, $convert_spaces = false, $replace_wit
 }
 
 /**
-* Get current base url
-*
-* @return  string
-*/
-function base_url()
-{
-	return sprintf(
-		"%s://%s",
-		isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-		$_SERVER['HTTP_HOST']
-	);
-}
-
-/**
 * @param  $current_path
 * @param  $fld
 *
@@ -608,15 +591,7 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 
 		if ($memory_needed > $memory_limit)
 		{
-			ini_set('memory_limit', (intval($memory_needed / 1024 / 1024) + 5) . 'M');
-			if (ini_get('memory_limit') == (intval($memory_needed / 1024 / 1024) + 5) . 'M')
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 		else
 		{

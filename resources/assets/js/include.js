@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.10.1";
+	var version = "9.10.2";
 	var active_contextmenu = true;
 	var copy_count = 0;
 
@@ -102,7 +102,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			edit_img: function($trigger)
 			{
 				var filename = $trigger.attr('data-name');
-				var full_path = $('#base_url_true').val() + $('#cur_dir').val() + filename;
+				var full_path = $('#base_url').val() + $('#cur_dir').val() + filename;
 
 				var aviaryElement = $('#aviary_img');
 				aviaryElement.attr('data-name', filename);
