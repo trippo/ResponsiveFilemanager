@@ -49,30 +49,19 @@ if ( ! file_exists($path . $name))
 	exit;
 }
 
-$img_size = (string) (filesize($path . $name)); // Get the image size as string
-
-$mime_type = get_file_mime_type($path . $name); // Get the correct MIME type depending on the file.
-
-@ini_set('error_reporting', E_ALL & ~ E_NOTICE);
-
-//- turn off compression on the server
-@apache_setenv('no-gzip', 1);
-@ini_set('zlib.output_compression', 'Off');
-
-
-// sanitize the file request, keep just the name and extension
-// also, replaces the file location with a preset one ('./myfiles/' in this example)
-
 $file_name  = $info['basename'];
 $file_ext   = $info['extension'];
 $file_path  = $path . $name;
 
-// allow a file to be streamed instead of sent as an attachment
-$is_attachment = true;
-
 // make sure the file exists
 if (is_file($file_path))
 {
+	@ini_set('error_reporting', E_ALL & ~ E_NOTICE);
+
+	//- turn off compression on the server
+	@apache_setenv('no-gzip', 1);
+	@ini_set('zlib.output_compression', 'Off');
+
 	$file_size  = filesize($file_path);
 	$file = @fopen($file_path,"rb");
 	if ($file)
@@ -83,25 +72,8 @@ if (is_file($file_path))
 		header("Cache-Control: public, must-revalidate, post-check=0, pre-check=0");
 		header("Content-Disposition: attachment; filename=\"$file_name\"");
 
-        // set appropriate headers for attachment or streamed file
-        if ($is_attachment) {
-                header("Content-Disposition: attachment; filename=\"$file_name\"");
-        }
-        else {
-                header('Content-Disposition: inline;');
-                header('Content-Transfer-Encoding: binary');
-        }
-
-        // set the mime type based on extension, add yours if needed.
-        $ctype_default = "application/octet-stream";
-        $content_types = array(
-                "exe" => "application/octet-stream",
-                "zip" => "application/zip",
-                "mp3" => "audio/mpeg",
-                "mpg" => "video/mpeg",
-                "avi" => "video/x-msvideo",
-        );
-        $ctype = isset($content_types[$file_ext]) ? $content_types[$file_ext] : $ctype_default;
+		// set the mime type based on extension, add yours if needed.
+		$ctype = get_file_mime_type($file_path);
         header("Content-Type: " . $ctype);
 
 		//check if http_range is sent by browser (or download manager)
