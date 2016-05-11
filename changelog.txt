@@ -3,9 +3,10 @@ Responsive Filemanager Changelog
 *********************************************************
 *  RFM 9.10.2
 *********************************************************
-- Fixed Download of large file
-- Fixed problem with base_url function
-- Remove set_time_limit call
+- fixed Download of large file
+- added pause resume download
+- fixed problem with base_url function
+- removed set_time_limit call
 
 *********************************************************
 *  RFM 9.10.1

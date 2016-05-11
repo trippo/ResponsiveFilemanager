@@ -56,11 +56,8 @@ $file_path  = $path . $name;
 // make sure the file exists
 if (is_file($file_path))
 {
-	@ini_set('error_reporting', E_ALL & ~ E_NOTICE);
-
-	//- turn off compression on the server
-	@apache_setenv('no-gzip', 1);
 	@ini_set('zlib.output_compression', 'Off');
+
 
 	$file_size  = filesize($file_path);
 	$file = @fopen($file_path,"rb");
