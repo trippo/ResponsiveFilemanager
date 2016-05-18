@@ -79,44 +79,44 @@ return array(
 	'Function_Disabled' => 'Funktionen för att %s är inaktiverad.', // The %s function has been disabled by the server.       %s = cut or copy
 	'File_Permission' => 'File permission',
 	'File_Permission_Not_Allowed' => 'Changing %s permissions are not allowed.', // %s = files or folders
-	'File_Permission_Recursive' => 'Apply recursively?',
-	'File_Permission_Wrong_Mode' => "The supplied permission mode is incorrect.",
-	'User' => 'User',
-	'Group' => 'Group',
-	'Yes' => 'Yes',
-	'No' => 'No',
-	'Lang_Not_Found' => 'Could not find language.',
-	'Lang_Change' => 'Change the language',
-	'File_Not_Found' => 'Could not find the file.',
-	'File_Open_Edit_Not_Allowed' => 'You are not allowed to %s this file.', // %s = open or edit
-	'Edit' => 'Edit',
-	'Edit_File' => "Edit file's content",
-	'File_Save_OK' => "File successfully saved.",
-	'File_Save_Error' => "There was an error while saving the file.",
-	'New_File' => 'New File',
-	'No_Extension' => 'You have to add a file extension.',
-	'Valid_Extensions' => 'Valid extensions: %s', // %s = txt,log etc.
-	'Upload_message' => "Drop file here to upload",
+	'File_Permission_Recursive' => 'Tillämpa rekursivt', // 'Apply recursively?'
+	'File_Permission_Wrong_Mode' => 'Felaktiga filrättigheter.', // "The supplied permission mode is incorrect."
+	'User' => 'Användare', // 'User'
+	'Group' => 'Grupp', // 'Group'
+	'Yes' => 'Ja', // 'Yes'
+	'No' => 'Nej', // 'No'
+	'Lang_Not_Found' => 'Kunde inte hitta språk.', // 'Could not find language.'
+	'Lang_Change' => 'Växla språk', // 'Change the language'
+	'File_Not_Found' => 'Kunde inte hitta fil', // 'Could not find the file.'
+	'File_Open_Edit_Not_Allowed' => 'Du har inte rättigheter till %s den här filen.', // 'You are not allowed to %s this file.', // %s = open or edit
+	'Edit' => 'Redigera', // 'Edit'
+	'Edit_File' => 'Redigera filens innehåll', // "Edit file's content"
+	'File_Save_OK' => 'Filen sparades', // "File successfully saved."
+	'File_Save_Error' => 'Det uppstod ett fel när filen sparades.', // "There was an error while saving the file."
+	'New_File' => 'Ny fil', // 'New File'
+	'No_Extension' => 'Du måste lägga till en filändelse', // 'You have to add a file extension.'
+	'Valid_Extensions' => 'Tillåtna filändelser: %s', // 'Valid extensions: %s', // %s = txt,log etc.
+	'Upload_message' => 'Släpp fil här för att ladda upp', // "Drop file here to upload"
 
-	'SERVER ERROR' => "SERVER ERROR",
-	'forbiden' => "Forbiden",
-	'wrong path' => "Wrong path",
-	'wrong name' => "Wrong name",
-	'wrong extension' => "Wrong extension",
-	'wrong option' => "Wrong option",
-	'wrong data' => "Wrong data",
-	'wrong action' => "Wrong action",
-	'wrong sub-action' => "Wrong sub-actio",
-	'no action passed' => "No action passed",
-	'no path' => "No path",
-	'no file' => "No file",
-	'view type number missing' => "View type number missing",
-	'Not enought Memory' => "Not enought Memory",
-	'max_size_reached' => "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
+	'SERVER ERROR' => 'SERVER FEL', // "SERVER ERROR",
+	'forbiden' => 'Förbjudet', // "Forbiden",
+	'wrong path' => 'Fel sökväg', // "Wrong path",
+	'wrong name' => 'Fel namn', // "Wrong name",
+	'wrong extension' => 'Fel filändelse', // "Wrong extension",
+	'wrong option' => 'Fel alternativ', // "Wrong option",
+	'wrong data' => 'Fel data', // "Wrong data",
+	'wrong action' => 'Fel åtgärd', // "Wrong action",
+	'wrong sub-action' => 'Fel delåtgärd', // "Wrong sub-actio",
+	'no action passed' => 'Ingen åtgärd skickad', // "No action passed",
+	'no path' => 'Ingen sökväg', //"No path",
+	'no file' => 'Ingen fil', //"No file",
+	'view type number missing' => 'Vytypsnummer saknas', // "View type number missing",
+	'Not enought Memory' => 'Inte tillräckligt med minne', // "Not enought Memory",
+	'max_size_reached' => 'Din bildkatalog har nått den maximala storleken av %d MB', // "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
 	'B' => "B",
 	'KB' => "KB",
 	'MB' => "MB",
 	'GB' => "GB",
 	'TB' => "TB",
-	'total size' => "Total size",
+	'total size' => 'Total storlek', // "Total size",
 );
