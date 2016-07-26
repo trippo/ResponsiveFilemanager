@@ -4,10 +4,10 @@ return array(
 
 	'Select' => 'Избери',
 	'Erase' => 'Изтрий',
-	'Open' => 'Отвори',
+	'Open' => 'Отваряне',
 	'Confirm_del' => 'Сигурни ли сте, че искате да изтриете този файл?',
 	'All' => 'Всичко',
-	'Files' => 'Файлове',
+	'Files' => 'Файла',
 	'Images' => 'Изображения',
 	'Archives' => 'Архиви',
 	'Error_Upload' => 'Каченият файл надминава максимално разрешената големина.',
@@ -70,8 +70,8 @@ return array(
 	'Clear_Clipboard_Confirm' => 'Сигурни ли сте, че искате да изчистите клипборда?',
 	'Files_ON_Clipboard' => 'Има файлове в клипборда.',
 	'Copy_Cut_Size_Limit' => 'Избраните файлове/папки са прекалено големи за %s. Лимит: %d MB/действие', // %s = cut or copy
-	'Copy_Cut_Count_Limit' => 'Избрали сте прекаленено много файлове/папки за %s. Лимит: %d files/действуе', // %s = cut or copy
-	'Copy_Cut_Not_Allowed' => 'Нямате право да %s файлове.', // %s(1) = cut or copy =>  %s(2) = files or folders
+	'Copy_Cut_Count_Limit' => 'Избрали сте прекаленено много файлове/папки за %s. Лимит: %d файла/действие', // %s = cut or copy
+	'Copy_Cut_Not_Allowed' => 'Нямате право за %s на файлове.', // %s(1) = cut or copy =>  %s(2) = files or folders
 	'Aviary_No_Save' =>  'Изображението не може да бъде записано',
 	'Zip_No_Extract' =>  'Невъзможно разархивиране. Файлът вероятно е повреден.',
 	'Zip_Invalid' =>  'Това разширене не се поддържа. Валидни: zip, gz, tar.',
@@ -88,7 +88,7 @@ return array(
 	'Lang_Not_Found' =>  'Езикът не може да бъде намерен.',
 	'Lang_Change' =>  'Смени езика',
 	'File_Not_Found' =>  'Файлът не може да бъде намерен.',
-	'File_Open_Edit_Not_Allowed' =>  'Нямате разрешение да %s този файл.', // %s = open or edit
+	'File_Open_Edit_Not_Allowed' =>  'Нямате разрешение за %s на този файл.', // %s = open or edit
 	'Edit' =>  'Редакция',
 	'Edit_File' =>  "Редакция на съдържанието на файла",
 	'File_Save_OK' =>  "Файлът е успешно записан.",
@@ -96,7 +96,7 @@ return array(
 	'New_File' => 'Нов файл',
 	'No_Extension' => 'Трябва да зададете разширение на файла.',
 	'Valid_Extensions' => 'Валидни разширения: %s', // %s = txt => log etc.
-	'Upload_message' => "Спуснете файла тук за да качите",
+	'Upload_message' => "Провлачете и спуснете файла тук за да го качите.",
 
 	'SERVER ERROR' => "СЪРВЪРНА ГРЕШКА",
 	'forbiden' => "Забранено",
