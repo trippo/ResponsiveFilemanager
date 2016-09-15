@@ -45,14 +45,13 @@ if ( ! function_exists('trans'))
 		if ($lang != $default_language)
 		{
 			$path_parts = pathinfo($lang);
-
-			if (is_readable(dirname(dirname(__FILE__)) . '/lang/' . $path_parts['basename'] . '.php'))
-			{
-				$language_file = dirname(dirname(__FILE__)) . '/lang/' . $path_parts['basename'] . '.php';
-			}
-			else
-			{
-				echo "<script>console.log('The " . $lang . " language file is not readable! Falling back...');</script>";
+			$lang = $path_parts['basename'];
+			$languages = include 'lang/languages.php';
+			if(array_key_exists($lang,$languages)){
+				if (is_readable(dirname(dirname(__FILE__)) . '/lang/' . $path_parts['basename'] . '.php'))
+				{
+					$language_file = dirname(dirname(__FILE__)) . '/lang/' . $path_parts['basename'] . '.php';
+				}
 			}
 		}
 
@@ -347,11 +346,11 @@ function create_folder($path = null, $path_thumbs = null)
 	$oldumask = umask(0);
 	if ($path && ! file_exists($path))
 	{
-		mkdir($path, 0766, true);
+		mkdir($path, 0755, true);
 	} // or even 01777 so you get the sticky bit set
 	if ($path_thumbs && ! file_exists($path_thumbs))
 	{
-		mkdir($path_thumbs, 0766, true) or die("$path_thumbs cannot be found");
+		mkdir($path_thumbs, 0755, true) or die("$path_thumbs cannot be found");
 	} // or even 01777 so you get the sticky bit set
 	umask($oldumask);
 }
@@ -587,7 +586,7 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 			$image_bits = 0;
 		$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits) * 2);
 		$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits) * 2);
-		$memory_needed = intval($memory_usage + $image_memory_usage + $thumb_memory_usage);
+		$memory_needed = abs(intval($memory_usage + $image_memory_usage + $thumb_memory_usage));
 
 		if ($memory_needed > $memory_limit)
 		{
@@ -751,7 +750,7 @@ function is_really_writable($dir)
 		}
 
 		fclose($fp);
-		@chmod($dir, 0766);
+		@chmod($dir, 0755);
 		@unlink($dir);
 
 		return true;
@@ -803,7 +802,7 @@ function rcopy($source, $destination, $is_rec = false)
 		}
 		if (is_dir($destination) === false)
 		{
-			mkdir($destination, 0766, true);
+			mkdir($destination, 0755, true);
 		}
 
 		$files = scandir($source);
@@ -859,7 +858,7 @@ function rrename($source, $destination, $is_rec = false)
 		}
 		if (is_dir($destination) === false)
 		{
-			mkdir($destination, 0766, true);
+			mkdir($destination, 0755, true);
 		}
 
 		$files = scandir($source);
