@@ -210,8 +210,11 @@ if (isset($_GET['extensions'])){
 if (isset($_GET['lang']))
 {
 	$lang = strip_tags($_GET['lang']);
-	$_SESSION['RF']['language'] = $lang;
-	$_SESSION['RF']['language_file'] = 'lang/' . $lang . '.php';
+	$languages = include 'lang/languages.php';
+	if(array_key_exists($lang,$languages)){
+		$_SESSION['RF']['language'] = $lang;
+		$_SESSION['RF']['language_file'] = 'lang/' . basename($lang) . '.php';
+	}
 }
 
 if (isset($_GET['editor']))

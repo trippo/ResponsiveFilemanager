@@ -479,10 +479,13 @@ if(isset($_GET['action']))
 			$choosen_lang = (!empty($_POST['choosen_lang']))? $_POST['choosen_lang']:"en_EN";
 			//Tracevar($choosen_lang);
 
-			if ( ! file_exists('lang/' . $choosen_lang . '.php'))
-			{
-				response(trans('Lang_Not_Found').AddErrorLocation())->send();
-				exit;
+			$languages = include 'lang/languages.php';
+			if(array_key_exists($choosen_lang,$languages)){
+				if ( ! file_exists('lang/' . $choosen_lang . '.php'))
+				{
+					response(trans('Lang_Not_Found').AddErrorLocation())->send();
+					exit;
+				}
 			}
 
 			$_SESSION['RF']['language'] = $choosen_lang;
