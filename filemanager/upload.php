@@ -108,7 +108,7 @@ if ( ! empty($_FILES))
 		if ($is_img)
 		{
 			$memory_error = FALSE;
-			if ( ! create_img($targetFile, $targetFileThumb, 122, 91))
+			if ( ! create_img($targetFile, $targetFileThumb, $config['image_thumb_width'], $config['image_thumb_height']))
 			{
 				$memory_error = TRUE;
 			}

@@ -839,7 +839,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				//add in thumbs folder if not exist
 				if(!file_exists($src_thumb)){
 				try {
-					if(!create_img($file_path, $src_thumb, 122, 91)){
+					if(!create_img($file_path, $src_thumb, $config['image_thumb_width'], $config['image_thumb_height'])){
 							$src_thumb=$mini_src="";
 						}else{
 							new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,'','','','','','','',$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
@@ -851,7 +851,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 				$is_img=true;
 				//check if is smaller than thumb
 				list($img_width, $img_height, $img_type, $attr)=@getimagesize($file_path);
-				if($img_width<122 && $img_height<91){
+				if($img_width<$config['image_thumb_width'] && $img_height<$config['image_thumb_height']){
 					$src_thumb=$current_path.$rfm_subfolder.$subdir.$file;
 					$show_original=true;
 				}

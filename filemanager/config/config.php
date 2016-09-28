@@ -152,6 +152,17 @@ $config = array(
 	*/
 	'icon_theme' => "ico",
 
+	/*
+	|--------------------------------------------------------------------------
+	| Image thumb size
+	|--------------------------------------------------------------------------
+	|
+	| The size of thumb images.
+	|
+	*/
+	'image_thumb_width' 	=> 	122,
+	'image_thumb_height'	=>	91,
+
 
 	//Show or not total size in filemanager (is possible to greatly increase the calculations)
 	'show_total_size'						=> false,
