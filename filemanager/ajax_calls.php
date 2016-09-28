@@ -95,9 +95,8 @@ if(isset($_GET['action']))
 				response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation())->send();
 				exit;
 			}
-
 			file_put_contents($current_path . $_POST['path'] . $_POST['name'],$image_data);
-			create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
+			create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], $config['image_thumb_width'], $config['image_thumb_height']);
 			// TODO something with this function cause its blowing my mind
 			new_thumbnails_creation(
 				$current_path.$_POST['path'],
