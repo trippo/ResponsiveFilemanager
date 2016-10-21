@@ -10,3 +10,4 @@ node_modules
 filemanager/js/*
 filemanager/css/*
 resources/tmp/*
+filemanager/plugin.min.js

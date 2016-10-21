@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.10.2";
+	var version = "9.11.0";
 	var active_contextmenu = true;
 	var copy_count = 0;
 
@@ -19,9 +19,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	var getLink = function($trigger)
 	{
-		var m = $('#base_url').val() + $('#cur_dir').val();
-		var add = $trigger.find('a.link').attr('data-file');
 
+		if($('#ftp').val()==true){
+			var m = $('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val();
+
+		}else{
+			var m = $('#base_url').val() + $('#cur_dir').val();
+		}
+		var add = $trigger.find('a.link').attr('data-file');
 		if (add != "" && add != null)
 		{
 			m += add;
@@ -80,6 +85,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			unzip: function($trigger)
 			{
 				var m = $('#sub_folder').val() + $('#fldr_value').val() + $trigger.find('a.link').attr('data-file');
+				show_animation();
 				$.ajax({
 					type: "POST",
 					url: "ajax_calls.php?action=extract",
@@ -88,6 +94,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 				}).done(function (msg)
 				{
+					hide_animation();
 					if (msg != "")
 					{
 						bootbox.alert(msg);
@@ -102,7 +109,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			edit_img: function($trigger)
 			{
 				var filename = $trigger.attr('data-name');
-				var full_path = $('#base_url').val() + $('#cur_dir').val() + filename;
+				if($('#ftp').val()==true){
+					var full_path = $('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + filename;
+				}else{
+					var full_path = $('#base_url').val() + $('#cur_dir').val() + filename;
+				}
 
 				var aviaryElement = $('#aviary_img');
 				aviaryElement.attr('data-name', filename);
@@ -137,6 +148,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 				if(is_return_relative_url==1){
 					url = url.replace($('#base_url').val(), '');
+					url = url.replace($('#cur_dir').val(), '');
 				}
 				if ($('#popup').val() == 1)
 				{
@@ -651,6 +663,36 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				}, 420);
 			});
 		},
+		uploadURL: function()
+		{
+			$('#uploadURL').on('click',function(e){
+				e.preventDefault();
+				var url = $('#url').val();
+				var path = $('#cur_path').val();
+				var path_thumb = $('#cur_dir_thumb').val();
+				show_animation();
+				$.ajax({
+					type: "POST",
+					url: "upload.php",
+					data: {
+						path: path,
+						path_thumb: path_thumb,
+						url: url
+					}
+				}).done(function (msg)
+				{
+					if(msg!=""){
+						alert($('#lang_error_upload').val());
+					}
+					hide_animation();
+					$('#url').val('');
+				}).fail(function(msg){
+					alert($('#lang_error_upload').val());
+					hide_animation();
+					$('#url').val('');
+				});
+			})
+		},
 
 		makeSort: function(js_script)
 		{
@@ -787,6 +829,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		FileManager.makeSort(js_script);
 		FileManager.makeFilters(js_script);
+		FileManager.uploadURL();
 
 		// info btn
 		$('#info').on('click', function ()
@@ -984,8 +1027,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				return ret;
 			},
 
-			start: function ()
+			start: function (e,ui)
 			{
+				$(ui.helper).addClass("ui-draggable-helper");
 				if ($('#view').val() == 0)
 				{
 					$('#main-item-container').addClass('no-effect-slide');
@@ -1050,9 +1094,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		// remove to prevent duplicates
 		$('#textfile_create_area').parent().parent().remove();
 
-		var init_form = $('#lang_filename').val() + ': <input type="text" id="create_text_file_name" style="min-height:30px"><br><hr><textarea id="textfile_create_area" style="width:100%;height:150px;"></textarea>';
-
-		bootbox.dialog(init_form,
+		$.ajax({
+			type: "GET",
+			url: "ajax_calls.php?action=new_file_form"
+		}).done(function (status_msg){
+			bootbox.dialog(status_msg,
 			[
 				{
 					"label": $('#cancel').val(),
@@ -1063,7 +1109,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					"class": "btn-inverse",
 					"callback": function ()
 					{
-						var newFileName = $('#create_text_file_name').val();
+						var newFileName = $('#create_text_file_name').val()+$('#create_text_file_extension').val();
 						var newContent = $('#textfile_create_area').val();
 
 						if (newFileName !== null)
@@ -1099,6 +1145,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				"header": $('#lang_new_file').val()
 			});
+		});
 	}
 
 	function edit_text_file($trigger)
@@ -1186,8 +1233,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 								{
 									setTimeout(function ()
 									{
-										window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
-									}, 500);
+										window.location.href = $('#refresh').attr('href').replace(/lang=[\w]*&/i, 'lang='+newLang+"&") + '&' + new Date().getTime();
+									}, 100);
 								}
 							});
 						}
@@ -1204,23 +1251,19 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		// remove to prevent duplicates
 		$('#files_permission_start').parent().parent().remove();
 
-		var thumb_path, full_path;
-
-		if (!$trigger.hasClass('directory'))
-		{
-			full_path = $trigger.find('.rename-file-paths').attr('data-path');
-		}
-		else
-		{
-			full_path = $trigger.find('.rename-file-paths').attr('data-path');
-		}
+		var obj = $trigger.find('.rename-file-paths');
+		var full_path = obj.attr('data-path');
+		var permissions = obj.attr('data-permissions');
+		var folder = obj.attr('data-folder');
 
 		// ajax -> box -> ajax -> box -> mind blown
 		$.ajax({
 			type: "POST",
 			url: "ajax_calls.php?action=chmod",
 			data: {
-				path: full_path
+				path: full_path,
+				permissions: permissions,
+				folder: folder
 			}
 		}).done(function (init_msg)
 		{
@@ -1235,6 +1278,53 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						"class": "btn-inverse",
 						"callback": function ()
 						{
+							var info = "-";
+							if($('#u_4').is(':checked')){
+								info += "r";
+							}else{
+								info += "-";
+							}
+							if($('#u_2').is(':checked')){
+								info += "w";
+							}else{
+								info += "-";
+							}
+							if($('#u_1').is(':checked')){
+								info += "x";
+							}else{
+								info += "-";
+							}
+							if($('#g_4').is(':checked')){
+								info += "r";
+							}else{
+								info += "-";
+							}
+							if($('#g_2').is(':checked')){
+								info += "w";
+							}else{
+								info += "-";
+							}
+							if($('#g_1').is(':checked')){
+								info += "x";
+							}else{
+								info += "-";
+							}
+							if($('#a_4').is(':checked')){
+								info += "r";
+							}else{
+								info += "-";
+							}
+							if($('#a_2').is(':checked')){
+								info += "w";
+							}else{
+								info += "-";
+							}
+							if($('#a_1').is(':checked')){
+								info += "x";
+							}else{
+								info += "-";
+							}
+
 							// get new perm
 							var newPerm = $('#chmod_form #chmod_value').val();
 							if (newPerm != '' && typeof newPerm !== "undefined")
@@ -1253,13 +1343,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 									data: {
 										path: full_path,
 										new_mode: newPerm,
-										is_recursive: recOpt
+										is_recursive: recOpt,
+										folder: folder
 									}
 								}).done(function (status_msg)
 								{
 									if (status_msg != "")
 									{
 										bootbox.alert(status_msg);
+									}else{
+										obj.attr('data-permissions',info);
 									}
 								});
 							}
@@ -1268,7 +1361,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				],
 				{
 					"header": $('#lang_file_permission').val()
-				});
+				}
+			);
+			setTimeout(function(){ chmod_logic(false); }, 100);
 		});
 	}
 
@@ -1633,8 +1728,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var fill = '';
 		var ext_audio = ['ogg', 'mp3', 'wav'];
 		var ext_video = ['mp4', 'ogg', 'webm'];
-		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+		if($('#ftp').val()==true){
+			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		}else{
+			var is_return_relative_url = $('#return_relative_url').val();
+			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		}
 
 		if (external != "")
 		{
@@ -1737,8 +1836,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var subdir = $('#subdir').val();
 		subdir = subdir.replace('\\', '/');
 		var base_url = $('#base_url').val();
-		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+		if($('#ftp').val()==true){
+			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		}else{
+			var is_return_relative_url = $('#return_relative_url').val();
+			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		}
 
 		if (external != "")
 		{
@@ -1786,8 +1889,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var subdir = $('#subdir').val();
 		subdir = subdir.replace('\\', '/');
 		var base_url = $('#base_url').val();
-		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+		if($('#ftp').val()==true){
+			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		}else{
+			var is_return_relative_url = $('#return_relative_url').val();
+			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		}
 
 		if (external != "")
 		{
@@ -1814,7 +1921,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 		else
 		{
-			url = url + "?" + new Date().getTime();
+			if($('#add_time_to_img').val()){
+				url = url + "?" + new Date().getTime();
+			}
 			apply_any(url);
 		}
 	}
@@ -1835,8 +1944,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var subdir = $('#subdir').val();
 		subdir = subdir.replace('\\', '/');
 		var base_url = $('#base_url').val();
-		var is_return_relative_url = $('#return_relative_url').val();
-		var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
+		if($('#ftp').val()==true){
+			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		}else{
+			var is_return_relative_url = $('#return_relative_url').val();
+			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		}
 
 		if (external != "")
 		{
@@ -1932,13 +2045,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			if (typeof parent.$('.modal').modal == "function"){
 				parent.$('.modal').modal('hide');
 			}
-			
 			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
 			{
 				if(typeof parent.jQuery.fancybox == 'function'){
 					parent.jQuery.fancybox.close();
 				}
-			
 			}
 			else
 			{
@@ -1972,7 +2083,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		container.attr('data-name', name);
 		container.parent().attr('data-name', name);
-		container.find('h4').find('a').text(name);
+		container.find('h4').text(name);
 
 		//select link
 		var link = container.find('a.link');

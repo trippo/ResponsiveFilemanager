@@ -11,19 +11,33 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 	response(trans('forbiden').AddErrorLocation())->send();
 	exit;
 }
+$languages = include 'lang/languages.php';
 
-if (isset($_SESSION['RF']['language_file']) && file_exists($_SESSION['RF']['language_file']))
+if (isset($_SESSION['RF']['language']) && file_exists('lang/' . basename($_SESSION['RF']['language']) . '.php'))
 {
-	include $_SESSION['RF']['language_file'];
+	if(array_key_exists($_SESSION['RF']['language'],$languages)){
+		include 'lang/' . basename($_SESSION['RF']['language']) . '.php';
+	}else{
+		response(trans('Lang_Not_Found').AddErrorLocation())->send();
+		exit;
+	}
 } else {
 	response(trans('Lang_Not_Found').AddErrorLocation())->send();
 	exit;
 }
+$ftp = ftp_con($config);
 
 if(isset($_GET['action']))
 {
 	switch($_GET['action'])
 	{
+		case 'new_file_form':
+			echo trans('Filename') . ': <input type="text" id="create_text_file_name" style="height:30px"> <select id="create_text_file_extension" style="margin:0;width:100px;">';
+			foreach($config['editable_text_file_exts'] as $ext){
+				echo '<option value=".'.$ext.'">.'.$ext.'</option>';
+			}
+			echo '</select><br><hr><textarea id="textfile_create_area" style="width:100%;height:150px;"></textarea>';
+		break;
 		case 'view':
 			if(isset($_GET['type']))
 			{
@@ -77,7 +91,7 @@ if(isset($_GET['action']))
 				|| strpos($_POST['path'], './') === 0
 				|| (strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0
 				&& strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
-				|| $_POST['name'] != fix_filename($_POST['name'], $transliteration, $convert_spaces, $replace_with)
+				|| $_POST['name'] != fix_filename($_POST['name'], $config)
 				|| ! in_array(strtolower($info['extension']), array( 'jpg', 'jpeg', 'png' ))
 			)
 			{
@@ -95,30 +109,45 @@ if(isset($_GET['action']))
 				response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation())->send();
 				exit;
 			}
+			if($ftp){
 
-			file_put_contents($current_path . $_POST['path'] . $_POST['name'],$image_data);
-			create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
-			// TODO something with this function cause its blowing my mind
-			new_thumbnails_creation(
-				$current_path.$_POST['path'],
-				$current_path.$_POST['path'].$_POST['name'],
-				$_POST['name'],
-				$current_path,
-				$relative_image_creation,
-				$relative_path_from_current_pos,
-				$relative_image_creation_name_to_prepend,
-				$relative_image_creation_name_to_append,
-				$relative_image_creation_width,
-				$relative_image_creation_height,
-				$relative_image_creation_option,
-				$fixed_image_creation,
-				$fixed_path_from_filemanager,
-				$fixed_image_creation_name_to_prepend,
-				$fixed_image_creation_to_append,
-				$fixed_image_creation_width,
-				$fixed_image_creation_height,
-				$fixed_image_creation_option
-			);
+				$temp = tempnam('/tmp','RF');
+				unlink($temp);
+				$temp .=".".substr(strrchr($_POST['url'],'.'),1);
+				file_put_contents($temp,$image_data);
+
+				$ftp->put($ftp_base_folder.$upload_dir . $_POST['path'] . $_POST['name'], $temp, FTP_BINARY);
+
+				create_img($temp,$temp,122,91);
+				$ftp->put($ftp_base_folder.$ftp_thumbs_dir. $_POST['path'] . $_POST['name'], $temp, FTP_BINARY);
+
+				unlink($temp);
+			}else{
+
+				file_put_contents($current_path . $_POST['path'] . $_POST['name'],$image_data);
+				create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
+				// TODO something with this function cause its blowing my mind
+				new_thumbnails_creation(
+					$current_path.$_POST['path'],
+					$current_path.$_POST['path'].$_POST['name'],
+					$_POST['name'],
+					$current_path,
+					$relative_image_creation,
+					$relative_path_from_current_pos,
+					$relative_image_creation_name_to_prepend,
+					$relative_image_creation_name_to_append,
+					$relative_image_creation_width,
+					$relative_image_creation_height,
+					$relative_image_creation_option,
+					$fixed_image_creation,
+					$fixed_path_from_filemanager,
+					$fixed_image_creation_name_to_prepend,
+					$fixed_image_creation_to_append,
+					$fixed_image_creation_width,
+					$fixed_image_creation_height,
+					$fixed_image_creation_option
+				);
+			}
 			break;
 		case 'extract':
 			if (strpos($_POST['path'], '/') === 0 || strpos($_POST['path'], '../') !== false || strpos($_POST['path'], './') === 0)
@@ -127,9 +156,29 @@ if(isset($_GET['action']))
 				exit;
 			}
 
-			$path = $current_path . $_POST['path'];
+			if($ftp){
+				$path = $ftp_base_url.$upload_dir . $_POST['path'];
+				$base_folder = $ftp_base_url.$upload_dir . fix_dirname($_POST['path']) . "/";
+			}else{
+				$path = $current_path . $_POST['path'];
+				$base_folder = $current_path . fix_dirname($_POST['path']) . "/";
+			}
+
 			$info = pathinfo($path);
-			$base_folder = $current_path . fix_dirname($_POST['path']) . "/";
+
+			if($ftp){
+				$tempDir = tempdir();
+				$temp = tempnam($tempDir,'RF');
+				unlink($temp);
+				$temp .=".".$info['extension'];
+				$handle = fopen($temp, "w");
+				fwrite($handle, file_get_contents($path));
+				fclose($handle);
+				$path = $temp;
+				$base_folder = $tempDir."/";
+			}
+
+			$info = pathinfo($path);
 
 			switch ($info['extension'])
 			{
@@ -196,7 +245,7 @@ if(isset($_GET['action']))
 					$phar->decompressFiles();
 					$files = array();
 					check_files_extensions_on_phar($phar, $files, '', $ext);
-					$phar->extractTo($current_path . fix_dirname($_POST['path']) . "/", $files, true);
+					$phar->extractTo($base_folder, $files, true);
 
 					break;
 
@@ -204,9 +253,21 @@ if(isset($_GET['action']))
 					response(trans('Zip_Invalid').AddErrorLocation())->send();
 					exit;
 			}
+
+			if($ftp){
+				unlink($path);
+				$ftp->putAll($base_folder, "/".$ftp_base_folder . $upload_dir . fix_dirname($_POST['path']), FTP_BINARY);
+				deleteDir($base_folder);
+			}
+
+
 			break;
 		case 'media_preview':
-			$preview_file = $current_path . $_GET["file"];
+			if($ftp){
+				$preview_file = $ftp_base_url.$upload_dir . $_GET['file'];
+			}else{
+				$preview_file = $current_path . $_GET["file"];
+			}
 			$info = pathinfo($preview_file);
 			ob_start();
 			?>
@@ -378,74 +439,110 @@ if(isset($_GET['action']))
 			$_SESSION['RF']['clipboard_action'] = null;
 			break;
 		case 'chmod':
-			$path = $current_path . $_POST['path'];
-			if (
-				(is_dir($path) && $chmod_dirs === false)
-				|| (is_file($path) && $chmod_files === false)
-				|| (is_function_callable("chmod") === false) )
-			{
-				response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
-				exit;
-			} else {
-				$perm = decoct(fileperms($path) & 0777);
-				$perm_user = substr($perm, 0, 1);
-				$perm_group = substr($perm, 1, 1);
-				$perm_all = substr($perm, 2, 1);
-
-				$ret = '<div id="files_permission_start">
-				<form id="chmod_form">
-					<table class="table file-perms-table">
-						<thead>
-							<tr>
-								<td></td>
-								<td>r&nbsp;&nbsp;</td>
-								<td>w&nbsp;&nbsp;</td>
-								<td>x&nbsp;&nbsp;</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>'.trans('User').'</td>
-								<td><input id="u_4" type="checkbox" data-value="4" data-group="user" '.(chmod_logic_helper($perm_user, 4) ? " checked" : "").'></td>
-								<td><input id="u_2" type="checkbox" data-value="2" data-group="user" '.(chmod_logic_helper($perm_user, 2) ? " checked" : "").'></td>
-								<td><input id="u_1" type="checkbox" data-value="1" data-group="user" '.(chmod_logic_helper($perm_user, 1) ? " checked" : "").'></td>
-							</tr>
-							<tr>
-								<td>'.trans('Group').'</td>
-								<td><input id="g_4" type="checkbox" data-value="4" data-group="group" '.(chmod_logic_helper($perm_group, 4) ? " checked" : "").'></td>
-								<td><input id="g_2" type="checkbox" data-value="2" data-group="group" '.(chmod_logic_helper($perm_group, 2) ? " checked" : "").'></td>
-								<td><input id="g_1" type="checkbox" data-value="1" data-group="group" '.(chmod_logic_helper($perm_group, 1) ? " checked" : "").'></td>
-							</tr>
-							<tr>
-								<td>'.trans('All').'</td>
-								<td><input id="a_4" type="checkbox" data-value="4" data-group="all" '.(chmod_logic_helper($perm_all, 4) ? " checked" : "").'></td>
-								<td><input id="a_2" type="checkbox" data-value="2" data-group="all" '.(chmod_logic_helper($perm_all, 2) ? " checked" : "").'></td>
-								<td><input id="a_1" type="checkbox" data-value="1" data-group="all" '.(chmod_logic_helper($perm_all, 1) ? " checked" : "").'></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td colspan="3"><input type="text" class="input-block-level" name="chmod_value" id="chmod_value" value="'.$perm.'" data-def-value="'.$perm.'"></td>
-							</tr>
-						</tbody>
-					</table>';
-
-				if (is_dir($path))
+			if($ftp){
+				$path = $ftp_base_url . $upload_dir . $_POST['path'];
+				if (
+					($_POST['folder']==1 && $chmod_dirs === false)
+					|| ($_POST['folder']==0 && $chmod_files === false)
+					|| (is_function_callable("chmod") === false) )
 				{
-					$ret .= '<div class="hero-unit" style="padding:10px;">'.trans('File_Permission_Recursive').'<br/><br/>
-							<ul class="unstyled">
-								<li><label class="radio"><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</label></li>
-								<li><label class="radio"><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</label></li>
-								<li><label class="radio"><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</label></li>
-								<li><label class="radio"><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</label></li>
-							</ul>
-							</div>';
+					response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
+					exit;
+				}
+				$info = $_POST['permissions'];
+			}else{
+				$path = $current_path . $_POST['path'];
+				if (
+					(is_dir($path) && $chmod_dirs === false)
+					|| (is_file($path) && $chmod_files === false)
+					|| (is_function_callable("chmod") === false) )
+				{
+					response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
+					exit;
 				}
 
-				$ret .= '</form></div>';
+				$perms = fileperms($path) & 0777;
 
-				response($ret)->send();
-				exit;
+			    $info = '-';
+
+				// Owner
+				$info .= (($perms & 0x0100) ? 'r' : '-');
+				$info .= (($perms & 0x0080) ? 'w' : '-');
+				$info .= (($perms & 0x0040) ?
+				            (($perms & 0x0800) ? 's' : 'x' ) :
+				            (($perms & 0x0800) ? 'S' : '-'));
+
+				// Group
+				$info .= (($perms & 0x0020) ? 'r' : '-');
+				$info .= (($perms & 0x0010) ? 'w' : '-');
+				$info .= (($perms & 0x0008) ?
+				            (($perms & 0x0400) ? 's' : 'x' ) :
+				            (($perms & 0x0400) ? 'S' : '-'));
+
+				// World
+				$info .= (($perms & 0x0004) ? 'r' : '-');
+				$info .= (($perms & 0x0002) ? 'w' : '-');
+				$info .= (($perms & 0x0001) ?
+				            (($perms & 0x0200) ? 't' : 'x' ) :
+				            (($perms & 0x0200) ? 'T' : '-'));
+
 			}
+
+
+			$ret = '<div id="files_permission_start">
+			<form id="chmod_form">
+				<table class="table file-perms-table">
+					<thead>
+						<tr>
+							<td></td>
+							<td>r&nbsp;&nbsp;</td>
+							<td>w&nbsp;&nbsp;</td>
+							<td>x&nbsp;&nbsp;</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>'.trans('User').'</td>
+							<td><input id="u_4" type="checkbox" data-value="4" data-group="user" '.(substr($info, 1,1)=='r' ? " checked" : "").'></td>
+							<td><input id="u_2" type="checkbox" data-value="2" data-group="user" '.(substr($info, 2,1)=='w' ? " checked" : "").'></td>
+							<td><input id="u_1" type="checkbox" data-value="1" data-group="user" '.(substr($info, 3,1)=='x' ? " checked" : "").'></td>
+						</tr>
+						<tr>
+							<td>'.trans('Group').'</td>
+							<td><input id="g_4" type="checkbox" data-value="4" data-group="group" '.(substr($info, 4,1)=='r' ? " checked" : "").'></td>
+							<td><input id="g_2" type="checkbox" data-value="2" data-group="group" '.(substr($info, 5,1)=='w' ? " checked" : "").'></td>
+							<td><input id="g_1" type="checkbox" data-value="1" data-group="group" '.(substr($info, 6,1)=='x' ? " checked" : "").'></td>
+						</tr>
+						<tr>
+							<td>'.trans('All').'</td>
+							<td><input id="a_4" type="checkbox" data-value="4" data-group="all" '.(substr($info, 7,1)=='r' ? " checked" : "").'></td>
+							<td><input id="a_2" type="checkbox" data-value="2" data-group="all" '.(substr($info, 8,1)=='w' ? " checked" : "").'></td>
+							<td><input id="a_1" type="checkbox" data-value="1" data-group="all" '.(substr($info, 9,1)=='x' ? " checked" : "").'></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3"><input type="text" class="input-block-level" name="chmod_value" id="chmod_value" value="" data-def-value=""></td>
+						</tr>
+					</tbody>
+				</table>';
+
+			if ((!$ftp && is_dir($path)) )
+			{
+				$ret .= '<div class="hero-unit" style="padding:10px;">'.trans('File_Permission_Recursive').'<br/><br/>
+						<ul class="unstyled">
+							<li><label class="radio"><input value="none" name="apply_recursive" type="radio" checked> '.trans('No').'</label></li>
+							<li><label class="radio"><input value="files" name="apply_recursive" type="radio"> '.trans('Files').'</label></li>
+							<li><label class="radio"><input value="folders" name="apply_recursive" type="radio"> '.trans('Folders').'</label></li>
+							<li><label class="radio"><input value="both" name="apply_recursive" type="radio"> '.trans('Files').' & '.trans('Folders').'</label></li>
+						</ul>
+						</div>';
+			}
+
+			$ret .= '</form></div>';
+
+			response($ret)->send();
+			exit;
+
 			break;
 		case 'get_lang':
 			if ( ! file_exists('lang/languages.php'))
@@ -475,22 +572,17 @@ if(isset($_GET['action']))
 
 			break;
 		case 'change_lang':
-			//Tracevar($_POST);
 			$choosen_lang = (!empty($_POST['choosen_lang']))? $_POST['choosen_lang']:"en_EN";
-			//Tracevar($choosen_lang);
 
-			$languages = include 'lang/languages.php';
 			if(array_key_exists($choosen_lang,$languages)){
 				if ( ! file_exists('lang/' . $choosen_lang . '.php'))
 				{
 					response(trans('Lang_Not_Found').AddErrorLocation())->send();
 					exit;
+				}else{
+					$_SESSION['RF']['language'] = $choosen_lang;
 				}
 			}
-
-			$_SESSION['RF']['language'] = $choosen_lang;
-			$_SESSION['RF']['language_file'] = 'lang/' . $choosen_lang . '.php';
-			//Tracevar($_SESSION['RF']);
 
 			break;
 		case 'get_file': // preview or edit
@@ -503,14 +595,19 @@ if(isset($_GET['action']))
 				exit;
 			}
 
-			$selected_file = ($sub_action == 'preview' ? $current_path . $_GET['file'] : $current_path . $_POST['path']);
-			$info = pathinfo($selected_file);
+			if($ftp){
+				$selected_file = ($sub_action == 'preview' ? $ftp_base_url.$upload_dir . $_GET['file'] : $ftp_base_url.$upload_dir . $_POST['path']);
+			}else{
+				$selected_file = ($sub_action == 'preview' ? $current_path . $_GET['file'] : $current_path . $_POST['path']);
 
-			if ( ! file_exists($selected_file))
-			{
-				response(trans('File_Not_Found').AddErrorLocation())->send();
-				exit;
+				if ( ! file_exists($selected_file))
+				{
+					response(trans('File_Not_Found').AddErrorLocation())->send();
+					exit;
+				}
 			}
+
+			$info = pathinfo($selected_file);
 
 			if ($preview_mode == 'text')
 			{
@@ -532,7 +629,7 @@ if(isset($_GET['action']))
 			if ( ! in_array($info['extension'], $allowed_file_exts)
 				|| ! isset($is_allowed)
 				|| $is_allowed === false
-				|| ! is_readable($selected_file)
+				|| (!$ftp && ! is_readable($selected_file))
 			)
 			{
 				response(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))).AddErrorLocation())->send();
@@ -555,13 +652,24 @@ if(isset($_GET['action']))
 						$ret .= '<pre class="no-prettify">'.$data.'</pre>';
 					}
 
-				} elseif ($preview_mode == 'viewerjs') {
-					$ret = '<iframe id="viewer" src="js/ViewerJS/#../../'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+				} 
+				// elseif ($preview_mode == 'viewerjs') {
+				// 	if($ftp){
+				// 		$ret = '<iframe id="viewer" src="'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+				// 	}else{
+				// 		$ret = '<iframe id="viewer" src="js/ViewerJS/#../../'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
+				// 	}
 
-				} elseif ($preview_mode == 'google') {
-					$url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
+				// } 
+				elseif ($preview_mode == 'google' || $preview_mode == 'viewerjs') {
+					if($ftp){
+						$url_file = $selected_file;
+					}else{
+						$url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
+					}
+
 					$googledoc_url = urlencode($url_file);
-					$googledoc_html = "<iframe src=\"http://docs.google.com/viewer?url=" . $googledoc_url . "&embedded=true\" class=\"google-iframe\"></iframe>";
+					$googledoc_html = "<iframe src=\"http://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
 					$ret = $googledoc_html;
 				}
 			} else {

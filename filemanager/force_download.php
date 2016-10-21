@@ -8,6 +8,8 @@ extract($config, EXTR_OVERWRITE);
 
 include 'include/utils.php';
 
+$ftp = ftp_con($config);
+
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
 	response(trans('forbiden').AddErrorLocation(), 403)->send();
@@ -15,6 +17,7 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 }
 
 include 'include/mime_type_lib.php';
+
 
 if (
 	strpos($_POST['path'], '/') === 0
@@ -32,8 +35,12 @@ if (strpos($_POST['name'], '/') !== false)
 	response(trans('wrong path'.AddErrorLocation()), 400)->send();
 	exit;
 }
+if($ftp){
+    $path = $ftp_base_url . $upload_dir . $_POST['path'];
+}else{
+    $path = $current_path . $_POST['path'];
+}
 
-$path = $current_path . $_POST['path'];
 $name = $_POST['name'];
 
 $info = pathinfo($name);
@@ -44,19 +51,26 @@ if ( ! in_array(fix_strtolower($info['extension']), $ext))
 	exit;
 }
 
-if ( ! file_exists($path . $name))
-{
-	response(trans('File_Not_Found'.AddErrorLocation()), 404)->send();
-	exit;
-}
+
 
 $file_name  = $info['basename'];
 $file_ext   = $info['extension'];
 $file_path  = $path . $name;
 
 // make sure the file exists
-if (is_file($file_path) && is_readable($file_path))
+if($ftp){
+    $file_url = 'http://www.myremoteserver.com/file.exe';
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary"); 
+    header("Content-disposition: attachment; filename=\"" . $file_name . "\""); 
+    readfile($file_path);
+}elseif (is_file($file_path) && is_readable($file_path))
 {
+    if ( ! file_exists($path . $name))
+    {
+        response(trans('File_Not_Found'.AddErrorLocation()), 404)->send();
+        exit;
+    }
 
     $size = filesize($file_path);
     $file_name = rawurldecode($file_name);

@@ -91,6 +91,8 @@ $mime_types = array(
 	'ksp'     => 'application/x-kspread',
 	'kwd'     => 'application/x-kword',
 	'kwt'     => 'application/x-kword',
+    'kml'     => 'application/vnd.google-earth.kml+xml',
+    'kmz'     => 'application/vnd.google-earth.kmz',
 	'latex'   => 'application/x-latex',
 	'lha'     => 'application/octet-stream',
 	'lzh'     => 'application/octet-stream',
@@ -258,8 +260,8 @@ if ( ! function_exists('get_file_mime_type'))
 	{
 		if (function_exists('finfo_open') && function_exists('finfo_file') && function_exists('finfo_close'))
 		{
-			$fileinfo = finfo_open(FILEINFO_MIME);
-			$mime_type = finfo_file($fileinfo, $filename);
+			$fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+			echo $mime_type = finfo_file($fileinfo, $filename);
 			finfo_close($fileinfo);
 
 			if ( ! empty($mime_type))
@@ -272,6 +274,7 @@ if ( ! function_exists('get_file_mime_type'))
 				return $mime_type;
 			}
 		}
+
 		if (function_exists('mime_content_type'))
 		{
 			$mime_type = mime_content_type($filename);
