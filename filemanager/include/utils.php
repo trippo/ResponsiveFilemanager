@@ -264,7 +264,8 @@ function ftp_con($config){
 			echo "Error: ";
 			echo $e->getMessage();
 			echo " to server ";
-			echo $e->getTrace()[0]['args'][0];
+			$tmp = $e->getTrace();
+			echo $tmp[0]['args'][0];
 			echo "<br/>Please check configurations";
 			die();
 		}
