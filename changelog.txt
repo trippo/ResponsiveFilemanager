@@ -1,6 +1,19 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.11.0
+*********************************************************
+- fixed multiple security vulnerabilities (thanks to CERT-W and Davide Girardi from Outpost24)
+- Add FTP beta support
+- fixed problem with some file type on upload
+- fixed a problem with change language
+- fixed a problem with rename
+- fixed a problem with upload mine type
+- fixed memory_error bool indicator
+- add configuration to add &time to image to prevent chaching
+- other fixes
+
+*********************************************************
 *  RFM 9.10.2
 *********************************************************
 - fixed Download of large file
