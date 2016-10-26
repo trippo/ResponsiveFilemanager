@@ -83,8 +83,10 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 
 	$info = pathinfo($_FILES['file']['name']);
 	$mime_type = $_FILES['file']['type'];
+	$mime_type = mime_content_type($_FILES['file']['tmp_name']);
 	$extension = get_extension_from_mime($mime_type);
-	if($extension==='' || $extension=='so'){
+
+	if($extension=='so'){
 		$extension = $info['extension'];
 	}
 

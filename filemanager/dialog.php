@@ -212,7 +212,7 @@ if($_GET['type']==1 || $_GET['type']==3){
 	$filter='';
 }
 
-$extensions='';
+$extensions=null;
 if (isset($_GET['extensions'])){
 	$extensions = json_decode(urldecode($_GET['extensions']));
 	if($extensions){
@@ -232,7 +232,7 @@ if (isset($_GET['lang']))
 }elseif($_SESSION['RF']['language']){
 	$languages = include 'lang/languages.php';
 	if(array_key_exists($lang,$languages)){
-		$lang = strip_tags($_GET['lang']);
+		$lang = strip_tags($_SESSION['RF']['language']);
 		$_SESSION['RF']['language'] = $lang;
 	}
 }
@@ -265,7 +265,7 @@ $get_params = array(
 	'lang'      => $lang,
 	'popup'     => $popup,
 	'crossdomain' => $crossdomain,
-	'extensions' => urlencode(json_encode($extensions)),
+	'extensions' => ($extensions) ? urlencode(json_encode($extensions)) : null ,
 	'field_id'  => $field_id,
 	'relative_url' => $return_relative_url,
 	'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
