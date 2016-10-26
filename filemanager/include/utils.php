@@ -544,7 +544,7 @@ function fix_filename($str, $config, $is_folder = false)
 {
 	if ($config['convert_spaces'])
 	{
-		$str = str_replace(' ', $replace_with, $str);
+		$str = str_replace(' ', $config['replace_with'], $str);
 	}
 
 	if ($config['transliteration'])
