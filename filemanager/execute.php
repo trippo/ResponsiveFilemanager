@@ -53,7 +53,6 @@ while($cycle && $i<$max_cycles)
 		$cycle = FALSE;
 	}
 	$path = fix_dirname($path)."/";
-	$cycle = FALSE;
 }
 
 $path = $current_path.$_POST['path'];
