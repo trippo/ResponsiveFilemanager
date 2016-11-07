@@ -134,6 +134,7 @@ $mime_types = array(
 	'pdf'     => 'application/pdf',
 	'pgm'     => 'image/x-portable-graymap',
 	'pgn'     => 'application/x-chess-pgn',
+	'php'     => 'text/x-php',
 	'png'     => 'image/png',
 	'pnm'     => 'image/x-portable-anymap',
 	'ppm'     => 'image/x-portable-pixmap',
@@ -261,7 +262,7 @@ if ( ! function_exists('get_file_mime_type'))
 		if (function_exists('finfo_open') && function_exists('finfo_file') && function_exists('finfo_close'))
 		{
 			$fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-			echo $mime_type = finfo_file($fileinfo, $filename);
+			$mime_type = finfo_file($fileinfo, $filename);
 			finfo_close($fileinfo);
 
 			if ( ! empty($mime_type))

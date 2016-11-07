@@ -74,11 +74,20 @@ if($ftp){
 
     $size = filesize($file_path);
     $file_name = rawurldecode($file_name);
-    $mime_type = get_file_mime_type($file_path);
+    if (function_exists('mime_content_type')){
+        $mime_type = mime_content_type($_FILES['file']['tmp_name']);
+    }elseif(function_exists('finfo_open')){
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $_FILES['file']['tmp_name']);
+    }else{
+        include 'include/mime_type_lib.php';
+        $mime_type = get_file_mime_type($file_path);
+    }
 
     @ob_end_clean();
-    if(ini_get('zlib.output_compression'))
-    ini_set('zlib.output_compression', 'Off');
+    if(ini_get('zlib.output_compression')){
+        ini_set('zlib.output_compression', 'Off');
+    }
     header('Content-Type: ' . $mime_type);
     header('Content-Disposition: attachment; filename="'.$file_name.'"');
     header("Content-Transfer-Encoding: binary");

@@ -306,9 +306,13 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
 		if (strpos($imgfile,'http')===0 || image_check_memory_usage($imgfile, $newwidth, $newheight))
 		{
 			require_once('php_image_magician.php');
-			$magicianObj = new imageLib($imgfile);
-			$magicianObj->resizeImage($newwidth, $newheight, $option);
-			$magicianObj->saveImage($imgthumb, 80);
+			try{
+				$magicianObj = new imageLib($imgfile);
+				$magicianObj->resizeImage($newwidth, $newheight, $option);
+				$magicianObj->saveImage($imgthumb, 80);
+			}catch (Exception $e){
+				return false;
+			}
 			$result = true;
 		}
 	}
