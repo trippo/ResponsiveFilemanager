@@ -248,6 +248,7 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 				unlink($targetFileThumb);
 			}
 		}
+		echo $_FILES['file']['name'];
 	}
 	else // file ext. is not in the allowed list
 	{

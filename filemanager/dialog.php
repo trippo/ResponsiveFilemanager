@@ -946,14 +946,10 @@ $files=$sorted;
 						$creation_thumb_path = $mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 
 						if(!file_exists($src_thumb) ){
-							try {
-								if(!create_img($file_path, $creation_thumb_path, 122, 91,'crop',$ftp,$config)){
-									$src_thumb=$mini_src="";
-								}else{
-									new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,'','','','','','','',$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
-								}
-							} catch (Exception $e) {
-									$src_thumb=$mini_src="";
+							if(!create_img($file_path, $creation_thumb_path, 122, 91,'crop',$ftp,$config)){
+								$src_thumb=$mini_src="";
+							}else{
+								new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,'','','','','','','',$fixed_image_creation,$fixed_path_from_filemanager,$fixed_image_creation_name_to_prepend,$fixed_image_creation_to_append,$fixed_image_creation_width,$fixed_image_creation_height,$fixed_image_creation_option);
 							}
 						}
 						//check if is smaller than thumb
