@@ -185,8 +185,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				{
 					apply_any(url);
 				}
-			
-				
+
 			},
 			copy: function($trigger)
 			{
@@ -783,11 +782,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	$(document).ready(function ()
 	{
-
-		$('#rfmDropzone').on('click','.dz-success .dz-detail',function(){
-			var _this = $(this);
-			alert(_this.find('.dz-filename span').tex());
-		});
 
 		// Right click menu
 		if (active_contextmenu)
@@ -2044,6 +2038,32 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			if (typeof parent.$('.modal').modal == "function"){
 				parent.$('.modal').modal('hide');
+			}
+			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
+			{
+				if(typeof parent.jQuery.fancybox == 'function'){
+					parent.jQuery.fancybox.close();
+				}
+			}
+			else
+			{
+				if(typeof parent.$.fancybox == 'function'){
+					parent.$.fancybox.close();
+				}
+			}
+		}
+	}
+
+	function close_window()
+	{
+		if ($('#popup').val() == 1)
+		{
+			window.close();
+		}
+		else
+		{
+			if (typeof parent.$(".modal:has(iframe[src*=filemanager])").modal == "function"){
+				parent.$(".modal:has(iframe[src*=filemanager])").modal("hide");
 			}
 			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
 			{
