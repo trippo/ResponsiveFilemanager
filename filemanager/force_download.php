@@ -75,10 +75,10 @@ if($ftp){
     $size = filesize($file_path);
     $file_name = rawurldecode($file_name);
     if (function_exists('mime_content_type')){
-        $mime_type = mime_content_type($_FILES['file']['tmp_name']);
+        $mime_type = mime_content_type($file_path);
     }elseif(function_exists('finfo_open')){
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime_type = finfo_file($finfo, $_FILES['file']['tmp_name']);
+        $mime_type = finfo_file($finfo, $file_path);
     }else{
         include 'include/mime_type_lib.php';
         $mime_type = get_file_mime_type($file_path);

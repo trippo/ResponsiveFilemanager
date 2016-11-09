@@ -90,7 +90,7 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 		$mime_type = finfo_file($finfo, $_FILES['file']['tmp_name']);
 	}else{
 		include 'include/mime_type_lib.php';
-		$mime_type = get_file_mime_type($file_path);
+		$mime_type = get_file_mime_type($_FILES['file']['tmp_name']);
 	}
 
 	$extension = get_extension_from_mime($mime_type);
