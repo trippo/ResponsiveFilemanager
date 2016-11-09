@@ -53,7 +53,12 @@ if ( ! function_exists('trans'))
 	}
 	else
 	{
-		$languages = include 'lang/languages.php';
+		if(file_exists('lang/languages.php')){
+			$languages = include 'lang/languages.php';
+		}else{
+			$languages = include '../lang/languages.php';
+		}
+
 		if(array_key_exists($_SESSION['RF']['language'],$languages)){
 			$lang = $_SESSION['RF']['language'];
 		}else{
@@ -62,8 +67,11 @@ if ( ! function_exists('trans'))
 		}
 
 	}
-
-	$lang_vars = include 'lang/' . basename($_SESSION['RF']['language']) . '.php';
+	if(file_exists('lang/' . $lang . '.php')){
+		$lang_vars = include 'lang/' . $lang . '.php';
+	}else{
+		$lang_vars = include '../lang/' . $lang . '.php';
+	}
 
 	if ( ! is_array($lang_vars))
 	{
