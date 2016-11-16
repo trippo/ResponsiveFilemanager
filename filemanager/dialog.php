@@ -19,11 +19,8 @@ if (USE_ACCESS_KEYS == TRUE){
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 
 if(isset($_POST['submit'])){
-
 	include 'upload.php';
-
-}
-else {
+}else{
 include 'include/utils.php';
 
 if (isset($_GET['fldr'])
@@ -803,7 +800,7 @@ $files=$sorted;
 
 		foreach ($files as $file_array) {
 			$file=$file_array['file'];
-			if($file == '.' || ( substr($file, 0, 1) == '.' && isset( $file_array[ 'extension' ] ) && $file_array[ 'extension' ] == trans( 'Type_dir' ) ) || (isset($file_array['extension']) && $file_array['extension']!=trans('Type_dir')) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false)){
+			if($file == '.' || ( substr($file, 0, 1) == '.' && isset( $file_array[ 'extension' ] ) && $file_array[ 'extension' ] == strtolower(trans( 'Type_dir' ) )) || (isset($file_array['extension']) && $file_array['extension']!=strtolower(trans('Type_dir'))) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false)){
 				continue;
 			}
 			$new_name=fix_filename($file,$config);
