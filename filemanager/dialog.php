@@ -30,7 +30,7 @@ if (isset($_GET['lang']))
 	if(array_key_exists($lang,$languages)){
 		$_SESSION['RF']['language'] = $lang;
 	}
-}elseif($_SESSION['RF']['language']){
+}elseif(isset($_SESSION['RF']['language']) && $_SESSION['RF']['language'])
 	$lang = strip_tags($_SESSION['RF']['language']);
 	if(array_key_exists($lang,$languages)){
 		$_SESSION['RF']['language'] = $lang;
