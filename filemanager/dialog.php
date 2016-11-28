@@ -149,7 +149,11 @@ if(!$ftp){
 		create_folder(FALSE, $thumbs_path.$subdir);
 	}
 }
-
+if (isset($_GET['callback']))
+{
+	$callback = strip_tags($_GET['callback']);
+}
+else $callback=0;
 if (isset($_GET['popup']))
 {
 	$popup = strip_tags($_GET['popup']);
@@ -384,6 +388,7 @@ $get_params = http_build_query($get_params);
 <body>
 	<input type="hidden" id="ftp" value="<?php echo !!$ftp; ?>" />
 	<input type="hidden" id="popup" value="<?php echo $popup;?>" />
+	<input type="hidden" id="callback" value="<?php echo $callback; ?>" />	
 	<input type="hidden" id="crossdomain" value="<?php echo $crossdomain;?>" />
 	<input type="hidden" id="editor" value="<?php echo $editor;?>" />
 	<input type="hidden" id="view" value="<?php echo $view;?>" />
