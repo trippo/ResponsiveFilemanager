@@ -77,7 +77,8 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 		$_FILES['file']= array(
 			'name' => basename($_POST['url']),
 			'tmp_name' => $temp,
-			'size' => filesize($temp)
+			'size' => filesize($temp),
+			'type' => explode(".", strtolower($temp))
 		);
 	}
 

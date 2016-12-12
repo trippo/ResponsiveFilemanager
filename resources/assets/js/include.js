@@ -20,11 +20,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	var getLink = function($trigger)
 	{
 
-		if($('#ftp').val()==true){
-			var m = $('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val();
+		if(jQuery('#ftp').val()==true){
+			var m = jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val();
 
 		}else{
-			var m = $('#base_url').val() + $('#cur_dir').val();
+			var m = jQuery('#base_url').val() + jQuery('#cur_dir').val();
 		}
 		var add = $trigger.find('a.link').attr('data-file');
 		if (add != "" && add != null)
@@ -58,9 +58,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					'</div>'
 				);
 
-				$('#copy-button' + copy_count).html('<i class="icon icon-white icon-share"></i> ' + $('#lang_copy').val());
+				jQuery('#copy-button' + copy_count).html('<i class="icon icon-white icon-share"></i> ' + jQuery('#lang_copy').val());
 
-				var client = new ZeroClipboard($('#copy-button' + copy_count));
+				var client = new ZeroClipboard(jQuery('#copy-button' + copy_count));
 
 				client.on("ready", function (readyEvent)
 				{
@@ -72,8 +72,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 					client.on("aftercopy", function (event)
 					{
-						$('#copy-button' + copy_count).html('<i class="icon icon-ok"></i> ' + $('#ok').val());
-						$('#copy-button' + copy_count).attr('class', 'btn disabled');
+						jQuery('#copy-button' + copy_count).html('<i class="icon icon-ok"></i> ' + jQuery('#ok').val());
+						jQuery('#copy-button' + copy_count).attr('class', 'btn disabled');
 						copy_count++;
 					});
 
@@ -84,7 +84,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			unzip: function($trigger)
 			{
-				var m = $('#sub_folder').val() + $('#fldr_value').val() + $trigger.find('a.link').attr('data-file');
+				var m = jQuery('#sub_folder').val() + jQuery('#fldr_value').val() + $trigger.find('a.link').attr('data-file');
 				show_animation();
 				$.ajax({
 					type: "POST",
@@ -101,7 +101,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+						window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
 					}
 				});
 			},
@@ -109,13 +109,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			edit_img: function($trigger)
 			{
 				var filename = $trigger.attr('data-name');
-				if($('#ftp').val()==true){
-					var full_path = $('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + filename;
+				if(jQuery('#ftp').val()==true){
+					var full_path = jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + filename;
 				}else{
-					var full_path = $('#base_url').val() + $('#cur_dir').val() + filename;
+					var full_path = jQuery('#base_url').val() + jQuery('#cur_dir').val() + filename;
 				}
 
-				var aviaryElement = $('#aviary_img');
+				var aviaryElement = jQuery('#aviary_img');
 				aviaryElement.attr('data-name', filename);
 				show_animation();
 				aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));
@@ -125,7 +125,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				var old_name = $trigger.find('h4').text().trim();
 
-				bootbox.prompt($('#lang_duplicate').val(), $('#cancel').val(), $('#ok').val(), function (name)
+				bootbox.prompt(jQuery('#lang_duplicate').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
 				{
 					if (name !== null)
 					{
@@ -142,15 +142,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			select: function($trigger)
 			{
 				var url = getLink($trigger);
-				var external = $('#field_id').val();
+				var external = jQuery('#field_id').val();
 				var windowParent;
-				var is_return_relative_url = $('#return_relative_url').val();
+				var is_return_relative_url = jQuery('#return_relative_url').val();
 
 				if(is_return_relative_url==1){
-					url = url.replace($('#base_url').val(), '');
-					url = url.replace($('#cur_dir').val(), '');
+					url = url.replace(jQuery('#base_url').val(), '');
+					url = url.replace(jQuery('#cur_dir').val(), '');
 				}
-				if ($('#popup').val() == 1)
+				if (jQuery('#popup').val() == 1)
 				{
 					windowParent = window.opener;
 				}
@@ -160,7 +160,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				}
 				if (external != "")
 				{
-					if ($('#crossdomain').val() == 1)
+					if (jQuery('#crossdomain').val() == 1)
 					{
 						windowParent.postMessage({
 								sender: 'responsivefilemanager',
@@ -172,7 +172,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						var target = $('#' + external, windowParent.document);
+						var target = jQuery('#' + external, windowParent.document);
 						target.val(url).trigger('change');
 						if (typeof windowParent.responsive_filemanager_callback == 'function')
 						{
@@ -239,23 +239,23 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						) && image_editor)
 					{
 						options.items.edit_img = {
-							name: $('#lang_edit_image').val(),
+							name: jQuery('#lang_edit_image').val(),
 							icon: "edit_img",
 							disabled: false
 						};
 					}
 					// select folder
-					if ($trigger.hasClass('directory') && $('#type_param').val()!=0)
+					if ($trigger.hasClass('directory') && jQuery('#type_param').val()!=0)
 					{
 						options.items.select = {
-							name: $('#lang_select').val(),
+							name: jQuery('#lang_select').val(),
 							icon: "",
 							disabled: false
 						};
 					}
 
 					options.items.copy_url = {
-						name: $('#lang_show_url').val(),
+						name: jQuery('#lang_show_url').val(),
 						icon: "url",
 						disabled: false
 					};
@@ -265,7 +265,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						$trigger.find('.img-precontainer-mini .filetype').hasClass('gz'))
 					{
 						options.items.unzip = {
-							name: $('#lang_extract').val(),
+							name: jQuery('#lang_extract').val(),
 							icon: "extract",
 							disabled: false
 						};
@@ -275,7 +275,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					if ($trigger.find('.img-precontainer-mini .filetype').hasClass('edit-text-file-allowed'))
 					{
 						options.items.edit_text_file = {
-							name: $('#lang_edit_file').val(),
+							name: jQuery('#lang_edit_file').val(),
 							icon: "edit",
 							disabled: false
 						};
@@ -283,38 +283,38 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 
 					// duplicate
-					if (!$trigger.hasClass('directory') && $('#duplicate').val() == 1)
+					if (!$trigger.hasClass('directory') && jQuery('#duplicate').val() == 1)
 					{
 						options.items.duplicate = {
-							name: $('#lang_duplicate').val(),
+							name: jQuery('#lang_duplicate').val(),
 							icon: "duplicate",
 							disabled: false
 						};
 					}
 
 					// copy & cut
-					if (!$trigger.hasClass('directory') && $('#copy_cut_files_allowed').val() == 1)
+					if (!$trigger.hasClass('directory') && jQuery('#copy_cut_files_allowed').val() == 1)
 					{
 						options.items.copy = {
-							name: $('#lang_copy').val(),
+							name: jQuery('#lang_copy').val(),
 							icon: "copy",
 							disabled: false
 						};
 						options.items.cut = {
-							name: $('#lang_cut').val(),
+							name: jQuery('#lang_cut').val(),
 							icon: "cut",
 							disabled: false
 						};
 					}
-					else if ($trigger.hasClass('directory') && $('#copy_cut_dirs_allowed').val() == 1)
+					else if ($trigger.hasClass('directory') && jQuery('#copy_cut_dirs_allowed').val() == 1)
 					{
 						options.items.copy = {
-							name: $('#lang_copy').val(),
+							name: jQuery('#lang_copy').val(),
 							icon: "copy",
 							disabled: false
 						};
 						options.items.cut = {
-							name: $('#lang_cut').val(),
+							name: jQuery('#lang_cut').val(),
 							icon: "cut",
 							disabled: false
 						};
@@ -322,28 +322,28 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 					// paste
 					// Its not added to folders because it might confuse someone
-					if ($('#clipboard').val() != 0 && !$trigger.hasClass('directory'))
+					if (jQuery('#clipboard').val() != 0 && !$trigger.hasClass('directory'))
 					{
 						options.items.paste = {
-							name: $('#lang_paste_here').val(),
+							name: jQuery('#lang_paste_here').val(),
 							icon: "clipboard-apply",
 							disabled: false
 						};
 					}
 
 					// file permission
-					if (!$trigger.hasClass('directory') && $('#chmod_files_allowed').val() == 1)
+					if (!$trigger.hasClass('directory') && jQuery('#chmod_files_allowed').val() == 1)
 					{
 						options.items.chmod = {
-							name: $('#lang_file_permission').val(),
+							name: jQuery('#lang_file_permission').val(),
 							icon: "key",
 							disabled: false
 						};
 					}
-					else if ($trigger.hasClass('directory') && $('#chmod_dirs_allowed').val() == 1)
+					else if ($trigger.hasClass('directory') && jQuery('#chmod_dirs_allowed').val() == 1)
 					{
 						options.items.chmod = {
-							name: $('#lang_file_permission').val(),
+							name: jQuery('#lang_file_permission').val(),
 							icon: "key",
 							disabled: false
 						};
@@ -352,7 +352,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					// fileinfo
 					options.items.sep = '----';
 					options.items.info = {
-						name: "<strong>" + $('#lang_file_info').val() + "</strong>",
+						name: "<strong>" + jQuery('#lang_file_info').val() + "</strong>",
 						disabled: true
 					};
 					options.items.name = {
@@ -368,10 +368,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 							disabled: true
 						};
 					}
-					if(($('#show_folder_size').val()==='true' || $('#show_folder_size').val()==='true')){
+					if((jQuery('#show_folder_size').val()==='true' || jQuery('#show_folder_size').val()==='true')){
 						if ($trigger.hasClass('directory')){
 							options.items.size = {
-								name: $trigger.find('.file-size').html()+" - "+$trigger.find('.nfiles').val()+" "+$('#lang_files').val()+" - "+$trigger.find('.nfolders').val()+" "+$('#lang_folders').val(),
+								name: $trigger.find('.file-size').html()+" - "+$trigger.find('.nfiles').val()+" "+jQuery('#lang_files').val()+" - "+$trigger.find('.nfolders').val()+" "+jQuery('#lang_folders').val(),
 								icon: "size",
 								disabled: true
 							};
@@ -396,14 +396,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				events: {
 					hide: function ()
 					{
-						$('figure').removeClass('selected');
+						jQuery('figure').removeClass('selected');
 					}
 				}
 			});
 
-			$(document).on('contextmenu', function (e)
+			jQuery(document).on('contextmenu', function (e)
 			{
-				if (!$(e.target).is("figure"))
+				if (!jQuery(e.target).is("figure"))
 				{
 					return false;
 				}
@@ -412,15 +412,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		bindGridEvents: function()
 		{
-			var grid = $('ul.grid');
+			var grid = jQuery('ul.grid');
 
 			grid.on('click', '.modalAV', function (e)
 			{
-				var _this = $(this);
+				var _this = jQuery(this);
 				e.preventDefault();
 
-				var previewElement = $('#previewAV');
-				var bodyPreviewElement = $(".body-preview");
+				var previewElement = jQuery('#previewAV');
+				var bodyPreviewElement = jQuery(".body-preview");
 				previewElement.removeData("modal");
 				previewElement.modal({
 					backdrop: 'static',
@@ -447,7 +447,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			grid.on('click', '.file-preview-btn', function (e)
 			{
-				var _this = $(this);
+				var _this = jQuery(this);
 				e.preventDefault();
 				$.ajax({
 					url: _this.attr('data-url'),
@@ -460,22 +460,22 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			grid.on('click', '.preview', function ()
 			{
-				var _this = $(this);
+				var _this = jQuery(this);
 				if(_this.hasClass('disabled')==false)
 				{
-					$('#full-img').attr('src', decodeURIComponent(_this.attr('data-url')));
+					jQuery('#full-img').attr('src', decodeURIComponent(_this.attr('data-url')));
 				}
 				return true;
 			});
 
 			grid.on('click', '.rename-file', function ()
 			{
-				var _this = $(this);
+				var _this = jQuery(this);
 
 				var file_container = _this.parent().parent().parent();
 				var file_title = file_container.find('h4');
 				var old_name = $.trim(file_title.text());
-				bootbox.prompt($('#rename').val(), $('#cancel').val(), $('#ok').val(), function (name)
+				bootbox.prompt(jQuery('#rename').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
 				{
 					if (name !== null)
 					{
@@ -490,12 +490,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			grid.on('click', '.rename-folder', function ()
 			{
-				var _this = $(this);
+				var _this = jQuery(this);
 
 				var file_container = _this.parent().parent().parent();
 				var file_title = file_container.find('h4');
 				var old_name = $.trim(file_title.text());
-				bootbox.prompt($('#rename').val(), $('#cancel').val(), $('#ok').val(), function (name)
+				bootbox.prompt(jQuery('#rename').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
 				{
 					if (name !== null)
 					{
@@ -510,13 +510,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			grid.on('click', '.delete-file', function ()
 			{
-				var _this = $(this);
-				bootbox.confirm(_this.attr('data-confirm'), $('#cancel').val(), $('#ok').val(), function (result)
+				var _this = jQuery(this);
+				bootbox.confirm(_this.attr('data-confirm'), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
 				{
 					if (result == true)
 					{
 						execute_action('delete_file', _this.attr('data-path'), '', '', '');
-						var fil = $('#files_number');
+						var fil = jQuery('#files_number');
 						fil.text(parseInt(fil.text())-1);
 						_this.parent().parent().parent().parent().remove();
 					}
@@ -525,14 +525,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			grid.on('click', '.delete-folder', function ()
 			{
-				var _this = $(this);
+				var _this = jQuery(this);
 
-				bootbox.confirm(_this.attr('data-confirm'), $('#cancel').val(), $('#ok').val(), function (result)
+				bootbox.confirm(_this.attr('data-confirm'), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
 				{
 					if (result == true)
 					{
 						execute_action('delete_folder', _this.attr('data-path'), '', '', '');
-						var fol = $('#folders_number');
+						var fol = jQuery('#folders_number');
 						fol.text(parseInt(fol.text())-1);
 						_this.parent().parent().parent().remove();
 					}
@@ -541,28 +541,28 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			function handleFileLink($el)
 			{
-				window[ $el.attr('data-function') ]($el.attr('data-file'), $('#field_id').val());
+				window[ $el.attr('data-function') ]($el.attr('data-file'), jQuery('#field_id').val());
 			}
 
-			$('ul.grid').on('click','.link',function ()
+			jQuery('ul.grid').on('click','.link',function ()
 			{
-				handleFileLink($(this));
+				handleFileLink(jQuery(this));
 			});
 
-			$('ul.grid').on('click','div.box', function (e)
+			jQuery('ul.grid').on('click','div.box', function (e)
 			{
 
-				var fileLink = $(this).find(".link");
+				var fileLink = jQuery(this).find(".link");
 				if (fileLink.length !== 0)
 				{
 					handleFileLink(fileLink);
 				}
 				else
 				{
-					var folderLink = $(this).find(".folder-link");
+					var folderLink = jQuery(this).find(".folder-link");
 					if (folderLink.length !== 0)
 					{
-						document.location = $(folderLink).prop("href");
+						document.location = jQuery(folderLink).prop("href");
 					}
 				}
 			});
@@ -571,21 +571,21 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		makeFilters: function(js_script)
 		{
-			$('#filter-input').on('keyup', function ()
+			jQuery('#filter-input').on('keyup', function ()
 			{
-				$('.filters label').removeClass("btn-inverse");
-				$('.filters label').find('i').removeClass('icon-white');
-				$('#ff-item-type-all').addClass("btn-inverse");
-				$('#ff-item-type-all').find('i').addClass('icon-white');
-				var val = fix_filename($(this).val()).toLowerCase();
-				$(this).val(val);
+				jQuery('.filters label').removeClass("btn-inverse");
+				jQuery('.filters label').find('i').removeClass('icon-white');
+				jQuery('#ff-item-type-all').addClass("btn-inverse");
+				jQuery('#ff-item-type-all').find('i').addClass('icon-white');
+				var val = fix_filename(jQuery(this).val()).toLowerCase();
+				jQuery(this).val(val);
 				if (js_script)
 				{
 					delay(function ()
 					{
-						$('li', 'ul.grid ').each(function ()
+						jQuery('li', 'ul.grid ').each(function ()
 						{
-							var _this = $(this);
+							var _this = jQuery(this);
 							if (val != "" && _this.attr('data-name').toLowerCase().indexOf(val) == -1)
 							{
 								_this.hide(100);
@@ -607,8 +607,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						});
 						delay(function ()
 						{
-							var sortDescending = $('#descending').val() != 0 ? true : false;
-							sortUnorderedList(sortDescending, "." + $('#sort_by').val());
+							var sortDescending = jQuery('#descending').val() != 0 ? true : false;
+							sortUnorderedList(sortDescending, "." + jQuery('#sort_by').val());
 
 							lazyLoad();
 						}, 500);
@@ -619,27 +619,27 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				if (e.which == 13)
 				{
-					$('#filter').trigger('click');
+					jQuery('#filter').trigger('click');
 				}
 			});
 
 			// filtering
-			$('#filter').on('click', function ()
+			jQuery('#filter').on('click', function ()
 			{
-				var val = fix_filename($('#filter-input').val());
-				window.location.href = $('#current_url').val() + "&filter=" + val;
+				var val = fix_filename(jQuery('#filter-input').val());
+				window.location.href = jQuery('#current_url').val() + "&filter=" + val;
 			});
 		},
 
 		makeUploader: function()
 		{
 			// upload btn
-			$('#uploader-btn').on('click', function ()
+			jQuery('#uploader-btn').on('click', function ()
 			{
-				var path = $('#sub_folder').val() + $('#fldr_value').val() + "/";
+				var path = jQuery('#sub_folder').val() + jQuery('#fldr_value').val() + "/";
 				path = path.substring(0, path.length - 1);
 
-				$('#iframe-container').html($('<iframe />', {
+				jQuery('#iframe-container').html(jQuery('<iframe />', {
 					name: 'JUpload',
 					id: 'uploader_frame',
 					src: "uploader/index.php?path=" + path,
@@ -648,27 +648,27 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					height: 360
 				}));
 			});
-			$('.upload-btn').on('click', function ()
+			jQuery('.upload-btn').on('click', function ()
 			{
-				$('.uploader').show(500);
+				jQuery('.uploader').show(500);
 			});
 
-			$('.close-uploader').on('click', function ()
+			jQuery('.close-uploader').on('click', function ()
 			{
-				$('.uploader').hide(500);
+				jQuery('.uploader').hide(500);
 				setTimeout(function ()
 				{
-					window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+					window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
 				}, 420);
 			});
 		},
 		uploadURL: function()
 		{
-			$('#uploadURL').on('click',function(e){
+			jQuery('#uploadURL').on('click',function(e){
 				e.preventDefault();
-				var url = $('#url').val();
-				var path = $('#cur_path').val();
-				var path_thumb = $('#cur_dir_thumb').val();
+				var url = jQuery('#url').val();
+				var path = jQuery('#cur_path').val();
+				var path_thumb = jQuery('#cur_dir_thumb').val();
 				show_animation();
 				$.ajax({
 					type: "POST",
@@ -680,15 +680,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 				}).done(function (msg)
 				{
-					if(msg!=""){
-						alert($('#lang_error_upload').val());
-					}
 					hide_animation();
-					$('#url').val('');
+					jQuery('#url').val('');
 				}).fail(function(msg){
-					alert($('#lang_error_upload').val());
+					alert(jQuery('#lang_error_upload').val());
 					hide_animation();
-					$('#url').val('');
+					jQuery('#url').val('');
 				});
 			})
 		},
@@ -696,16 +693,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		makeSort: function(js_script)
 		{
 			// sorting
-			$('input[name=radio-sort]').on('click', function ()
+			jQuery('input[name=radio-sort]').on('click', function ()
 			{
-				var li = $(this).attr('data-item');
-				var liElement = $('#' + li);
-				var labelElement = $('.filters label');
+				var li = jQuery(this).attr('data-item');
+				var liElement = jQuery('#' + li);
+				var labelElement = jQuery('.filters label');
 
 				labelElement.removeClass("btn-inverse");
 				labelElement.find('i').removeClass('icon-white');
 
-				$('#filter-input').val('');
+				jQuery('#filter-input').val('');
 
 				liElement.addClass("btn-inverse");
 				liElement.find('i').addClass('icon-white');
@@ -714,11 +711,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				{
 					if (js_script)
 					{
-						$('.grid li').show(300);
+						jQuery('.grid li').show(300);
 					}
 					else
 					{
-						window.location.href = $('#current_url').val() + "&sort_by=" + $('#sort_by').val() + "&descending=" + (sortDescending ? 1 : 0);
+						window.location.href = jQuery('#current_url').val() + "&sort_by=" + jQuery('#sort_by').val() + "&descending=" + (sortDescending ? 1 : 0);
 					}
 					if(typeof(Storage) !== "undefined") {
 						localStorage.setItem("sort", '');
@@ -726,10 +723,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				}
 				else
 				{
-					if ($(this).is(':checked'))
+					if (jQuery(this).is(':checked'))
 					{
-						$('.grid li').not('.' + li).hide(300);
-						$('.grid li.' + li).show(300);
+						jQuery('.grid li').not('.' + li).hide(300);
+						jQuery('.grid li.' + li).show(300);
 						if(typeof(Storage) !== "undefined") {
 							localStorage.setItem("sort", li);
 						}
@@ -738,11 +735,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 				lazyLoad();
 			});
-			var sortDescending = $('#descending').val();
-			$('.sorter').on('click', function ()
+			var sortDescending = jQuery('#descending').val();
+			jQuery('.sorter').on('click', function ()
 			{
-				var _this = $(this);
-				if ($('#sort_by').val() === _this.attr('data-sort'))
+				var _this = jQuery(this);
+				if (jQuery('#sort_by').val() === _this.attr('data-sort'))
 				{
 					sortDescending = sortDescending == 0 ? true : false
 				}
@@ -757,30 +754,30 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						url: "ajax_calls.php?action=sort&sort_by=" + _this.attr('data-sort') + "&descending=" + (sortDescending ? 1 : 0)
 					});
 					sortUnorderedList(sortDescending, "." + _this.attr('data-sort'));
-					$(' a.sorter').removeClass('descending').removeClass('ascending');
+					jQuery(' a.sorter').removeClass('descending').removeClass('ascending');
 					if (sortDescending)
 					{
-						$('.sort-' + _this.attr('data-sort')).addClass("descending");
+						jQuery('.sort-' + _this.attr('data-sort')).addClass("descending");
 					}
 					else
 					{
-						$('.sort-' + _this.attr('data-sort')).addClass("ascending");
+						jQuery('.sort-' + _this.attr('data-sort')).addClass("ascending");
 					}
 
-					$('#sort_by').val(_this.attr('data-sort'));
-					$('#descending').val(sortDescending ? 1 : 0);
+					jQuery('#sort_by').val(_this.attr('data-sort'));
+					jQuery('#descending').val(sortDescending ? 1 : 0);
 					lazyLoad();
 				}
 				else
 				{
-					window.location.href = $('#current_url').val() + "&sort_by=" + _this.attr('data-sort') + "&descending=" + (sortDescending ? 1 : 0);
+					window.location.href = jQuery('#current_url').val() + "&sort_by=" + _this.attr('data-sort') + "&descending=" + (sortDescending ? 1 : 0);
 				}
 			});
 		}
 
 	}
 
-	$(document).ready(function ()
+	jQuery(document).ready(function ()
 	{
 
 		// Right click menu
@@ -792,27 +789,27 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		if(typeof(Storage) !== "undefined") {
 			var li = localStorage.getItem("sort");
 			if(li){
-				var liElement = $('#'+li);
+				var liElement = jQuery('#'+li);
 				liElement.addClass("btn-inverse");
 				liElement.find('i').addClass('icon-white');
-				$('.grid li').not('.' + li).hide(300);
-				$('.grid li.' + li).show(300);
+				jQuery('.grid li').not('.' + li).hide(300);
+				jQuery('.grid li.' + li).show(300);
 			}
 		}
 
 		// preview image
-		$('#full-img').on('click', function ()
+		jQuery('#full-img').on('click', function ()
 		{
-			$('#previewLightbox').lightbox('hide');
+			jQuery('#previewLightbox').lightbox('hide');
 		});
 
-		$('body').on('click', function (){ 
-			$('.tip-right').tooltip('hide'); 
+		jQuery('body').on('click', function (){ 
+			jQuery('.tip-right').tooltip('hide'); 
 		});
 
 		FileManager.bindGridEvents();
 
-		if (parseInt($('#file_number').val()) > parseInt($('#file_number_limit_js').val()))
+		if (parseInt(jQuery('#file_number').val()) > parseInt(jQuery('#file_number_limit_js').val()))
 		{
 			var js_script = false;
 		}
@@ -826,19 +823,19 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		FileManager.uploadURL();
 
 		// info btn
-		$('#info').on('click', function ()
+		jQuery('#info').on('click', function ()
 		{
 			bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.' + version + '</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></div>');
 		});
 
-		$('#change_lang_btn').on('click', function ()
+		jQuery('#change_lang_btn').on('click', function ()
 		{
 			change_lang();
 		});
 
 		FileManager.makeUploader();
 
-		$('body').on('keypress', function (e)
+		jQuery('body').on('keypress', function (e)
 		{
 			var c = String.fromCharCode(e.which);
 			if (c == "'" || c == '"' || c == "\\" || c == '/')
@@ -847,23 +844,23 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 		});
 
-		$('ul.grid li figcaption').on('click','a[data-toggle="lightbox"]',function(){
-			preview_loading_animation(decodeURIComponent($(this).attr('data-url')));
+		jQuery('ul.grid li figcaption').on('click','a[data-toggle="lightbox"]',function(){
+			preview_loading_animation(decodeURIComponent(jQuery(this).attr('data-url')));
 		})
 
-		$('.create-file-btn').on('click', function ()
+		jQuery('.create-file-btn').on('click', function ()
 		{
 			create_text_file();
 		});
 
-		$('.new-folder').on('click', function ()
+		jQuery('.new-folder').on('click', function ()
 		{
-			bootbox.prompt($('#insert_folder_name').val(), $('#cancel').val(), $('#ok').val(), function (name)
+			bootbox.prompt(jQuery('#insert_folder_name').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
 			{
 				if (name !== null)
 				{
 					name = fix_filename(name).replace('.', '');
-					var folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+					var folder_path = jQuery('#sub_folder').val() + jQuery('#fldr_value').val();
 					$.ajax({
 						type: "POST",
 						url: "execute.php?action=create_folder",
@@ -875,7 +872,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					{
 						setTimeout(function ()
 						{
-							window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+							window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
 						}, 300);
 
 					});
@@ -883,12 +880,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 		});
 
-		$('.view-controller button').on('click', function ()
+		jQuery('.view-controller button').on('click', function ()
 		{
-			var _this = $(this);
+			var _this = jQuery(this);
 
-			$('.view-controller button').removeClass('btn-inverse');
-			$('.view-controller i').removeClass('icon-white');
+			jQuery('.view-controller button').removeClass('btn-inverse');
+			jQuery('.view-controller i').removeClass('icon-white');
 			_this.addClass('btn-inverse');
 			_this.find('i').addClass('icon-white');
 
@@ -901,46 +898,46 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					bootbox.alert(msg);
 				}
 			});
-			if (typeof  $('ul.grid')[ 0 ] !== "undefined" && $('ul.grid')[ 0 ])
+			if (typeof  jQuery('ul.grid')[ 0 ] !== "undefined" && jQuery('ul.grid')[ 0 ])
 			{
-				$('ul.grid')[ 0 ].className = $('ul.grid')[ 0 ].className.replace(/\blist-view.*?\b/g, '');
+				jQuery('ul.grid')[ 0 ].className = jQuery('ul.grid')[ 0 ].className.replace(/\blist-view.*?\b/g, '');
 			}
-			if (typeof $('.sorter-container')[ 0 ] !== "undefined" && $('.sorter-container')[ 0 ])
+			if (typeof jQuery('.sorter-container')[ 0 ] !== "undefined" && jQuery('.sorter-container')[ 0 ])
 			{
-				$('.sorter-container')[ 0 ].className = $('.sorter-container')[ 0 ].className.replace(/\blist-view.*?\b/g, '');
+				jQuery('.sorter-container')[ 0 ].className = jQuery('.sorter-container')[ 0 ].className.replace(/\blist-view.*?\b/g, '');
 			}
 
 			var value = _this.attr('data-value');
-			$('#view').val(value);
-			$('ul.grid').addClass('list-view' + value);
-			$('.sorter-container').addClass('list-view' + value);
+			jQuery('#view').val(value);
+			jQuery('ul.grid').addClass('list-view' + value);
+			jQuery('.sorter-container').addClass('list-view' + value);
 			if (_this.attr('data-value') >= 1)
 			{
 				fix_colums(14);
 			}
 			else
 			{
-				$('ul.grid li').css("width", 126);
-				$('ul.grid figure').css("width", 122);
+				jQuery('ul.grid li').css("width", 126);
+				jQuery('ul.grid figure').css("width", 122);
 			}
 			lazyLoad();
 		});
 
 		if (!Modernizr.touch)
 		{
-			$('.tip').tooltip({ placement: "bottom" });
-			$('.tip-top').tooltip({ placement: "top" });
-			$('.tip-left').tooltip({ placement: "left" });
-			$('.tip-right').tooltip({ placement: "right" });
-			$('body').addClass('no-touch');
+			jQuery('.tip').tooltip({ placement: "bottom" });
+			jQuery('.tip-top').tooltip({ placement: "top" });
+			jQuery('.tip-left').tooltip({ placement: "left" });
+			jQuery('.tip-right').tooltip({ placement: "right" });
+			jQuery('body').addClass('no-touch');
 		}
 		else
 		{
 
-			$('#help').show();
+			jQuery('#help').show();
 
 			//Enable swiping...
-			$(".box:not(.no-effect)").swipe({
+			jQuery(".box:not(.no-effect)").swipe({
 				//Generic swipe handler for all directions
 				swipeLeft: swipe_reaction,
 				swipeRight: swipe_reaction,
@@ -949,17 +946,17 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 		}
 
-		$('.paste-here-btn').on('click', function ()
+		jQuery('.paste-here-btn').on('click', function ()
 		{
-			if ($(this).hasClass('disabled') == false)
+			if (jQuery(this).hasClass('disabled') == false)
 			{
 				paste_to_this_dir();
 			}
 		});
 
-		$('.clear-clipboard-btn').on('click', function ()
+		jQuery('.clear-clipboard-btn').on('click', function ()
 		{
-			if ($(this).hasClass('disabled') == false)
+			if (jQuery(this).hasClass('disabled') == false)
 			{
 				clear_clipboard();
 			}
@@ -968,12 +965,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		// reverted to jquery from Modernizr.csstransforms because drag&drop
 		if (!Modernizr.csstransforms)
 		{ // Test if CSS transform are supported
-			var figures = $('figure');
+			var figures = jQuery('figure');
 			figures.on('mouseover', function ()
 			{
-				if ($('#view').val() == 0 && $('#main-item-container').hasClass('no-effect-slide') === false)
+				if (jQuery('#view').val() == 0 && jQuery('#main-item-container').hasClass('no-effect-slide') === false)
 				{
-					$(this).find('.box:not(.no-effect)').animate({ top: "-26px" }, {
+					jQuery(this).find('.box:not(.no-effect)').animate({ top: "-26px" }, {
 						queue: false,
 						duration: 300
 					});
@@ -982,9 +979,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			figures.on('mouseout', function ()
 			{
-				if ($('#view').val() == 0)
+				if (jQuery('#view').val() == 0)
 				{
-					$(this).find('.box:not(.no-effect)').animate({ top: "0px" }, {
+					jQuery(this).find('.box:not(.no-effect)').animate({ top: "0px" }, {
 						queue: false,
 						duration: 300
 					});
@@ -992,13 +989,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 		}
 
-		$(window).resize(function ()
+		jQuery(window).resize(function ()
 		{
 			fix_colums(28);
 		});
 		fix_colums(14);
 
-		if ($('#clipboard').val() == 1)
+		if (jQuery('#clipboard').val() == 1)
 		{
 			toggle_clipboard(true);
 		}
@@ -1008,63 +1005,63 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 
 		// Drag & Drop
-		$('li.dir, li.file').draggable({
+		jQuery('li.dir, li.file').draggable({
 			distance: 20,
 			cursor: "move",
 
 			helper: function ()
 			{
 				//hack all the way through
-				$(this).find('figure').find('.box').css("top", "0px");
-				var ret = $(this).clone().css("z-index", 1000).find('.box').css("box-shadow", "none").css("-webkit-box-shadow", "none").parent().parent();
-				$(this).addClass('selected');
+				jQuery(this).find('figure').find('.box').css("top", "0px");
+				var ret = jQuery(this).clone().css("z-index", 1000).find('.box').css("box-shadow", "none").css("-webkit-box-shadow", "none").parent().parent();
+				jQuery(this).addClass('selected');
 				return ret;
 			},
 
 			start: function (e,ui)
 			{
-				$(ui.helper).addClass("ui-draggable-helper");
-				if ($('#view').val() == 0)
+				jQuery(ui.helper).addClass("ui-draggable-helper");
+				if (jQuery('#view').val() == 0)
 				{
-					$('#main-item-container').addClass('no-effect-slide');
+					jQuery('#main-item-container').addClass('no-effect-slide');
 				}
 			},
 			stop: function ()
 			{
-				$(this).removeClass('selected');
-				if ($('#view').val() == 0)
+				jQuery(this).removeClass('selected');
+				if (jQuery('#view').val() == 0)
 				{
-					$('#main-item-container').removeClass('no-effect-slide');
+					jQuery('#main-item-container').removeClass('no-effect-slide');
 				}
 			}
 		});
 
-		$('li.dir,li.back').droppable({
+		jQuery('li.dir,li.back').droppable({
 			accept: "ul.grid li",
 			activeClass: "ui-state-highlight",
 			hoverClass: "ui-state-hover",
 			drop: function (event, ui)
 			{
-				drag_n_drop_paste(ui.draggable.find('figure'), $(this).find('figure'));
+				drag_n_drop_paste(ui.draggable.find('figure'), jQuery(this).find('figure'));
 			}
 		});
 
 		// file permissions window
-		$(document).on("keyup", '#chmod_form #chmod_value', function ()
+		jQuery(document).on("keyup", '#chmod_form #chmod_value', function ()
 		{
 			chmod_logic(true);
 		});
 
 		// file permissions window
-		$(document).on("change", '#chmod_form input', function ()
+		jQuery(document).on("change", '#chmod_form input', function ()
 		{
 			chmod_logic(false);
 		});
 
 		//safety
-		$(document).on("focusout", '#chmod_form #chmod_value', function ()
+		jQuery(document).on("focusout", '#chmod_form #chmod_value', function ()
 		{
-			var chmodElement = $('#chmod_form #chmod_value');
+			var chmodElement = jQuery('#chmod_form #chmod_value');
 			if (chmodElement.val().match(/^[0-7]{3}$/) == null)
 			{
 				chmodElement.val(chmodElement.attr('data-def-value'));
@@ -1078,7 +1075,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		show_animation();
 		var tmpImg = new Image();
 		tmpImg.src=url;
-		$(tmpImg).on('load',function(){
+		jQuery(tmpImg).on('load',function(){
 			hide_animation();
 		});
 	}
@@ -1086,7 +1083,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	function create_text_file()
 	{
 		// remove to prevent duplicates
-		$('#textfile_create_area').parent().parent().remove();
+		jQuery('#textfile_create_area').parent().parent().remove();
 
 		$.ajax({
 			type: "GET",
@@ -1095,21 +1092,21 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			bootbox.dialog(status_msg,
 			[
 				{
-					"label": $('#cancel').val(),
+					"label": jQuery('#cancel').val(),
 					"class": "btn"
 				},
 				{
-					"label": $('#ok').val(),
+					"label": jQuery('#ok').val(),
 					"class": "btn-inverse",
 					"callback": function ()
 					{
-						var newFileName = $('#create_text_file_name').val()+$('#create_text_file_extension').val();
-						var newContent = $('#textfile_create_area').val();
+						var newFileName = jQuery('#create_text_file_name').val()+jQuery('#create_text_file_extension').val();
+						var newContent = jQuery('#textfile_create_area').val();
 
 						if (newFileName !== null)
 						{
 							newFileName = fix_filename(newFileName);
-							var folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+							var folder_path = jQuery('#sub_folder').val() + jQuery('#fldr_value').val();
 							// post ajax
 							$.ajax({
 								type: "POST",
@@ -1127,7 +1124,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 									{
 										setTimeout(function ()
 										{
-											window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+											window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
 										}, 500);
 									});
 								}
@@ -1137,7 +1134,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				}
 			],
 			{
-				"header": $('#lang_new_file').val()
+				"header": jQuery('#lang_new_file').val()
 			});
 		});
 	}
@@ -1145,7 +1142,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	function edit_text_file($trigger)
 	{
 		// remove to prevent duplicates
-		$('#textfile_edit_area').parent().parent().remove();
+		jQuery('#textfile_edit_area').parent().parent().remove();
 
 		var full_path = $trigger.find('.rename-file-paths').attr('data-path');
 
@@ -1158,15 +1155,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			bootbox.dialog(init_content,
 				[
 					{
-						"label": $('#cancel').val(),
+						"label": jQuery('#cancel').val(),
 						"class": "btn"
 					},
 					{
-						"label": $('#ok').val(),
+						"label": jQuery('#ok').val(),
 						"class": "btn-inverse",
 						"callback": function ()
 						{
-							var newContent = $('#textfile_edit_area').val();
+							var newContent = jQuery('#textfile_edit_area').val();
 							// post ajax
 							$.ajax({
 								type: "POST",
@@ -1202,16 +1199,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			bootbox.dialog(init_msg,
 				[
 					{
-						"label": $('#cancel').val(),
+						"label": jQuery('#cancel').val(),
 						"class": "btn"
 					},
 					{
-						"label": $('#ok').val(),
+						"label": jQuery('#ok').val(),
 						"class": "btn-inverse",
 						"callback": function ()
 						{
 							// get new lang
-							var newLang = $('#new_lang_select').val();
+							var newLang = jQuery('#new_lang_select').val();
 							// post ajax
 							$.ajax({
 								type: "POST",
@@ -1227,7 +1224,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 								{
 									setTimeout(function ()
 									{
-										window.location.href = $('#refresh').attr('href').replace(/lang=[\w]*&/i, 'lang='+newLang+"&") + '&' + new Date().getTime();
+										window.location.href = jQuery('#refresh').attr('href').replace(/lang=[\w]*&/i, 'lang='+newLang+"&") + '&' + new Date().getTime();
 									}, 100);
 								}
 							});
@@ -1235,7 +1232,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 				],
 				{
-					"header": $('#lang_lang_change').val()
+					"header": jQuery('#lang_lang_change').val()
 				});
 		});
 	}
@@ -1243,7 +1240,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	function chmod($trigger)
 	{
 		// remove to prevent duplicates
-		$('#files_permission_start').parent().parent().remove();
+		jQuery('#files_permission_start').parent().parent().remove();
 
 		var obj = $trigger.find('.rename-file-paths');
 		var full_path = obj.attr('data-path');
@@ -1264,67 +1261,67 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			bootbox.dialog(init_msg,
 				[
 					{
-						"label": $('#cancel').val(),
+						"label": jQuery('#cancel').val(),
 						"class": "btn"
 					},
 					{
-						"label": $('#ok').val(),
+						"label": jQuery('#ok').val(),
 						"class": "btn-inverse",
 						"callback": function ()
 						{
 							var info = "-";
-							if($('#u_4').is(':checked')){
+							if(jQuery('#u_4').is(':checked')){
 								info += "r";
 							}else{
 								info += "-";
 							}
-							if($('#u_2').is(':checked')){
+							if(jQuery('#u_2').is(':checked')){
 								info += "w";
 							}else{
 								info += "-";
 							}
-							if($('#u_1').is(':checked')){
+							if(jQuery('#u_1').is(':checked')){
 								info += "x";
 							}else{
 								info += "-";
 							}
-							if($('#g_4').is(':checked')){
+							if(jQuery('#g_4').is(':checked')){
 								info += "r";
 							}else{
 								info += "-";
 							}
-							if($('#g_2').is(':checked')){
+							if(jQuery('#g_2').is(':checked')){
 								info += "w";
 							}else{
 								info += "-";
 							}
-							if($('#g_1').is(':checked')){
+							if(jQuery('#g_1').is(':checked')){
 								info += "x";
 							}else{
 								info += "-";
 							}
-							if($('#a_4').is(':checked')){
+							if(jQuery('#a_4').is(':checked')){
 								info += "r";
 							}else{
 								info += "-";
 							}
-							if($('#a_2').is(':checked')){
+							if(jQuery('#a_2').is(':checked')){
 								info += "w";
 							}else{
 								info += "-";
 							}
-							if($('#a_1').is(':checked')){
+							if(jQuery('#a_1').is(':checked')){
 								info += "x";
 							}else{
 								info += "-";
 							}
 
 							// get new perm
-							var newPerm = $('#chmod_form #chmod_value').val();
+							var newPerm = jQuery('#chmod_form #chmod_value').val();
 							if (newPerm != '' && typeof newPerm !== "undefined")
 							{
 								// get recursive option if any
-								var recOpt = $('#chmod_form input[name=apply_recursive]:checked').val();
+								var recOpt = jQuery('#chmod_form input[name=apply_recursive]:checked').val();
 								if (recOpt == '' || typeof recOpt === "undefined")
 								{
 									recOpt = 'none';
@@ -1354,7 +1351,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 				],
 				{
-					"header": $('#lang_file_permission').val()
+					"header": jQuery('#lang_file_permission').val()
 				}
 			);
 			setTimeout(function(){ chmod_logic(false); }, 100);
@@ -1372,7 +1369,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		if (typeof is_text !== "undefined" && is_text == true)
 		{
 			// assign values
-			var newperm = $('#chmod_form #chmod_value').val();
+			var newperm = jQuery('#chmod_form #chmod_value').val();
 			perm[ 'user' ] = newperm.substr(0, 1);
 			perm[ 'group' ] = newperm.substr(1, 1);
 			perm[ 'all' ] = newperm.substr(2, 1);
@@ -1389,32 +1386,32 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 
 			// update checkboxes
-			$('#chmod_form input:checkbox').each(function ()
+			jQuery('#chmod_form input:checkbox').each(function ()
 			{
-				var group = $(this).attr('data-group');
-				var val = $(this).attr('data-value');
+				var group = jQuery(this).attr('data-group');
+				var val = jQuery(this).attr('data-value');
 
 				if (chmod_logic_helper(perm[ group ], val))
 				{
-					$(this).prop('checked', true);
+					jQuery(this).prop('checked', true);
 				}
 				else
 				{
-					$(this).prop('checked', false);
+					jQuery(this).prop('checked', false);
 				}
 			});
 
 		}
 		else
 		{ //a checkbox was updated
-			$('#chmod_form input:checkbox:checked').each(function ()
+			jQuery('#chmod_form input:checkbox:checked').each(function ()
 			{
-				var group = $(this).attr('data-group');
-				var val = $(this).attr('data-value');
+				var group = jQuery(this).attr('data-group');
+				var val = jQuery(this).attr('data-value');
 				perm[ group ] = parseInt(perm[ group ]) + parseInt(val);
 			});
 
-			$('#chmod_form #chmod_value').val(perm[ 'user' ].toString() + perm[ 'group' ].toString() + perm[ 'all' ].toString());
+			jQuery('#chmod_form #chmod_value').val(perm[ 'user' ].toString() + perm[ 'group' ].toString() + perm[ 'all' ].toString());
 		}
 	}
 
@@ -1433,7 +1430,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function clear_clipboard()
 	{
-		bootbox.confirm($('#lang_clear_clipboard_confirm').val(), $('#cancel').val(), $('#ok').val(), function (result)
+		bootbox.confirm(jQuery('#lang_clear_clipboard_confirm').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
 		{
 			if (result == true)
 			{
@@ -1449,7 +1446,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						$('#clipboard').val('0');
+						jQuery('#clipboard').val('0');
 					}
 					toggle_clipboard(false);
 				});
@@ -1490,7 +1487,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				$('#clipboard').val("1");
+				jQuery('#clipboard').val("1");
 				toggle_clipboard(true);
 			}
 		});
@@ -1498,7 +1495,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function paste_to_this_dir(dnd)
 	{
-		bootbox.confirm($('#lang_paste_confirm').val(), $('#cancel').val(), $('#ok').val(), function (result)
+		bootbox.confirm(jQuery('#lang_paste_confirm').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
 		{
 			if (result == true)
 			{
@@ -1509,7 +1506,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				}
 				else
 				{
-					folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+					folder_path = jQuery('#sub_folder').val() + jQuery('#fldr_value').val();
 				}
 
 				$.ajax({
@@ -1526,11 +1523,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						$('#clipboard').val('0');
+						jQuery('#clipboard').val('0');
 						toggle_clipboard(false);
 						setTimeout(function ()
 						{
-							window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();
+							window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
 						}, 300);
 					}
 				});
@@ -1586,7 +1583,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				}
 				else
 				{
-					folder_path = $('#sub_folder').val() + $('#fldr_value').val();
+					folder_path = jQuery('#sub_folder').val() + jQuery('#fldr_value').val();
 				}
 
 				$.ajax({
@@ -1604,7 +1601,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						$('#clipboard').val('0');
+						jQuery('#clipboard').val('0');
 						toggle_clipboard(false);
 						$trigger.parent().remove();
 					}
@@ -1621,27 +1618,27 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	{
 		if (lever == true)
 		{
-			$('.paste-here-btn, .clear-clipboard-btn').removeClass('disabled');
+			jQuery('.paste-here-btn, .clear-clipboard-btn').removeClass('disabled');
 		}
 		else
 		{
-			$('.paste-here-btn, .clear-clipboard-btn').addClass('disabled');
+			jQuery('.paste-here-btn, .clear-clipboard-btn').addClass('disabled');
 		}
 	}
 
 	function fix_colums(adding)
 	{
-		var width = $('.breadcrumb').width() + adding;
+		var width = jQuery('.breadcrumb').width() + adding;
 
-		var viewElement = $('#view');
-		var helpElement = $('#help');
+		var viewElement = jQuery('#view');
+		var helpElement = jQuery('#help');
 
-		$('.uploader').css('width', width);
+		jQuery('.uploader').css('width', width);
 		if (viewElement.val() > 0)
 		{
 			if (viewElement.val() == 1)
 			{
-				$('ul.grid li, ul.grid figure').css("width", '100%');
+				jQuery('ul.grid li, ul.grid figure').css("width", '100%');
 			}
 			else
 			{
@@ -1649,10 +1646,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				if (col == 0)
 				{
 					col = 1;
-					$('h4').css('font-size', 12);
+					jQuery('h4').css('font-size', 12);
 				}
 				width = Math.floor((width / col) - 3);
-				$('ul.grid li, ul.grid figure').css("width", width);
+				jQuery('ul.grid li, ul.grid figure').css("width", width);
 			}
 			helpElement.hide();
 		}
@@ -1667,9 +1664,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function swipe_reaction(/*event, direction, distance, duration, fingerCount*/)
 	{
-		var _this = $(this);
+		var _this = jQuery(this);
 
-		if ($('#view').val() == 0)
+		if (jQuery('#view').val() == 0)
 		{
 			if (_this.attr('toggle') == 1)
 			{
@@ -1705,7 +1702,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	{
 		var windowParent;
 
-		if ($('#popup').val() == 1)
+		if (jQuery('#popup').val() == 1)
 		{
 			windowParent = window.opener;
 		}
@@ -1713,26 +1710,26 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			windowParent = window.parent;
 		}
-		var callback=$('#callback').val();
-		var path = $('#cur_dir').val();
-		var subdir = $('#subdir').val();
-		var base_url = $('#base_url').val();
+		var callback=jQuery('#callback').val();
+		var path = jQuery('#cur_dir').val();
+		var subdir = jQuery('#subdir').val();
+		var base_url = jQuery('#base_url').val();
 		var alt_name = file.substr(0, file.lastIndexOf('.'));
 		var ext = file.split('.').pop();
 		ext = ext.toLowerCase();
 		var fill = '';
 		var ext_audio = ['ogg', 'mp3', 'wav'];
 		var ext_video = ['mp4', 'ogg', 'webm'];
-		if($('#ftp').val()==true){
-			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		if(jQuery('#ftp').val()==true){
+			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
 		}else{
-			var is_return_relative_url = $('#return_relative_url').val();
+			var is_return_relative_url = jQuery('#return_relative_url').val();
 			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
 		}
 
 		if (external != "")
 		{
-			if ($('#crossdomain').val() == 1)
+			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
@@ -1744,7 +1741,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = $('#' + external, windowParent.document);
+				var target = jQuery('#' + external, windowParent.document);
 				target.val(url).trigger('change');
 				if(callback==0)
 				{
@@ -1793,7 +1790,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			}
 
-			if ($('#crossdomain').val() == 1)
+			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
@@ -1826,7 +1823,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	apply_link = function(file, external)
 	{
-		if ($('#popup').val() == 1)
+		if (jQuery('#popup').val() == 1)
 		{
 			var windowParent = window.opener;
 		}
@@ -1834,22 +1831,22 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			var windowParent = window.parent;
 		}
-		var callback=$('#callback').val();
-		var path = $('#cur_dir').val();
+		var callback=jQuery('#callback').val();
+		var path = jQuery('#cur_dir').val();
 		path = path.replace('\\', '/');
-		var subdir = $('#subdir').val();
+		var subdir = jQuery('#subdir').val();
 		subdir = subdir.replace('\\', '/');
-		var base_url = $('#base_url').val();
-		if($('#ftp').val()==true){
-			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		var base_url = jQuery('#base_url').val();
+		if(jQuery('#ftp').val()==true){
+			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
 		}else{
-			var is_return_relative_url = $('#return_relative_url').val();
+			var is_return_relative_url = jQuery('#return_relative_url').val();
 			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
 		}
 
 		if (external != "")
 		{
-			if ($('#crossdomain').val() == 1)
+			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
@@ -1861,7 +1858,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = $('#' + external, windowParent.document);
+				var target = jQuery('#' + external, windowParent.document);
 				target.val(url).trigger('change');
 				if(callback==0)
 				{
@@ -1888,7 +1885,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	{
 		var windowParent;
 
-		if ($('#popup').val() == 1)
+		if (jQuery('#popup').val() == 1)
 		{
 			windowParent = window.opener;
 		}
@@ -1896,22 +1893,22 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			windowParent = window.parent;
 		}
-		var callback=$('#callback').val();
-		var path = $('#cur_dir').val();
+		var callback=jQuery('#callback').val();
+		var path = jQuery('#cur_dir').val();
 		path = path.replace('\\', '/');
-		var subdir = $('#subdir').val();
+		var subdir = jQuery('#subdir').val();
 		subdir = subdir.replace('\\', '/');
-		var base_url = $('#base_url').val();
-		if($('#ftp').val()==true){
-			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		var base_url = jQuery('#base_url').val();
+		if(jQuery('#ftp').val()==true){
+			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
 		}else{
-			var is_return_relative_url = $('#return_relative_url').val();
+			var is_return_relative_url = jQuery('#return_relative_url').val();
 			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
 		}
 
 		if (external != "")
 		{
-			if ($('#crossdomain').val() == 1)
+			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
@@ -1923,7 +1920,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = $('#' + external, windowParent.document);
+				var target = jQuery('#' + external, windowParent.document);
 				target.val(url).trigger('change');
 				if(callback==0)
 				{
@@ -1942,7 +1939,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 		else
 		{
-			if($('#add_time_to_img').val()){
+			if(jQuery('#add_time_to_img').val()){
 				url = url + "?" + new Date().getTime();
 			}
 			apply_any(url);
@@ -1952,7 +1949,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	apply_video = function(file, external)
 	{
 		var windowParent;
-		if ($('#popup').val() == 1)
+		if (jQuery('#popup').val() == 1)
 		{
 			windowParent = window.opener;
 		}
@@ -1960,22 +1957,22 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			windowParent = window.parent;
 		}
-		var callback=$('#callback').val();
-		var path = $('#cur_dir').val();
+		var callback=jQuery('#callback').val();
+		var path = jQuery('#cur_dir').val();
 		path = path.replace('\\', '/');
-		var subdir = $('#subdir').val();
+		var subdir = jQuery('#subdir').val();
 		subdir = subdir.replace('\\', '/');
-		var base_url = $('#base_url').val();
-		if($('#ftp').val()==true){
-			var url = encodeURL($('#ftp_base_url').val() + $('#upload_dir').val() + $('#fldr_value').val() + file);
+		var base_url = jQuery('#base_url').val();
+		if(jQuery('#ftp').val()==true){
+			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
 		}else{
-			var is_return_relative_url = $('#return_relative_url').val();
+			var is_return_relative_url = jQuery('#return_relative_url').val();
 			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
 		}
 
 		if (external != "")
 		{
-			if ($('#crossdomain').val() == 1)
+			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
@@ -1987,7 +1984,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = $('#' + external, windowParent.document);
+				var target = jQuery('#' + external, windowParent.document);
 				target.val(url).trigger('change');
 				if(callback==0)
 				{
@@ -2012,9 +2009,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	apply_none = function(file/*, external*/)
 	{
-		var _this = $('ul.grid').find('li[data-name="' + file + '"] figcaption a');
+		var _this = jQuery('ul.grid').find('li[data-name="' + file + '"] figcaption a');
 		_this[1].click();
-		$('.tip-right').tooltip('hide');
+		jQuery('.tip-right').tooltip('hide');
 	}
 
 	function getUrlParam(paramName)
@@ -2027,7 +2024,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	apply_any = function(url)
 	{
-		if ($('#crossdomain').val() == 1)
+		if (jQuery('#crossdomain').val() == 1)
 		{
 			window.parent.postMessage({
 					sender: 'responsivefilemanager',
@@ -2039,7 +2036,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 		else
 		{
-			var editor = $('#editor').val();
+			var editor = jQuery('#editor').val();
 			if (editor == 'ckeditor')
 			{
 				var funcNum = getUrlParam('CKEditorFuncNum');
@@ -2066,14 +2063,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function close_window()
 	{
-		if ($('#popup').val() == 1)
+		if (jQuery('#popup').val() == 1)
 		{
 			window.close();
 		}
 		else
 		{
-			if (typeof parent.$('.modal').modal == "function"){
-				parent.$('.modal').modal('hide');
+			if (typeof parent.jQuery('.modal').modal == "function"){
+				parent.jQuery('.modal').modal('hide');
 			}
 			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
 			{
@@ -2092,14 +2089,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function close_window()
 	{
-		if ($('#popup').val() == 1)
+		if (jQuery('#popup').val() == 1)
 		{
 			window.close();
 		}
 		else
 		{
-			if (typeof parent.$(".modal:has(iframe[src*=filemanager])").modal == "function"){
-				parent.$(".modal:has(iframe[src*=filemanager])").modal("hide");
+			if (typeof parent.jQuery(".modal:has(iframe[src*=filemanager])").modal == "function"){
+				parent.jQuery(".modal:has(iframe[src*=filemanager])").modal("hide");
 			}
 			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
 			{
@@ -2130,7 +2127,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var new_form_id = 'form' + new Date().getTime();
 
 		form.attr('id', new_form_id);
-		form.find('.tip-right').attr('onclick', "$('#" + new_form_id + "').submit();");
+		form.find('.tip-right').attr('onclick', "jQuery('#" + new_form_id + "').submit();");
 	}
 
 	apply_file_rename = function(container, name)
@@ -2151,16 +2148,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		link.each(function ()
 		{
-			$(this).attr('data-file', encodeURIComponent(name + "." + extension));
+			jQuery(this).attr('data-file', encodeURIComponent(name + "." + extension));
 		});
 
 		//thumbnails
 		container.find('img').each(function ()
 		{
-			var src = $(this).attr('src');
+			var src = jQuery(this).attr('src');
 
-			$(this).attr('src', src.replace(old_name, name + "." + extension) + '?time=' + new Date().getTime());
-			$(this).attr('alt', name + " thumbnails");
+			jQuery(this).attr('src', src.replace(old_name, name + "." + extension) + '?time=' + new Date().getTime());
+			jQuery(this).attr('alt', name + " thumbnails");
 		});
 
 		//preview link
@@ -2201,11 +2198,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		//select link
 		var link = container.find('.folder-link');
 		var url = link.attr('href');
-		var fldr = $('#fldr_value').val();
+		var fldr = jQuery('#fldr_value').val();
 		var new_url = url.replace('fldr=' + fldr + encodeURIComponent(old_name), 'fldr=' + fldr + encodeURIComponent(name));
 		link.each(function ()
 		{
-			$(this).attr('href', new_url);
+			jQuery(this).attr('href', new_url);
 		});
 
 		//rename link && delete link
@@ -2253,16 +2250,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	{
 		if (stri != null)
 		{
-			if ($('#transliteration').val() == "true")
+			if (jQuery('#transliteration').val() == "true")
 			{
 				stri = replaceDiacritics(stri);
 				stri = stri.replace(/[^A-Za-z0-9\.\-\[\] _]+/g, '');
 			}
-			if ($('#convert_spaces').val() == "true")
+			if (jQuery('#convert_spaces').val() == "true")
 			{
-				stri = stri.replace(/ /g, $('#replace_with').val());
+				stri = stri.replace(/ /g, jQuery('#replace_with').val());
 			}
-			if($('#lower_case').val() == "true")
+			if(jQuery('#lower_case').val() == "true")
 			{
 				stri = stri.toLowerCase();
 			}
@@ -2310,8 +2307,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function sortUnorderedList(sortDescending, sort_field)
 	{
-		var lis_dir = $('li.dir', 'ul.grid').filter(':visible');
-		var lis_file = $('li.file', 'ul.grid').filter(':visible');
+		var lis_dir = jQuery('li.dir', 'ul.grid').filter(':visible');
+		var lis_file = jQuery('li.file', 'ul.grid').filter(':visible');
 
 		var vals_dir = [];
 		var values_dir = [];
@@ -2320,7 +2317,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		lis_dir.each(function (/*index*/)
 		{
-			var _this = $(this);
+			var _this = jQuery(this);
 			var value = _this.find(sort_field).val();
 			if ($.isNumeric(value))
 			{
@@ -2341,7 +2338,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		lis_file.each(function (/*index*/)
 		{
 
-			var _this = $(this);
+			var _this = jQuery(this);
 			var value = _this.find(sort_field).val();
 			if ($.isNumeric(value))
 			{
@@ -2391,26 +2388,26 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		lis_dir.each(function (index)
 		{
-			var _this = $(this);
+			var _this = jQuery(this);
 			_this.html(vals_dir[ values_dir[ index ] ]);
 		});
 
 		lis_file.each(function (index)
 		{
-			var _this = $(this);
+			var _this = jQuery(this);
 			_this.html(vals_file[ values_file[ index ] ]);
 		});
 	}
 
 	show_animation = function()
 	{
-		$('#loading_container').css('display', 'block');
-		$('#loading').css('opacity', '.7');
+		jQuery('#loading_container').css('display', 'block');
+		jQuery('#loading').css('opacity', '.7');
 	}
 
 	hide_animation = function()
 	{
-		$('#loading_container').fadeOut();
+		jQuery('#loading_container').fadeOut();
 	}
 
 	function launchEditor(id, src)
@@ -2423,7 +2420,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	}
 
 	function lazyLoad() {
-		$('.lazy-loaded').lazyload(); //Reset generale lazyload altrimenti sul sort non riparte
+		jQuery('.lazy-loaded').lazyload(); //Reset generale lazyload altrimenti sul sort non riparte
 	}
 
 })(jQuery, Modernizr, image_editor);
