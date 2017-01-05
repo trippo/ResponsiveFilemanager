@@ -802,6 +802,11 @@ $files=$sorted;
 		<?php
 		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 
+		if((isset($disable_back_button)) && $disable_back_button === true) {
+            		if(isset($files[0]['file']) && $files[0]['file'] == '..') {
+                		unset($files[0]);
+            		}
+        	}	    
 
 		foreach ($files as $file_array) {
 			$file=$file_array['file'];
