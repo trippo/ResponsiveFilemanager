@@ -93,7 +93,6 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 		include 'include/mime_type_lib.php';
 		$mime_type = get_file_mime_type($_FILES['file']['tmp_name']);
 	}
-
 	$extension = get_extension_from_mime($mime_type);
 
 	if($extension=='so'){
@@ -253,7 +252,8 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 	}
 	else // file ext. is not in the allowed list
 	{
-		response("Thumbnails creation: ".trans("Error_extension").AddErrorLocation(), 406)->send();
+		response(trans("Error_extension").AddErrorLocation(), 406)->send();
+
 		exit();
 	}
 }
