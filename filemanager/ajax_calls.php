@@ -585,6 +585,29 @@ if(isset($_GET['action']))
 			}
 
 			break;
+		case 'cad_preview':
+			if($ftp){
+				$selected_file = $ftp_base_url.$upload_dir . $_GET['file'];
+			}else{
+				$selected_file = $current_path . $_GET['file'];
+
+				if ( ! file_exists($selected_file))
+				{
+					response(trans('File_Not_Found').AddErrorLocation())->send();
+					exit;
+				}
+			}
+			if($ftp){
+				$url_file = $selected_file;
+			}else{
+				$url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
+			}
+
+			$cad_url = urlencode($url_file);
+			$cad_html = "<iframe src=\"//sharecad.org/cadframe/load?url=" . $url_file . "\" class=\"google-iframe\" scrolling=\"no\"></iframe>";
+			$ret = $cad_html;
+			response($ret)->send();
+			break;
 		case 'get_file': // preview or edit
 			$sub_action = $_GET['sub_action'];
 			$preview_mode = $_GET["preview_mode"];
