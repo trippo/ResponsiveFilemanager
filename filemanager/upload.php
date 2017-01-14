@@ -95,9 +95,9 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 	}
 	$extension = get_extension_from_mime($mime_type);
 
-	if($extension=='so'){
-		$extension = $info['extension'];
-	}
+  if ($extension === '' || $extension == 'so') {
+        $extension = $info['extension'];
+  }
 
 	if (in_array(fix_strtolower($extension), $ext))
 	{
@@ -164,7 +164,7 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 			}
 
 			$memory_error = FALSE;
-			if ( ! create_img($targetFile, $targetFileThumb, 122, 91))
+			if ( $extension != 'svg' && ! create_img($targetFile, $targetFileThumb, 122, 91))
 			{
 				$memory_error = TRUE;
 			}
