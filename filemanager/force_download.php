@@ -21,8 +21,10 @@ include 'include/mime_type_lib.php';
 
 if (
 	strpos($_POST['path'], '/') === 0
-	|| strpos($_POST['path'], '../') !== false
-	|| strpos($_POST['path'], './') === 0
+    || strpos($_POST['path'], '../') !== false
+    || strpos($_POST['path'], './') === 0
+    || strpos($_POST['path'], '..\\') !== false
+    || strpos($_POST['path'], '.\\') === 0
 )
 {
 	response(trans('wrong path'.AddErrorLocation()), 400)->send();

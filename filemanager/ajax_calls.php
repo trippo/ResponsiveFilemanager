@@ -88,6 +88,7 @@ if(isset($_GET['action']))
 			if (
 				strpos($_POST['path'], '/') === 0
 				|| strpos($_POST['path'], '../') !== false
+				|| strpos($_POST['path'], '..\\') !== false
 				|| strpos($_POST['path'], './') === 0
 				|| (strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0
 				&& strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
@@ -150,7 +151,7 @@ if(isset($_GET['action']))
 			}
 			break;
 		case 'extract':
-			if (strpos($_POST['path'], '/') === 0 || strpos($_POST['path'], '../') !== false || strpos($_POST['path'], './') === 0)
+			if (strpos($_POST['path'], '/') === 0 || strpos($_POST['path'], '../') !== false strpos($_POST['path'], '..\\') !== false || strpos($_POST['path'], './') === 0)
 			{
 				response(trans('wrong path'.AddErrorLocation()))->send();
 				exit;
@@ -378,6 +379,15 @@ if(isset($_GET['action']))
 			if ($_POST['sub_action'] != 'copy' && $_POST['sub_action'] != 'cut')
 			{
 				response(trans('wrong sub-action').AddErrorLocation())->send();
+				exit;
+			}
+
+			if (strpos($_POST['path'],'../') !== FALSE
+				|| strpos($_POST['path'],'./') !== FALSE 
+				|| strpos($_POST['path'],'..\\') !== FALSE
+				|| strpos($_POST['path'],'.\\') !== FALSE )
+			{
+				response(trans('wrong path'.AddErrorLocation()))->send();
 				exit;
 			}
 

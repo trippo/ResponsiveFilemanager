@@ -166,6 +166,7 @@ $mime_types = array(
 	'smi'     => 'application/smil',
 	'smil'    => 'application/smil',
 	'snd'     => 'audio/basic',
+	'svg'     => 'image/svg+xml',
 	'so'      => 'application/octet-stream',
 	'spl'     => 'application/x-futuresplash',
 	'src'     => 'application/x-wais-source',

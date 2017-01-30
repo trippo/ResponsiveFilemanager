@@ -42,7 +42,9 @@ include 'include/utils.php';
 if (isset($_GET['fldr'])
 	&& !empty($_GET['fldr'])
 	&& strpos($_GET['fldr'],'../') === FALSE
-	&& strpos($_GET['fldr'],'./') === FALSE)
+	&& strpos($_GET['fldr'],'./') === FALSE
+	&& strpos($_GET['fldr'],'..\\') === FALSE
+	&& strpos($_GET['fldr'],'.\\') === FALSE)
 {
 	$subdir = rawurldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
 	$_SESSION['RF']["filter"]='';
@@ -86,7 +88,7 @@ if (!isset($_SESSION['RF']["subfolder"]))
 }
 $rfm_subfolder = '';
 
-if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../') === FALSE
+if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../' && strpos($_SESSION['RF']["subfolder"],'..\\') === FALSE
 && strpos($_SESSION['RF']["subfolder"],'./') === FALSE && strpos($_SESSION['RF']["subfolder"],"/") !== 0
 && strpos($_SESSION['RF']["subfolder"],'.') === FALSE)
 {

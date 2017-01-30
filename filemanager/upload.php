@@ -44,7 +44,11 @@ if ($path_pos!==0
 	|| strpos($storeFolderThumb,'../',strlen($thumb_base)) !== FALSE
 	|| strpos($storeFolderThumb,'./',strlen($thumb_base)) !== FALSE
 	|| strpos($storeFolder,'../',strlen($source_base)) !== FALSE
-	|| strpos($storeFolder,'./',strlen($source_base)) !== FALSE )
+	|| strpos($storeFolder,'./',strlen($source_base)) !== FALSE
+	|| strpos($storeFolderThumb,'..\\',strlen($thumb_base)) !== FALSE
+	|| strpos($storeFolderThumb,'.\\',strlen($thumb_base)) !== FALSE
+	|| strpos($storeFolder,'..\\',strlen($source_base)) !== FALSE
+	|| strpos($storeFolder,'.\\',strlen($source_base)) !== FALSE )
 {
 	response(trans('wrong path'.AddErrorLocation()))->send();
 	exit;
@@ -93,6 +97,7 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 		include 'include/mime_type_lib.php';
 		$mime_type = get_file_mime_type($_FILES['file']['tmp_name']);
 	}
+
 	$extension = get_extension_from_mime($mime_type);
 
 	if($extension=='so'){
@@ -164,7 +169,7 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 			}
 
 			$memory_error = FALSE;
-			if ( ! create_img($targetFile, $targetFileThumb, 122, 91))
+			if ( $extension != 'svg' && !create_img($targetFile, $targetFileThumb, 122, 91))
 			{
 				$memory_error = TRUE;
 			}
