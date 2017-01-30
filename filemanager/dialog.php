@@ -88,7 +88,7 @@ if (!isset($_SESSION['RF']["subfolder"]))
 }
 $rfm_subfolder = '';
 
-if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../' && strpos($_SESSION['RF']["subfolder"],'..\\') === FALSE
+if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../') === FALSE && strpos($_SESSION['RF']["subfolder"],'..\\') === FALSE
 && strpos($_SESSION['RF']["subfolder"],'./') === FALSE && strpos($_SESSION['RF']["subfolder"],"/") !== 0
 && strpos($_SESSION['RF']["subfolder"],'.') === FALSE)
 {

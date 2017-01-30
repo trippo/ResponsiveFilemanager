@@ -90,8 +90,7 @@ if(isset($_GET['action']))
 				|| strpos($_POST['path'], '../') !== false
 				|| strpos($_POST['path'], '..\\') !== false
 				|| strpos($_POST['path'], './') === 0
-				|| (strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0
-				&& strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
+				|| (strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0 && strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
 				|| $_POST['name'] != fix_filename($_POST['name'], $config)
 				|| ! in_array(strtolower($info['extension']), array( 'jpg', 'jpeg', 'png' ))
 			)
@@ -151,7 +150,10 @@ if(isset($_GET['action']))
 			}
 			break;
 		case 'extract':
-			if (strpos($_POST['path'], '/') === 0 || strpos($_POST['path'], '../') !== false strpos($_POST['path'], '..\\') !== false || strpos($_POST['path'], './') === 0)
+			if (	strpos($_POST['path'], '/') === 0 
+				|| strpos($_POST['path'], '../') !== false 
+				|| strpos($_POST['path'], '..\\') !== false 
+				|| strpos($_POST['path'], './') === 0)
 			{
 				response(trans('wrong path'.AddErrorLocation()))->send();
 				exit;
