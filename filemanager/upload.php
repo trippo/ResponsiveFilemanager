@@ -109,7 +109,7 @@ if ( ! empty($_FILES) || isset($_POST['url']))
 		$tempFile = $_FILES['file']['tmp_name'];
 		$targetPath = $storeFolder;
 		$targetPathThumb = $storeFolderThumb;
-		$_FILES['file']['name'] = fix_filename($info['filename'].".".$extension,$transliteration,$convert_spaces, $replace_with);
+		$_FILES['file']['name'] = fix_filename($info['filename'].".".$extension,$config);
 		// LowerCase
 		if ($lower_case)
 		{

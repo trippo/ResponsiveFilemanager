@@ -317,7 +317,7 @@ if(isset($_GET['action']))
 				</div>
 				<div class="jp-no-solution">
 					<span>Update Required</span>
-					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+					To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
 				</div>
 				</div>
 			</div>
@@ -704,7 +704,7 @@ if(isset($_GET['action']))
 					}
 
 					$googledoc_url = urlencode($url_file);
-					$googledoc_html = "<iframe src=\"http://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
+					$googledoc_html = "<iframe src=\"https://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
 					$ret = $googledoc_html;
 				}
 			} else {
