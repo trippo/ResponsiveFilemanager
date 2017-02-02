@@ -675,27 +675,19 @@ if(isset($_GET['action']))
 				if ($preview_mode == 'text')
 				{
 					// get and sanities
-					$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
-
+					$data = file_get_contents($selected_file);
+					$data = htmlspecialchars(htmlspecialchars_decode($data));
 					$ret = '';
 
 					if ( ! in_array($info['extension'],$previewable_text_file_exts_no_prettify))
 					{
-						$ret .= '<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang='.$info['extension'].'&skin=sunburst"></script>';
-						$ret .= '<pre class="prettyprint">'.$data.'</pre>';
+						$ret .= '<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&skin=sunburst"></script>';
+						$ret .= '<?prettify lang='.$info['extension'].' linenums=true?><pre class="prettyprint"><code class="language-'.$info['extension'].'">'.$data.'</code></pre>';
 					} else {
 						$ret .= '<pre class="no-prettify">'.$data.'</pre>';
 					}
 
-				} 
-				// elseif ($preview_mode == 'viewerjs') {
-				// 	if($ftp){
-				// 		$ret = '<iframe id="viewer" src="'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
-				// 	}else{
-				// 		$ret = '<iframe id="viewer" src="js/ViewerJS/#../../'.$selected_file.'" allowfullscreen="" webkitallowfullscreen="" class="viewer-iframe"></iframe>';
-				// 	}
-
-				// } 
+				}
 				elseif ($preview_mode == 'google' || $preview_mode == 'viewerjs') {
 					if($ftp){
 						$url_file = $selected_file;
