@@ -462,7 +462,9 @@ $get_params = http_build_query($get_params);
 	<div class="tabbable upload-tabbable"> <!-- Only required for left/right tabs -->
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#tab1" data-toggle="tab"><?php echo trans('Upload_base');?></a></li>
+			<?php if($url_upload){ ?>
 			<li><a href="#taburl" data-toggle="tab"><?php echo trans('Upload_url');?></a></li>
+			<?php } ?>
 			<?php if($java_upload){ ?>
 			<li><a href="#tab2" id="uploader-btn" data-toggle="tab"><?php echo trans('Upload_java');?></a></li>
 			<?php } ?>
@@ -488,6 +490,7 @@ $get_params = http_build_query($get_params);
 				</form>
 				<div class="upload-help"><?php echo trans('Upload_base_help');?></div>
 			</div>
+			<?php if($url_upload){ ?>
 			<div class="tab-pane" id="taburl">
 				<br/>
 				<form class="form-horizontal">
@@ -504,6 +507,7 @@ $get_params = http_build_query($get_params);
 					</div>
 				</form>
 			</div>
+			<?php } ?>
 			<?php if($java_upload){ ?>
 			<div class="tab-pane" id="tab2">
 				<div id="iframe-container"></div>

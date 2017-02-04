@@ -309,7 +309,7 @@ $config = array(
 	'create_text_files'                       => true, // only create files with exts. defined in $editable_text_file_exts
 
 	// you can preview these type of files if $preview_text_files is true
-	'previewable_text_file_exts'              => array( 'txt', 'log', 'xml', 'html', 'css', 'htm', 'js' ),
+	'previewable_text_file_exts'              => array( "bsh", "c","css", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml","xsl" ),
 	'previewable_text_file_exts_no_prettify'  => array( 'txt', 'log' ),
 
 	// you can edit these type of files if $edit_text_files is true (only text based files)
@@ -366,6 +366,11 @@ $config = array(
 	'hidden_folders'                          => array(),
 	// set the names of any files you want hidden. Remember these names will be hidden in all folders (eg "this_document.pdf", "that_image.jpg" )
 	'hidden_files'                            => array( 'config.php' ),
+
+	/*******************
+	* URL upload
+	*******************/
+	'url_upload'                             => true,
 
 	/*******************
 	* JAVA upload
