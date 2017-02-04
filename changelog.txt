@@ -1,6 +1,16 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.11.3
+*********************************************************
+- fixed multiple security vulnerabilities (thanks to Wiswat Aswamenakul (Nick) from Netassess Consulting Co.,Ltd.)
+- url upload toggle
+- fixed upload xml
+- prettify improvement
+- added cad preview
+- other minor bug fixes
+
+*********************************************************
 *  RFM 9.11.0
 *********************************************************
 - fixed multiple security vulnerabilities (thanks to CERT-W and Davide Girardi from Outpost24)

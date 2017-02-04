@@ -225,7 +225,9 @@ $boolarray = Array(false => 'false', true => 'true');
 
 $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
 
-if (!isset($_GET['type'])) $_GET['type'] = 0;
+if (!isset($_GET['type'])){
+	$_GET['type'] = 0;
+}
 
 if($_GET['type']==1 || $_GET['type']==3){
 	$filter='';

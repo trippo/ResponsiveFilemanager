@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.11.0";
+	var version = "9.11.3";
 	var active_contextmenu = true;
 	var copy_count = 0;
 
@@ -683,7 +683,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					hide_animation();
 					jQuery('#url').val('');
 				}).fail(function(msg){
-					alert(jQuery('#lang_error_upload').val());
+					bootbox.alert(jQuery('#lang_error_upload').val());
 					hide_animation();
 					jQuery('#url').val('');
 				});
@@ -786,7 +786,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			FileManager.makeContextMenu();
 		}
 
-		if(typeof(Storage) !== "undefined") {
+		if(typeof(Storage) !== "undefined" && $('#type_param').val()!=1 && $('#type_param').val()!=3 ) {
 			var li = localStorage.getItem("sort");
 			if(li){
 				var liElement = jQuery('#'+li);
