@@ -307,6 +307,7 @@ $config = array(
 	'preview_text_files'                      => true, // eg.: txt, log etc.
 	'edit_text_files'                         => true, // eg.: txt, log etc.
 	'create_text_files'                       => true, // only create files with exts. defined in $editable_text_file_exts
+    	'disable_back_button' 			  => false,
 
 	// you can preview these type of files if $preview_text_files is true
 	'previewable_text_file_exts'              => array( "bsh", "c","css", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml","xsl" ),
