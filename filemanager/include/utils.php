@@ -702,8 +702,8 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 			$image_bits = $image_properties['bits'];
 		else
 			$image_bits = 0;
-		$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits) * 2);
-		$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits) * 2);
+		$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits >> 3) * 2);
+		$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits >> 3) * 2);
 		$memory_needed = abs(intval($memory_usage + $image_memory_usage + $thumb_memory_usage));
 
 		if ($memory_needed > $memory_limit)
