@@ -8,6 +8,7 @@ mb_language('uni');
 mb_regex_encoding('UTF-8');
 ob_start('mb_output_handler');
 date_default_timezone_set('Europe/Rome');
+setlocale(LC_CTYPE, 'cs_CZ'); //correct transliteration
 
 /*
 |--------------------------------------------------------------------------
