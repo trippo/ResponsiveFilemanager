@@ -171,6 +171,10 @@ if (isset($_GET['action']))
 			break;
 		case 'rename_folder':
 			if ($rename_folders){
+                if(!is_dir($path)) {
+                    response(trans('wrong path'))->send();
+                    exit;
+                }
 				$name=fix_filename($name,$config);
 				$name=str_replace('.','',$name);
 
