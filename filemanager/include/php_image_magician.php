@@ -2719,25 +2719,27 @@ class imageLib {
 			}
 		};
 
-		// *** Get extension
-		$extension = strrchr($file, '.');
+		// *** Get extension / image type
+		$extension = mime_content_type($file);
 		$extension = fix_strtolower($extension);
+		$extension = str_replace('image/', '', $extension);
 		switch ($extension)
 		{
-			case '.jpg':
-			case '.jpeg':
+			case 'jpg':
+			case 'jpeg':
 				$img = @imagecreatefromjpeg($file);
 				break;
-			case '.gif':
+			case 'gif':
 				$img = @imagecreatefromgif($file);
 				break;
-			case '.png':
+			case 'png':
 				$img = @imagecreatefrompng($file);
 				break;
-			case '.bmp':
+			case 'bmp':
 				$img = @$this->imagecreatefrombmp($file);
 				break;
-			case '.psd':
+			case 'psd':
+			case 'vnd.adobe.photoshop':
 				$img = @$this->imagecreatefrompsd($file);
 				break;
 
@@ -2811,16 +2813,17 @@ class imageLib {
 			}
 		}
 
-		// *** Get extension
-		$extension = strrchr($savePath, '.');
+		// *** Get extension / image type
+		$extension = mime_content_type($savePath);
 		$extension = fix_strtolower($extension);
+		$extension = str_replace('image/', '', $extension);
 
 		$error = '';
 
 		switch ($extension)
 		{
-			case '.jpg':
-			case '.jpeg':
+			case 'jpg':
+			case 'jpeg':
 				$this->checkInterlaceImage($this->isInterlace);
 				if (imagetypes() & IMG_JPG)
 				{
@@ -2832,7 +2835,7 @@ class imageLib {
 				}
 				break;
 
-			case '.gif':
+			case 'gif':
 				$this->checkInterlaceImage($this->isInterlace);
 				if (imagetypes() & IMG_GIF)
 				{
@@ -2844,7 +2847,7 @@ class imageLib {
 				}
 				break;
 
-			case '.png':
+			case 'png':
 				// *** Scale quality from 0-100 to 0-9
 				$scaleQuality = round(($imageQuality / 100) * 9);
 
@@ -2862,7 +2865,7 @@ class imageLib {
 				}
 				break;
 
-			case '.bmp':
+			case 'bmp':
 				file_put_contents($savePath, $this->GD2BMPstring($this->imageResized));
 				break;
 
