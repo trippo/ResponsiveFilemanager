@@ -27,6 +27,20 @@ if ( ! function_exists('response'))
 
 if ( ! function_exists('trans'))
 {
+	/**
+	* Translate language variable
+	*
+	* @param $var string name
+	*
+	* @return string translated variable
+	*/
+	function trans($var)
+	{
+		global $lang_vars;
+
+		return (array_key_exists($var, $lang_vars)) ? $lang_vars[ $var ] : $var;
+	}
+
 	// language
 	if ( ! isset($_SESSION['RF']['language'])
 		|| file_exists('lang/' . basename($_SESSION['RF']['language']) . '.php') === false
@@ -76,19 +90,6 @@ if ( ! function_exists('trans'))
 	if ( ! is_array($lang_vars))
 	{
 		$lang_vars = array();
-	}
-	/**
-	* Translate language variable
-	*
-	* @param $var string name
-	*
-	* @return string translated variable
-	*/
-	function trans($var)
-	{
-		global $lang_vars;
-
-		return (array_key_exists($var, $lang_vars)) ? $lang_vars[ $var ] : $var;
 	}
 }
 
