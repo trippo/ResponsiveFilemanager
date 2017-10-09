@@ -1,6 +1,21 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.12.0
+*********************************************************
+- fixed multiple security vulnerabilities (thanks to Ryan Dewhurst - BSc Ethical Hacking for Computer Security, CCNA)
+- fixed lazy loading problems with a new plugin
+- copy url without flash with clipboard.js
+- removed java uploader and introduce new upload system with canucks part
+- new upload method with jQuery-File-Upload
+- removed viewer_js and substituted with google preview
+- fix problem with url upload
+- multiple files, folder upload permission also WITH RECURSIVE FOLDER UPLOAD
+- fix the config.php inclusion on subfolders see CUSTOMISE CONFIGURATION FOR EACH FOLDER on documentation
+- RTL stylesheet on repository (if you want to use simple add the inclusione on dialog.php)
+- you can now drop files/folders everywhere to upload
+
+*********************************************************
 *  RFM 9.11.3
 *********************************************************
 - fixed multiple security vulnerabilities (thanks to Wiswat Aswamenakul (Nick))

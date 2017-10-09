@@ -27,6 +27,7 @@ if ( ! function_exists('response'))
 
 if ( ! function_exists('trans'))
 {
+
 	/**
 	* Translate language variable
 	*
@@ -76,7 +77,7 @@ if ( ! function_exists('trans'))
 		if(array_key_exists($_SESSION['RF']['language'],$languages)){
 			$lang = $_SESSION['RF']['language'];
 		}else{
-			response(trans('Lang_Not_Found').AddErrorLocation())->send();
+			response('Lang_Not_Found'.AddErrorLocation())->send();
 			exit;
 		}
 
@@ -295,10 +296,10 @@ function ftp_con($config){
 * @return bool
 * @throws \Exception
 */
-function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop", $ftp=false,$config = array())
+function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop",$config = array())
 {
 	$result = false;
-	if($ftp ){
+	if(isset($config['ftp_host']) && $config['ftp_host']){
 		if(url_exists($imgfile)){
 			$temp = tempnam('/tmp','RF');
 			unlink($temp);
@@ -320,12 +321,12 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
 				$magicianObj->resizeImage($newwidth, $newheight, $option);
 				$magicianObj->saveImage($imgthumb, 80);
 			}catch (Exception $e){
-				return false;
+				return $e->getMessage();
 			}
 			$result = true;
 		}
 	}
-	if($result && $ftp ){
+	if($result && isset($config['ftp_host']) && $config['ftp_host'] ){
 		$ftp->put($save_ftp, $imgthumb, FTP_BINARY);
 		unlink($imgthumb);
 	}
@@ -695,31 +696,27 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 	{
 		$K64 = 65536; // number of bytes in 64K
 		$memory_usage = memory_get_usage();
-		$memory_limit = abs(intval(str_replace('M', '', ini_get('memory_limit')) * 1024 * 1024));
-		$image_properties = getimagesize($img);
-		$image_width = $image_properties[0];
-		$image_height = $image_properties[1];
-		if (isset($image_properties['bits']))
-			$image_bits = $image_properties['bits'];
-		else
-			$image_bits = 0;
-		$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits) * 2);
-		$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits) * 2);
-		$memory_needed = abs(intval($memory_usage + $image_memory_usage + $thumb_memory_usage));
+		if(ini_get('memory_limit') > 0 ){
+			$memory_limit = abs(intval(str_replace('M', '', ini_get('memory_limit')) * 1024 * 1024));
+			$image_properties = getimagesize($img);
+			$image_width = $image_properties[0];
+			$image_height = $image_properties[1];
+			if (isset($image_properties['bits']))
+				$image_bits = $image_properties['bits'];
+			else
+				$image_bits = 0;
+			$image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits >> 3) * 2);
+			$thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits >> 3) * 2);
+			$memory_needed = abs(intval($memory_usage + $image_memory_usage + $thumb_memory_usage));
 
-		if ($memory_needed > $memory_limit)
-		{
-			return false;
+			if ($memory_needed > $memory_limit)
+			{
+				return false;
+			}
 		}
-		else
-		{
-			return true;
-		}
+		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 /**
@@ -742,30 +739,34 @@ function endsWith($haystack, $needle)
 * @param $targetFile
 * @param $name
 * @param $current_path
-* @param $relative_image_creation
-* @param $relative_path_from_current_pos
-* @param $relative_image_creation_name_to_prepend
-* @param $relative_image_creation_name_to_append
-* @param $relative_image_creation_width
-* @param $relative_image_creation_height
-* @param $relative_image_creation_option
-* @param $fixed_image_creation
-* @param $fixed_path_from_filemanager
-* @param $fixed_image_creation_name_to_prepend
-* @param $fixed_image_creation_to_append
-* @param $fixed_image_creation_width
-* @param $fixed_image_creation_height
-* @param $fixed_image_creation_option
+* @param $config
+*   relative_image_creation
+*   relative_path_from_current_pos
+*   relative_image_creation_name_to_prepend
+*   relative_image_creation_name_to_append
+*   relative_image_creation_width
+*   relative_image_creation_height
+*   relative_image_creation_option
+*   fixed_image_creation
+*   fixed_path_from_filemanager
+*   fixed_image_creation_name_to_prepend
+*   fixed_image_creation_to_append
+*   fixed_image_creation_width
+*   fixed_image_creation_height
+*   fixed_image_creation_option
 *
 * @return bool
 */
-function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path, $relative_image_creation, $relative_path_from_current_pos, $relative_image_creation_name_to_prepend, $relative_image_creation_name_to_append, $relative_image_creation_width, $relative_image_creation_height, $relative_image_creation_option, $fixed_image_creation, $fixed_path_from_filemanager, $fixed_image_creation_name_to_prepend, $fixed_image_creation_to_append, $fixed_image_creation_width, $fixed_image_creation_height, $fixed_image_creation_option)
+function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path, $config)
 {
 	//create relative thumbs
 	$all_ok = true;
-	if ($relative_image_creation)
+
+	$info = pathinfo($name);
+	$info['filename'] = fix_filename($info['filename'],$config);
+	if ($config['relative_image_creation'])
 	{
-		foreach ($relative_path_from_current_pos as $k => $path)
+		foreach ($config['relative_path_from_current_pos'] as $k => $path)
 		{
 			if ($path != "" && $path[ strlen($path) - 1 ] != "/")
 			{
@@ -775,10 +776,9 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
 			{
 				create_folder($targetPath . $path, false);
 			}
-			$info = pathinfo($name);
 			if ( ! endsWith($targetPath, $path))
 			{
-				if ( ! create_img($targetFile, $targetPath . $path . $relative_image_creation_name_to_prepend[ $k ] . $info['filename'] . $relative_image_creation_name_to_append[ $k ] . "." . $info['extension'], $relative_image_creation_width[ $k ], $relative_image_creation_height[ $k ], $relative_image_creation_option[ $k ]))
+				if ( ! create_img($targetFile, $targetPath . $path . $config['relative_image_creation_name_to_prepend'][ $k ] . $info['filename'] . $config['relative_image_creation_name_to_append'][ $k ] . "." . $info['extension'], $config['relative_image_creation_width'][ $k ], $config['relative_image_creation_height'][ $k ], $config['relative_image_creation_option'][ $k ]))
 				{
 					$all_ok = false;
 				}
@@ -787,9 +787,9 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
 	}
 
 	//create fixed thumbs
-	if ($fixed_image_creation)
+	if ($config['fixed_image_creation'])
 	{
-		foreach ($fixed_path_from_filemanager as $k => $path)
+		foreach ($config['fixed_path_from_filemanager'] as $k => $path)
 		{
 			if ($path != "" && $path[ strlen($path) - 1 ] != "/")
 			{
@@ -800,8 +800,7 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
 			{
 				create_folder($base_dir, false);
 			}
-			$info = pathinfo($name);
-			if ( ! create_img($targetFile, $base_dir . $fixed_image_creation_name_to_prepend[ $k ] . $info['filename'] . $fixed_image_creation_to_append[ $k ] . "." . $info['extension'], $fixed_image_creation_width[ $k ], $fixed_image_creation_height[ $k ], $fixed_image_creation_option[ $k ]))
+			if ( ! create_img($targetFile, $base_dir . $config['fixed_image_creation_name_to_prepend'][ $k ] . $info['filename'] . $config['fixed_image_creation_to_append'][ $k ] . "." . $info['extension'], $config['fixed_image_creation_width'][ $k ], $config['fixed_image_creation_height'][ $k ], $config['fixed_image_creation_option'][ $k ]))
 			{
 				$all_ok = false;
 			}

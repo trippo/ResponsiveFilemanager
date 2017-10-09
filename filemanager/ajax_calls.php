@@ -132,20 +132,7 @@ if(isset($_GET['action']))
 					$current_path.$_POST['path'].$_POST['name'],
 					$_POST['name'],
 					$current_path,
-					$relative_image_creation,
-					$relative_path_from_current_pos,
-					$relative_image_creation_name_to_prepend,
-					$relative_image_creation_name_to_append,
-					$relative_image_creation_width,
-					$relative_image_creation_height,
-					$relative_image_creation_option,
-					$fixed_image_creation,
-					$fixed_path_from_filemanager,
-					$fixed_image_creation_name_to_prepend,
-					$fixed_image_creation_to_append,
-					$fixed_image_creation_width,
-					$fixed_image_creation_height,
-					$fixed_image_creation_option
+					$config
 				);
 			}
 			break;
@@ -648,10 +635,7 @@ if(isset($_GET['action']))
 			{
 				$is_allowed = ($sub_action == 'preview' ? $preview_text_files : $edit_text_files);
 				$allowed_file_exts = ($sub_action == 'preview' ? $previewable_text_file_exts : $editable_text_file_exts);
-			} elseif ($preview_mode == 'viewerjs') {
-				$is_allowed = $viewerjs_enabled;
-				$allowed_file_exts = $viewerjs_file_exts;
-			} elseif ($preview_mode == 'google') {
+			}elseif($preview_mode == 'google') {
 				$is_allowed = $googledoc_enabled;
 				$allowed_file_exts = $googledoc_file_exts;
 			}
@@ -688,7 +672,7 @@ if(isset($_GET['action']))
 					}
 
 				}
-				elseif ($preview_mode == 'google' || $preview_mode == 'viewerjs') {
+				elseif ($preview_mode == 'google') {
 					if($ftp){
 						$url_file = $selected_file;
 					}else{

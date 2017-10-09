@@ -2,7 +2,9 @@
 *, *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 body, html {
 	font-family: 'Open Sans', sans-serif;
-	font-size: 100%; padding: 0; margin: 0;}
+	font-size: 100%; padding: 0; margin: 0;
+    height:100%;
+}
 body{
 	padding-top: 32px;
 	font-weight:200;
@@ -127,39 +129,94 @@ iframe{
     overflow: auto;
     -webkit-overflow-scrolling:touch;
 }
-.upload-help{
-	font-size: 11px;
-	font-weight: 200;
-	color: #777;
-	text-shadow: 0 1px 0 #fff;
-	text-align: center;
-}
+.uploader{
+	position:fixed;
+	top:6px;
+	left:6px;
+	right: 6px;
+	bottom: 6px;
+	z-index:9999;
+	background:#eeeeee;
+	border:1px solid #cccccc;
+	display:none;
+	-webkit-box-shadow:  0px 0px 10px 0px rgba(1, 1, 1, 0.5);
+    box-shadow:  0px 0px 10px 0px rgba(1, 1, 1, 0.5);
+    .flex{
+    	padding:10px;
+    	display: flex;
+    	flex-direction: column;
+    	position: relative;
+    	height: 100%;
+    }
+    .test{
+    	height: 100%;
+	    display: flex;
+	    flex-direction: column;
+    }
+    .test2{
+    	height: 100%;
+	    display: flex;
+	    flex-direction: column;
+    }
+	.upload-help{
+		font-size: 11px;
+		font-weight: 200;
+		color: #777;
+		text-shadow: 0 1px 0 #fff;
+		text-align: center;
+	}
 
-.upload-tabbable{
-	margin-left: 5px;
-	margin-right: 5px;
+	.upload-tabbable{
+		padding: 2px;
+		height: 100%;
+		overflow: hidden;
+		.nav{
+			margin:0px;
+			li a{
+				font-size: 13px;
+				font-weight: 200;
+				color: #777;
+				text-shadow: 0 1px 0 #fff;
+			}
+		}
+		#urlUpload{
+    		padding: 5px 10px;
+		}
+		.tab-content{
+			padding: 5px;
+			border-bottom: 1px solid #dddddd;
+			border-left: 1px solid #dddddd;
+			border-right: 1px solid #dddddd;
+			background: white;
+			flex-grow: 2;
+			position: relative;
+			.tab-pane{
+				position: absolute;
+			    top: 0;
+			    bottom: 0;
+			    left: 0;
+			    right: 0;
+			    padding: 5px;
+			}
+			form{
+				display: flex;
+	    		flex-direction: column;
 
-	
-	.nav{
-		margin:0px;
-		li a{
-			font-size: 13px;
-			font-weight: 200;
-			color: #777;
-			text-shadow: 0 1px 0 #fff;
+				height: 100%;
+				#filesTable{
+					flex-grow:2;
+					overflow-y: scroll;
+					background: #fff;
+					font-size: 0.95em;
+					.progress{
+						margin-bottom: 4px;
+					}
+				}
+			}
 		}
 	}
-	.tab-content{
-		padding: 5px;
-		border-bottom: 1px solid #dddddd;
-		border-left: 1px solid #dddddd;
-		border-right: 1px solid #dddddd;
-		background: white;
-		margin-bottom: 5px;
-		height: 400px;
-		overflow-y: scroll;
-	}
 }
+
 input#filter-input{
 	margin:0px;
 	width: 84px;
@@ -198,21 +255,7 @@ body .avpw .avpw_primary_button:hover{
     background: #666666;
 }
 
-.uploader{
-	position:fixed;
-	top:50px;
-	left:14px;
-	margin:auto;
-	width:100%;
-	z-index:9999;
-	overflow: hidden;
-	background:#eeeeee;
-	padding-top:20px;
-	border:1px solid #cccccc;
-	display:none;
-	-webkit-box-shadow:  0px 0px 10px 0px rgba(1, 1, 1, 0.5);
-        box-shadow:  0px 0px 10px 0px rgba(1, 1, 1, 0.5);
-}
+
 .download-form{
 	margin-bottom:25px;
 }
@@ -401,6 +444,13 @@ ul.sorting.dropdown-menu>li>a{
 }
 .filters .types{
 	text-align: right;
+}
+
+.fileupload-buttonbar{
+	margin-bottom: 10px;
+	.progress{
+		margin:0;
+	}
 }
 
 

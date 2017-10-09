@@ -3,9 +3,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.11.3";
+	var version = "9.12.0";
 	var active_contextmenu = true;
-	var copy_count = 0;
+	var myLazyLoad = null;
+	var clipboard = null;
 
 	var delay = (function ()
 	{
@@ -52,34 +53,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				bootbox.alert(
 					'URL:<br/>' +
 					'<div class="input-append" style="width:100%">' +
-					'<input id="url_text' + copy_count + '" type="text" style="width:80%; height:30px;" value="' + encodeURL(m) + '" />' +
-					'<button id="copy-button' + copy_count + '" class="btn btn-inverse copy-button" style="width:20%; height:30px;" data-clipboard-target="url_text' + copy_count + '" data-clipboard-text="Copy Me!" title="copy">' +
+					'<input id="url_text" type="text" style="width:80%; height:30px;" value="' + encodeURL(m) + '" />' +
+					'<button id="copy-button" class="btn btn-inverse copy-button" style="width:20%; height:30px;" data-clipboard-target="#url_text" title="copy">' +
+					'<i class="icon icon-white icon-share"></i> ' + jQuery('#lang_copy').val()+
 					'</button>' +
 					'</div>'
 				);
-
-				jQuery('#copy-button' + copy_count).html('<i class="icon icon-white icon-share"></i> ' + jQuery('#lang_copy').val());
-
-				var client = new ZeroClipboard(jQuery('#copy-button' + copy_count));
-
-				client.on("ready", function (readyEvent)
-				{
-
-					client.on("wrongFlash noFlash", function ()
-					{
-						ZeroClipboard.destroy();
-					});
-
-					client.on("aftercopy", function (event)
-					{
-						jQuery('#copy-button' + copy_count).html('<i class="icon icon-ok"></i> ' + jQuery('#ok').val());
-						jQuery('#copy-button' + copy_count).attr('class', 'btn disabled');
-						copy_count++;
-					});
-
-					client.on('error', function (event) {});
-
-				});
 			},
 
 			unzip: function($trigger)
@@ -627,35 +606,51 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			jQuery('#filter').on('click', function ()
 			{
 				var val = fix_filename(jQuery('#filter-input').val());
-				window.location.href = jQuery('#current_url').val() + "&filter=" + val;
+				var url = jQuery('#current_url').val();
+				if(url.indexOf("?") >= 0){
+					url += "&";
+				}else{
+					url += "?";
+				}
+				window.location.href = url + "filter=" + val;
 			});
 		},
 
 		makeUploader: function()
 		{
-			// upload btn
-			jQuery('#uploader-btn').on('click', function ()
-			{
-				var path = jQuery('#sub_folder').val() + jQuery('#fldr_value').val() + "/";
-				path = path.substring(0, path.length - 1);
-
-				jQuery('#iframe-container').html(jQuery('<iframe />', {
-					name: 'JUpload',
-					id: 'uploader_frame',
-					src: "uploader/index.php?path=" + path,
-					frameborder: 0,
-					width: "100%",
-					height: 360
-				}));
+			jQuery('#fileupload').fileupload({
+		        // Uncomment the following to send cross-domain cookies:
+		        //xhrFields: {withCredentials: true},
+		        url: 'upload.php',
+		        maxChunkSize: 2 * 1024 * 1024 // 2 MB
+		    });
+			jQuery('#fileupload').bind('fileuploaddrop', function (e, data) {
+				jQuery('.uploader').show(200);
 			});
+		    jQuery('#fileupload').bind('fileuploadsubmit', function (e, data) {
+			    // The example input, doesn't have to be part of the upload form:
+			    data.formData = {fldr: jQuery('#fldr_value').val()+data.files[0].relativePath};
+			});
+		    // Load existing files:
+		    jQuery('#fileupload').addClass('fileupload-processing');
+		    $.ajax({
+		        // Uncomment the following to send cross-domain cookies:
+		        //xhrFields: {withCredentials: true},
+		        url: jQuery('#fileupload').fileupload('option', 'url'),
+		        dataType: 'json',
+		        context: jQuery('#fileupload')[0]
+		    }).always(function () {
+		        jQuery(this).removeClass('fileupload-processing');
+		    });
+			// upload btn
 			jQuery('.upload-btn').on('click', function ()
 			{
-				jQuery('.uploader').show(500);
+				jQuery('.uploader').show(200);
 			});
 
 			jQuery('.close-uploader').on('click', function ()
 			{
-				jQuery('.uploader').hide(500);
+				jQuery('.uploader').hide(200);
 				setTimeout(function ()
 				{
 					window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
@@ -667,15 +662,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			jQuery('#uploadURL').on('click',function(e){
 				e.preventDefault();
 				var url = jQuery('#url').val();
-				var path = jQuery('#cur_path').val();
-				var path_thumb = jQuery('#cur_dir_thumb').val();
+				var fldr = jQuery('#fldr_value').val();
 				show_animation();
 				$.ajax({
 					type: "POST",
 					url: "upload.php",
 					data: {
-						path: path,
-						path_thumb: path_thumb,
+						fldr: fldr,
 						url: url
 					}
 				}).done(function (msg)
@@ -786,7 +779,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			FileManager.makeContextMenu();
 		}
 
-		if(typeof(Storage) !== "undefined" && $('#type_param').val()!=1 && $('#type_param').val()!=3 ) {
+		if(typeof(Storage) !== "undefined" && jQuery('#type_param').val()!=1 && jQuery('#type_param').val()!=3 ) {
 			var li = localStorage.getItem("sort");
 			if(li){
 				var liElement = jQuery('#'+li);
@@ -1068,6 +1061,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				chmod_logic(true);
 			}
 		});
+
+		myLazyLoad = new LazyLoad();
+		clipboard = new Clipboard('.btn');
 	});
 
 	function preview_loading_animation(url)
@@ -1633,7 +1629,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var viewElement = jQuery('#view');
 		var helpElement = jQuery('#help');
 
-		jQuery('.uploader').css('width', width);
 		if (viewElement.val() > 0)
 		{
 			if (viewElement.val() == 1)
@@ -1724,7 +1719,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
 		}else{
 			var is_return_relative_url = jQuery('#return_relative_url').val();
-			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+			var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
 		}
 
 		if (external != "")
@@ -2060,58 +2055,34 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 		}
 	}
-
 	function close_window()
-	{
-		if (jQuery('#popup').val() == 1)
-		{
-			window.close();
-		}
-		else
-		{
-			if (typeof parent.jQuery('.modal').modal == "function"){
-				parent.jQuery('.modal').modal('hide');
-			}
-			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
-			{
-				if(typeof parent.jQuery.fancybox == 'function'){
-					parent.jQuery.fancybox.close();
-				}
-			}
-			else
-			{
-				if(typeof parent.$.fancybox == 'function'){
-					parent.$.fancybox.close();
-				}
-			}
-		}
-	}
-
-	function close_window()
-	{
-		if (jQuery('#popup').val() == 1)
-		{
-			window.close();
-		}
-		else
-		{
-			if (typeof parent.jQuery(".modal:has(iframe[src*=filemanager])").modal == "function"){
-				parent.jQuery(".modal:has(iframe[src*=filemanager])").modal("hide");
-			}
-			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
-			{
-				if(typeof parent.jQuery.fancybox == 'function'){
-					parent.jQuery.fancybox.close();
-				}
-			}
-			else
-			{
-				if(typeof parent.$.fancybox == 'function'){
-					parent.$.fancybox.close();
-				}
-			}
-		}
-	}
+    {
+        if (jQuery('#popup').val() == 1)
+        {
+            window.close();
+        }
+        else
+        {
+            if (typeof parent.jQuery(".modal:has(iframe)").modal == "function"){
+                parent.jQuery(".modal:has(iframe)").modal("hide");
+            }
+            if (typeof parent.jQuery !== "undefined" && parent.jQuery)
+            {
+                if (typeof parent.jQuery.fancybox == 'object'){
+                    parent.jQuery.fancybox.getInstance().close();
+                }
+                else if(typeof parent.jQuery.fancybox == 'function'){
+                    parent.jQuery.fancybox.close();
+                }
+            }
+            else
+            {
+                if(typeof parent.$.fancybox == 'function'){
+                    parent.$.fancybox.close();
+                }
+            }
+        }
+    }
 
 	apply_file_duplicate = function(container, name)
 	{
@@ -2420,7 +2391,24 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	}
 
 	function lazyLoad() {
-		jQuery('.lazy-loaded').lazyload(); //Reset generale lazyload altrimenti sul sort non riparte
+		myLazyLoad.update();
 	}
 
 })(jQuery, Modernizr, image_editor);
+
+//IE enable
+(function () {
+    if (typeof window.CustomEvent === "function") {
+        return false;
+    }
+
+    function CustomEvent(event, params) {
+        params = params || {bubbles: false, cancelable: false, detail: undefined};
+        var evt = document.createEvent("CustomEvent");
+        evt.initCustomEvent (event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+    }
+
+    CustomEvent.prototype = window.Event.prototype;
+    window.CustomEvent = CustomEvent;
+})();

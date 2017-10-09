@@ -39,9 +39,30 @@ return array(
 	'Text_filter' => 'text filter', // text filter
 	'Swipe_help' => 'Svep över filnamnet/katalognamnet för att visa åtgärder', // Swipe the name of file/folder to show options
 	'Upload_base' => 'Basal uppladdning', // Base upload
-	'Upload_java' => 'JAVA uppladdning (för stora filer)', // JAVA upload (big size files)
-	'Upload_java_help' => "Om Java Appleten inte laddar, 1. säkerställ att Java är installerat, <a href='http://java.com/en/download/'>ladda hem</a> och installera om det saknas  2. säkerställ att programmet inte blokeras av din brandvägg", // If the Java Applet doesn't load, 1. make sure you have Java installed, otherwise <a href='http://java.com/en/download/'>[download link]</a>   2. make sure nothing is blocked by your firewall
-	'Upload_base_help' => "Dra och släpa filer eller klicka ovan och välj en eller flera filer. När uppladningen är klar, klicka på 'Tillbaka till filvisaren' knappen.", // Drag & Drop files or click in the area above (modern browsers) and select the file(s). When the upload is complete, click the 'Return to files list' button.
+	'Upload_base_help' => "Drag & Drop files(modern browsers) or click in upper button to Add the file(s) and click on Start upload. When the upload is complete, click the 'Return to files list' button.",
+	'Upload_add_files' => 'Add file(s)',
+	'Upload_start' => 'Start upload',
+	'Upload_error_messages' =>array(
+		1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+		2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+		3 => 'The uploaded file was only partially uploaded',
+		4 => 'No file was uploaded',
+		6 => 'Missing a temporary folder',
+		7 => 'Failed to write file to disk',
+		8 => 'A PHP extension stopped the file upload',
+		'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
+		'max_file_size' => 'File is too big',
+		'min_file_size' => 'File is too small',
+		'accept_file_types' => 'Filetype not allowed',
+		'max_number_of_files' => 'Maximum number of files exceeded',
+		'max_width' => 'Image exceeds maximum width',
+		'min_width' => 'Image requires a minimum width',
+		'max_height' => 'Image exceeds maximum height',
+		'min_height' => 'Image requires a minimum height',
+		'abort' => 'File upload aborted',
+		'image_resize' => 'Failed to resize image'
+	),
+	'Upload_url' => 'From url',
 	'Type_dir' => 'katalog', // dir
 	'Type' => 'Typ', // Type
 	'Dimension' => 'Dimension', // Dimension
@@ -111,7 +132,7 @@ return array(
 	'no path' => 'Ingen sökväg', //"No path",
 	'no file' => 'Ingen fil', //"No file",
 	'view type number missing' => 'Vytypsnummer saknas', // "View type number missing",
-	'Not enought Memory' => 'Inte tillräckligt med minne', // "Not enought Memory",
+	'Not enough Memory' => 'Inte tillräckligt med minne', // "Not enough Memory",
 	'max_size_reached' => 'Din bildkatalog har nått den maximala storleken av %d MB', // "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
 	'B' => "B",
 	'KB' => "KB",

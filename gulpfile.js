@@ -4,11 +4,11 @@ elixir(function(mix) {
   mix.less(
     [
       'style.less',
-      "../../../bower_components/bootstrap/less/bootstrap.less",
+      //"../../../bower_components/bootstrap/less/bootstrap.less",
       //"../../../bower_components/bootstrap/less/responsive.less",
-      "../../../bower_components/bootstrap-lightbox/less/bootstrap-lightbox.less"
+      //"../../../bower_components/bootstrap-lightbox/less/bootstrap-lightbox.less"
     ],
-    'resources/tmp/css');
+    'resources/tmp/css/style.css');
 
   mix.styles(
     [
@@ -16,17 +16,20 @@ elixir(function(mix) {
       "responsive.css",
       "bootstrap-lightbox.css",
       "../../../bower_components/bootstrap-modal/css/bootstrap-modal.css",
-      "../../../bower_components/dropzone/dist/dropzone.css",
       "../../../bower_components/jQuery-contextMenu/src/jquery.contextMenu.css",
       "style.css"
     ],
     'filemanager/css/style.css',
     'resources/tmp/css'
   );
+  mix.styles(
+    ["rtl-style.less"],
+    'filemanager/css/rtl-style.css',
+    'resources/assets/less'
+  );
 
   mix.scripts(
     [
-      "jquery/jquery.js",
       "bootstrap/js/bootstrap-transition.js",
       "bootstrap/js/bootstrap-affix.js",
       "bootstrap/js/bootstrap-dropdown.js",
@@ -42,20 +45,13 @@ elixir(function(mix) {
       "bootstrap/js/bootstrap-typeahead.js",
       "bootstrap-lightbox/js/bootstrap-lightbox.js",
       "jQuery-contextMenu/src/jquery.contextMenu.js",
-      "jquery_lazyload/jquery.lazyload.js",
+      "vanilla-lazyload/dist/lazyload.js",
       "jquery-scrollstop/jquery.scrollstop.js",
       "bootbox.js/bootbox.js",
-      "dropzone/dist/dropzone.js",
       "jquery-touchswipe/jquery.touchSwipe.js",
       "bootstrap-modal/js/bootstrap-modalmanager.js",
       "bootstrap-modal/js/bootstrap-modal.js",
-      "zeroclipboard/dist/ZeroClipboard.js",
-      "jquery-ui/ui/jquery.ui.core.js",
-      "jquery-ui/ui/jquery.ui.position.js",
-      "jquery-ui/ui/jquery.ui.widget.js",
-      "jquery-ui/ui/jquery.ui.mouse.js",
-      "jquery-ui/ui/jquery.ui.draggable.js",
-      "jquery-ui/ui/jquery.ui.droppable.js",
+      "clipboard/dist/clipboard.js",
       "jqueryui-touch-punch/jquery.ui.touch-punch.js",
     ],
     'filemanager/js/plugins.js',
@@ -65,6 +61,10 @@ elixir(function(mix) {
   mix.scripts(
     ['include.js'], 
     'filemanager/js/include.js');
+
+  mix.scripts(
+    ['include.commercial.js'], 
+    'filemanager/js/include.commercial.js');
 
   mix.scripts(
     ['plugin.js'], 
@@ -80,6 +80,4 @@ elixir(function(mix) {
     );
 
   mix.copy('bower_components/jPlayer', 'filemanager/js/jPlayer/');
-  mix.copy('bower_components/viewerjs/ViewerJS', 'filemanager/js/ViewerJS/');
-  mix.copy('bower_components/zeroclipboard/dist/ZeroClipboard.swf', 'filemanager/js/ZeroClipboard.swf');
 });

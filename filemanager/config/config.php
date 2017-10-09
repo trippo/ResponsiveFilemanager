@@ -1,4 +1,5 @@
 <?php
+$version = "9.12.0";
 if (session_id() == '') session_start();
 
 mb_internal_encoding('UTF-8');
@@ -8,7 +9,7 @@ mb_language('uni');
 mb_regex_encoding('UTF-8');
 ob_start('mb_output_handler');
 date_default_timezone_set('Europe/Rome');
-setlocale(LC_CTYPE, 'cs_CZ'); //correct transliteration
+setlocale(LC_CTYPE, 'en_US'); //correct transliteration
 
 /*
 |--------------------------------------------------------------------------
@@ -166,7 +167,7 @@ $config = array(
 	| in Megabytes
 	|
 	*/
-	'MaxSizeUpload' => 8,
+	'MaxSizeUpload' => 10000,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -174,7 +175,8 @@ $config = array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'fileFolderPermission' => 0755,
+	'filePermission' => 0755,
+	'folderPermission' => 0777,
 
 
 	/*
@@ -217,10 +219,6 @@ $config = array(
 
 	//Add ?484899493349 (time value) to returned images to prevent cache
 	'add_time_to_img'                       => false,
-
-	// -1: There is no lazy loading at all, 0: Always lazy-load images, 0+: The minimum number of the files in a directory
-	// when lazy loading should be turned on.
-	'lazy_loading_file_number_threshold'	=> 0,
 
 
 	//*******************************************
@@ -318,14 +316,10 @@ $config = array(
 	// if you want you can add html,css etc.
 	// but for security reasons it's NOT RECOMMENDED!
 	'editable_text_file_exts'                 => array( 'txt', 'log', 'xml', 'html', 'css', 'htm', 'js' ),
-
+	
 	// Preview with Google Documents
 	'googledoc_enabled'                       => true,
-	'googledoc_file_exts'                     => array( 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx' ),
-
-	// Preview with Viewer.js
-	'viewerjs_enabled'                        => true,
-	'viewerjs_file_exts'                      => array( 'pdf', 'odt', 'odp', 'ods' ),
+	'googledoc_file_exts'                     => array( 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx' , 'pdf', 'odt', 'odp', 'ods'),
 
 	// defines size limit for paste in MB / operation
 	// set 'FALSE' for no limit
@@ -372,12 +366,6 @@ $config = array(
 	* URL upload
 	*******************/
 	'url_upload'                             => true,
-
-	/*******************
-	* JAVA upload
-	*******************/
-	'java_upload'                             => true,
-	'JAVAMaxSizeUpload'                       => 200, //Gb
 
 
 	//************************************
@@ -437,8 +425,6 @@ $config = array(
 return array_merge(
 	$config,
 	array(
-		'MaxSizeUpload' => ((int)(ini_get('post_max_size')) < $config['MaxSizeUpload'])
-			? (int)(ini_get('post_max_size')) : $config['MaxSizeUpload'],
 		'ext'=> array_merge(
 			$config['ext_img'],
 			$config['ext_file'],
