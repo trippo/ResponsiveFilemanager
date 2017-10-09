@@ -1379,7 +1379,6 @@ class UploadHandler
 		if(is_file($this->get_upload_path($name))){
 			$uploaded_bytes = $this->fix_integer_overflow((int)$content_range[1]);
 			$totalSize = $this->get_file_size($this->get_upload_path($name));
-			file_put_contents('logs.txt', $name." ".$uploaded_bytes." ".$totalSize.PHP_EOL , FILE_APPEND | LOCK_EX);
 			if ($totalSize - $uploaded_bytes - $this->options['readfile_chunk_size'] < 0) {
 				$this->onUploadEnd($res);
 			}else{
