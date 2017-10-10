@@ -12,12 +12,9 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 }
 
 include 'include/mime_type_lib.php';
-
-if(isset($_POST["fldr"]) || isset($_SESSION["fldr"])){
-	if(isset($_POST["fldr"])){
-		$_SESSION['fldr'] = $_POST["fldr"];
-	}
-	$storeFolder = $config['current_path'].$_POST["fldr"]; // correct for when IE is in Compatibility mode
+if(isset($_POST["fldr"])){
+	$_POST['fldr'] = str_replace('undefined','',$_POST['fldr']);
+	$storeFolder = $config['current_path'].$_POST["fldr"];
 	$storeFolderThumb = $config['thumbs_base_path'].$_POST["fldr"];
 }
 
