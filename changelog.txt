@@ -1,6 +1,12 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.12.1
+*********************************************************
+- fix FTP support
+- fix problem with subfolder session
+
+*********************************************************
 *  RFM 9.12.0
 *********************************************************
 - fixed multiple security vulnerabilities (thanks to Ryan Dewhurst - BSc Ethical Hacking for Computer Security, CCNA)
