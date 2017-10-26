@@ -18,7 +18,7 @@ Responsive Filemanager Changelog
 - fix problem with url upload
 - multiple files, folder upload permission also WITH RECURSIVE FOLDER UPLOAD
 - fix the config.php inclusion on subfolders see CUSTOMISE CONFIGURATION FOR EACH FOLDER on documentation
-- RTL stylesheet on repository (if you want to use simple add the inclusione on dialog.php)
+- RTL stylesheet on repository (if you want to use simply include on dialog.php)
 - you can now drop files/folders everywhere to upload
 
 *********************************************************
