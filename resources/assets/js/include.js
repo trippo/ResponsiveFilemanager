@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.12.0";
+	var version = "9.12.1";
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
@@ -629,7 +629,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 		    jQuery('#fileupload').bind('fileuploadsubmit', function (e, data) {
 			    // The example input, doesn't have to be part of the upload form:
-			    data.formData = {fldr: jQuery('#fldr_value').val()+data.files[0].relativePath};
+			    data.formData = {fldr: jQuery('#sub_folder').val() + jQuery('#fldr_value').val()+data.files[0].relativePath};
 			});
 		    // Load existing files:
 		    jQuery('#fileupload').addClass('fileupload-processing');
@@ -1927,8 +1927,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					if (typeof windowParent[callback] == 'function')
 					{
 					  windowParent[callback](external);
-					}			
-				}				
+					}
+				}
 				close_window();
 			}
 		}

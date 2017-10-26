@@ -1,6 +1,9 @@
 <?php
+
 $time = time();
+
 $config = include 'config/config.php';
+
 //TODO switch to array
 extract($config, EXTR_OVERWRITE);
 
@@ -36,7 +39,6 @@ if (isset($_GET['lang']))
 		$_SESSION['RF']['language'] = $lang;
 	}
 }
-
 include 'include/utils.php';
 
 if (isset($_GET['fldr'])
@@ -81,7 +83,6 @@ if ($show_total_size) {
 /***
 *SUB-DIR CODE
 ***/
-
 if (!isset($_SESSION['RF']["subfolder"]))
 {
 	$_SESSION['RF']["subfolder"] = '';
@@ -106,20 +107,10 @@ if (($ftp && !$ftp->isDir($ftp_base_folder.$upload_dir.$rfm_subfolder.$subdir)) 
 }
 
 
-if (trim($rfm_subfolder) == "")
-{
-	$cur_dir			= $upload_dir.$subdir;
-	$cur_path			= $current_path.$subdir;
-	$thumbs_path	    = $thumbs_base_path;
-	$parent				= $subdir;
-}
-else
-{
-	$cur_dir			= $upload_dir.$rfm_subfolder.$subdir;
-	$cur_path			= $current_path.$rfm_subfolder.$subdir;
-	$thumbs_path	= $thumbs_base_path.$rfm_subfolder;
-	$parent				= $rfm_subfolder.$subdir;
-}
+$cur_dir		= $upload_dir.$rfm_subfolder.$subdir;
+$cur_path		= $current_path.$rfm_subfolder.$subdir;
+$thumbs_path	= $thumbs_base_path.$rfm_subfolder;
+$parent			= $rfm_subfolder.$subdir;
 
 if($ftp){
 	$cur_dir = $ftp_base_folder.$cur_dir;
@@ -463,7 +454,7 @@ $get_params = http_build_query($get_params);
 		</div>
 		<div class="space10"></div>
 		<div class="tabbable upload-tabbable"> <!-- Only required for left/right tabs -->
-			<div class="test">
+			<div class="container1">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#baseUpload" data-toggle="tab"><?php echo trans('Upload_base');?></a></li>
 				<?php if($url_upload){ ?>
@@ -473,9 +464,8 @@ $get_params = http_build_query($get_params);
 			<div class="tab-content">
 				<div class="tab-pane active" id="baseUpload">
 					<!-- The file upload form used as target for the file upload widget -->
-					    <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
-					<div class="test2">
-					    
+					<form id="fileupload" action="" method="POST" enctype="multipart/form-data">
+						<div class="container2">
 					        <div class="fileupload-buttonbar">
 					        	 <!-- The global progress state -->
 					            <div class="fileupload-progress fade">
@@ -491,7 +481,7 @@ $get_params = http_build_query($get_params);
 					                <span class="btn btn-success fileinput-button">
 					                    <i class="glyphicon glyphicon-plus"></i>
 					                    <span><?php echo trans('Upload_add_files');?></span>
-					                    <input type="file" name="files[]">
+					                    <input type="file" name="files[]" multiple="multiple">
 					                </span>
 					                <button type="submit" class="btn btn-primary start">
 					                    <i class="glyphicon glyphicon-upload"></i>
@@ -506,9 +496,8 @@ $get_params = http_build_query($get_params);
 					        	<table role="presentation" class="table table-striped table-condensed small"><tbody class="files"></tbody></table>
 					    	</div>
 					    	<div class="upload-help"><?php echo trans('Upload_base_help');?></div>
-					    
-					</div>
-				</form>
+						</div>
+					</form>
 					<!-- The template to display files available for upload -->
 					<script id="template-upload" type="text/x-tmpl">
 					{% for (var i=0, file; file=o.files[i]; i++) { %}
@@ -606,9 +595,9 @@ $class_ext = '';
 $src = '';
 if($ftp){
 	try{
-		$files = $ftp->scanDir("/".$ftp_base_folder.$upload_dir.$rfm_subfolder.$subdir);
-		if (!$ftp->isDir("/".$ftp_base_folder.$ftp_thumbs_dir.$rfm_subfolder.$subdir)){
-			create_folder(false,"/".$ftp_base_folder.$ftp_thumbs_dir.$rfm_subfolder.$subdir,$ftp,$config);
+		$files = $ftp->scanDir($ftp_base_folder.$upload_dir.$rfm_subfolder.$subdir);
+		if (!$ftp->isDir($ftp_base_folder.$ftp_thumbs_dir.$rfm_subfolder.$subdir)){
+			create_folder(false,$ftp_base_folder.$ftp_thumbs_dir.$rfm_subfolder.$subdir,$ftp,$config);
 		}
 	}catch(FtpClient\FtpException $e){
 		echo "Error: ";

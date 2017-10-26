@@ -12,36 +12,29 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 }
 
 include 'include/mime_type_lib.php';
-if(isset($_POST["fldr"])){
-	$_POST['fldr'] = str_replace('undefined','',$_POST['fldr']);
-	$storeFolder = $config['current_path'].$_POST["fldr"];
-	$storeFolderThumb = $config['thumbs_base_path'].$_POST["fldr"];
-}
+
 
 $ftp=ftp_con($config);
 if($ftp){
 	$source_base = $config['ftp_base_folder'].$config['upload_dir'];
 	$thumb_base = $config['ftp_base_folder'].$config['ftp_thumbs_dir'];
-	$path_pos  = strpos($storeFolder,$source_base);
-	$thumb_pos = strpos($storeFolderThumb,$thumb_base);
 
 }else{
 	$source_base = $config['current_path'];
 	$thumb_base = $config['thumbs_base_path'];
-	$path_pos  = strpos($storeFolder,$source_base);
-	$thumb_pos = strpos($storeFolderThumb,$thumb_base);
+}
+if(isset($_POST["fldr"])){
+	$_POST['fldr'] = str_replace('undefined','',$_POST['fldr']);
+	$storeFolder = $source_base.$_POST["fldr"];
+	$storeFolderThumb = $thumb_base.$_POST["fldr"];
+}else{
+	return;
 }
 
-if ($path_pos!==0
-	|| $thumb_pos !==0
-	|| strpos($storeFolderThumb,'../',strlen($thumb_base)) !== FALSE
-	|| strpos($storeFolderThumb,'./',strlen($thumb_base)) !== FALSE
-	|| strpos($storeFolder,'../',strlen($source_base)) !== FALSE
-	|| strpos($storeFolder,'./',strlen($source_base)) !== FALSE
-	|| strpos($storeFolderThumb,'..\\',strlen($thumb_base)) !== FALSE
-	|| strpos($storeFolderThumb,'.\\',strlen($thumb_base)) !== FALSE
-	|| strpos($storeFolder,'..\\',strlen($source_base)) !== FALSE
-	|| strpos($storeFolder,'.\\',strlen($source_base)) !== FALSE )
+if (strpos($_POST["fldr"],'../') !== FALSE
+	|| strpos($_POST["fldr"],'./') !== FALSE
+	|| strpos($_POST["fldr"],'..\\') !== FALSE
+	|| strpos($_POST["fldr"],'.\\') !== FALSE )
 {
 	response(trans('wrong path'.AddErrorLocation()))->send();
 	exit;
@@ -130,6 +123,16 @@ $uploadConfig = array(
     'correct_image_extensions' => true,
     'print_response' => false
 );
+
+if($ftp){
+	if (!is_dir($config['ftp_temp_folder'])) {
+		mkdir($config['ftp_temp_folder'], $config['folderPermission'], true);
+	}
+	if (!is_dir($config['ftp_temp_folder']."thumbs")) {
+		mkdir($config['ftp_temp_folder']."thumbs", $config['folderPermission'], true);
+	}
+	$uploadConfig['upload_dir'] = $config['ftp_temp_folder'];
+}
 
 $upload_handler = new UploadHandler($uploadConfig,true, $messages);
 

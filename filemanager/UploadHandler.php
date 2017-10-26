@@ -1058,8 +1058,7 @@ class UploadHandler
 		$this->destroy_image_object($file_path);
 	}
 
-	protected function handle_file_upload($uploaded_file, $name, $size, $type, $error,
-			$index = null, $content_range = null) {
+	protected function handle_file_upload($uploaded_file, $name, $size, $type, $error, $index = null, $content_range = null) {
 		$file = new \stdClass();
 		$file->name = $this->get_file_name($uploaded_file, $name, $size, $type, $error,
 			$index, $content_range);
@@ -1068,7 +1067,7 @@ class UploadHandler
 		if ($this->validate($uploaded_file, $file, $error, $index)) {
 			$this->handle_form_data($file, $index);
 			$upload_dir = $this->get_upload_path();
-			if (!is_dir($upload_dir)) {
+			if (!$this->options['ftp'] && !is_dir($upload_dir)) {
 				mkdir($upload_dir, $this->options['mkdir_mode'], true);
 			}
 			$file_path = $this->get_upload_path($file->name);
@@ -1395,18 +1394,21 @@ class UploadHandler
 	public function onUploadEnd ($res){
 		$targetPath = $this->options['storeFolder'];
 		$targetPathThumb = $this->options['storeFolderThumb'];
-		if (!is_dir($targetPathThumb)) {
-			mkdir($targetPathThumb, $this->options['mkdir_mode'], true);
-		}
 
-		$targetFile =  $targetPath. $res['files'][0]->name;
-		$targetFileThumb =  $targetPathThumb. $res['files'][0]->name;
-
-
-		if(is_file($targetFile)) {
-			chmod($targetFile, $this->options['config']['filePermission']);
+		if(!$this->options['ftp']){
+			$targetFile =  $targetPath. $res['files'][0]->name;
+			$targetFileThumb =  $targetPathThumb. $res['files'][0]->name;
+			if (!is_dir($targetPathThumb)) {
+				mkdir($targetPathThumb, $this->options['mkdir_mode'], true);
+			}
+			if(is_file($targetFile)) {
+				chmod($targetFile, $this->options['config']['filePermission']);
+			}else{
+				chmod($targetFile, $this->options['config']['folderPermission']);
+			}
 		}else{
-			chmod($targetFile, $this->options['config']['folderPermission']);
+			$targetFile = $this->options['config']['ftp_temp_folder'].$res['files'][0]->name;
+			$targetFileThumb =  $this->options['config']['ftp_temp_folder']."thumbs/". $res['files'][0]->name;
 		}
 
 		//check if image (and supported)
