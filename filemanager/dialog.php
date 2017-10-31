@@ -146,9 +146,17 @@ if(!$ftp){
 }
 if (isset($_GET['callback']))
 {
-	$callback = strip_tags($_GET['callback']);
+   $callback = strip_tags($_GET['callback']);
+    $_SESSION['RF']["callback"]= $callback;
+} else{
+    if(isset($_SESSION['RF']["callback"]))
+    {
+        $callback = $_SESSION['RF']["callback"];
+    }else{
+        $callback=0;
+    }
+
 }
-else $callback=0;
 if (isset($_GET['popup']))
 {
 	$popup = strip_tags($_GET['popup']);
