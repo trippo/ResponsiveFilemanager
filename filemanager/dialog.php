@@ -130,7 +130,7 @@ if(!$ftp){
 		if (file_exists($current_path.$parent."config.php"))
 		{
 			$configTemp = include $current_path.$parent.'config.php';
-			$config = $config + $configTemp;
+			$config = array_merge($config,$configTemp);
 			extract($config, EXTR_OVERWRITE);
 			$cycle = FALSE;
 		}
@@ -146,7 +146,7 @@ if(!$ftp){
 }
 if (isset($_GET['callback']))
 {
-   $callback = strip_tags($_GET['callback']);
+	$callback = strip_tags($_GET['callback']);
     $_SESSION['RF']["callback"]= $callback;
 } else{
     if(isset($_SESSION['RF']["callback"]))
@@ -155,8 +155,8 @@ if (isset($_GET['callback']))
     }else{
         $callback=0;
     }
-
 }
+
 if (isset($_GET['popup']))
 {
 	$popup = strip_tags($_GET['popup']);

@@ -52,7 +52,7 @@ while ($cycle && $i < $max_cycles)
 	if (file_exists($path."config.php"))
 	{
 		$configTemp = include $path.'config.php';
-		$config = $config + $configTemp;
+		$config = array_merge($config,$configTemp);
 		//TODO switch to array
 		$cycle = FALSE;
 	}
