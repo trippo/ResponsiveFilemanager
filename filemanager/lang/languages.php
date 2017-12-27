@@ -22,6 +22,7 @@ return array(
 	'lt' => 'Lietuvių kalba',
 	'mn_MN' => 'монгол',
 	'nb_NO' => 'Norsk bokmål',
+	'nn_NO' => 'Norsk nynorsk',
 	'nl' => 'Nederlands, Vlaams',
 	'pl' => 'Język polski, polszczyzna',
 	'pt_BR' => 'Português(Brazil)',
