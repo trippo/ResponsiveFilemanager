@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.12.1";
+	var version = "9.12.2";
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
@@ -619,29 +619,30 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		makeUploader: function()
 		{
 			jQuery('#fileupload').fileupload({
-		        // Uncomment the following to send cross-domain cookies:
-		        //xhrFields: {withCredentials: true},
-		        url: 'upload.php',
-		        maxChunkSize: 2 * 1024 * 1024 // 2 MB
-		    });
+				// Uncomment the following to send cross-domain cookies:
+				//xhrFields: {withCredentials: true},
+				url: 'upload.php',
+				maxChunkSize: 2 * 1024 * 1024 // 2 MB
+			});
 			jQuery('#fileupload').bind('fileuploaddrop', function (e, data) {
+				console.log(data);
 				jQuery('.uploader').show(200);
 			});
-		    jQuery('#fileupload').bind('fileuploadsubmit', function (e, data) {
-			    // The example input, doesn't have to be part of the upload form:
-			    data.formData = {fldr: jQuery('#sub_folder').val() + jQuery('#fldr_value').val()+data.files[0].relativePath};
+			jQuery('#fileupload').bind('fileuploadsubmit', function (e, data) {
+				// The example input, doesn't have to be part of the upload form:
+				data.formData = {fldr: jQuery('#sub_folder').val() + jQuery('#fldr_value').val()+data.files[0].relativePath};
 			});
-		    // Load existing files:
-		    jQuery('#fileupload').addClass('fileupload-processing');
-		    $.ajax({
-		        // Uncomment the following to send cross-domain cookies:
-		        //xhrFields: {withCredentials: true},
-		        url: jQuery('#fileupload').fileupload('option', 'url'),
-		        dataType: 'json',
-		        context: jQuery('#fileupload')[0]
-		    }).always(function () {
-		        jQuery(this).removeClass('fileupload-processing');
-		    });
+			// Load existing files:
+			jQuery('#fileupload').addClass('fileupload-processing');
+			$.ajax({
+				// Uncomment the following to send cross-domain cookies:
+				//xhrFields: {withCredentials: true},
+				url: jQuery('#fileupload').fileupload('option', 'url'),
+				dataType: 'json',
+				context: jQuery('#fileupload')[0]
+			}).always(function () {
+				jQuery(this).removeClass('fileupload-processing');
+			});
 			// upload btn
 			jQuery('.upload-btn').on('click', function ()
 			{
@@ -2056,33 +2057,33 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 	}
 	function close_window()
-    {
-        if (jQuery('#popup').val() == 1)
-        {
-            window.close();
-        }
-        else
-        {
-            if (typeof parent.jQuery(".modal:has(iframe)").modal == "function"){
-                parent.jQuery(".modal:has(iframe)").modal("hide");
-            }
-            if (typeof parent.jQuery !== "undefined" && parent.jQuery)
-            {
-                if (typeof parent.jQuery.fancybox == 'object'){
-                    parent.jQuery.fancybox.getInstance().close();
-                }
-                else if(typeof parent.jQuery.fancybox == 'function'){
-                    parent.jQuery.fancybox.close();
-                }
-            }
-            else
-            {
-                if(typeof parent.$.fancybox == 'function'){
-                    parent.$.fancybox.close();
-                }
-            }
-        }
-    }
+	{
+		if (jQuery('#popup').val() == 1)
+		{
+			window.close();
+		}
+		else
+		{
+			if (typeof parent.jQuery(".modal:has(iframe)").modal == "function"){
+				parent.jQuery(".modal:has(iframe)").modal("hide");
+			}
+			if (typeof parent.jQuery !== "undefined" && parent.jQuery)
+			{
+				if (typeof parent.jQuery.fancybox == 'object'){
+					parent.jQuery.fancybox.getInstance().close();
+				}
+				else if(typeof parent.jQuery.fancybox == 'function'){
+					parent.jQuery.fancybox.close();
+				}
+			}
+			else
+			{
+				if(typeof parent.$.fancybox == 'function'){
+					parent.$.fancybox.close();
+				}
+			}
+		}
+	}
 
 	apply_file_duplicate = function(container, name)
 	{
@@ -2398,17 +2399,17 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 //IE enable
 (function () {
-    if (typeof window.CustomEvent === "function") {
-        return false;
-    }
+	if (typeof window.CustomEvent === "function") {
+		return false;
+	}
 
-    function CustomEvent(event, params) {
-        params = params || {bubbles: false, cancelable: false, detail: undefined};
-        var evt = document.createEvent("CustomEvent");
-        evt.initCustomEvent (event, params.bubbles, params.cancelable, params.detail);
-        return evt;
-    }
+	function CustomEvent(event, params) {
+		params = params || {bubbles: false, cancelable: false, detail: undefined};
+		var evt = document.createEvent("CustomEvent");
+		evt.initCustomEvent (event, params.bubbles, params.cancelable, params.detail);
+		return evt;
+	}
 
-    CustomEvent.prototype = window.Event.prototype;
-    window.CustomEvent = CustomEvent;
+	CustomEvent.prototype = window.Event.prototype;
+	window.CustomEvent = CustomEvent;
 })();

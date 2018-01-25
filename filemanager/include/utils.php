@@ -465,7 +465,11 @@ function create_folder($path = null, $path_thumbs = null,$ftp = null,$config = n
 		$oldumask = umask(0);
 		if ($path && ! file_exists($path))
 		{
-			mkdir($path, 0755, true);
+			$permission = 0755;
+			if(isset($config['folderPermission'])){
+				$permission = $config['folderPermission'];
+			}
+			mkdir($path, $permission, true);
 		} // or even 01777 so you get the sticky bit set
 		if ($path_thumbs && ! file_exists($path_thumbs))
 		{
