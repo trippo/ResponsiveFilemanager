@@ -31,10 +31,12 @@ if(isset($_POST["fldr"])){
 	return;
 }
 
-if (strpos($_POST["fldr"],'../') !== FALSE
-	|| strpos($_POST["fldr"],'./') !== FALSE
-	|| strpos($_POST["fldr"],'..\\') !== FALSE
-	|| strpos($_POST["fldr"],'.\\') !== FALSE )
+$fldr = rawurldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
+
+if (strpos($fldr,'../') !== FALSE
+	|| strpos($fldr,'./') !== FALSE
+	|| strpos($fldr,'..\\') !== FALSE
+	|| strpos($fldr,'.\\') !== FALSE )
 {
 	response(trans('wrong path'.AddErrorLocation()))->send();
 	exit;
@@ -95,7 +97,8 @@ if (function_exists('mime_content_type')){
 }
 $extension = get_extension_from_mime($mime_type);
 
-if($extension=='so'){
+
+if($extension=='so' || $extension=='' || $mime_type == "text/troff"){
 	$extension = $info['extension'];
 }
 $_FILES['files']['name'][0] = fix_filename($info['filename'].".".$extension,$config);

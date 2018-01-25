@@ -43,15 +43,14 @@ include 'include/utils.php';
 
 $subdir_path = '';
 if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
-	$subdir_path = rawurldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
+	$subdir_path = rawurldecode(trim(strip_tags($_GET['fldr']),"/"));
 }
-
 if (strpos($subdir_path,'../') === FALSE
 	&& strpos($subdir_path,'./') === FALSE
 	&& strpos($subdir_path,'..\\') === FALSE
 	&& strpos($subdir_path,'.\\') === FALSE)
 {
-	$subdir = $subdir_path;
+	$subdir = strip_tags($subdir_path) ."/";
 	$_SESSION['RF']["filter"]='';
 }
 else { $subdir = ''; }
@@ -236,8 +235,15 @@ if (!isset($_GET['type'])){
 $extensions=null;
 if (isset($_GET['extensions'])){
 	$extensions = json_decode(urldecode($_GET['extensions']));
+	$ext_tmp = array();
+	foreach($extensions as $extension){
+		$extension = fix_strtolower($extension);
+		if(in_array( $extension, $config['ext'])){
+			$ext_tmp[]=$extension;
+		}
+	}
 	if($extensions){
-		$ext = $extensions;
+		$ext = $ext_tmp;
 		$show_filter_buttons = false;
 	}
 }
@@ -978,8 +984,13 @@ $files=$sorted;
 			foreach ($files as $nu=>$file_array) {
 				$file=$file_array['file'];
 
-				if($file == '.' || $file == '..' || $file_array['extension']==trans('Type_dir') || in_array($file, $hidden_files) || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
+				if($file == '.' || $file == '..' || $file_array['extension']==trans('Type_dir') || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
 					continue;
+				foreach ( $hidden_files as $hidden_file ) {
+					if ( fnmatch($hidden_file, $file, FNM_PATHNAME) ) {
+						continue 2;
+					}
+				}
 
 				$filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
 				if(!$ftp){
@@ -1031,8 +1042,6 @@ $files=$sorted;
 						if(!file_exists($src_thumb) ){
 							if(!create_img($file_path, $creation_thumb_path, 122, 91,'crop',$config)){
 								$src_thumb=$mini_src="";
-							}else{
-								new_thumbnails_creation($current_path.$rfm_subfolder.$subdir,$file_path,$file,$current_path,$config);
 							}
 						}
 						//check if is smaller than thumb
@@ -1129,7 +1138,7 @@ $files=$sorted;
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 
 					<a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" onclick="$('#form<?php echo $nu;?>').submit();"><i class="icon-download"></i></a>
-					<?php if($is_img && $src_thumb!="" && $file_array['extension']!="tiff" && $file_array['extension']!="tif"){ ?>
+					<?php if($is_img && $src_thumb!=""){ ?>
 					<a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 					<?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$jplayer_ext)){ ?>
 					<a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"

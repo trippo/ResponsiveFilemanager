@@ -1,6 +1,12 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.12.2
+*********************************************************
+- fixed a security vulnerability (thanks to sashaptrw)
+- fixed other minor problems
+
+*********************************************************
 *  RFM 9.12.1
 *********************************************************
 - fix FTP support
