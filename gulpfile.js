@@ -4,17 +4,22 @@ elixir(function(mix) {
   mix.less(
     [
       'style.less',
-      //"../../../bower_components/bootstrap/less/bootstrap.less",
-      //"../../../bower_components/bootstrap/less/responsive.less",
-      //"../../../bower_components/bootstrap-lightbox/less/bootstrap-lightbox.less"
     ],
-    'resources/tmp/css/style.css');
+    'resources/tmp/css/style.css',
+    'resources/assets/less');
+
+  mix.less(
+    [
+      "../../../bower_components/bootstrap/less/bootstrap.less",
+      "../../../bower_components/bootstrap/less/responsive.less",
+      "../../../bower_components/bootstrap-lightbox/less/bootstrap-lightbox.less"
+    ],
+    'resources/tmp/css/lib.css',
+    'bower_components');
 
   mix.styles(
     [
-      "bootstrap.css",
-      "responsive.css",
-      "bootstrap-lightbox.css",
+      "lib.css",
       "../../../bower_components/bootstrap-modal/css/bootstrap-modal.css",
       "../../../bower_components/jQuery-contextMenu/src/jquery.contextMenu.css",
       "style.css"
@@ -22,11 +27,12 @@ elixir(function(mix) {
     'filemanager/css/style.css',
     'resources/tmp/css'
   );
-  mix.styles(
-    ["rtl-style.less"],
-    'filemanager/css/rtl-style.css',
-    'resources/assets/less'
-  );
+
+  // mix.styles(
+  //   ["rtl-style.less"],
+  //   'filemanager/css/rtl-style.css',
+  //   'resources/assets/less'
+  // );
 
   mix.scripts(
     [
@@ -61,10 +67,6 @@ elixir(function(mix) {
   mix.scripts(
     ['include.js'], 
     'filemanager/js/include.js');
-
-  mix.scripts(
-    ['include.commercial.js'], 
-    'filemanager/js/include.commercial.js');
 
   mix.scripts(
     ['plugin.js'], 
