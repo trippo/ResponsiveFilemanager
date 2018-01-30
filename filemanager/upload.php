@@ -31,7 +31,7 @@ if(isset($_POST["fldr"])){
 	return;
 }
 
-$fldr = rawurldecode(trim(strip_tags($_GET['fldr']),"/") ."/");
+$fldr = rawurldecode(trim(strip_tags($_POST['fldr']),"/") ."/");
 
 if (strpos($fldr,'../') !== FALSE
 	|| strpos($fldr,'./') !== FALSE
