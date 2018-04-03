@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Pilih',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Hapus',
 	'Open' => 'Buka',
 	'Confirm_del' => 'Apakah anda yakin menghapus berkas ini?',

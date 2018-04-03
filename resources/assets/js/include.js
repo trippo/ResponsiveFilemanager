@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.12.2";
+	var version = "9.13.0";
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
@@ -520,11 +520,19 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 			function handleFileLink($el)
 			{
-				window[ $el.attr('data-function') ]($el.attr('data-file'), jQuery('#field_id').val());
+				var fun = $el.attr('data-function');
+				console.log(fun);
+				if(fun=="apply_multiple"){
+					$el.find('.selection:visible').trigger('click');
+					$el.find('.selector:visible').trigger('click');
+				}else{
+					window[fun]($el.attr('data-file'), jQuery('#field_id').val());	
+				}
 			}
 
-			jQuery('ul.grid').on('click','.link',function ()
+			jQuery('ul.grid').on('click','.link',function (e)
 			{
+				e.stopPropagation();
 				handleFileLink(jQuery(this));
 			});
 
@@ -790,6 +798,17 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				jQuery('.grid li.' + li).show(300);
 			}
 		}
+		jQuery('.selector').on('click',function(e){
+			e.stopPropagation();
+			if(jQuery('.selection:checkbox:checked:visible').length>0){
+				jQuery("#multiple-selection").show(300);
+			}else{
+				jQuery("#multiple-selection").hide(300);
+			}
+			// var i = jQuery(this).closest('input');
+			// console.log(i);
+			// i.prop('checked', !i.prop("checked"));
+		})
 
 		// preview image
 		jQuery('#full-img').on('click', function ()
@@ -954,6 +973,48 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				clear_clipboard();
 			}
+		});
+		var getFiles = function(){
+			var files = [];
+			jQuery('.selection:checkbox:checked:visible').each(function () {
+				files.push(jQuery(this).val());
+			});
+			return files;
+		};
+
+		jQuery('.multiple-action-btn').on('click',function(){
+			var files = getFiles();
+			window[ jQuery(this).attr('data-function') ](files, jQuery('#field_id').val());
+		});
+		jQuery('.multiple-deselect-btn').on('click',function(){
+			$('.selection:checkbox').removeAttr('checked');
+			jQuery("#multiple-selection").hide(300);
+		});
+
+		jQuery('.multiple-select-btn').on('click',function(){
+			$('.selection:checkbox:visible').prop('checked',true);
+		});
+
+		jQuery('.multiple-delete-btn').on('click', function ()
+		{
+			if(jQuery('.selection:checkbox:checked:visible').length==0){
+				return;
+			}
+			var _this = jQuery(this);
+			bootbox.confirm(_this.attr('data-confirm'), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
+			{
+				if (result == true)
+				{
+					var files = getFiles();
+					execute_multiple_action('delete_files', files, '', '', '');
+					var fil = jQuery('#files_number');
+					fil.text(parseInt(fil.text())-files.length);
+					jQuery('.selection:checkbox:checked:visible').each(function () {
+						jQuery(this).closest('li').remove();
+					});
+
+				}
+			});
 		});
 
 		// reverted to jquery from Modernizr.csstransforms because drag&drop
@@ -1684,6 +1745,37 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 	}
 
+	function returnUrls(files){
+		var path = jQuery('#cur_dir').val();
+		path = path.replace('\\', '/');
+		var subdir = jQuery('#subdir').val();
+		subdir = subdir.replace('\\', '/');
+		var base_url = jQuery('#base_url').val();
+		var urls=[];
+		var is_return_relative_url = jQuery('#return_relative_url').val();
+		var is_ftp = jQuery('#ftp').val() == true;
+		for(var i = 0; i< files.length; i++){
+			var file = files[i];
+			if(is_ftp){
+				urls.push(encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file));
+			}else{
+				urls.push(encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file));
+			}
+		}
+		return urls;
+	}
+
+	function returnWindowParent(){
+		if (jQuery('#popup').val() == 1)
+		{
+			return window.opener;
+		}
+		else
+		{
+			return window.parent;
+		}
+	}
+
 	encodeURL = function(url)
 	{
 		var tmp = url.split('/');
@@ -1694,42 +1786,30 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		return tmp.join('/');
 	}
 
-	apply = function(file, external)
+	apply = function(files, external)
 	{
-		var windowParent;
-
-		if (jQuery('#popup').val() == 1)
-		{
-			windowParent = window.opener;
-		}
-		else
-		{
-			windowParent = window.parent;
-		}
+		var windowParent = returnWindowParent();
 		var callback=jQuery('#callback').val();
-		var path = jQuery('#cur_dir').val();
-		var subdir = jQuery('#subdir').val();
-		var base_url = jQuery('#base_url').val();
-		var alt_name = file.substr(0, file.lastIndexOf('.'));
-		var ext = file.split('.').pop();
-		ext = ext.toLowerCase();
 		var fill = '';
 		var ext_audio = ['ogg', 'mp3', 'wav'];
 		var ext_video = ['mp4', 'ogg', 'webm'];
-		if(jQuery('#ftp').val()==true){
-			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
-		}else{
-			var is_return_relative_url = jQuery('#return_relative_url').val();
-			var url = encodeURL((is_return_relative_url == 1 ? path : base_url + path) + file);
-		}
 
+		if(!Array.isArray(files)){
+			files = new Array(files);
+		}
+		var urls=returnUrls(files);
+
+		var res = JSON.stringify(urls);
+		if(urls.length==1){
+			res = urls[0];
+		}
 		if (external != "")
 		{
 			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
-						url: url,
+						url: res,
 						field_id: external
 					},
 					'*'
@@ -1738,7 +1818,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			else
 			{
 				var target = jQuery('#' + external, windowParent.document);
-				target.val(url).trigger('change');
+
+				target.val(res).trigger('change');
 				if(callback==0)
 				{
 					if (typeof windowParent.responsive_filemanager_callback == 'function')
@@ -1749,48 +1830,57 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					if (typeof windowParent[callback] == 'function')
 					{
 					  windowParent[callback](external);
-					}			
+					}
 				}
 				close_window();
 			}
 		}
 		else
 		{
+			for(var i = 0; i< urls.length; i++){
 
-			if ($.inArray(ext, ext_img) > -1)
-			{
-				url = url + "?" + new Date().getTime();
-				fill = '<img src="' + url + '" alt="' + alt_name + '" />';
-			}
-			else
-			{
-				if ($.inArray(ext, ext_video) > -1)
+				var file = files[i];
+				var alt_name = file.substr(0, file.lastIndexOf('.'));
+				var ext = file.split('.').pop();
+				ext = ext.toLowerCase();
+				var url = urls[i];
+				if ($.inArray(ext, ext_img) > -1)
 				{
-					fill = '<video controls source src="' + url + '" type="video/' + ext + '">' + alt_name + '</video>';
+					if(jQuery('#add_time_to_img').val()){
+						url = url + "?" + new Date().getTime();
+					}
+					fill += '<img src="' + url + '" alt="' + alt_name + '" /> ';
 				}
 				else
 				{
-					if ($.inArray(ext, ext_audio) > -1)
+					if ($.inArray(ext, ext_video) > -1)
 					{
-						if (ext == 'mp3')
-						{
-							ext = 'mpeg';
-						}
-						fill = '<audio controls src="' + url + '" type="audio/' + ext + '">' + alt_name + '</audio>';
+						fill += '<video controls source src="' + url + '" type="video/' + ext + '">' + alt_name + '</video> ';
 					}
 					else
 					{
-						fill = '<a href="' + url + '" title="' + alt_name + '">' + alt_name + '</a>';
+						if ($.inArray(ext, ext_audio) > -1)
+						{
+							if (ext == 'mp3')
+							{
+								ext = 'mpeg';
+							}
+							fill += '<audio controls src="' + url + '" type="audio/' + ext + '">' + alt_name + '</audio> ';
+						}
+						else
+						{
+							fill += '<a href="' + url + '" title="' + alt_name + '">' + alt_name + '</a> ';
+						}
 					}
-				}
 
+				}
 			}
 
 			if (jQuery('#crossdomain').val() == 1)
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
-						url: url,
+						url: res,
 						field_id: null,
 						html: fill
 					},
@@ -1817,27 +1907,18 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	}
 
 
-	apply_link = function(file, external)
+	apply_link = function(files, external)
 	{
-		if (jQuery('#popup').val() == 1)
-		{
-			var windowParent = window.opener;
-		}
-		else
-		{
-			var windowParent = window.parent;
-		}
+		var windowParent = returnWindowParent();
 		var callback=jQuery('#callback').val();
-		var path = jQuery('#cur_dir').val();
-		path = path.replace('\\', '/');
-		var subdir = jQuery('#subdir').val();
-		subdir = subdir.replace('\\', '/');
-		var base_url = jQuery('#base_url').val();
-		if(jQuery('#ftp').val()==true){
-			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
-		}else{
-			var is_return_relative_url = jQuery('#return_relative_url').val();
-			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		if(!Array.isArray(files)){
+			files = new Array(files);
+		}
+		var urls=returnUrls(files);
+
+		var res = JSON.stringify(urls);
+		if(urls.length==1){
+			res = urls[0];
 		}
 
 		if (external != "")
@@ -1846,7 +1927,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
-						url: url,
+						url: urls[0],
 						field_id: external
 					},
 					'*'
@@ -1855,7 +1936,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			else
 			{
 				var target = jQuery('#' + external, windowParent.document);
-				target.val(url).trigger('change');
+				target.val(res).trigger('change');
 				if(callback==0)
 				{
 					if (typeof windowParent.responsive_filemanager_callback == 'function')
@@ -1866,40 +1947,29 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					if (typeof windowParent[callback] == 'function')
 					{
 					  windowParent[callback](external);
-					}			
-				}				
+					}
+				}
 				close_window();
 			}
 		}
 		else
 		{
-			apply_any(url);
+			apply_any(urls[0]);
 		}
 	}
 
-	apply_img = function(file, external)
+	apply_img = function(files, external)
 	{
-		var windowParent;
-
-		if (jQuery('#popup').val() == 1)
-		{
-			windowParent = window.opener;
-		}
-		else
-		{
-			windowParent = window.parent;
-		}
+		var windowParent = returnWindowParent();
 		var callback=jQuery('#callback').val();
-		var path = jQuery('#cur_dir').val();
-		path = path.replace('\\', '/');
-		var subdir = jQuery('#subdir').val();
-		subdir = subdir.replace('\\', '/');
-		var base_url = jQuery('#base_url').val();
-		if(jQuery('#ftp').val()==true){
-			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
-		}else{
-			var is_return_relative_url = jQuery('#return_relative_url').val();
-			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		if(!Array.isArray(files)){
+			files = new Array(files);
+		}
+		var urls=returnUrls(files);
+
+		var res = JSON.stringify(urls);
+		if(urls.length==1){
+			res = urls[0];
 		}
 
 		if (external != "")
@@ -1908,7 +1978,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
-						url: url,
+						url: urls[0],
 						field_id: external
 					},
 					'*'
@@ -1917,7 +1987,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			else
 			{
 				var target = jQuery('#' + external, windowParent.document);
-				target.val(url).trigger('change');
+				target.val(res).trigger('change');
 				if(callback==0)
 				{
 					if (typeof windowParent.responsive_filemanager_callback == 'function')
@@ -1936,34 +2006,24 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		else
 		{
 			if(jQuery('#add_time_to_img').val()){
-				url = url + "?" + new Date().getTime();
+				var url = urls[0] + "?" + new Date().getTime();
 			}
 			apply_any(url);
 		}
 	}
 
-	apply_video = function(file, external)
+	apply_video = function(files, external)
 	{
-		var windowParent;
-		if (jQuery('#popup').val() == 1)
-		{
-			windowParent = window.opener;
-		}
-		else
-		{
-			windowParent = window.parent;
-		}
+		var windowParent = returnWindowParent();
 		var callback=jQuery('#callback').val();
-		var path = jQuery('#cur_dir').val();
-		path = path.replace('\\', '/');
-		var subdir = jQuery('#subdir').val();
-		subdir = subdir.replace('\\', '/');
-		var base_url = jQuery('#base_url').val();
-		if(jQuery('#ftp').val()==true){
-			var url = encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file);
-		}else{
-			var is_return_relative_url = jQuery('#return_relative_url').val();
-			var url = encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file);
+		if(!Array.isArray(files)){
+			files = new Array(files);
+		}
+		var urls=returnUrls(files);
+		console.log(urls);
+		var res = JSON.stringify(urls);
+		if(urls.length==1){
+			res = urls[0];
 		}
 
 		if (external != "")
@@ -1972,7 +2032,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
-						url: url,
+						url: urls[0],
 						field_id: external
 					},
 					'*'
@@ -1981,7 +2041,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			else
 			{
 				var target = jQuery('#' + external, windowParent.document);
-				target.val(url).trigger('change');
+				target.val(res).trigger('change');
 				if(callback==0)
 				{
 					if (typeof windowParent.responsive_filemanager_callback == 'function')
@@ -1992,14 +2052,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					if (typeof windowParent[callback] == 'function')
 					{
 					  windowParent[callback](external);
-					}			
-				}				
+					}
+				}
 				close_window();
 			}
 		}
 		else
 		{
-			apply_any(url);
+			apply_any(urls[0]);
 		}
 	}
 
@@ -2256,6 +2316,38 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				data: {
 					path: file,
 					name: name.replace('/', '')
+				}
+			}).done(function (msg)
+			{
+				if (msg != "")
+				{
+					bootbox.alert(msg);
+					return false;
+				}
+				else
+				{
+					if (function_name != "")
+					{
+						window[ function_name ](container, name);
+					}
+				}
+				return true;
+			});
+		}
+	}
+
+	function execute_multiple_action(action, files, names, container, function_name)
+	{
+		if (name !== null)
+		{
+			name = fix_filename(name);
+			$.ajax({
+				type: "POST",
+				url: "execute.php?action=" + action,
+				data: {
+					path: files[0],
+					paths: files,
+					names: names
 				}
 			}).done(function (msg)
 			{

@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Vybrať',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Odstrániť',
 	'Open' => 'Otvoriť',
 	'Confirm_del' => 'Naozaj odstrániť tento súbor?',

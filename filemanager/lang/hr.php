@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Odaberi',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Obriši',
 	'Open' => 'Otvori',
 	'Confirm_del' => 'Jeste li sigurni da želite obrisati ovu datoteku?',

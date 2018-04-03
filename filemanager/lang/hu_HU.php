@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Tallózás',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Törlés',
 	'Open' => 'Megnyitás',
 	'Confirm_del' => 'Biztos vagy benne, hogy törlöd ezt a fájlt?',

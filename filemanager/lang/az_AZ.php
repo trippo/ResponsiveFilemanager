@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Seç',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Sil',
 	'Open' => 'Aç',
 	'Confirm_del' => 'Bu faylı silmek istədiyinizdə əminsinizmi?',

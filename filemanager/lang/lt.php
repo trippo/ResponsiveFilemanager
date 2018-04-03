@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Pasirinkti',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Ištrinti',
 	'Open' => 'Atidaryti',
 	'Confirm_del' => 'Ar tikrai norite ištrinti šį failą?',

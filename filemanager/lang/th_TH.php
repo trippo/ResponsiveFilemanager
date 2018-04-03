@@ -10,7 +10,9 @@
 return array(
 
     'Select' => 'เลือก',
-    'Erase' => 'ลบ',
+    'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
+	'Erase' => 'ลบ',
     'Open' => 'เปิด',
     'Confirm_del' => 'คุณต้องการลบไฟล์นี้ ใช่ หรือ ไม่ ?',
     'All' => 'ทั้งหมด',

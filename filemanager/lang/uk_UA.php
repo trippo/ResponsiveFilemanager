@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Вибрати',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Видалити',
 	'Open' => 'Відкрити',
 	'Confirm_del' => 'Впевнені, що хочете видалити цей файл?',

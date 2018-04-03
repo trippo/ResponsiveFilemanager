@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Välj', // Select
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Radera', // Erase
 	'Open' => 'Öppna', // Open
 	'Confirm_del' => 'Är du säker på att du vill radera denna fil?', //Are you sure you want to delete this file?

@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Označi',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Izbriši',
 	'Open' => 'Odpri',
 	'Confirm_del' => 'Ali res želite izbrisati to datoteko?',

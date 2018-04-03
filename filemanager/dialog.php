@@ -143,7 +143,19 @@ if(!$ftp){
 
 	if (!is_dir($thumbs_path.$subdir))
 	{
-		create_folder(FALSE, $thumbs_path.$subdir);
+		create_folder(FALSE, $thumbs_path.$subdir,$ftp,$config);
+	}
+}
+$multiple=null;
+if (isset($_GET['multiple'])){
+	if($_GET['multiple'] == 1){
+		$multiple = 1;
+		$config['multiple_selection'] = true;
+		$config['multiple_selection_action_button'] = true;
+	}elseif($_GET['multiple'] == 0){
+		$multiple = 0;
+		$config['multiple_selection'] = false;
+		$config['multiple_selection_action_button'] = false;
 	}
 }
 if (isset($_GET['callback']))
@@ -244,7 +256,7 @@ if (isset($_GET['extensions'])){
 	}
 	if($extensions){
 		$ext = $ext_tmp;
-		$show_filter_buttons = false;
+		$config['show_filter_buttons'] = false;
 	}
 }
 
@@ -253,22 +265,27 @@ if (isset($_GET['editor']))
 	$editor = strip_tags($_GET['editor']);
 } else {
 	if($_GET['type']==0){
-		$editor=false;
+		$editor=null;
 	} else {
 		$editor='tinymce';
 	}
 }
 
-if (!isset($_GET['field_id'])) $_GET['field_id'] = '';
-
-$field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : '';
+$field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : null;
 $type_param = fix_get_params($_GET['type']);
+$apply = null;
+if($multiple){
+	$apply = 'apply_multiple';
+}
+if ($type_param==1)    $apply_type = 'apply_img';
+elseif($type_param==2) $apply_type = 'apply_link';
+elseif($type_param==0 && !$field_id) $apply_type = 'apply_none';
+elseif($type_param==3) $apply_type = 'apply_video';
+else $apply_type = 'apply';
 
-if ($type_param==1) 	 $apply = 'apply_img';
-elseif($type_param==2) $apply = 'apply_link';
-elseif($type_param==0 && $_GET['field_id']=='') $apply = 'apply_none';
-elseif($type_param==3) $apply = 'apply_video';
-else $apply = 'apply';
+if(!$apply){
+	$apply = $apply_type;
+}
 
 $get_params = array(
 	'editor'    => $editor,
@@ -278,6 +295,7 @@ $get_params = array(
 	'crossdomain' => $crossdomain,
 	'extensions' => ($extensions) ? urlencode(json_encode($extensions)) : null ,
 	'field_id'  => $field_id,
+	'multiple'    => $multiple,
 	'relative_url' => $return_relative_url,
 	'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
 );
@@ -408,6 +426,7 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="view" value="<?php echo $view;?>" />
 	<input type="hidden" id="subdir" value="<?php echo $subdir;?>" />
 	<input type="hidden" id="field_id" value="<?php echo $field_id;?>" />
+	<input type="hidden" id="multiple" value="<?php echo $multiple;?>" />
 	<input type="hidden" id="type_param" value="<?php echo $type_param;?>" />
 	<input type="hidden" id="upload_dir" value="<?php echo $upload_dir;?>" />
 	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir;?>" />
@@ -429,8 +448,8 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="descending" value="<?php echo $descending?1:0;?>" />
 	<input type="hidden" id="current_url" value="<?php echo str_replace(array('&filter='.$filter,'&sort_by='.$sort_by,'&descending='.intval($descending)),array(''),$base_url.$_SERVER['REQUEST_URI']);?>" />
 	<input type="hidden" id="lang_show_url" value="<?php echo trans('Show_url');?>" />
-	<input type="hidden" id="copy_cut_files_allowed" value="<?php if($copy_cut_files) echo 1; else echo 0;?>" />
-	<input type="hidden" id="copy_cut_dirs_allowed" value="<?php if($copy_cut_dirs) echo 1; else echo 0;?>" />
+	<input type="hidden" id="copy_cut_files_allowed" value="<?php if($config['copy_cut_files']) echo 1; else echo 0;?>" />
+	<input type="hidden" id="copy_cut_dirs_allowed" value="<?php if($config['copy_cut_dirs']) echo 1; else echo 0;?>" />
 	<input type="hidden" id="copy_cut_max_size" value="<?php echo $copy_cut_max_size;?>" />
 	<input type="hidden" id="copy_cut_max_count" value="<?php echo $copy_cut_max_count;?>" />
 	<input type="hidden" id="lang_copy" value="<?php echo trans('Copy');?>" />
@@ -760,10 +779,22 @@ $files=$sorted;
 				<?php if($create_folders){ ?>
 				<button class="tip btn new-folder" title="<?php echo  trans('New_Folder')?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button>
 				<?php } ?>
-				<?php if($copy_cut_files || $copy_cut_dirs){ ?>
+				<?php if($config['copy_cut_files'] || $config['copy_cut_dirs']){ ?>
 				<button class="tip btn paste-here-btn" title="<?php echo trans('Paste_Here');?>"><i class="rficon-clipboard-apply"></i></button>
 				<button class="tip btn clear-clipboard-btn" title="<?php echo trans('Clear_Clipboard');?>"><i class="rficon-clipboard-clear"></i></button>
 				<?php } ?>
+				<div id="multiple-selection" style="display:none;">
+				<?php if($config['multiple_selection']){ ?>
+				<?php if($config['delete_files']){ ?>
+				<button class="tip btn multiple-delete-btn" title="<?php echo trans('Erase');?>" data-confirm="<?php echo trans('Confirm_del');?>"><i class="icon-trash"></i></button>
+				<?php } ?>
+				<button class="tip btn multiple-select-btn" title="<?php echo trans('Select_All');?>"><i class="icon-check"></i></button>
+				<button class="tip btn multiple-deselect-btn" title="<?php echo trans('Deselect_All');?>"><i class="icon-ban-circle"></i></button>
+				<?php if($apply_type!="apply_none" && $config['multiple_selection_action_button']){ ?>
+				<button class="btn multiple-action-btn btn-inverse" data-function="<?php echo $apply_type;?>"><?php echo trans('Select'); ?></button>
+				<?php } ?>
+				<?php } ?>
+				</div>
 			</div>
 			<div class="span2 half view-controller">
 				<button class="btn tip<?php if($view==0) echo " btn-inverse";?>" id="view0" data-value="0" title="<?php echo trans('View_boxes');?>"><i class="icon-th <?php if($view==0) echo "icon-white";?>"></i></button>
@@ -772,7 +803,7 @@ $files=$sorted;
 			</div>
 			<div class="span6 entire types">
 				<span><?php echo trans('Filters');?>:</span>
-				<?php if($_GET['type']!=1 && $_GET['type']!=3 && $show_filter_buttons){ ?>
+				<?php if($_GET['type']!=1 && $_GET['type']!=3 && $config['show_filter_buttons']){ ?>
 					<?php if(count($ext_file)>0 or false){ ?>
 				<input id="select-type-1" name="radio-sort" type="radio" data-item="ff-item-type-1" checked="checked"  class="hide"  />
 				<label id="ff-item-type-1" title="<?php echo trans('Files');?>" for="select-type-1" class="tip btn ff-label-type-1"><i class="icon-file"></i></label>
@@ -920,7 +951,7 @@ $files=$sorted;
 				}
 
 			?>
-				<li data-name="<?php echo $file ?>" class="<?php if($file=='..') echo 'back'; else echo 'dir';?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"';?>><?php
+				<li data-name="<?php echo $file ?>" class="<?php if($file=='..') echo 'back'; else echo 'dir';?> <?php if(!$config['multiple_selection']){ ?>no-selector<?php } ?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"';?>><?php
 				$file_prevent_rename = false;
 				$file_prevent_delete = false;
 				if (isset($filePermissions[$file])) {
@@ -1089,7 +1120,7 @@ $files=$sorted;
 				}
 				if((!($_GET['type']==1 && !$is_img) && !(($_GET['type']==3 && !$is_video) && ($_GET['type']==3 && !$is_audio))) && $class_ext>0){
 ?>
-			<li class="ff-item-type-<?php echo $class_ext;?> file"  data-name="<?php echo $file;?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"';?>><?php
+			<li class="ff-item-type-<?php echo $class_ext;?> file <?php if(!$config['multiple_selection']){ ?>no-selector<?php } ?>"  data-name="<?php echo $file;?>" <?php if(($filter!='' && stripos($file,$filter)===false)) echo ' style="display:none;"';?>><?php
 			$file_prevent_rename = false;
 			$file_prevent_delete = false;
 			if (isset($filePermissions[$file])) {
@@ -1103,11 +1134,25 @@ $files=$sorted;
 				<a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
 				<div class="img-precontainer">
 					<?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div><?php } ?>
+					<?php if($config['multiple_selection']){ ?><div class="selector">
+						<label class="cont">
+							<input type="checkbox" class="selection" name="selection[]" value="<?php echo $file;?>">
+							<span class="checkmark"></span>
+						</label>
+    				</div>
+    				<?php } ?>
 					<div class="img-container">
 						<img class="<?php echo $show_original ? "original" : "" ?><?php echo $is_icon_thumb ? " icon" : "" ?>" data-src="<?php echo $src_thumb;?>">
 					</div>
 				</div>
 				<div class="img-precontainer-mini <?php if($is_img) echo 'original-thumb' ?>">
+					<?php if($config['multiple_selection']){ ?><div class="selector">
+						<label class="cont">
+							<input type="checkbox" class="selection" name="selection[]" value="<?php echo $file;?>">
+							<span class="checkmark"></span>
+						</label>
+					</div>
+					<?php } ?>
 					<div class="filetype <?php echo $file_array['extension'] ?> <?php if(in_array($file_array['extension'], $editable_text_file_exts)) echo 'edit-text-file-allowed' ?> <?php if(!$is_icon_thumb){ echo "hide"; }?>"><?php echo $file_array['extension'] ?></div>
 					<div class="img-container-mini">
 					<?php if($mini_src!=""){ ?>
@@ -1118,8 +1163,6 @@ $files=$sorted;
 				<?php if($is_icon_thumb){ ?>
 				<div class="cover"></div>
 				<?php } ?>
-				</a>
-				<a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
 				<div class="box">
 				<h4 class="<?php if($ellipsis_title_after_first_row){ echo "ellipsis"; } ?>">
 				<?php echo $filename;?></h4>

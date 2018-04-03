@@ -57,22 +57,46 @@ while($cycle && $i<$max_cycles)
 	$path = fix_dirname($path)."/";
 }
 
-$path = $current_path.$_POST['path'];
-$path_thumb = $thumbs_base_path.$_POST['path'];
-
-if($ftp){
-	$path = $ftp_base_folder.$upload_dir.$_POST['path'];
-	$path_thumb = $ftp_base_folder.$ftp_thumbs_dir.$_POST['path'];
+function returnPaths($_path,$_name,$config){
+	global $ftp;
+	$path = $config['current_path'].$_path;
+	$path_thumb = $config['thumbs_base_path'].$_path;
+	$name = null;
+	if($ftp){
+		$path = $config['ftp_base_folder'].$config['upload_dir'].$_path;
+		$path_thumb = $config['ftp_base_folder'].$config['ftp_thumbs_dir'].$_path;
+	}
+	if ($_name)
+	{
+		$name = fix_filename($_name,$config);
+		if (strpos($name,'../') !== FALSE || strpos($name,'..\\') !== FALSE)
+		{
+			response(trans('wrong name').AddErrorLocation())->send();
+			exit;
+		}
+	}
+	return array($path,$path_thumb,$name);
 }
 
-if (isset($_POST['name']))
-{
-	$name = fix_filename($_POST['name'],$config);
-	if (strpos($name,'../') !== FALSE || strpos($name,'..\\') !== FALSE)
-	{
-		response(trans('wrong name').AddErrorLocation())->send();
-		exit;
+if(isset($_POST['paths'])){
+	$paths = $paths_thumb = $names = array();
+	foreach ($_POST['paths'] as $key => $path) {
+		$name = null;
+		if(isset($_POST['names'][$key])){
+			$name = $_POST['names'][$key];
+		}
+		list($path,$path_thumb,$name) = returnPaths($path,$name,$config);
+		$paths[] = $path;
+		$paths_thumb[] = $path_thumb;
+		$names = $name;
 	}
+}else{
+	$name = null;
+	if(isset($_POST['name'])){
+		$name = $_POST['name'];
+	}
+	list($path,$path_thumb,$name) = returnPaths($_POST['path'],$name,$config);
+
 }
 
 $info = pathinfo($path);
@@ -87,49 +111,15 @@ if (isset($_GET['action']))
 	switch($_GET['action'])
 	{
 		case 'delete_file':
-			if ($delete_files){
-				if($ftp){
-					try{
-						$ftp->delete("/".$path);
-						@$ftp->delete("/".$path_thumb);
-					}catch(FtpClient\FtpException $e){
-						return;
-					}
-				}else{
 
-					unlink($path);
-					if (file_exists($path_thumb)){
-						unlink($path_thumb);
-					}
-				}
+			deleteFile($path,$path_thumb,$config);
 
-				$info=pathinfo($path);
-				if (!$ftp && $relative_image_creation){
-					foreach($relative_path_from_current_pos as $k=>$path)
-					{
-						if ($path!="" && $path[strlen($path)-1]!="/") $path.="/";
-
-						if (file_exists($info['dirname']."/".$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension']))
-						{
-							unlink($info['dirname']."/".$path.$relative_image_creation_name_to_prepend[$k].$info['filename'].$relative_image_creation_name_to_append[$k].".".$info['extension']);
-						}
-					}
-				}
-
-				if (!$ftp && $fixed_image_creation)
-				{
-					foreach($fixed_path_from_filemanager as $k=>$path)
-					{
-						if ($path!="" && $path[strlen($path)-1] != "/") $path.="/";
-
-						$base_dir=$path.substr_replace($info['dirname']."/", '', 0, strlen($current_path));
-						if (file_exists($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension']))
-						{
-							unlink($base_dir.$fixed_image_creation_name_to_prepend[$k].$info['filename'].$fixed_image_creation_to_append[$k].".".$info['extension']);
-						}
-					}
-				}
+			break;
+		case 'delete_files':
+			foreach ($paths as $key => $p) {
+				deleteFile($p,$paths_thumb[$key],$config);
 			}
+
 			break;
 		case 'delete_folder':
 			if ($delete_folders){

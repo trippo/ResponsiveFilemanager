@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => '选择',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => '删除',
 	'Open' => '打开',
 	'Confirm_del' => '确定删除此文件?',

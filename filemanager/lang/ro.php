@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Selectează',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Șterge',
 	'Open' => 'Deschide',
 	'Confirm_del' => 'Sunteți sigur(ă) că vreți să ștergeți acest fișier?',

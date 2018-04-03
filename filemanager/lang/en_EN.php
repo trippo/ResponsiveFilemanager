@@ -3,9 +3,11 @@
 return array(
 
 	'Select' => 'Select',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Erase',
 	'Open' => 'Open',
-	'Confirm_del' => 'Are you sure you want to delete this file?',
+	'Confirm_del' => 'Are you sure you want to delete?',
 	'All' => 'All',
 	'Files' => 'Files',
 	'Images' => 'Images',

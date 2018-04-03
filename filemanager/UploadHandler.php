@@ -1403,7 +1403,7 @@ class UploadHandler
 			}
 			if(is_file($targetFile)) {
 				chmod($targetFile, $this->options['config']['filePermission']);
-			}else{
+			}elseif(is_dir($targetFile)){
 				chmod($targetFile, $this->options['config']['folderPermission']);
 			}
 		}else{

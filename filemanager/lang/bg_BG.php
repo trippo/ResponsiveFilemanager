@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Избери',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Изтрий',
 	'Open' => 'Отваряне',
 	'Confirm_del' => 'Сигурни ли сте, че искате да изтриете този файл?',

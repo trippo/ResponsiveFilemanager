@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Επιλογή',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Διαγραφή',
 	'Open' => 'Άνοιγμα',
 	'Confirm_del' => 'Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το αρχείο;',

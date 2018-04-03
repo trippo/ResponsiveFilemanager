@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Vælg',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Slet',
 	'Open' => 'Åbn',
 	'Confirm_del' => 'Er du sikker på at du vil slette denne fil?',

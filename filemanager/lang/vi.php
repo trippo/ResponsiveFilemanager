@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Chọn',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Xóa',
 	'Open' => 'Mở',
 	'Confirm_del' => 'Bạn có chắc chắn muốn xóa file này không?',

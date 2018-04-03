@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => '選択',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => '消去',
 	'Open' => '開く',
 	'Confirm_del' => 'このファイルを削除しますか?',

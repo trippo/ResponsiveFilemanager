@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'בחר',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'מחק',
 	'Open' => 'פתח',
 	'Confirm_del' => 'האם אתה בטוח שברצונך למחוק את הקובץ ?',

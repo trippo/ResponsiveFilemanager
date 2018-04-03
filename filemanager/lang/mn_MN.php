@@ -3,6 +3,8 @@
 return array(
 
 	'Select' => 'Сонгох',
+	'Deselect_All' => 'Deselect All',
+	'Select_All' => 'Select All',
 	'Erase' => 'Устгах',
 	'Open' => 'Нээх',
 	'Confirm_del' => 'Та энэ файлыг устгахдаа итгэлтэй байна уу?',
