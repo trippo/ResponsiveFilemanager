@@ -210,9 +210,9 @@ $config = array(
 	//Show or not show sorting feature in filemanager
 	'show_sorting_bar'						=> true,
 	//Show or not show filters button in filemanager
-	'show_filter_buttons'                   => true,
+	'show_filter_buttons'                   			=> true,
 	//Show or not language selection feature in filemanager
-	'show_language_selection'				=> true,
+	'show_language_selection'					=> true,
 	//active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
 	'transliteration'						=> false,
 	//convert all spaces on files name and folders name with $replace_with variable
@@ -220,7 +220,9 @@ $config = array(
 	//convert all spaces on files name and folders name this value
 	'replace_with'							=> "_",
 	//convert to lowercase the files and folders name
-	'lower_case'							=> false,
+	'lower_case'							=> true,
+	// Change the file extension when uploading
+	'uploads_change_ext'						=> false,
 
 	//Add ?484899493349 (time value) to returned images to prevent cache
 	'add_time_to_img'                       => false,
