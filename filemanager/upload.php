@@ -84,24 +84,28 @@ if(isset($_POST['url'])){
 		'type' => null
 	);
 }
-$info = pathinfo($_FILES['files']['name'][0]);
-$mime_type = $_FILES['files']['type'][0];
-if (function_exists('mime_content_type')){
-	$mime_type = mime_content_type($_FILES['files']['tmp_name'][0]);
-}elseif(function_exists('finfo_open')){
-	$finfo = finfo_open(FILEINFO_MIME_TYPE);
-	$mime_type = finfo_file($finfo, $_FILES['files']['tmp_name'][0]);
-}else{
-	include 'include/mime_type_lib.php';
-	$mime_type = get_file_mime_type($_FILES['files']['tmp_name'][0]);
-}
-$extension = get_extension_from_mime($mime_type);
+
+if ( $config['uploads_change_ext'] == true ) {
+	$info = pathinfo($_FILES['files']['name'][0]);
+	$mime_type = $_FILES['files']['type'][0];
+	if (function_exists('mime_content_type')){
+		$mime_type = mime_content_type($_FILES['files']['tmp_name'][0]);
+	}elseif(function_exists('finfo_open')){
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mime_type = finfo_file($finfo, $_FILES['files']['tmp_name'][0]);
+	}else{
+		include 'include/mime_type_lib.php';
+		$mime_type = get_file_mime_type($_FILES['files']['tmp_name'][0]);
+	}
+	$extension = get_extension_from_mime($mime_type);
 
 
-if($extension=='so' || $extension=='' || $mime_type == "text/troff"){
-	$extension = $info['extension'];
+	if($extension=='so' || $extension=='' || $mime_type == "text/troff"){
+		$extension = $info['extension'];
+	}
+	$_FILES['files']['name'][0] = fix_filename($info['filename'].".".$extension,$config);
 }
-$_FILES['files']['name'][0] = fix_filename($info['filename'].".".$extension,$config);
+
 // LowerCase
 if ($config['lower_case'])
 {
