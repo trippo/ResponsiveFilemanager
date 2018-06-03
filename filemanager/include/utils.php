@@ -519,10 +519,13 @@ function create_folder($path = null, $path_thumbs = null,$ftp = null,$config = n
 		$ftp->mkdir($path);
 		$ftp->mkdir($path_thumbs);
 	}else{
+		if(file_exists($path)){
+			return false;
+		}
 		$oldumask = umask(0);
-		if ($path && ! file_exists($path))
+		if ($path && !file_exists($path))
 		{
-			$permission = 0755;
+			$permission = $config['folderPermission'];
 			if(isset($config['folderPermission'])){
 				$permission = $config['folderPermission'];
 			}
@@ -530,9 +533,10 @@ function create_folder($path = null, $path_thumbs = null,$ftp = null,$config = n
 		} // or even 01777 so you get the sticky bit set
 		if ($path_thumbs && ! file_exists($path_thumbs))
 		{
-			mkdir($path_thumbs, 0755, true) or die("$path_thumbs cannot be found");
+			mkdir($path_thumbs, $config['folderPermission'], true) or die("$path_thumbs cannot be found");
 		} // or even 01777 so you get the sticky bit set
 		umask($oldumask);
+		return true;
 	}
 }
 

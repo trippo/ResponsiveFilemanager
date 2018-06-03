@@ -115,7 +115,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 							execute_action('duplicate_file', _this.attr('data-path'), name, _this, 'apply_file_duplicate');
 						}
 					}
-				}, old_name);
+				}, old_name+" - copy");
 			},
 
 			select: function($trigger)
@@ -521,7 +521,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			function handleFileLink($el)
 			{
 				var fun = $el.attr('data-function');
-				console.log(fun);
 				if(fun=="apply_multiple"){
 					$el.find('.selection:visible').trigger('click');
 					$el.find('.selector:visible').trigger('click');
@@ -630,11 +629,11 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				// Uncomment the following to send cross-domain cookies:
 				//xhrFields: {withCredentials: true},
 				url: 'upload.php',
-				maxChunkSize: 2 * 1024 * 1024 // 2 MB
+				maxChunkSize: 2 * 1024 * 1024, // 2 MB
 			});
 			jQuery('#fileupload').bind('fileuploaddrop', function (e, data) {
-				console.log(data);
 				jQuery('.uploader').show(200);
+				setTimeout(function(){ jQuery('#fileupload > div > div.fileupload-buttonbar > div.text-center > button').click(); },200);
 			});
 			jQuery('#fileupload').bind('fileuploadsubmit', function (e, data) {
 				// The example input, doesn't have to be part of the upload form:
@@ -883,10 +882,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						}
 					}).done(function (msg)
 					{
-						setTimeout(function ()
-						{
-							window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
-						}, 300);
+						if(msg){
+							bootbox.alert(jQuery('#rename_existing_folder').val());
+						}else{
+							setTimeout(function ()
+							{
+								window.location.href = jQuery('#refresh').attr('href') + '&' + new Date().getTime();
+							}, 300);
+						}
 
 					});
 				}
@@ -974,10 +977,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				clear_clipboard();
 			}
 		});
-		var getFiles = function(){
+		var getFiles = function(path){
 			var files = [];
+			var subdir = jQuery('#subdir').val();
 			jQuery('.selection:checkbox:checked:visible').each(function () {
-				files.push(jQuery(this).val());
+				var file = jQuery(this).val();
+				if(path){
+					file = subdir + file;
+				}
+				files.push(file);
 			});
 			return files;
 		};
@@ -1005,14 +1013,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				if (result == true)
 				{
-					var files = getFiles();
+					var files = getFiles(true);
 					execute_multiple_action('delete_files', files, '', '', '');
 					var fil = jQuery('#files_number');
 					fil.text(parseInt(fil.text())-files.length);
 					jQuery('.selection:checkbox:checked:visible').each(function () {
 						jQuery(this).closest('li').remove();
 					});
-
+					jQuery("#multiple-selection").hide(300);
 				}
 			});
 		});
@@ -2007,6 +2015,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			if(jQuery('#add_time_to_img').val()){
 				var url = urls[0] + "?" + new Date().getTime();
+			}else{
+				url = urls[0];
 			}
 			apply_any(url);
 		}
@@ -2020,7 +2030,6 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			files = new Array(files);
 		}
 		var urls=returnUrls(files);
-		console.log(urls);
 		var res = JSON.stringify(urls);
 		if(urls.length==1){
 			res = urls[0];
@@ -2452,14 +2461,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		lis_dir.each(function (index)
 		{
-			var _this = jQuery(this);
-			_this.html(vals_dir[ values_dir[ index ] ]);
+			jQuery(this).html(vals_dir[ values_dir[ index ] ]);
 		});
 
 		lis_file.each(function (index)
 		{
-			var _this = jQuery(this);
-			_this.html(vals_file[ values_file[ index ] ]);
+			jQuery(this).html(vals_file[ values_file[ index ] ]);
+			jQuery(this).attr('data-name',jQuery(this).children().attr('data-name'));
 		});
 	}
 

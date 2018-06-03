@@ -9,6 +9,7 @@ $mime_types = array(
 	"application/x-bcpio" => "bcpio",
 	"application/octet-stream" => "so",
 	"image/bmp" => "bmp",
+	"application/x-rar" => "rar",
 	"application/x-bzip2" => "bz2",
 	"application/x-netcdf" => "nc",
 	"application/x-kchart" => "chrt",

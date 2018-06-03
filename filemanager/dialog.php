@@ -44,6 +44,8 @@ include 'include/utils.php';
 $subdir_path = '';
 if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
 	$subdir_path = rawurldecode(trim(strip_tags($_GET['fldr']),"/"));
+}elseif(isset($_SESSION['RF']['fldr']) && !empty($_SESSION['RF']['fldr'])){
+	$subdir_path = rawurldecode(trim(strip_tags($_SESSION['RF']['fldr']),"/"));
 }
 if (strpos($subdir_path,'../') === FALSE
 	&& strpos($subdir_path,'./') === FALSE
@@ -51,6 +53,7 @@ if (strpos($subdir_path,'../') === FALSE
 	&& strpos($subdir_path,'.\\') === FALSE)
 {
 	$subdir = strip_tags($subdir_path) ."/";
+	$_SESSION['RF']['fldr'] = $subdir_path;
 	$_SESSION['RF']["filter"]='';
 }
 else { $subdir = ''; }
@@ -352,7 +355,6 @@ $get_params = http_build_query($get_params);
 
 	<script>
 		var ext_img=new Array('<?php echo implode("','", $ext_img)?>');
-		var allowed_ext=new Array('<?php echo implode("','", $ext)?>');
 		var image_editor=<?php echo $aviary_active?"true":"false";?>;
 		if (image_editor) {
 		var featherEditor = new Aviary.Feather({
@@ -432,6 +434,7 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="cur_dir" value="<?php echo $cur_dir;?>" />
 	<input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir;?>" />
 	<input type="hidden" id="insert_folder_name" value="<?php echo trans('Insert_Folder_Name');?>" />
+	<input type="hidden" id="rename_existing_folder" value="<?php echo trans('Rename_existing_folder');?>" />
 	<input type="hidden" id="new_folder" value="<?php echo trans('New_Folder');?>" />
 	<input type="hidden" id="ok" value="<?php echo trans('OK');?>" />
 	<input type="hidden" id="cancel" value="<?php echo trans('Cancel');?>" />
@@ -671,7 +674,7 @@ foreach($files as $k=>$file){
 			'date'=>$date,
 			'size'=>$size,
 			'permissions' => $file['permissions'],
-			'extension'=>strtolower($file_ext)
+			'extension'=>fix_strtolower($file_ext)
 		);
 	}else{
 
@@ -692,7 +695,7 @@ foreach($files as $k=>$file){
 					'date'=>$date,
 					'size'=>$size,
 					'permissions' =>'',
-					'extension'=>strtolower($file_ext)
+					'extension'=>fix_strtolower($file_ext)
 				);
 				if($show_folder_size){
 					$sorted[$k]['nfiles'] = $nfiles;
@@ -923,7 +926,7 @@ $files=$sorted;
 
 		foreach ($files as $file_array) {
 			$file=$file_array['file'];
-			if($file == '.' || ( substr($file, 0, 1) == '.' && isset( $file_array[ 'extension' ] ) && $file_array[ 'extension' ] == strtolower(trans( 'Type_dir' ) )) || (isset($file_array['extension']) && $file_array['extension']!=strtolower(trans('Type_dir'))) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false)){
+			if($file == '.' || ( substr($file, 0, 1) == '.' && isset( $file_array[ 'extension' ] ) && $file_array[ 'extension' ] == fix_strtolower(trans( 'Type_dir' ) )) || (isset($file_array['extension']) && $file_array['extension']!=fix_strtolower(trans('Type_dir'))) || ($file == '..' && $subdir == '') || in_array($file, $hidden_folders) || ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false)){
 				continue;
 			}
 			$new_name=fix_filename($file,$config);
@@ -989,14 +992,14 @@ $files=$sorted;
 					<input type="hidden" class="name" value="<?php echo $file_array['file_lcase'];?>"/>
 					<input type="hidden" class="date" value="<?php echo $file_array['date'];?>"/>
 					<input type="hidden" class="size" value="<?php echo $file_array['size'];?>"/>
-					<input type="hidden" class="extension" value="<?php echo trans('Type_dir');?>"/>
+					<input type="hidden" class="extension" value="<?php echo fix_strtolower(trans('Type_dir'));?>"/>
 					<div class="file-date"><?php echo date(trans('Date_type'),$file_array['date']);?></div>
 					<?php if($show_folder_size){ ?>
 						<div class="file-size"><?php echo makeSize($file_array['size']);?></div>
 						<input type="hidden" class="nfiles" value="<?php echo $file_array['nfiles'];?>"/>
 						<input type="hidden" class="nfolders" value="<?php echo $file_array['nfolders'];?>"/>
 					<?php } ?>
-					<div class='file-extension'><?php echo trans('Type_dir');?></div>
+					<div class='file-extension'><?php echo fix_strtolower(trans('Type_dir'));?></div>
 					<figcaption>
 						<a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_folders && !$file_prevent_rename) echo "rename-folder";?>" title="<?php echo trans('Rename')?>" data-folder="1" data-permissions="<?php echo $file_array['permissions']; ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>">
 						<i class="icon-pencil <?php if(!$rename_folders || $file_prevent_rename) echo 'icon-white';?>"></i></a>
@@ -1015,7 +1018,7 @@ $files=$sorted;
 			foreach ($files as $nu=>$file_array) {
 				$file=$file_array['file'];
 
-				if($file == '.' || $file == '..' || $file_array['extension']==trans('Type_dir') || !in_array(fix_strtolower($file_array['extension']), $ext) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
+				if($file == '.' || $file == '..' || $file_array['extension']==fix_strtolower(trans('Type_dir')) || (!$config['ext_blacklist'] && !in_array(fix_strtolower($file_array['extension']), $ext)) || ($config['ext_blacklist'] && in_array(fix_strtolower($file_array['extension']), $config['ext_blacklist'])) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
 					continue;
 				foreach ( $hidden_files as $hidden_file ) {
 					if ( fnmatch($hidden_file, $file, FNM_PATHNAME) ) {

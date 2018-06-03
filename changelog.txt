@@ -1,5 +1,20 @@
 Responsive Filemanager Changelog 
 
+
+*********************************************************
+*  RFM 9.13.0
+*********************************************************
+- multiple file selection: you can delete multiple files, you can select multiple file (n.b. if you select multiple files on stand alone mode it return a json list of urls, if you use editor with normal mode return only the first and if you use tinymce with responsivefilemanager plugin return all files on editor)
+- you can disable mime type renaming on config
+- blacklist extensions available on config
+- fixed precompiled test on duplication
+- rfm remember the last folder when return to filemanager
+- added mime type .rar
+- fixed folder permission to get config value
+- fixed an error on folder renaming
+- a lot of others bugs fixed
+
+
 *********************************************************
 *  RFM 9.12.2
 *********************************************************

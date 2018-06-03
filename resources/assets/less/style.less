@@ -772,13 +772,18 @@ form{
 		    left: 0;
 		    height: 18px;
 		    width: 18px;
-		    background-color: #ddd;
+		    background-color: #fff;
+		    border:1px solid #ddd;
+		    transition: background-color 0.5s ease;
+		    -webkit-transition: background-color .5s ease-out;
+			  -moz-transition: background-color .5s ease-out;
+			  -o-transition: background-color .5s ease-out;
 		    &:after {
 			    content: "";
 			    position: absolute;
 			    display: none;
-			    left: 7px;
-			    top: 2px;
+			    left: 5px;
+			    top: 1px;
 			    width: 6px;
 			    height: 12px;
 			    border: solid white;
@@ -790,7 +795,7 @@ form{
 		}
 		/* On mouse-over, add a grey background color */
 		&:hover input ~ .checkmark {
-		    background-color: #ccc;
+		    background-color: #ddd;
 		}
 		input:checked ~ .checkmark:after {
 		    display: block;

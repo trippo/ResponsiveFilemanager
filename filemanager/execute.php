@@ -156,7 +156,10 @@ if (isset($_GET['action']))
 				$name = fix_filename($_POST['name'],$config);
 				$path .= $name;
 				$path_thumb .= $name;
-				create_folder(fix_path($path,$config),fix_path($path_thumb,$config),$ftp,$config);
+				$res = create_folder(fix_path($path,$config),fix_path($path_thumb,$config),$ftp,$config);
+				if(!$res){
+					response(trans('Rename_existing_folder').AddErrorLocation())->send();
+				}
 			}
 			break;
 		case 'rename_folder':

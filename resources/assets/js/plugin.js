@@ -7,18 +7,9 @@
  * Contributing: https://github.com/trippo/ResponsiveFilemanager
  */
 
-/**
- * plugin.js
- *
- * Copyright, Alberto Peripolli
- * Released under Creative Commons Attribution-NonCommercial 3.0 Unported License.
- *
- * Contributing: https://github.com/trippo/ResponsiveFilemanager
- */
-
 tinymce.PluginManager.add('filemanager', function(editor) {
 
-	tinymce.activeEditor.settings.file_browser_callback = filemanager;
+	editor.settings.file_browser_callback = filemanager;
 
 	function filemanager_onMessage(event){
 		if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
@@ -35,7 +26,7 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 			}
 		}
 	}
-	
+
 	function filemanager (id, value, type, win) {
 		var width = window.innerWidth-30;
 		var height = window.innerHeight-60;
@@ -62,7 +53,7 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 		if (typeof editor.settings.filemanager_sort_by !== "undefined" && editor.settings.filemanager_sort_by) {
 			sort_by="&sort_by="+editor.settings.filemanager_sort_by;
 		}
-		var descending="false";
+		var descending=0;
 		if (typeof editor.settings.filemanager_descending !== "undefined" && editor.settings.filemanager_descending) {
 			descending=editor.settings.filemanager_descending;
 		}
@@ -85,7 +76,7 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 		tinymce.activeEditor.windowManager.open({
 			title: title,
 			file: editor.settings.external_filemanager_path+'dialog.php?type='+urltype+'&descending='+descending+sort_by+fldr+crossdomain+'&lang='+editor.settings.language+'&akey='+akey,
-			width: width,  
+			width: width,
 			height: height,
 			resizable: true,
 			maximizable: true,
