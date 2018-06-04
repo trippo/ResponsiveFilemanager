@@ -1,5 +1,5 @@
 <?php
-$version = "9.12.1";
+$version = "9.13.0";
 if (session_id() == '') session_start();
 
 mb_internal_encoding('UTF-8');
@@ -287,7 +287,7 @@ $config = array(
 	// WATERMARK IMAGE
 	// 
 	//Watermark path or false
-	'image_watermark'                          => "../watermark.png",
+	'image_watermark'                          => false,//"../watermark.png",
 	# Could be a pre-determined position such as:
 	#           tl = top left,
 	#           t  = top (middle),
