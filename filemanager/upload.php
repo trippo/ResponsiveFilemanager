@@ -103,11 +103,12 @@ try{
 		if($extension=='so' || $extension=='' || $mime_type == "text/troff"){
 			$extension = $info['extension'];
 		}
+		$filename = $info['filename'].".".$extension;
 	}else{
-		$extension = $info['extension'];
+		$filename = $_FILES['files']['name'][0];
 	}
+	$_FILES['files']['name'][0] = fix_filename($filename,$config);
 
-	$_FILES['files']['name'][0] = fix_filename($info['filename'].".".$extension,$config);
 	// LowerCase
 	if ($config['lower_case'])
 	{
