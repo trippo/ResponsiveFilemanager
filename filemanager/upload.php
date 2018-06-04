@@ -152,14 +152,14 @@ try{
 
 }catch(Exception $e){
 	$return = [];
-	foreach($_FILES['files'] as $file){
+	foreach($_FILES['files']['name'] as $i => $name){
 		$return[] = [
-			'name' => $file['name'],
+			'name' => $name,
 			'error' => $e->getMessage(),
-			'size' => $file['size'],
-			'type' => $file['type'],
+			'size' => $_FILES['files']['size'][$i],
+			'type' => $_FILES['files']['type'][$i]
 		];
 	}
-	echo json_encode($retun);
+	echo json_encode(["files"=>$return]);
 }
 
