@@ -21,6 +21,25 @@ if (USE_ACCESS_KEYS == TRUE){
 
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 
+if (!empty($_FILES)) {
+	$directorio = $config['current_path'];
+	if (!file_exists($directorio)) { 
+		mkdir($directorio);
+	}
+
+	$sExtension = pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION);
+	$newname = str_replace('.'.$sExtension, '', $_FILES['upload']['name']).'_'.time().'.'.$sExtension;
+	if (move_uploaded_file($_FILES['upload']['tmp_name'], $directorio . $newname)) {
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode([
+			'fileName' => $newname,
+			'uploaded' => 1,
+			'url' => $config['base_url'].$config['upload_dir'].$newname,
+		]);
+		exit();
+	}
+}
+
 if(isset($_POST['submit'])){
 	include 'upload.php';
 }else{
