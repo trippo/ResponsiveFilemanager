@@ -152,14 +152,14 @@ try{
 	$upload_handler = new UploadHandler($uploadConfig,true, $messages);
 
 }catch(Exception $e){
-	$return = [];
+	$return = array();
 	foreach($_FILES['files']['name'] as $i => $name){
-		$return[] = [
+		$return[] = array(
 			'name' => $name,
 			'error' => $e->getMessage(),
 			'size' => $_FILES['files']['size'][$i],
 			'type' => $_FILES['files']['type'][$i]
-		];
+		);
 	}
 	echo json_encode(["files"=>$return]);
 }
