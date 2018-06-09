@@ -1,12 +1,11 @@
 Responsive Filemanager Changelog 
 
-
 *********************************************************
 *  RFM 9.13.1
 *********************************************************
-- create folder fix
+- folder creation fix
 - blacklist fix
-- php < 5.6 compatibility
+- php < 5.6 compatibility fix
 
 *********************************************************
 *  RFM 9.13.0
