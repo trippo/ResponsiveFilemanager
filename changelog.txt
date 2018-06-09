@@ -2,6 +2,13 @@ Responsive Filemanager Changelog
 
 
 *********************************************************
+*  RFM 9.13.1
+*********************************************************
+- create folder fix
+- blacklist fix
+- php < 5.6 compatibility
+
+*********************************************************
 *  RFM 9.13.0
 *********************************************************
 - multiple file selection: you can delete multiple files, you can select multiple file (n.b. if you select multiple files on stand alone mode it return a json list of urls, if you use editor with normal mode return only the first and if you use tinymce with responsivefilemanager plugin return all files on editor)
