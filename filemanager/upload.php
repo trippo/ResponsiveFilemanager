@@ -161,6 +161,6 @@ try{
 			'type' => $_FILES['files']['type'][$i]
 		);
 	}
-	echo json_encode(["files"=>$return]);
+	echo json_encode(array("files"=>$return));
 }
 
