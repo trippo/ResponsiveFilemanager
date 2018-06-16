@@ -373,10 +373,10 @@ $config = array(
 	//  If you insert an extensions blacklist array the filemanager don't check any extensions but simply block the extensions in the list
 	//  otherwise check Allowed extensions configuration
 	//*********************
-	'ext_blacklist'							  => false//,['exe'],
+	'ext_blacklist'							  => false,//,['exe'],
 
 
-	//Permits empty filename like .htaccess
+	//Empty filename permits like .htaccess, .env, ...
 	'empty_filename'                          => true,
 
 	/******************
