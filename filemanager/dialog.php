@@ -24,19 +24,22 @@ $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 if(isset($_POST['submit'])){
 	include 'upload.php';
 }else{
+	$default_language = $config['default_language'];
+	$available_languages = include 'lang/languages.php';
 
-$lang = $config['default_language'];
-$languages = include 'lang/languages.php';
-if (isset($_GET['lang']))
-{
-	$lang = strip_tags($_GET['lang']);
-	if(array_key_exists($lang,$languages)){
-		$_SESSION['RF']['language'] = $lang;
+	list($preferred_language) = array_values(array_filter(array(
+		isset($_GET['lang']) ? $_GET['lang'] : null,
+		isset($_SESSION['RF']['language']) ? $_SESSION['RF']['language'] : null,
+		$default_language
+	)));
+
+	if(array_key_exists($preferred_language, $available_languages))
+	{
+		$_SESSION['RF']['language'] = $preferred_language;
 	}
-}elseif(isset($_SESSION['RF']['language']) && $_SESSION['RF']['language'])
-	$lang = strip_tags($_SESSION['RF']['language']);
-	if(array_key_exists($lang,$languages)){
-		$_SESSION['RF']['language'] = $lang;
+	else
+	{
+		$_SESSION['RF']['language'] = $default_language;
 	}
 }
 include 'include/utils.php';
