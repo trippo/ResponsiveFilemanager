@@ -16,8 +16,6 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 	exit;
 }
 
-include 'include/mime_type_lib.php';
-
 
 if (
 	strpos($_POST['path'], '/') === 0
@@ -47,17 +45,16 @@ $name = $_POST['name'];
 
 $info = pathinfo($name);
 
-if ( ! in_array(fix_strtolower($info['extension']), $ext))
+if( !check_extension($info['extension'],$config))
 {
 	response(trans('wrong extension'.AddErrorLocation()), 400)->send();
 	exit;
 }
 
-
-
 $file_name  = $info['basename'];
 $file_ext   = $info['extension'];
 $file_path  = $path . $name;
+
 
 // make sure the file exists
 if($ftp){
@@ -76,15 +73,17 @@ if($ftp){
 
     $size = filesize($file_path);
     $file_name = rawurldecode($file_name);
+
+
     if (function_exists('mime_content_type')){
         $mime_type = mime_content_type($file_path);
     }elseif(function_exists('finfo_open')){
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime_type = finfo_file($finfo, $file_path);
     }else{
-        include 'include/mime_type_lib.php';
         $mime_type = get_file_mime_type($file_path);
     }
+
 
     @ob_end_clean();
     if(ini_get('zlib.output_compression')){

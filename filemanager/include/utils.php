@@ -519,21 +519,21 @@ function create_folder($path = null, $path_thumbs = null,$ftp = null,$config = n
 		$ftp->mkdir($path);
 		$ftp->mkdir($path_thumbs);
 	}else{
-		if(file_exists($path)){
+		if(file_exists($path) || file_exists($path_thumbs)){
 			return false;
 		}
 		$oldumask = umask(0);
+		$permission = 0755;
+		if(isset($config['folderPermission'])){
+			$permission = $config['folderPermission'];
+		}
 		if ($path && !file_exists($path))
 		{
-			$permission = $config['folderPermission'];
-			if(isset($config['folderPermission'])){
-				$permission = $config['folderPermission'];
-			}
 			mkdir($path, $permission, true);
 		} // or even 01777 so you get the sticky bit set
-		if ($path_thumbs && ! file_exists($path_thumbs))
+		if ($path_thumbs)
 		{
-			mkdir($path_thumbs, $config['folderPermission'], true) or die("$path_thumbs cannot be found");
+			mkdir($path_thumbs, $permission, true) or die("$path_thumbs cannot be found");
 		} // or even 01777 so you get the sticky bit set
 		umask($oldumask);
 		return true;
@@ -608,6 +608,24 @@ function fix_get_params($str)
 	return strip_tags(preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
 }
 
+
+/**
+* Check extension
+*
+* @param  string  $extension
+* @param  array   $config
+*
+* @return bool
+*/
+function check_extension($extension,$config){
+	$extension = fix_strtolower($extension);
+	if((!$config['ext_blacklist'] && !in_array($extension, $config['ext'])) || ($config['ext_blacklist'] && in_array($extension, $config['ext_blacklist']))){
+		return false;
+	}
+	return true;
+}
+
+
 /**
 * Cleanup filename
 *
@@ -650,7 +668,7 @@ function fix_filename($str, $config, $is_folder = false)
 	// Empty or incorrectly transliterated filename.
 	// Here is a point: a good file UNKNOWN_LANGUAGE.jpg could become .jpg in previous code.
 	// So we add that default 'file' name to fix that issue.
-	if (strpos($str, '.') === 0 && $is_folder === false)
+	if (!$config['empty_filename'] && strpos($str, '.') === 0 && $is_folder === false)
 	{
 		$str = 'file' . $str;
 	}

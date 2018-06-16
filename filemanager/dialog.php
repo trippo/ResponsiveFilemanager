@@ -1018,7 +1018,7 @@ $files=$sorted;
 			foreach ($files as $nu=>$file_array) {
 				$file=$file_array['file'];
 
-				if($file == '.' || $file == '..' || $file_array['extension']==fix_strtolower(trans('Type_dir')) || (!$config['ext_blacklist'] && !in_array(fix_strtolower($file_array['extension']), $ext)) || ($config['ext_blacklist'] && in_array(fix_strtolower($file_array['extension']), $config['ext_blacklist'])) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
+				if($file == '.' || $file == '..' || $file_array['extension']==fix_strtolower(trans('Type_dir')) || !check_extension($file_array['extension'],$config) || ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false))
 					continue;
 				foreach ( $hidden_files as $hidden_file ) {
 					if ( fnmatch($hidden_file, $file, FNM_PATHNAME) ) {

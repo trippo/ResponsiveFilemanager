@@ -101,10 +101,7 @@ if(isset($_POST['paths'])){
 
 $info = pathinfo($path);
 if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action']=='delete_folder') && 
-	(
-		(!$config['ext_blacklist'] && !in_array(strtolower($info['extension']), $ext)) || 
-		($config['ext_blacklist'] && in_array(fix_strtolower($file_array['extension']),$config['ext_blacklist']))
-	)
+	!check_extension($info['extension'],$config)
 	&& $_GET['action'] != 'create_file' )
 {
 	response(trans('wrong extension').AddErrorLocation())->send();

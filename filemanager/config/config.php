@@ -1,5 +1,5 @@
 <?php
-$version = "9.13.0";
+$version = "9.13.2";
 if (session_id() == '') session_start();
 
 mb_internal_encoding('UTF-8');
@@ -105,7 +105,7 @@ $config = array(
 	| If you want to be forced to assign the extension starting from the mime type
 	|
 	*/
-	'mime_extension_rename'	=> true,
+	'mime_extension_rename'	=> false,
 
 
 	/*
@@ -373,7 +373,11 @@ $config = array(
 	//  If you insert an extensions blacklist array the filemanager don't check any extensions but simply block the extensions in the list
 	//  otherwise check Allowed extensions configuration
 	//*********************
-	'ext_blacklist'							  => false, //['jpg'],
+	'ext_blacklist'							  => false//,['exe'],
+
+
+	//Permits empty filename like .htaccess
+	'empty_filename'                          => true,
 
 	/******************
 	* AVIARY config
