@@ -328,7 +328,7 @@ $get_params = http_build_query($get_params);
 		<!-- CSS adjustments for browsers with JavaScript disabled -->
 		<noscript><link rel="stylesheet" href="css/jquery.fileupload-noscript.css"></noscript>
 		<noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
-		<link href="js/jPlayer/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.2.0/skin/blue.monday/jplayer.blue.monday.min.css" />
 		<link href="css/style.css?v=<?php echo $version; ?>" rel="stylesheet" type="text/css" />
 	<!--[if lt IE 8]><style>
 	.img-container span, .img-container-mini span {
@@ -340,7 +340,7 @@ $get_params = http_build_query($get_params);
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
 	<script src="js/plugins.js?v=<?php echo $version; ?>"></script>
-	<script src="js/jPlayer/jquery.jplayer/jquery.jplayer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
 	<script src="js/modernizr.custom.js"></script>
 
 	<?php
