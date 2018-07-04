@@ -1186,7 +1186,7 @@ $files=$sorted;
 					<input type="hidden" name="path" value="<?php echo $rfm_subfolder.$subdir?>"/>
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 
-					<a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" <?php if($download_files) echo "onclick=\"$('#form<?php echo $nu;?>').submit();\"" ?>><i class="icon-download <?php if(!$download_files) echo 'icon-white'; ?>"></i></a>
+					<a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" <?php if($download_files) echo "onclick=\"$('#form".$nu."').submit();\"" ?>><i class="icon-download <?php if(!$download_files) echo 'icon-white'; ?>"></i></a>
 					<?php if($is_img && $src_thumb!=""){ ?>
 					<a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
 					<?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$jplayer_ext)){ ?>
