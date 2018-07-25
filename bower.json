@@ -24,7 +24,6 @@
     "bootstrap-lightbox": "git@github.com:jbutz/bootstrap-lightbox.git#0.6.0",
     "jquery-ui": "1.10.4",
     "jqueryui-touch-punch": "*",
-    "jPlayer": "git@github.com:happyworm/jPlayer.git#2.4.0",
     "html5shiv": "3.6.2",
     "blueimp-file-upload": "^9.19.1",
     "vanilla-lazyload": "^10.4.2",
