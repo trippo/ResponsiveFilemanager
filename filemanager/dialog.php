@@ -50,10 +50,15 @@ if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
 }elseif(isset($_SESSION['RF']['fldr']) && !empty($_SESSION['RF']['fldr'])){
 	$subdir_path = rawurldecode(trim(strip_tags($_SESSION['RF']['fldr']),"/"));
 }
+$subdir_path_decoded = urldecode($subdir_path);
 if (strpos($subdir_path,'../') === FALSE
 	&& strpos($subdir_path,'./') === FALSE
 	&& strpos($subdir_path,'..\\') === FALSE
-	&& strpos($subdir_path,'.\\') === FALSE)
+	&& strpos($subdir_path,'.\\') === FALSE
+	&& strpos($subdir_path_decoded,'../') === FALSE
+	&& strpos($subdir_path_decoded,'./') === FALSE
+	&& strpos($subdir_path_decoded,'..\\') === FALSE
+	&& strpos($subdir_path_decoded,'.\\') === FALSE)
 {
 	$subdir = strip_tags($subdir_path) ."/";
 	$_SESSION['RF']['fldr'] = $subdir_path;
