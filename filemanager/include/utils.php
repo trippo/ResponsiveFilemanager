@@ -810,9 +810,11 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 *
 * @return  bool
 */
-function ends_with($haystack, $needle)
-{
-	return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+if(!function_exists('ends_with')){
+	function ends_with($haystack, $needle)
+	{
+		return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+	}
 }
 
 /**

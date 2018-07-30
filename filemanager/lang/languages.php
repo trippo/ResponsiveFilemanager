@@ -32,6 +32,7 @@ return array(
 	'sk' => 'Slovenčina',
 	'sl' => 'Slovenski jezik',
 	'sv_SE' => 'Svenska',
+    'th_TH' => 'ไทย',
 	'tr_TR' => 'Türkçe',
 	'uk_UA' => 'Yкраїнська мова',
 	'vi' => 'Tiếng Việt',

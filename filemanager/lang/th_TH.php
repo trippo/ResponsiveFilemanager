@@ -49,9 +49,9 @@ return array(
     'Swipe_help' => 'Swipe the name of file/folder to show options',
     'Upload_base' => 'อัพโหลดแบบธรรมดา',
     'Upload_url' => 'อัพโหลดจาก URL',
-    'Upload_base_help' => "Drag & Drop files(modern browsers) or click in upper button to Add the file(s) and click on Start upload. When the upload is complete, click the 'Return to files list' button.",
-    'Upload_add_files' => 'Add file(s)',
-    'Upload_start' => 'Start upload',
+    'Upload_base_help' => "สามารถอัพโหลดไฟล์แบบลากวางได้ หรือคลิกที่ปุ่มด้านบนเพื่อเพิ่มไฟล์และคลิกอัพโหลด เมื่อการอัปโหลดเสร็จสมบูรณ์คลิกปุ่ม \"กลับสู่หน้ารายการ\"",
+    'Upload_add_files' => 'เลือกไฟล์ (สามารเลือกได้หลายไฟล์)',
+    'Upload_start' => 'อัพโหลด',
     'Upload_error_messages' =>array(
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
@@ -72,7 +72,7 @@ return array(
         'abort' => 'File upload aborted',
         'image_resize' => 'Failed to resize image'
     ),
-    'Upload_url' => 'From url',
+    'Upload_url' => 'อัพโหลดจาก url',
     'Type_dir' => 'dir',
     'Type' => 'ชนิด',
     'Dimension' => 'Dimension',
@@ -94,10 +94,10 @@ return array(
     'Cut' => 'ตัด',
     'Paste' => 'วาง',
     'CB' => 'CB', // clipboard
-    'Paste_Here' => 'Paste to this directory',
+    'Paste_Here' => 'วางในโพลเดอร์นี้',
     'Paste_Confirm' => 'Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.',
     'Paste_Failed' => 'Failed to paste file(s)',
-    'Clear_Clipboard' => 'Clear clipboard',
+    'Clear_Clipboard' => 'ลบที่ก็อปปี้ไว้',
     'Clear_Clipboard_Confirm' => 'Are you sure you want to clear the clipboard?',
     'Files_ON_Clipboard' => 'There are files on the clipboard.',
     'Copy_Cut_Size_Limit' => 'The selected files/folders are too big to %1$s. Limit: %2$d MB/operation', // %1$s = cut or copy, %2$d = max size
