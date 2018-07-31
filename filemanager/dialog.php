@@ -929,7 +929,6 @@ $files=$sorted;
 		<!--ul class="thumbnails ff-items"-->
 		<ul class="grid cs-style-2 <?php echo "list-view".$view;?>" id="main-item-container">
 		<?php
-		$jplayer_ext=array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav");
 
 
 		foreach ($files as $file_array) {
@@ -1033,8 +1032,10 @@ $files=$sorted;
 						continue 2;
 					}
 				}
-
 				$filename=substr($file, 0, '-' . (strlen($file_array['extension']) + 1));
+				if(strlen($file_array['extension'])===0){
+					$filename = $file;
+				}
 				if(!$ftp){
 					$file_path=$current_path.$rfm_subfolder.$subdir.$file;
 					//check if file have illegal caracter
@@ -1053,6 +1054,9 @@ $files=$sorted;
 						}
 
 						$filename=substr($file1, 0, '-' . (strlen($file_array['extension']) + 1));
+						if(strlen($file_array['extension'])===0){
+							$filename = $file1;
+						}
 						rename_file($file_path,fix_filename($filename,$config),$ftp,$config);
 						$file=$file1;
 						$file_array['extension']=fix_filename($file_array['extension'],$config);
@@ -1192,16 +1196,17 @@ $files=$sorted;
 					<input type="hidden" class="name_download" name="name" value="<?php echo $file?>"/>
 
 					<a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" <?php if($download_files) echo "onclick=\"$('#form".$nu."').submit();\"" ?>><i class="icon-download <?php if(!$download_files) echo 'icon-white'; ?>"></i></a>
+
 					<?php if($is_img && $src_thumb!=""){ ?>
 					<a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
-					<?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$jplayer_ext)){ ?>
+					<?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$config['jplayer_exts'])){ ?>
 					<a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
 					title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename;?>&file=<?php echo $rfm_subfolder.$subdir.$file;?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
-					<?php }elseif(in_array($file_array['extension'],array('dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'svg'))){ ?>
+					<?php }elseif(in_array($file_array['extension'],$config['cad_exts'])){ ?>
 					<a class="tip-right file-preview-btn" title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=cad_preview&title=<?php echo $filename;?>&file=<?php echo $rfm_subfolder.$subdir.$file;?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
-					<?php }elseif($preview_text_files && in_array($file_array['extension'],$previewable_text_file_exts)){ ?>
+					<?php }elseif($preview_text_files && in_array($file_array['extension'],$config['previewable_text_file_exts'])){ ?>
 					<a class="tip-right file-preview-btn" title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=get_file&sub_action=preview&preview_mode=text&title=<?php echo $filename;?>&file=<?php echo $rfm_subfolder.$subdir.$file;?>"
 					href="javascript:void('');" ><i class=" icon-eye-open"></i></a>
 					<?php }elseif($googledoc_enabled && in_array($file_array['extension'],$googledoc_file_exts)){ ?>

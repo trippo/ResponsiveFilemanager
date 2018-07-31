@@ -1330,6 +1330,11 @@ class UploadHandler
 				'',
 				$content_disposition_header
 			)) : null;
+		// TODO check
+		// if (isset($content_disposition_header) && !empty($content_disposition_header) ) {
+		//	 $file_name = str_replace('attachment; filename=&#34;', '', $content_disposition_header);
+		//   $file_name = str_replace('&#34;', '', $file_name);
+		// }
 		// Parse the Content-Range header, which has the following form:
 		// Content-Range: bytes 0-524287/2000000
 		$content_range_header = $this->get_server_var('HTTP_CONTENT_RANGE');

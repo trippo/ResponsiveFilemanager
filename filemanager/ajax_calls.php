@@ -645,6 +645,9 @@ if(isset($_GET['action']))
 				$allowed_file_exts = array();
 			}
 
+			if(!isset($info['extension'])){
+				$info['extension']='';
+			}
 			if ( ! in_array($info['extension'], $allowed_file_exts)
 				|| ! isset($is_allowed)
 				|| $is_allowed === false
@@ -663,13 +666,8 @@ if(isset($_GET['action']))
 					$data = htmlspecialchars(htmlspecialchars_decode($data));
 					$ret = '';
 
-					if ( ! in_array($info['extension'],$previewable_text_file_exts_no_prettify))
-					{
-						$ret .= '<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&skin=sunburst"></script>';
-						$ret .= '<?prettify lang='.$info['extension'].' linenums=true?><pre class="prettyprint"><code class="language-'.$info['extension'].'">'.$data.'</code></pre>';
-					} else {
-						$ret .= '<pre class="no-prettify">'.$data.'</pre>';
-					}
+					$ret .= '<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&skin=sunburst"></script>';
+					$ret .= '<?prettify lang='.$info['extension'].' linenums=true?><pre class="prettyprint"><code class="language-'.$info['extension'].'">'.$data.'</code></pre>';
 
 				}
 				elseif ($preview_mode == 'google') {
@@ -680,10 +678,9 @@ if(isset($_GET['action']))
 					}
 
 					$googledoc_url = urlencode($url_file);
-					$googledoc_html = "<iframe src=\"https://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
-					$ret = $googledoc_html;
+					$ret = "<iframe src=\"https://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
 				}
-			} else {
+			}else{
 				$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
 				$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
 			}

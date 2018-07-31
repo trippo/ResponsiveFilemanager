@@ -143,8 +143,14 @@ try {
     );
     if (!$config['ext_blacklist']) {
         $uploadConfig['accept_file_types'] = '/\.(' . implode('|', $config['ext']) . ')$/i';
+        if($config['files_without_extension']){
+        	$uploadConfig['accept_file_types'] = '/((\.(' . implode('|', $config['ext']) . ')$)|(^[^.]+$))$/i';
+        }
     } else {
-        $uploadConfig['accept_file_types'] = '/\.(?!(' . implode('|', $config['ext_blacklist']) . ')$)/i';
+        $uploadConfig['accept_file_types'] = '/\.(?!(' . implode('|', $config['ext_blacklist']) . '))$/i';
+        if($config['files_without_extension']){
+        	$uploadConfig['accept_file_types'] = '/((\.(?!(' . implode('|', $config['ext_blacklist']) . '))$)|(^[^.]+$))/i';
+        }
     }
 
     if ($ftp) {
