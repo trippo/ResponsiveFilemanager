@@ -968,7 +968,7 @@ $files=$sorted;
 				$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
 				$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
 				}
-				?><figure data-name="<?php echo $file ?>" class="<?php if($file=="..") echo "back-";?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
+				?><figure data-name="<?php echo $file ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>" class="<?php if($file=="..") echo "back-";?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
 				<?php if($file==".."){ ?>
 					<input type="hidden" class="path" value="<?php echo str_replace('.','',dirname($rfm_subfolder.$subdir));?>"/>
 					<input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path.$subdir)."/";?>"/>
@@ -1008,9 +1008,9 @@ $files=$sorted;
 					<?php } ?>
 					<div class='file-extension'><?php echo fix_strtolower(trans('Type_dir'));?></div>
 					<figcaption>
-						<a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_folders && !$file_prevent_rename) echo "rename-folder";?>" title="<?php echo trans('Rename')?>" data-folder="1" data-permissions="<?php echo $file_array['permissions']; ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>">
+						<a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_folders && !$file_prevent_rename) echo "rename-folder";?>" title="<?php echo trans('Rename')?>" data-folder="1" data-permissions="<?php echo $file_array['permissions']; ?>">
 						<i class="icon-pencil <?php if(!$rename_folders || $file_prevent_rename) echo 'icon-white';?>"></i></a>
-						<a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders && !$file_prevent_delete) echo "delete-folder";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del');?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>" >
+						<a href="javascript:void('')" class="tip-left erase-button <?php if($delete_folders && !$file_prevent_delete) echo "delete-folder";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del');?>" >
 						<i class="icon-trash <?php if(!$delete_folders || $file_prevent_delete) echo 'icon-white';?>"></i>
 						</a>
 					</figcaption>
@@ -1145,7 +1145,8 @@ $files=$sorted;
 			$file_prevent_rename = isset($filePermissions[$file]['prevent_rename']) && $filePermissions[$file]['prevent_rename'];
 			$file_prevent_delete = isset($filePermissions[$file]['prevent_delete']) && $filePermissions[$file]['prevent_delete'];
 			}
-			?>		<figure data-name="<?php echo $file ?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
+			?>		
+			<figure data-name="<?php echo $file ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
 				<a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
 				<div class="img-precontainer">
 					<?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div><?php } ?>
@@ -1215,10 +1216,10 @@ $files=$sorted;
 					<?php }else{ ?>
 					<a class="preview disabled"><i class="icon-eye-open icon-white"></i></a>
 					<?php } ?>
-					<a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_files && !$file_prevent_rename) echo "rename-file";?>" title="<?php echo trans('Rename')?>" data-folder="0" data-permissions="<?php echo $file_array['permissions']; ?>" data-path="<?php echo $rfm_subfolder.$subdir .$file;?>">
+					<a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($rename_files && !$file_prevent_rename) echo "rename-file";?>" title="<?php echo trans('Rename')?>" data-folder="0" data-permissions="<?php echo $file_array['permissions']; ?>">
 					<i class="icon-pencil <?php if(!$rename_files || $file_prevent_rename) echo 'icon-white';?>"></i></a>
 
-					<a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files && !$file_prevent_delete) echo "delete-file";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_del');?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>">
+					<a href="javascript:void('')" class="tip-left erase-button <?php if($delete_files && !$file_prevent_delete) echo "delete-file";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_del');?>">
 					<i class="icon-trash <?php if(!$delete_files || $file_prevent_delete) echo 'icon-white';?>"></i>
 					</a>
 					</form>

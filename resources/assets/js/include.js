@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.13.0";
+	var version = "9.13.3";
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
@@ -450,8 +450,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			grid.on('click', '.rename-file', function ()
 			{
 				var _this = jQuery(this);
-
-				var file_container = _this.parent().parent().parent();
+				var file_container = _this.closest('figure');
+				var path = file_container.attr('data-path');
 				var file_title = file_container.find('h4');
 				var old_name = $.trim(file_title.text());
 				bootbox.prompt(jQuery('#rename').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
@@ -461,7 +461,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						name = fix_filename(name);
 						if (name != old_name)
 						{
-							execute_action('rename_file', _this.attr('data-path'), name, file_container, 'apply_file_rename');
+							execute_action('rename_file', path, name, file_container, 'apply_file_rename');
 						}
 					}
 				}, old_name);
@@ -470,8 +470,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			grid.on('click', '.rename-folder', function ()
 			{
 				var _this = jQuery(this);
+				var file_container = _this.closest('figure');
+				var path = file_container.attr('data-path');
 
-				var file_container = _this.parent().parent().parent();
 				var file_title = file_container.find('h4');
 				var old_name = $.trim(file_title.text());
 				bootbox.prompt(jQuery('#rename').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
@@ -481,7 +482,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						name = fix_filename(name).replace('.', '');
 						if (name != old_name)
 						{
-							execute_action('rename_folder', _this.attr('data-path'), name, file_container, 'apply_folder_rename');
+							execute_action('rename_folder', path, name, file_container, 'apply_folder_rename');
 						}
 					}
 				}, old_name);
@@ -490,11 +491,12 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			grid.on('click', '.delete-file', function ()
 			{
 				var _this = jQuery(this);
+				var path = _this.closest('figure').attr('data-path');
 				bootbox.confirm(_this.attr('data-confirm'), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
 				{
 					if (result == true)
 					{
-						execute_action('delete_file', _this.attr('data-path'), '', '', '');
+						execute_action('delete_file', path, '', '', '');
 						var fil = jQuery('#files_number');
 						fil.text(parseInt(fil.text())-1);
 						_this.parent().parent().parent().parent().remove();
@@ -505,12 +507,13 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			grid.on('click', '.delete-folder', function ()
 			{
 				var _this = jQuery(this);
+				var path = _this.closest('figure').attr('data-path');
 
 				bootbox.confirm(_this.attr('data-confirm'), jQuery('#cancel').val(), jQuery('#ok').val(), function (result)
 				{
 					if (result == true)
 					{
-						execute_action('delete_folder', _this.attr('data-path'), '', '', '');
+						execute_action('delete_folder', path, '', '', '');
 						var fol = jQuery('#folders_number');
 						fol.text(parseInt(fol.text())-1);
 						_this.parent().parent().parent().remove();
@@ -1210,7 +1213,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		// remove to prevent duplicates
 		jQuery('#textfile_edit_area').parent().parent().remove();
 
-		var full_path = $trigger.find('.rename-file-paths').attr('data-path');
+		var full_path = $trigger.closest('figure').attr('data-path');
 
 		$.ajax({
 			type: "POST",
@@ -1309,7 +1312,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		jQuery('#files_permission_start').parent().parent().remove();
 
 		var obj = $trigger.find('.rename-file-paths');
-		var full_path = obj.attr('data-path');
+		var full_path = $trigger.closest('figure').attr('data-path');
 		var permissions = obj.attr('data-permissions');
 		var folder = obj.attr('data-folder');
 
@@ -1529,14 +1532,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		var thumb_path, full_path;
 
-		if (!$trigger.hasClass('directory'))
-		{
-			full_path = $trigger.find('.rename-file-paths').attr('data-path');
-		}
-		else
-		{
-			full_path = $trigger.find('.rename-file-paths').attr('data-path');
-		}
+		full_path = $trigger.closest('figure').attr('data-path');
 
 		$.ajax({
 			type: "POST",
@@ -1568,7 +1564,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				var folder_path;
 				if (typeof dnd != 'undefined')
 				{
-					folder_path = dnd.find('.rename-folder').attr('data-path');
+					folder_path = dnd.closest('figure').attr('data-path');
 				}
 				else
 				{
@@ -1616,7 +1612,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			obj = $trigger.find('.rename-folder');
 		}
 
-		var full_path = obj.attr('data-path');
+		var full_path = $trigger.closest('figure').attr('data-path');
 
 		$trigger.parent().hide(100);
 
@@ -1644,7 +1640,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						folder_path = dnd.find('.rename-folder').attr('data-path');
+						folder_path = dnd.closest('figure').attr('data-path');
 					}
 				}
 				else
@@ -2186,18 +2182,27 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 		var old_name = file.substring(file.lastIndexOf('/') + 1);
 		var extension = file.substring(file.lastIndexOf('.') + 1);
+		if(extension){
+			extension = "."+extension;
+		}else{
+			extension = '';
+		}
 
 		link.each(function ()
 		{
-			jQuery(this).attr('data-file', encodeURIComponent(name + "." + extension));
+			jQuery(this).attr('data-file', encodeURIComponent(name + extension));
 		});
 
 		//thumbnails
 		container.find('img').each(function ()
 		{
 			var src = jQuery(this).attr('src');
-
-			jQuery(this).attr('src', src.replace(old_name, name + "." + extension) + '?time=' + new Date().getTime());
+			if(src){
+				jQuery(this).attr('src', src.replace(old_name, name + extension) + '?time=' + new Date().getTime());
+			}else{
+				var src = jQuery(this).attr('data-src');
+				jQuery(this).attr('data-src', src.replace(old_name, name + extension) + '?time=' + new Date().getTime());
+			}
 			jQuery(this).attr('alt', name + " thumbnails");
 		});
 
@@ -2206,25 +2211,21 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		file = link2.attr('data-url');
 		if (typeof file !== "undefined" && file)
 		{
-			link2.attr('data-url', file.replace(encodeURIComponent(old_name), encodeURIComponent(name + "." + extension)));
+			link2.attr('data-url', file.replace(encodeURIComponent(old_name), encodeURIComponent(name + extension)));
 		}
 
 		//li data-name
-		container.parent().attr('data-name', name + "." + extension);
-		container.attr('data-name', name + "." + extension);
+		container.parent().attr('data-name', name + extension);
+		container.attr('data-name', name  + extension);
 
 		//download link
-		container.find('.name_download').val(name + "." + extension);
+		container.find('.name_download').val(name + extension);
 
-		//rename link && delete link
-		var link3 = container.find('a.rename-file');
-		var link4 = container.find('a.delete-file');
+		//rename path
+		var path_old = container.attr('data-path');
+		var new_path = path_old.replace(old_name, name + extension);
 
-		var path_old = link3.attr('data-path');
-		var new_path = path_old.replace(old_name, name + "." + extension);
-
-		link3.attr('data-path', new_path);
-		link4.attr('data-path', new_path);
+		container.attr('data-path', new_path);
 	}
 
 	apply_folder_rename = function (container, name)
@@ -2247,13 +2248,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		});
 
 		//rename link && delete link
-		var link2 = container.find('a.delete-folder');
-		var link3 = container.find('a.rename-folder');
-		var path_old = link3.attr('data-path');
+		var path_old = container.attr('data-path');
 		var index = path_old.lastIndexOf('/');
 		var new_path = path_old.substr(0, index + 1) + name;
-		link2.attr('data-path', new_path);
-		link3.attr('data-path', new_path);
+		container.attr('data-path', new_path);
 
 	}
 
