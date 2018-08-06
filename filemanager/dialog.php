@@ -403,6 +403,9 @@ $get_params = http_build_query($get_params);
 		}
 	</script>
 	<script src="js/include.js?v=<?php echo $version; ?>"></script>
+<?php if($load_more): ?>
+	<script src="js/load_more.js?v=<?php echo $version; ?>"></script>
+<?php endif; ?>
 </head>
 <body>
 <!-- The Templates plugin is included to render the upload/download listings -->
@@ -672,11 +675,14 @@ foreach($files as $k=>$file){
 		if($file['type']=='file'){
 			$current_files_number++;
 			$file_ext = substr(strrchr($file['name'],'.'),1);
+			$is_dir = false;
 		}else{
 			$current_folders_number++;
 			$file_ext=trans('Type_dir');
+			$is_dir = true;
 		}
 		$sorted[$k]=array(
+		   'is_dir'=>$is_dir,
 			'file'=>$file['name'],
 			'file_lcase'=>strtolower($file['name']),
 			'date'=>$date,
@@ -698,6 +704,7 @@ foreach($files as $k=>$file){
 				}
 				$file_ext=trans('Type_dir');
 				$sorted[$k]=array(
+					'is_dir'=>true,
 					'file'=>$file,
 					'file_lcase'=>strtolower($file),
 					'date'=>$date,
@@ -716,6 +723,7 @@ foreach($files as $k=>$file){
 				$size=filesize($file_path);
 				$file_ext = substr(strrchr($file,'.'),1);
 				$sorted[$k]=array(
+					'is_dir'=>false,
 					'file'=>$file,
 					'file_lcase'=>strtolower($file),
 					'date'=>$date,
@@ -728,18 +736,52 @@ foreach($files as $k=>$file){
 	}
 }
 
-
 function filenameSort($x, $y) {
-	return $x['file_lcase'] <  $y['file_lcase'];
+	global $descending;
+
+	if($x['is_dir'] !== $y['is_dir']){
+		return $y['is_dir'];
+	} else {
+		return ($descending)
+			? $x['file_lcase'] < $y['file_lcase']
+			: $x['file_lcase'] >= $y['file_lcase'];
+	}
 }
+
 function dateSort($x, $y) {
-	return $x['date'] <  $y['date'];
+	global $descending;
+
+	if($x['is_dir'] !== $y['is_dir']){
+		return $y['is_dir'];
+	} else {
+		return ($descending)
+			? $x['date'] < $y['date']
+			: $x['date'] >= $y['date'];
+	}
 }
+
 function sizeSort($x, $y) {
-	return $x['size'] <  $y['size'];
+	global $descending;
+
+	if($x['is_dir'] !== $y['is_dir']){
+		return $y['is_dir'];
+	} else {
+		return ($descending)
+			? $x['size'] < $y['size']
+			: $x['size'] >= $y['size'];
+	}
 }
+
 function extensionSort($x, $y) {
-	return $x['extension'] <  $y['extension'];
+	global $descending;
+
+	if($x['is_dir'] !== $y['is_dir']){
+		return $y['is_dir'];
+	} else {
+		return ($descending)
+			? $x['extension'] < $y['extension']
+			: $x['extension'] >= $y['extension'];
+	}
 }
 
 switch($sort_by){
@@ -757,14 +799,73 @@ switch($sort_by){
 		break;
 }
 
-if(!$descending){
-	$sorted=array_reverse($sorted);
-}
-
 if($subdir!=""){
 	$sorted = array_merge(array(array('file'=>'..')),$sorted);
 }
 $files=$sorted;
+
+//
+// Generate a list of files visible to the file manager
+//
+
+$files_visible = array();
+foreach ($files as $file_array) {
+	$file = $file_array['file'];
+
+	if($file == '.'
+		|| ( substr($file, 0, 1) == '.' && isset( $file_array[ 'extension' ] ) && $file_array[ 'extension' ] == fix_strtolower(trans( 'Type_dir' ) ))
+		|| (
+			isset($file_array['extension'])
+			&& $file_array['extension']==fix_strtolower(trans('Type_dir'))
+			&& (
+				($file == '..' && $subdir == '')
+				|| in_array($file, $hidden_folders)
+				|| ($filter!='' && $n_files>$file_number_limit_js && $file!=".." && stripos($file,$filter)===false)
+			)
+	  	)
+		|| (
+			isset($file_array['extension'])
+			&& $file_array['extension'] != fix_strtolower(trans('Type_dir'))
+			&& (
+				(!$config['ext_blacklist'] && !in_array(fix_strtolower($file_array['extension']), $ext))
+				|| ($config['ext_blacklist'] && in_array(fix_strtolower($file_array['extension']), $config['ext_blacklist']))
+				|| ($filter!='' && $n_files>$file_number_limit_js && stripos($file,$filter)===false)
+			)
+		)
+	)
+	{
+		continue;
+	}
+
+	if(isset($file_array['extension'])
+		&& $file_array['extension'] != fix_strtolower(trans('Type_dir')) )
+	{
+		foreach ( $hidden_files as $hidden_file ) {
+			if ( fnmatch($hidden_file, $file, FNM_PATHNAME) ) {
+				continue 2;
+			}
+		}
+	}
+
+	array_push($files_visible, $file_array);
+}
+
+$files = $files_visible;
+
+
+// If "Load more" functionality is enabled
+if($load_more){
+	// Determine starting file number
+	$load_more_start = (isset($_GET['load_more_start']) and is_numeric($_GET['load_more_start']))
+		? intval($_GET['load_more_start'])
+		: 0;
+
+	// Determine if there are more files available that would be displayed
+	$load_more_avail = ($load_more_start + $load_more_limit < $n_files) ? true : false;
+
+	// Extract files that will be displayed during this request
+	$files = array_slice($files, $load_more_start, $load_more_limit);
+}
 
 ?>
 <!-- header div start -->
@@ -1236,6 +1337,21 @@ $files=$sorted;
 	</div>
 	</div>
 </div>
+
+<?php if($load_more and $load_more_avail): ?>
+<div id="load-more-container" data-start="<?php echo htmlspecialchars($load_more_limit); ?>" data-auto="<?php echo ($load_more_auto ? '1' : '0'); ?>">
+	<div id="load-more-indicator" style="display:none; padding:2em 0; text-align:center;">
+		<img src="img/processing.gif" alt="Please wait...">
+	</div>
+
+	<?php if(!$load_more_auto): ?>
+	<div style="padding:2em 0; text-align:center;">
+		<button id="btn-load-more" type="button" class="btn">Load More</button>
+	</div>
+	<?php endif; ?>
+</div>
+<?php endif; ?>
+
 <script>
 	var files_prevent_duplicate = new Array();
 	<?php
