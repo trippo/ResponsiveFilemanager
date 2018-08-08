@@ -2,12 +2,8 @@ language: node_js
 node_js:
   - "8"
 
-before_install:
-  - npm install -g bower
-
 install:
   - npm install
-  - bower install
 
 script:
   - ./node_modules/.bin/gulp
@@ -15,4 +11,3 @@ script:
 cache:
   directories:
     - "node_modules"
-    - "bower_components"

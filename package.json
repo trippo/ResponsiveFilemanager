@@ -1,6 +1,6 @@
 {
-  "name": "ResponsiveFilemanager",
-  "version": "9.12.2",
+  "name": "responsive-filemanager",
+  "version": "9.13.3",
   "author": {
     "name": "Alberto Peripolli",
     "email": "info@albertoperipolli.com"
@@ -9,7 +9,23 @@
   "github": "https://github.com/trippo/ResponsiveFilemanager",
   "homepage": "http://www.responsivefilemanager.com/",
   "devDependencies": {
-    "gulp": "^3.8.8",
+    "gulp": "^3.9.1",
     "laravel-elixir": "*"
+  },
+  "dependencies": {
+    "blueimp-file-upload": "^9.22.0",
+    "bootbox.js": "github:makeusabrew/bootbox#v3.3.0",
+    "bootstrap": "github:twbs/bootstrap#v2.3.2",
+    "bootstrap-lightbox": "^0.7.0",
+    "bootstrap-modal": "github:jschr/bootstrap-modal#2.2.6",
+    "clipboard": "^1.7.1",
+    "html5shiv": "^3.7.3",
+    "jquery": "^1.9.1",
+    "jquery-contextmenu": "^1.6.6",
+    "jquery-scrollstop": "^1.2.0",
+    "jquery-touchswipe": "^1.6.18",
+    "jquery-ui": "^1.10.5",
+    "jquery-ui-touch-punch": "^0.2.3",
+    "vanilla-lazyload": "^10.14.0"
   }
 }

@@ -12,3 +12,4 @@ filemanager/js/*
 filemanager/plugin.min.js
 resources/tmp/*
 tinymce/plugins/responsivefilemanager/plugin.min.js
+.idea/
