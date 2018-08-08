@@ -7,7 +7,8 @@ bower_components
 node_modules
 
 #Exclude compiled scripts and styles from repository
-filemanager/js/*
 filemanager/css/*
-resources/tmp/*
+filemanager/js/*
 filemanager/plugin.min.js
+resources/tmp/*
+tinymce/plugins/responsivefilemanager/plugin.min.js
