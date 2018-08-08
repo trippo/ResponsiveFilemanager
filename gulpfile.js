@@ -11,8 +11,6 @@ elixir(function (mix) {
 
     mix.less(
         [
-            "../../../node_modules/bootstrap/less/bootstrap.less",
-            "../../../node_modules/bootstrap/less/responsive.less",
             "../../../node_modules/bootstrap-lightbox/less/bootstrap-lightbox.less"
         ],
         'resources/tmp/css/lib.css',
@@ -21,6 +19,8 @@ elixir(function (mix) {
 
     mix.styles(
         [
+            "../../../node_modules/bootstrap/docs/assets/css/bootstrap.css",
+            "../../../node_modules/bootstrap/docs/assets/css/bootstrap-responsive.css",
             "lib.css",
             "../../../node_modules/bootstrap-modal/css/bootstrap-modal.css",
             "../../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.css",
