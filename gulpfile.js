@@ -30,11 +30,11 @@ elixir(function (mix) {
         'resources/tmp/css'
     );
 
-    // mix.styles(
-    //   ["rtl-style.less"],
-    //   'filemanager/css/rtl-style.css',
-    //   'resources/assets/less'
-    // );
+    mix.styles(
+      ["rtl-style.less"],
+      'filemanager/css/rtl-style.css',
+      'resources/assets/less'
+    );
 
     mix.scripts(
         [
