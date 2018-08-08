@@ -6,7 +6,7 @@ install:
   - yarn
 
 script:
-  - ./node_modules/.bin/gulp
+  - yarn build
 
 cache:
   directories:

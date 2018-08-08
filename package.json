@@ -12,6 +12,11 @@
     "gulp": "^3.9.1",
     "laravel-elixir": "*"
   },
+  "scripts": {
+    "build": "./node_modules/.bin/gulp",
+    "dist": "yarn clean && ./node_modules/.bin/gulp --production",
+    "clean": "rm -rf ./filemanager/{css,js}/* && rm -rf ./resources/tmp/* && rm -f ./filemanager/plugin.min.js && rm -f ./tinymce/plugins/responsivefilemanager/plugin.min.js"
+  },
   "dependencies": {
     "blueimp-file-upload": "^9.22.0",
     "bootbox.js": "github:makeusabrew/bootbox#v3.3.0",
