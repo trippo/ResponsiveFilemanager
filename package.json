@@ -21,7 +21,7 @@
     "blueimp-file-upload": "^9.22.0",
     "bootbox.js": "github:makeusabrew/bootbox#v3.3.0",
     "bootstrap": "github:twbs/bootstrap#v2.3.2",
-    "bootstrap-lightbox": "^0.7.0",
+    "bootstrap-lightbox": "github:jbutz/bootstrap-lightbox.git#0.6.1",
     "bootstrap-modal": "github:jschr/bootstrap-modal#2.2.6",
     "clipboard": "^1.7.1",
     "html5shiv": "^3.7.3",
