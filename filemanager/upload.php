@@ -70,7 +70,7 @@ try {
     // make sure the length is limited to avoid DOS attacks
     if (isset($_POST['url']) && strlen($_POST['url']) < 2000) {
         $url = $_POST['url'];
-        $urlPattern = '/^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(?::\d{1,5})?(?:$|[?\/#])/i';
+        $urlPattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/:?=&#]{1}[\da-z\.-]+)*[\/\?]?$/i';
 
         if (!preg_match($urlPattern, $url)) {
             $temp = tempnam('/tmp', 'RF');
