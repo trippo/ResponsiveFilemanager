@@ -80,6 +80,10 @@ try {
             curl_setopt($ch, CURLOPT_FILE, $fp);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_exec($ch);
+            if (curl_errno($ch)) {
+                curl_close($ch);
+                return false;
+            }
             curl_close($ch);
             fclose($fp);
 
