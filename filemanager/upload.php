@@ -82,7 +82,7 @@ try {
             curl_exec($ch);
             if (curl_errno($ch)) {
                 curl_close($ch);
-                return false;
+                throw new Exception('Image doesn\'t exist');
             }
             curl_close($ch);
             fclose($fp);
