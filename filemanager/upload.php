@@ -166,13 +166,19 @@ try {
     $upload_handler = new UploadHandler($uploadConfig, true, $messages);
 } catch (Exception $e) {
     $return = array();
-    foreach ($_FILES['files']['name'] as $i => $name) {
-        $return[] = array(
-            'name' => $name,
-            'error' => $e->getMessage(),
-            'size' => $_FILES['files']['size'][$i],
-            'type' => $_FILES['files']['type'][$i]
-        );
+    if ($_FILES['files']) {
+        foreach ($_FILES['files']['name'] as $i => $name) {
+            $return[] = array(
+                'name' => $name,
+                'error' => $e->getMessage(),
+                'size' => $_FILES['files']['size'][$i],
+                'type' => $_FILES['files']['type'][$i]
+            );
+        }
+
+        echo json_encode(array("files" => $return));
+        return;
     }
-    echo json_encode(array("files" => $return));
+
+    echo json_encode(array("error" =>$e->getMessage()));
 }
