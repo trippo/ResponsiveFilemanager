@@ -377,11 +377,11 @@ $config = array(
 	//  If you insert an extensions blacklist array the filemanager don't check any extensions but simply block the extensions in the list
 	//  otherwise check Allowed extensions configuration
 	//*********************
-	'ext_blacklist'							  => false,//['exe','bat'],
+	'ext_blacklist'							  => false,//['exe','bat','jpg'],
 
 
 	//Empty filename permits like .htaccess, .env, ...
-	'empty_filename'                          => true,
+	'empty_filename'                          => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -391,7 +391,7 @@ $config = array(
 	| If you want to accept files without extension, remember to add '' extension on allowed extension
 	|
 	*/
-	'files_without_extension'	              => true,
+	'files_without_extension'	              => false,
 
 	/******************
 	* AVIARY config

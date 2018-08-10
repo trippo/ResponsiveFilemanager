@@ -1,6 +1,27 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.13.3
+*********************************************************
+- support to files without extension
+- fix Path Traversal vulnerability and url validation
+- fix vulnerability that permits to see server files
+- fix double file and folder rename
+- refactoring
+- update Hungarian, German and Thai languages
+- fix nested php tags in download permission
+- change jPlayer script to cdn
+
+
+*********************************************************
+*  RFM 9.13.2
+*********************************************************
+- empty filename support (like .htaccess, .env,...)
+- fix download bug
+- refactoring check extension
+
+
+*********************************************************
 *  RFM 9.13.1
 *********************************************************
 - folder creation fix
