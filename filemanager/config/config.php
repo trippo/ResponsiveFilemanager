@@ -250,19 +250,6 @@ $config = array(
 	//Add ?484899493349 (time value) to returned images to prevent cache
 	'add_time_to_img'                       => false,
 
-	/*
-	|--------------------------------------------------------------------------
-	| Load more
-	|--------------------------------------------------------------------------
-	*/
-
-	// Enable "Load more" functionality
-	'load_more' => false,
-	// Number of files/folders displayed at once
-	// Should be greater than "file_number_limit_js"
-	'load_more_limit' => 120,
-	// Enable auto-loading on scroll
-	'load_more_auto' => 'auto',
 
 	//*******************************************
 	//Images limit and resizing configuration
