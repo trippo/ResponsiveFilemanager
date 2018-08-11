@@ -48,7 +48,7 @@ if ( ! function_exists('trans'))
 		|| ! is_readable('lang/' . basename($_SESSION['RF']['language']) . '.php')
 	)
 	{
-		$lang = $default_language;
+		$lang = $config['default_language'];
 
 		if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang'] != '')
 		{
@@ -56,7 +56,7 @@ if ( ! function_exists('trans'))
 			$lang = trim($lang);
 		}
 
-		if ($lang != $default_language)
+		if ($lang != $config['default_language'])
 		{
 			$path_parts = pathinfo($lang);
 			$lang = $path_parts['basename'];
@@ -99,9 +99,9 @@ if ( ! function_exists('trans'))
 *
 * @param  string  $path
 * @param  string $path_thumb
-* @param  string $config
+* @param  array $config
 *
-* @return  nothing
+* @return null
 */
 function deleteFile($path,$path_thumb,$config){
 	if ($config['delete_files']){
@@ -141,7 +141,7 @@ function deleteFile($path,$path_thumb,$config){
 			{
 				if ($path!="" && $path[strlen($path)-1] != "/") $path.="/";
 
-				$base_dir=$path.substr_replace($info['dirname']."/", '', 0, strlen($current_path));
+				$base_dir=$path.substr_replace($info['dirname']."/", '', 0, strlen($config['current_path']));
 				if (file_exists($base_dir.$config['fixed_image_creation_name_to_prepend'][$k].$info['filename'].$config['fixed_image_creation_to_append'][$k].".".$info['extension']))
 				{
 					unlink($base_dir.$config['fixed_image_creation_name_to_prepend'][$k].$info['filename'].$config['fixed_image_creation_to_append'][$k].".".$info['extension']);
@@ -420,7 +420,7 @@ function makeSize($size)
 */
 function folder_info($path,$count_hidden=true)
 {
-	global $hidden_folders,$hidden_files;
+	global $config;
 	$total_size = 0;
 	$files = scandir($path);
 	$cleanPath = rtrim($path, '/') . '/';
@@ -430,7 +430,7 @@ function folder_info($path,$count_hidden=true)
 	{
 		if ($t != "." && $t != "..")
 		{
-			if ($count_hidden or !(in_array($t,$hidden_folders) or in_array($t,$hidden_files)))
+			if ($count_hidden or !(in_array($t,$config['hidden_folders']) or in_array($t,$config['hidden_files'])))
 			{
 				$currentFile = $cleanPath . $t;
 				if (is_dir($currentFile))
@@ -460,7 +460,7 @@ function folder_info($path,$count_hidden=true)
 */
 function filescount($path,$count_hidden=true)
 {
-	global $hidden_folders,$hidden_files;
+	global $config;
 	$total_count = 0;
 	$files = scandir($path);
 	$cleanPath = rtrim($path, '/') . '/';
@@ -469,7 +469,7 @@ function filescount($path,$count_hidden=true)
 	{
 		if ($t != "." && $t != "..")
 		{
-			if ($count_hidden or !(in_array($t,$hidden_folders) or in_array($t,$hidden_files)))
+			if ($count_hidden or !(in_array($t,$config['hidden_folders']) or in_array($t,$config['hidden_files'])))
 			{
 				$currentFile = $cleanPath . $t;
 				if (is_dir($currentFile))
@@ -496,11 +496,12 @@ function filescount($path,$count_hidden=true)
 */
 function checkresultingsize($sizeAdded)
 {
-	global $MaxSizeTotal,$current_path;
-	if ($MaxSizeTotal !== false && is_int($MaxSizeTotal)) {
-		list($sizeCurrentFolder,$fileCurrentNum,$foldersCurrentCount) = folder_info($current_path,false);
+    global $config;
+
+	if ($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal'])) {
+		list($sizeCurrentFolder,$fileCurrentNum,$foldersCurrentCount) = folder_info($config['current_path'],false);
 		// overall size over limit
-		if (($MaxSizeTotal * 1024 * 1024) < ($sizeCurrentFolder + $sizeAdded)) {
+		if (($config['MaxSizeTotal'] * 1024 * 1024) < ($sizeCurrentFolder + $sizeAdded)) {
 			return false;
 		}
 	}
@@ -1246,4 +1247,3 @@ function AddErrorLocation()
 	}
 	return "";
 }
-?>

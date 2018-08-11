@@ -262,7 +262,7 @@ $config = array(
 	// Should be greater than "file_number_limit_js"
 	'load_more_limit' => 120,
 	// Enable auto-loading on scroll
-	'load_more_auto' => auto,
+	'load_more_auto' => 'auto',
 
 	//*******************************************
 	//Images limit and resizing configuration
@@ -348,14 +348,14 @@ $config = array(
 	'chmod_dirs'                              => true, // change folder permissions
 	'preview_text_files'                      => true, // eg.: txt, log etc.
 	'edit_text_files'                         => true, // eg.: txt, log etc.
-	'create_text_files'                       => true, // only create files with exts. defined in $editable_text_file_exts
+	'create_text_files'                       => true, // only create files with exts. defined in $config['editable_text_file_exts']
 	'download_files'			  => true, // allow download files or just preview
 
 	// you can preview these type of files if $preview_text_files is true
 	'previewable_text_file_exts'              => array( "bsh", "c","css", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml","xsl",'txt', 'log','' ),
 
 	// you can edit these type of files if $edit_text_files is true (only text based files)
-	// you can create these type of files if $create_text_files is true (only text based files)
+	// you can create these type of files if $config['create_text_files'] is true (only text based files)
 	// if you want you can add html,css etc.
 	// but for security reasons it's NOT RECOMMENDED!
 	'editable_text_file_exts'                 => array( 'txt', 'log', 'xml', 'html', 'css', 'htm', 'js','' ),
@@ -510,4 +510,3 @@ return array_merge(
 		),
 	)
 );
-?>

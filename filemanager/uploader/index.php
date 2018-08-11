@@ -1,8 +1,6 @@
 <?php
 
 $config = include '../config/config.php';
-//TODO switch to array
-extract($config, EXTR_OVERWRITE);
 
 if ( ! $java_upload)
 {
@@ -17,14 +15,14 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 include 'jupload.php';
 include '../include/utils.php';
 
-$path = $current_path . $_GET['path'];
+$path = $config['current_path'] . $_GET['path'];
 $cycle = true;
 $max_cycles = 50;
 $i = 0;
 while ($cycle && $i < $max_cycles)
 {
 	$i++;
-	if ($path == $current_path)
+	if ($path == $config['current_path'])
 	{
 		$cycle = false;
 	}
@@ -37,7 +35,7 @@ while ($cycle && $i < $max_cycles)
 	$path = fix_dirname($path) . "/";
 }
 
-$path = "../" . $current_path . $_GET['path'];
+$path = "../" . $config['current_path'] . $_GET['path'];
 
 if (strpos($_GET['path'], '../') !== false || strpos($_GET['path'], './') !== false || strpos($_GET['path'], '/') === 0)
 {
@@ -58,15 +56,15 @@ $path = str_replace(' ', '~', $path);
  * can use any name you want, but the function must accept one unique parameter: the array that contains the file
  * descriptions.
  *
- * @param $juploadPhpSupportClass The instance of the JUpload PHP class.
- * @param $file                   The array wich contains info about all uploaded files.
+ * @param $juploadPhpSupportClass JUpload The instance of the JUpload PHP class.
+ * @param $file                   array The array wich contains info about all uploaded files.
  */
 function handle_uploaded_files($juploadPhpSupportClass, $files)
 {
 	return
 		"<P>We are in the 'handle_uploaded_files' callback function, in the index.php script. To avoid double coding, we "
 		. "just call the default behavior of the JUpload PHP class. Just replace this by your code...</P>"
-		. $juploadPhpSupportClass->defaultAfterUploadManagement();;
+		. $juploadPhpSupportClass->defaultAfterUploadManagement();
 
 }
 
@@ -93,7 +91,7 @@ $appletParameters = array(
 	'width'                 => '100%',
 	'height'                => '358px',
 	'name'                  => 'No limit Uploader',
-	'allowedFileExtensions' => implode('/', $ext),
+	'allowedFileExtensions' => implode('/', $config['ext']),
 	//To manage, other jar files, like the ftp jar files if postURL is an FTP URL:
 	//'archive' => 'wjhk.jupload.jar,jakarta-commons-oro.jar,jakarta-commons-net.jar',
 	//
@@ -132,7 +130,7 @@ $classParameters = array(
 	'destdir'       => $path  //Where to store the files on the web
 	//'errormail' => 'me@my.domain.org',
 );
-if ( ! empty($convert_spaces))
+if ( ! empty($config['convert_spaces']))
 {
 	$classParameters['convert_spaces'] = true;
 }
