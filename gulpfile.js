@@ -75,11 +75,6 @@ elixir(function (mix) {
     );
 
     mix.scripts(
-        ['include.commercial.js'],
-        'filemanager/js/include.commercial.js'
-    );
-
-    mix.scripts(
         ['plugin.js'],
         'filemanager/plugin.min.js'
     );
