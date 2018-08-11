@@ -2,9 +2,6 @@
 
 $config = include 'config/config.php';
 
-//TODO switch to array
-extract($config, EXTR_OVERWRITE);
-
 include 'include/utils.php';
 
 $ftp = ftp_con($config);
@@ -33,9 +30,9 @@ if (strpos($_POST['name'], '/') !== false) {
 }
 
 if ($ftp) {
-    $path = $ftp_base_url . $upload_dir . $_POST['path'];
+    $path = $config['ftp_base_url'] . $config['upload_dir'] . $_POST['path'];
 } else {
-    $path = $current_path . $_POST['path'];
+    $path = $config['current_path'] . $_POST['path'];
 }
 
 $name = $_POST['name'];

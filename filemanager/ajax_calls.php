@@ -1,8 +1,6 @@
 <?php
 
 $config = include 'config/config.php';
-//TODO switch to array
-extract($config, EXTR_OVERWRITE);
 
 require_once 'include/utils.php';
 
@@ -52,7 +50,7 @@ if(isset($_GET['action']))
 		case 'filter':
 			if (isset($_GET['type']))
 			{
-				if (isset($remember_text_filter) && $remember_text_filter)
+				if (isset($config['remember_text_filter']) && $config['remember_text_filter'])
 				{
 					$_SESSION['RF']["filter"] = $_GET['type'];
 				}
@@ -74,10 +72,10 @@ if(isset($_GET['action']))
 			}
 			break;
 		case 'image_size': // not used
-			$pos = strpos($_POST['path'], $upload_dir);
+			$pos = strpos($_POST['path'], $config['upload_dir']);
 			if ($pos !== false)
 			{
-				$info = getimagesize(substr_replace($_POST['path'], $current_path, $pos, strlen($upload_dir)));
+				$info = getimagesize(substr_replace($_POST['path'], $config['current_path'], $pos, strlen($config['upload_dir'])));
 				response($info)->send();
 				exit;
 			}
@@ -106,7 +104,7 @@ if(isset($_GET['action']))
 			}
 
 			if (!checkresultingsize(strlen($image_data))) {
-				response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation())->send();
+				response(sprintf(trans('max_size_reached'),$config['MaxSizeTotal']).AddErrorLocation())->send();
 				exit;
 			}
 			if($ftp){
@@ -116,22 +114,22 @@ if(isset($_GET['action']))
 				$temp .=".".substr(strrchr($_POST['url'],'.'),1);
 				file_put_contents($temp,$image_data);
 
-				$ftp->put($ftp_base_folder.$upload_dir . $_POST['path'] . $_POST['name'], $temp, FTP_BINARY);
+				$ftp->put($config['ftp_base_folder'].$config['upload_dir'] . $_POST['path'] . $_POST['name'], $temp, FTP_BINARY);
 
 				create_img($temp,$temp,122,91);
-				$ftp->put($ftp_base_folder.$ftp_thumbs_dir. $_POST['path'] . $_POST['name'], $temp, FTP_BINARY);
+				$ftp->put($config['ftp_base_folder'].$config['ftp_thumbs_dir']. $_POST['path'] . $_POST['name'], $temp, FTP_BINARY);
 
 				unlink($temp);
 			}else{
 
-				file_put_contents($current_path . $_POST['path'] . $_POST['name'],$image_data);
-				create_img($current_path . $_POST['path'] . $_POST['name'], $thumbs_base_path.$_POST['path'].$_POST['name'], 122, 91);
+				file_put_contents($config['current_path'] . $_POST['path'] . $_POST['name'],$image_data);
+				create_img($config['current_path'] . $_POST['path'] . $_POST['name'], $config['thumbs_base_path'].$_POST['path'].$_POST['name'], 122, 91);
 				// TODO something with this function cause its blowing my mind
 				new_thumbnails_creation(
-					$current_path.$_POST['path'],
-					$current_path.$_POST['path'].$_POST['name'],
+					$config['current_path'].$_POST['path'],
+					$config['current_path'].$_POST['path'].$_POST['name'],
 					$_POST['name'],
-					$current_path,
+					$config['current_path'],
 					$config
 				);
 			}
@@ -147,11 +145,11 @@ if(isset($_GET['action']))
 			}
 
 			if($ftp){
-				$path = $ftp_base_url.$upload_dir . $_POST['path'];
-				$base_folder = $ftp_base_url.$upload_dir . fix_dirname($_POST['path']) . "/";
+				$path = $config['ftp_base_url'].$config['upload_dir'] . $_POST['path'];
+				$base_folder = $config['ftp_base_url'].$config['upload_dir'] . fix_dirname($_POST['path']) . "/";
 			}else{
-				$path = $current_path . $_POST['path'];
-				$base_folder = $current_path . fix_dirname($_POST['path']) . "/";
+				$path = $config['current_path'] . $_POST['path'];
+				$base_folder = $config['current_path'] . fix_dirname($_POST['path']) . "/";
 			}
 
 			$info = pathinfo($path);
@@ -184,7 +182,7 @@ if(isset($_GET['action']))
 							$sizeTotalFinal += $aStat['size'];
 						}
 						if (!checkresultingsize($sizeTotalFinal)) {
-							response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation())->send();
+							response(sprintf(trans('max_size_reached'),$config['MaxSizeTotal']).AddErrorLocation())->send();
 							exit;
 						}
 
@@ -207,7 +205,7 @@ if(isset($_GET['action']))
 							if ( ! (substr($FullFileName['name'], -1, 1) == "/"))
 							{
 								$fileinfo = pathinfo($OnlyFileName);
-								if (in_array(strtolower($fileinfo['extension']), $ext))
+								if (in_array(strtolower($fileinfo['extension']), $config['ext']))
 								{
 									copy('zip://' . $path . '#' . $OnlyFileName, $base_folder . $FullFileName['name']);
 								}
@@ -234,7 +232,7 @@ if(isset($_GET['action']))
 					$phar = new PharData($path);
 					$phar->decompressFiles();
 					$files = array();
-					check_files_extensions_on_phar($phar, $files, '', $ext);
+					check_files_extensions_on_phar($phar, $files, '', $config['ext']);
 					$phar->extractTo($base_folder, $files, true);
 
 					break;
@@ -246,7 +244,7 @@ if(isset($_GET['action']))
 
 			if($ftp){
 				unlink($path);
-				$ftp->putAll($base_folder, "/".$ftp_base_folder . $upload_dir . fix_dirname($_POST['path']), FTP_BINARY);
+				$ftp->putAll($base_folder, "/".$config['ftp_base_folder'] . $config['upload_dir'] . fix_dirname($_POST['path']), FTP_BINARY);
 				deleteDir($base_folder);
 			}
 
@@ -254,9 +252,9 @@ if(isset($_GET['action']))
 			break;
 		case 'media_preview':
 			if($ftp){
-				$preview_file = $ftp_base_url.$upload_dir . $_GET['file'];
+				$preview_file = $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'];
 			}else{
-				$preview_file = $current_path . $_GET["file"];
+				$preview_file = $config['current_path'] . $_GET["file"];
 			}
 			$info = pathinfo($preview_file);
 			ob_start();
@@ -308,7 +306,7 @@ if(isset($_GET['action']))
 				</div>
 				</div>
 			</div>
-			<?php if(in_array(strtolower($info['extension']), $ext_music)): ?>
+			<?php if(in_array(strtolower($info['extension']), $config['ext_music'])): ?>
 
 				<script type="text/javascript">
 					$(document).ready(function(){
@@ -332,7 +330,7 @@ if(isset($_GET['action']))
 					});
 				</script>
 
-			<?php elseif(in_array(strtolower($info['extension']), $ext_video)):	?>
+			<?php elseif(in_array(strtolower($info['extension']), $config['ext_video'])):	?>
 
 				<script type="text/javascript">
 				$(document).ready(function(){
@@ -387,12 +385,12 @@ if(isset($_GET['action']))
 			}
 
 			$msg_sub_action = ($_POST['sub_action'] == 'copy' ? trans('Copy') : trans('Cut'));
-			$path = $current_path . $_POST['path'];
+			$path = $config['current_path'] . $_POST['path'];
 
 			if (is_dir($path))
 			{
 				// can't copy/cut dirs
-				if ($copy_cut_dirs === false)
+				if ($config['copy_cut_dirs'] === false)
 				{
 					response(sprintf(trans('Copy_Cut_Not_Allowed'), $msg_sub_action, trans('Folders')).AddErrorLocation())->send();
 					exit;
@@ -400,30 +398,30 @@ if(isset($_GET['action']))
 
 				list($sizeFolderToCopy,$fileNum,$foldersCount) = folder_info($path,false);
 				// size over limit
-				if ($copy_cut_max_size !== false && is_int($copy_cut_max_size)) {
-					if (($copy_cut_max_size * 1024 * 1024) < $sizeFolderToCopy) {
-						response(sprintf(trans('Copy_Cut_Size_Limit'), $msg_sub_action, $copy_cut_max_size).AddErrorLocation())->send();
+				if ($config['copy_cut_max_size'] !== false && is_int($config['copy_cut_max_size'])) {
+					if (($config['copy_cut_max_size'] * 1024 * 1024) < $sizeFolderToCopy) {
+						response(sprintf(trans('Copy_Cut_Size_Limit'), $msg_sub_action, $config['copy_cut_max_size']).AddErrorLocation())->send();
 						exit;
 					}
 				}
 
 				// file count over limit
-				if ($copy_cut_max_count !== false && is_int($copy_cut_max_count))
+				if ($config['copy_cut_max_count'] !== false && is_int($config['copy_cut_max_count']))
 				{
-					if ($copy_cut_max_count < $fileNum)
+					if ($config['copy_cut_max_count'] < $fileNum)
 					{
-						response(sprintf(trans('Copy_Cut_Count_Limit'), $msg_sub_action, $copy_cut_max_count).AddErrorLocation())->send();
+						response(sprintf(trans('Copy_Cut_Count_Limit'), $msg_sub_action, $config['copy_cut_max_count']).AddErrorLocation())->send();
 						exit;
 					}
 				}
 
 				if (!checkresultingsize($sizeFolderToCopy)) {
-					response(sprintf(trans('max_size_reached'),$MaxSizeTotal).AddErrorLocation())->send();
+					response(sprintf(trans('max_size_reached'),$config['MaxSizeTotal']).AddErrorLocation())->send();
 					exit;
 				}
 			} else {
 				// can't copy/cut files
-				if ($copy_cut_files === false)
+				if ($config['copy_cut_files'] === false)
 				{
 					response(sprintf(trans('Copy_Cut_Not_Allowed'), $msg_sub_action, trans('Files')).AddErrorLocation())->send();
 					exit;
@@ -439,10 +437,10 @@ if(isset($_GET['action']))
 			break;
 		case 'chmod':
 			if($ftp){
-				$path = $ftp_base_url . $upload_dir . $_POST['path'];
+				$path = $config['ftp_base_url'] . $config['upload_dir'] . $_POST['path'];
 				if (
-					($_POST['folder']==1 && $chmod_dirs === false)
-					|| ($_POST['folder']==0 && $chmod_files === false)
+					($_POST['folder']==1 && $config['chmod_dirs'] === false)
+					|| ($_POST['folder']==0 && $config['chmod_files'] === false)
 					|| (is_function_callable("chmod") === false) )
 				{
 					response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
@@ -450,10 +448,10 @@ if(isset($_GET['action']))
 				}
 				$info = $_POST['permissions'];
 			}else{
-				$path = $current_path . $_POST['path'];
+				$path = $config['current_path'] . $_POST['path'];
 				if (
-					(is_dir($path) && $chmod_dirs === false)
-					|| (is_file($path) && $chmod_files === false)
+					(is_dir($path) && $config['chmod_dirs'] === false)
+					|| (is_file($path) && $config['chmod_files'] === false)
 					|| (is_function_callable("chmod") === false) )
 				{
 					response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
@@ -586,9 +584,9 @@ if(isset($_GET['action']))
 			break;
 		case 'cad_preview':
 			if($ftp){
-				$selected_file = $ftp_base_url.$upload_dir . $_GET['file'];
+				$selected_file = $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'];
 			}else{
-				$selected_file = $current_path . $_GET['file'];
+				$selected_file = $config['current_path'] . $_GET['file'];
 
 				if ( ! file_exists($selected_file))
 				{
@@ -599,7 +597,7 @@ if(isset($_GET['action']))
 			if($ftp){
 				$url_file = $selected_file;
 			}else{
-				$url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
+				$url_file = $config['base_url'] . $config['upload_dir'] . str_replace($config['current_path'], '', $_GET["file"]);
 			}
 
 			$cad_url = urlencode($url_file);
@@ -618,9 +616,9 @@ if(isset($_GET['action']))
 			}
 
 			if($ftp){
-				$selected_file = ($sub_action == 'preview' ? $ftp_base_url.$upload_dir . $_GET['file'] : $ftp_base_url.$upload_dir . $_POST['path']);
+				$selected_file = ($sub_action == 'preview' ? $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'] : $config['ftp_base_url'].$config['upload_dir'] . $_POST['path']);
 			}else{
-				$selected_file = ($sub_action == 'preview' ? $current_path . $_GET['file'] : $current_path . $_POST['path']);
+				$selected_file = ($sub_action == 'preview' ? $config['current_path'] . $_GET['file'] : $config['current_path'] . $_POST['path']);
 
 				if ( ! file_exists($selected_file))
 				{
@@ -633,11 +631,11 @@ if(isset($_GET['action']))
 
 			if ($preview_mode == 'text')
 			{
-				$is_allowed = ($sub_action == 'preview' ? $preview_text_files : $edit_text_files);
-				$allowed_file_exts = ($sub_action == 'preview' ? $previewable_text_file_exts : $editable_text_file_exts);
+				$is_allowed = ($sub_action == 'preview' ? $config['preview_text_files'] : $config['edit_text_files']);
+				$allowed_file_exts = ($sub_action == 'preview' ? $config['previewable_text_file_exts'] : $config['editable_text_file_exts']);
 			}elseif($preview_mode == 'google') {
-				$is_allowed = $googledoc_enabled;
-				$allowed_file_exts = $googledoc_file_exts;
+				$is_allowed = $config['googledoc_enabled'];
+				$allowed_file_exts = $config['googledoc_file_exts'];
 			}
 
 			if ( ! isset($allowed_file_exts) || ! is_array($allowed_file_exts))
@@ -674,7 +672,7 @@ if(isset($_GET['action']))
 					if($ftp){
 						$url_file = $selected_file;
 					}else{
-						$url_file = $base_url . $upload_dir . str_replace($current_path, '', $_GET["file"]);
+						$url_file = $config['base_url'] . $config['upload_dir'] . str_replace($config['current_path'], '', $_GET["file"]);
 					}
 
 					$googledoc_url = urlencode($url_file);
@@ -697,4 +695,3 @@ if(isset($_GET['action']))
 	response(trans('no action passed').AddErrorLocation())->send();
 	exit;
 }
-?>

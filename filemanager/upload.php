@@ -128,7 +128,7 @@ try {
         $_FILES['files']['name'][0] = fix_strtolower($_FILES['files']['name'][0]);
     }
     if (!checkresultingsize($_FILES['files']['size'][0])) {
-        $upload_handler->response['files'][0]->error = sprintf(trans('max_size_reached'), $MaxSizeTotal) . AddErrorLocation();
+        $upload_handler->response['files'][0]->error = sprintf(trans('max_size_reached'), $config['MaxSizeTotal']) . AddErrorLocation();
         echo json_encode($upload_handler->response);
         exit();
     }
