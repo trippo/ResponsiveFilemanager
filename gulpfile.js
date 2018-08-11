@@ -11,30 +11,30 @@ elixir(function (mix) {
 
     mix.less(
         [
-            "../../../bower_components/bootstrap/less/bootstrap.less",
-            "../../../bower_components/bootstrap/less/responsive.less",
-            "../../../bower_components/bootstrap-lightbox/less/bootstrap-lightbox.less"
+            "../../../node_modules/bootstrap-lightbox/less/bootstrap-lightbox.less"
         ],
         'resources/tmp/css/lib.css',
-        'bower_components'
+        'node_modules'
     );
 
     mix.styles(
         [
-            "lib.css",
-            "../../../bower_components/bootstrap-modal/css/bootstrap-modal.css",
-            "../../../bower_components/jQuery-contextMenu/src/jquery.contextMenu.css",
-            "style.css"
+            '../../../node_modules/bootstrap/docs/assets/css/bootstrap.css',
+            '../../../node_modules/bootstrap/docs/assets/css/bootstrap-responsive.css',
+            '../../../node_modules/bootstrap-modal/css/bootstrap-modal.css',
+            '../../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.css',
+            'lib.css',
+            'style.css'
         ],
         'filemanager/css/style.css',
         'resources/tmp/css'
     );
 
-    // mix.styles(
-    //   ["rtl-style.less"],
-    //   'filemanager/css/rtl-style.css',
-    //   'resources/assets/less'
-    // );
+    mix.styles(
+      ["rtl-style.less"],
+      'filemanager/css/rtl-style.css',
+      'resources/assets/less'
+    );
 
     mix.scripts(
         [
@@ -52,7 +52,7 @@ elixir(function (mix) {
             "bootstrap/js/bootstrap-tab.js",
             "bootstrap/js/bootstrap-typeahead.js",
             "bootstrap-lightbox/js/bootstrap-lightbox.js",
-            "jQuery-contextMenu/src/jquery.contextMenu.js",
+            "jquery-contextmenu/dist/jquery.contextMenu.js",
             "vanilla-lazyload/dist/lazyload.js",
             "jquery-scrollstop/jquery.scrollstop.js",
             "bootbox.js/bootbox.js",
@@ -60,11 +60,14 @@ elixir(function (mix) {
             "bootstrap-modal/js/bootstrap-modalmanager.js",
             "bootstrap-modal/js/bootstrap-modal.js",
             "clipboard/dist/clipboard.js",
-            "jqueryui-touch-punch/jquery.ui.touch-punch.js",
+            "jquery-ui-touch-punch/jquery.ui.touch-punch.js",
         ],
         'filemanager/js/plugins.js',
-        'bower_components'
+        'node_modules'
     );
+
+    mix.copy('node_modules/blueimp-file-upload/js', 'filemanager/js/');
+    mix.copy('node_modules/blueimp-file-upload/css', 'filemanager/css/');
 
     mix.scripts(
         ['include.js'],
