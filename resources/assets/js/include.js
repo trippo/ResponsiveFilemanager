@@ -992,6 +992,14 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 			return files;
 		};
+		var getDeleteFiles = function(){
+			var files = [];
+			jQuery('.selection:checkbox:checked:visible').each(function () {
+				var file = jQuery(this).closest('figure').attr('data-path');
+				files.push(file);
+			});
+			return files;
+		};
 
 		jQuery('.multiple-action-btn').on('click',function(){
 			var files = getFiles();
@@ -1016,7 +1024,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				if (result == true)
 				{
-					var files = getFiles(true);
+					var files = getDeleteFiles();
 					execute_multiple_action('delete_files', files, '', '', '');
 					var fil = jQuery('#files_number');
 					fil.text(parseInt(fil.text())-files.length);
