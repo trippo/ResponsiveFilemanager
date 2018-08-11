@@ -70,9 +70,9 @@ try {
     // make sure the length is limited to avoid DOS attacks
     if (isset($_POST['url']) && strlen($_POST['url']) < 2000) {
         $url = $_POST['url'];
-        $urlPattern = '/^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(?::\d{1,5})?(?:$|[?\/#])/i';
+        $urlPattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/:?=&#]{1}[\da-z\.-]+)*[\/\?]?$/i';
 
-        if (!preg_match($urlPattern, $url)) {
+        if (preg_match($urlPattern, $url)) {
             $temp = tempnam('/tmp', 'RF');
 
             $ch = curl_init($url);
@@ -80,6 +80,10 @@ try {
             curl_setopt($ch, CURLOPT_FILE, $fp);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_exec($ch);
+            if (curl_errno($ch)) {
+                curl_close($ch);
+                throw new Exception('Invalid URL');
+            }
             curl_close($ch);
             fclose($fp);
 
@@ -166,13 +170,19 @@ try {
     $upload_handler = new UploadHandler($uploadConfig, true, $messages);
 } catch (Exception $e) {
     $return = array();
-    foreach ($_FILES['files']['name'] as $i => $name) {
-        $return[] = array(
-            'name' => $name,
-            'error' => $e->getMessage(),
-            'size' => $_FILES['files']['size'][$i],
-            'type' => $_FILES['files']['type'][$i]
-        );
+    if ($_FILES['files']) {
+        foreach ($_FILES['files']['name'] as $i => $name) {
+            $return[] = array(
+                'name' => $name,
+                'error' => $e->getMessage(),
+                'size' => $_FILES['files']['size'][$i],
+                'type' => $_FILES['files']['type'][$i]
+            );
+        }
+
+        echo json_encode(array("files" => $return));
+        return;
     }
-    echo json_encode(array("files" => $return));
+
+    echo json_encode(array("error" =>$e->getMessage()));
 }
