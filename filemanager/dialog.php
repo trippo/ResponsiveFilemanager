@@ -399,9 +399,6 @@ $get_params = http_build_query($get_params);
 		}
 	</script>
 	<script src="js/include.js?v=<?php echo $version; ?>"></script>
-<?php if($config['load_more']): ?>
-	<script src="js/load_more.js?v=<?php echo $version; ?>"></script>
-<?php endif; ?>
 </head>
 <body>
 <!-- The Templates plugin is included to render the upload/download listings -->
@@ -800,68 +797,6 @@ if($subdir!=""){
 }
 $files=$sorted;
 
-//
-// Generate a list of files visible to the file manager
-//
-
-$files_visible = array();
-foreach ($files as $file_array) {
-	$file = $file_array['file'];
-
-	if($file == '.'
-		|| ( substr($file, 0, 1) == '.' && isset( $file_array[ 'extension' ] ) && $file_array[ 'extension' ] == fix_strtolower(trans( 'Type_dir' ) ))
-		|| (
-			isset($file_array['extension'])
-			&& $file_array['extension']==fix_strtolower(trans('Type_dir'))
-			&& (
-				($file == '..' && $subdir == '')
-				|| in_array($file, $config['hidden_folders'])
-				|| ($filter!='' && $n_files>$config['file_number_limit_js'] && $file!=".." && stripos($file,$filter)===false)
-			)
-	  	)
-		|| (
-			isset($file_array['extension'])
-			&& $file_array['extension'] != fix_strtolower(trans('Type_dir'))
-			&& (
-				(!$config['ext_blacklist'] && !in_array(fix_strtolower($file_array['extension']), $config['ext']))
-				|| ($config['ext_blacklist'] && in_array(fix_strtolower($file_array['extension']), $config['ext_blacklist']))
-				|| ($filter!='' && $n_files>$config['file_number_limit_js'] && stripos($file,$filter)===false)
-			)
-		)
-	)
-	{
-		continue;
-	}
-
-	if(isset($file_array['extension'])
-		&& $file_array['extension'] != fix_strtolower(trans('Type_dir')) )
-	{
-		foreach ( $config['hidden_files'] as $hidden_file ) {
-			if ( fnmatch($hidden_file, $file, FNM_PATHNAME) ) {
-				continue 2;
-			}
-		}
-	}
-
-	array_push($files_visible, $file_array);
-}
-
-$files = $files_visible;
-
-
-// If "Load more" functionality is enabled
-if($config['load_more']){
-	// Determine starting file number
-	$load_more_start = (isset($_GET['load_more_start']) and is_numeric($_GET['load_more_start']))
-		? intval($_GET['load_more_start'])
-		: 0;
-
-	// Determine if there are more files available that would be displayed
-	$load_more_avail = ($load_more_start + $config['load_more_limit'] < $n_files) ? true : false;
-
-	// Extract files that will be displayed during this request
-	$files = array_slice($files, $load_more_start, $config['load_more_limit']);
-}
 
 ?>
 <!-- header div start -->
@@ -1333,20 +1268,6 @@ if($config['load_more']){
 	</div>
 	</div>
 </div>
-
-<?php if($config['load_more'] and $load_more_avail): ?>
-<div id="load-more-container" data-start="<?php echo htmlspecialchars($config['load_more_limit']); ?>" data-auto="<?php echo ($config['load_more_auto'] ? '1' : '0'); ?>">
-	<div id="load-more-indicator" style="display:none; padding:2em 0; text-align:center;">
-		<img src="img/processing.gif" alt="Please wait...">
-	</div>
-
-	<?php if(!$config['load_more_auto']): ?>
-	<div style="padding:2em 0; text-align:center;">
-		<button id="btn-load-more" type="button" class="btn">Load More</button>
-	</div>
-	<?php endif; ?>
-</div>
-<?php endif; ?>
 
 <script>
 	var files_prevent_duplicate = new Array();
