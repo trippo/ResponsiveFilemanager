@@ -1,7 +1,7 @@
-.idea/
 yarn-error.log
 npm-debug.log
 .DS_Store
+yarn.lock
 
 # Ignore the contents of the upload and thumbnail directories
 source/*
