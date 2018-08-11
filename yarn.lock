@@ -981,9 +981,9 @@ boom@2.x.x:
   version "3.3.0"
   resolved "https://codeload.github.com/makeusabrew/bootbox/tar.gz/9296f99f88a5384a806401ea20fed45e6eb18b73"
 
-"bootstrap-lightbox@github:jbutz/bootstrap-lightbox.git#0.6.1":
+"bootstrap-lightbox@github:jbutz/bootstrap-lightbox#0.6.1":
   version "0.6.1"
-  resolved "github:jbutz/bootstrap-lightbox.git#56d3fbfbfefe6b85738cc5207b4867e555f2cbc4"
+  resolved "https://codeload.github.com/jbutz/bootstrap-lightbox/tar.gz/56d3fbfbfefe6b85738cc5207b4867e555f2cbc4"
 
 "bootstrap-modal@github:jschr/bootstrap-modal#2.2.6":
   version "0.0.0"
