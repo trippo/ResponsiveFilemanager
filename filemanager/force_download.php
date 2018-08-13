@@ -12,20 +12,16 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
 }
 
 
-if (
+if (!checkRelativePath($_POST['path']) ||
     strpos($_POST['path'], '/') === 0
-    || strpos($_POST['path'], '../') !== false
-    || strpos($_POST['path'], './') === 0
-    || strpos($_POST['path'], '..\\') !== false
-    || strpos($_POST['path'], '.\\') === 0
 ) {
-    response(trans('wrong path' . AddErrorLocation()), 400)->send();
+    response(trans('wrong path'), 400)->send();
     exit;
 }
 
 
 if (strpos($_POST['name'], '/') !== false) {
-    response(trans('wrong path' . AddErrorLocation()), 400)->send();
+    response(trans('wrong path' ), 400)->send();
     exit;
 }
 

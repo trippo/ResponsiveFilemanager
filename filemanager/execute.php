@@ -9,13 +9,9 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 	exit;
 }
 
-if (strpos($_POST['path'],'/')===0
-	|| strpos($_POST['path'],'../')!==FALSE
-	|| strpos($_POST['path'],'./')===0
-	|| strpos($_POST['path'],'..\\')!==FALSE
-	|| strpos($_POST['path'],'.\\')===0)
+if (!checkRelativePath($_POST['path']))
 {
-	response(trans('wrong path'.AddErrorLocation()))->send();
+	response(trans('wrong path'))->send();
 	exit;
 }
 
@@ -373,7 +369,7 @@ if (isset($_GET['action']))
 
 			// something terribly gone wrong
 			if ($action != 'copy' && $action != 'cut'){
-				response(trans('wrong action').AddErrorLocation())->send();
+				response(trans('wrong action'))->send();
 				exit;
 			}
 			if($ftp){
@@ -514,7 +510,7 @@ if (isset($_GET['action']))
 
 			break;
 		default:
-			response(trans('wrong action').AddErrorLocation())->send();
+			response(trans('wrong action'))->send();
 			exit;
 	}
 }

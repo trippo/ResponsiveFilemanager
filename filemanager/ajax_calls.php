@@ -23,6 +23,21 @@ if (isset($_SESSION['RF']['language']) && file_exists('lang/' . basename($_SESSI
 	response(trans('Lang_Not_Found').AddErrorLocation())->send();
 	exit;
 }
+
+
+//check $_GET['file']
+if(isset($_GET['file']) && !checkRelativePath($_GET['file'])) {
+    response(trans('wrong path'))->send();
+    exit;
+}
+
+//check $_GET['file']
+if(isset($_GET['path']) && !checkRelativePath($_GET['path'])) {
+    response(trans('wrong path'))->send();
+    exit;
+}
+
+
 $ftp = ftp_con($config);
 
 if(isset($_GET['action']))
@@ -83,12 +98,7 @@ if(isset($_GET['action']))
 		case 'save_img':
 			$info = pathinfo($_POST['name']);
 
-			if (
-				strpos($_POST['path'], '/') === 0
-				|| strpos($_POST['path'], '../') !== false
-				|| strpos($_POST['path'], '..\\') !== false
-				|| strpos($_POST['path'], './') === 0
-				|| (strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0 && strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
+			if ((strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0 && strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
 				|| $_POST['name'] != fix_filename($_POST['name'], $config)
 				|| ! in_array(strtolower($info['extension']), array( 'jpg', 'jpeg', 'png' ))
 			)
@@ -135,15 +145,9 @@ if(isset($_GET['action']))
 			}
 			break;
 		case 'extract':
-			if (	strpos($_POST['path'], '/') === 0 
-				|| strpos($_POST['path'], '../') !== false 
-				|| strpos($_POST['path'], '..\\') !== false 
-				|| strpos($_POST['path'], './') === 0)
-			{
-				response(trans('wrong path'.AddErrorLocation()))->send();
-				exit;
+			if(!$config['extract_files']){
+				response(trans('wrong action'))->send();
 			}
-
 			if($ftp){
 				$path = $config['ftp_base_url'].$config['upload_dir'] . $_POST['path'];
 				$base_folder = $config['ftp_base_url'].$config['upload_dir'] . fix_dirname($_POST['path']) . "/";
@@ -186,28 +190,24 @@ if(isset($_GET['action']))
 							exit;
 						}
 
-						//make all the folders
+						//make all the folders and unzip into the folders
 						for ($i = 0; $i < $zip->numFiles; $i++)
 						{
-							$OnlyFileName = $zip->getNameIndex($i);
-							$FullFileName = $zip->statIndex($i);
-							if (substr($FullFileName['name'], -1, 1) == "/")
-							{
-								create_folder($base_folder . $FullFileName['name']);
-							}
-						}
-						//unzip into the folders
-						for ($i = 0; $i < $zip->numFiles; $i++)
-						{
-							$OnlyFileName = $zip->getNameIndex($i);
 							$FullFileName = $zip->statIndex($i);
 
-							if ( ! (substr($FullFileName['name'], -1, 1) == "/"))
-							{
-								$fileinfo = pathinfo($OnlyFileName);
-								if (in_array(strtolower($fileinfo['extension']), $config['ext']))
+							if(checkRelativePath($FullFileName['name'])){
+								if (substr($FullFileName['name'], -1, 1) == "/")
 								{
-									copy('zip://' . $path . '#' . $OnlyFileName, $base_folder . $FullFileName['name']);
+									create_folder($base_folder . $FullFileName['name']);
+								}
+
+								if ( ! (substr($FullFileName['name'], -1, 1) == "/"))
+								{
+									$fileinfo = pathinfo($FullFileName['name']);
+									if (in_array(strtolower($fileinfo['extension']), $config['ext']))
+									{
+										copy('zip://' . $path . '#' . $FullFileName['name'], $base_folder . $FullFileName['name']);
+									}
 								}
 							}
 						}
@@ -232,7 +232,7 @@ if(isset($_GET['action']))
 					$phar = new PharData($path);
 					$phar->decompressFiles();
 					$files = array();
-					check_files_extensions_on_phar($phar, $files, '', $config['ext']);
+					check_files_extensions_on_phar($phar, $files, '', $config);
 					$phar->extractTo($base_folder, $files, true);
 
 					break;
@@ -365,16 +365,7 @@ if(isset($_GET['action']))
 		case 'copy_cut':
 			if ($_POST['sub_action'] != 'copy' && $_POST['sub_action'] != 'cut')
 			{
-				response(trans('wrong sub-action').AddErrorLocation())->send();
-				exit;
-			}
-
-			if (strpos($_POST['path'],'../') !== FALSE
-				|| strpos($_POST['path'],'./') !== FALSE 
-				|| strpos($_POST['path'],'..\\') !== FALSE
-				|| strpos($_POST['path'],'.\\') !== FALSE )
-			{
-				response(trans('wrong path'.AddErrorLocation()))->send();
+				response(trans('wrong sub-action'))->send();
 				exit;
 			}
 
@@ -611,7 +602,7 @@ if(isset($_GET['action']))
 
 			if ($sub_action != 'preview' && $sub_action != 'edit')
 			{
-				response(trans('wrong action').AddErrorLocation())->send();
+				response(trans('wrong action'))->send();
 				exit;
 			}
 

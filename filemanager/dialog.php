@@ -47,15 +47,8 @@ if (isset($_GET['fldr']) && !empty($_GET['fldr'])) {
 }elseif(isset($_SESSION['RF']['fldr']) && !empty($_SESSION['RF']['fldr'])){
 	$subdir_path = rawurldecode(trim(strip_tags($_SESSION['RF']['fldr']),"/"));
 }
-$subdir_path_decoded = urldecode($subdir_path);
-if (strpos($subdir_path,'../') === FALSE
-	&& strpos($subdir_path,'./') === FALSE
-	&& strpos($subdir_path,'..\\') === FALSE
-	&& strpos($subdir_path,'.\\') === FALSE
-	&& strpos($subdir_path_decoded,'../') === FALSE
-	&& strpos($subdir_path_decoded,'./') === FALSE
-	&& strpos($subdir_path_decoded,'..\\') === FALSE
-	&& strpos($subdir_path_decoded,'.\\') === FALSE)
+
+if ( checkRelativePath($subdir_path))
 {
 	$subdir = strip_tags($subdir_path) ."/";
 	$_SESSION['RF']['fldr'] = $subdir_path;
@@ -99,9 +92,10 @@ if (!isset($_SESSION['RF']["subfolder"]))
 }
 $rfm_subfolder = '';
 
-if (!empty($_SESSION['RF']["subfolder"]) && strpos($_SESSION['RF']["subfolder"],'../') === FALSE && strpos($_SESSION['RF']["subfolder"],'..\\') === FALSE
-&& strpos($_SESSION['RF']["subfolder"],'./') === FALSE && strpos($_SESSION['RF']["subfolder"],"/") !== 0
-&& strpos($_SESSION['RF']["subfolder"],'.') === FALSE)
+if (!empty($_SESSION['RF']["subfolder"]) 
+	&& strpos($_SESSION['RF']["subfolder"],"/") !== 0
+	&& strpos($_SESSION['RF']["subfolder"],'.') === FALSE
+)
 {
 	$rfm_subfolder = $_SESSION['RF']['subfolder'];
 }
@@ -257,7 +251,7 @@ if (isset($_GET['extensions'])){
 	$ext_tmp = array();
 	foreach($extensions as $extension){
 		$extension = fix_strtolower($extension);
-		if(in_array( $extension, $config['ext'])){
+		if(check_file_extension( $extension, $config)){
 			$ext_tmp[]=$extension;
 		}
 	}
@@ -482,6 +476,7 @@ $get_params = http_build_query($get_params);
 	<input type="hidden" id="lang_error_upload" value="<?php echo trans('Error_Upload');?>" />
 	<input type="hidden" id="lang_select" value="<?php echo trans('Select');?>" />
 	<input type="hidden" id="lang_extract" value="<?php echo trans('Extract');?>" />
+	<input type="hidden" id="extract_files" value="<?php if($config['extract_files']) echo 1; else echo 0;?>" />
 	<input type="hidden" id="transliteration" value="<?php echo $config['transliteration']?"true":"false";?>" />
 	<input type="hidden" id="convert_spaces" value="<?php echo $config['convert_spaces']?"true":"false";?>" />
 	<input type="hidden" id="replace_with" value="<?php echo $config['convert_spaces']? $config['replace_with'] : "";?>" />

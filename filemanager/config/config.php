@@ -329,6 +329,7 @@ $config = array(
 	'rename_files'                            => true,
 	'rename_folders'                          => true,
 	'duplicate_files'                         => true,
+	'extract_files'                           => true,
 	'copy_cut_files'                          => true, // for copy/cut files
 	'copy_cut_dirs'                           => true, // for copy/cut directories
 	'chmod_files'                             => true, // change file permissions

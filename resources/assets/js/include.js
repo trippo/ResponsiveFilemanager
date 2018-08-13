@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.13.3";
+	var version = "9.13.4";
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
@@ -239,9 +239,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						disabled: false
 					};
 					// extract
-					if ($trigger.find('.img-precontainer-mini .filetype').hasClass('zip') ||
+					if (($trigger.find('.img-precontainer-mini .filetype').hasClass('zip') ||
 						$trigger.find('.img-precontainer-mini .filetype').hasClass('tar') ||
-						$trigger.find('.img-precontainer-mini .filetype').hasClass('gz'))
+						$trigger.find('.img-precontainer-mini .filetype').hasClass('gz')) && 
+						jQuery('#extract_files').val() == 1)
 					{
 						options.items.unzip = {
 							name: jQuery('#lang_extract').val(),
@@ -840,7 +841,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		// info btn
 		jQuery('#info').on('click', function ()
 		{
-			bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.' + version + '</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="http://responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></div>');
+			bootbox.alert('<div class="text-center"><br/><img src="img/logo.png" alt="responsive filemanager"/><br/><br/><p><strong>RESPONSIVE filemanager v.' + version + '</strong><br/><a href="http://www.responsivefilemanager.com">responsivefilemanager.com</a></p><br/><p>Copyright © <a href="http://www.tecrail.com" alt="tecrail">Tecrail</a> - Alberto Peripolli. All rights reserved.</p><br/><p>License<br/><small><img alt="Creative Commons License" style="border-width:0" src="https://www.responsivefilemanager.com/license.php" /><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</small></p></div>');
 		});
 
 		jQuery('#change_lang_btn').on('click', function ()
@@ -982,11 +983,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		});
 		var getFiles = function(path){
 			var files = [];
-			var subdir = jQuery('#subdir').val();
 			jQuery('.selection:checkbox:checked:visible').each(function () {
 				var file = jQuery(this).val();
 				if(path){
-					file = subdir + file;
+					file = jQuery(this).closest('figure').attr('data-path');
 				}
 				files.push(file);
 			});
@@ -1017,6 +1017,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				if (result == true)
 				{
 					var files = getFiles(true);
+
 					execute_multiple_action('delete_files', files, '', '', '');
 					var fil = jQuery('#files_number');
 					fil.text(parseInt(fil.text())-files.length);
@@ -1752,8 +1753,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	function returnUrls(files){
 		var path = jQuery('#cur_dir').val();
 		path = path.replace('\\', '/');
-		var subdir = jQuery('#subdir').val();
-		subdir = subdir.replace('\\', '/');
+		var sub_folder = jQuery('#sub_folder').val();
+		sub_folder = sub_folder.replace('\\', '/');
 		var base_url = jQuery('#base_url').val();
 		var urls=[];
 		var is_return_relative_url = jQuery('#return_relative_url').val();
@@ -1763,7 +1764,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			if(is_ftp){
 				urls.push(encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file));
 			}else{
-				urls.push(encodeURL((is_return_relative_url == 1 ? subdir : base_url + path) + file));
+				urls.push(encodeURL((is_return_relative_url == 1 ? sub_folder : base_url + path) + file));
 			}
 		}
 		return urls;

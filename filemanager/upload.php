@@ -34,11 +34,8 @@ try {
 
     $fldr = rawurldecode(trim(strip_tags($_POST['fldr']), "/") . "/");
 
-    if (strpos($fldr, '../') !== false
-        || strpos($fldr, './') !== false
-        || strpos($fldr, '..\\') !== false
-        || strpos($fldr, '.\\') !== false) {
-        response(trans('wrong path' . AddErrorLocation()))->send();
+    if (!checkRelativePath($fldr)) {
+        response(trans('wrong path'))->send();
         exit;
     }
 

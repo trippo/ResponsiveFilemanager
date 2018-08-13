@@ -1,6 +1,20 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.13.4
+*********************************************************
+- fix Directory Traversal Allows to Read Any File (thanks to Simon Uvarov for reporting)
+- fix Path Traversal While Upacking Archives (thanks to Simon Uvarov for reporting)
+- Fix foreach warning on URL upload
+- Fix http https URL upload
+- add toggle on config for extract_files
+- prevent image creation for broken links in URL upload (thanks to davodavodavo3)
+- Migrate to yarn on development (thanks to mklkj)
+- code refactoring
+
+
+
+*********************************************************
 *  RFM 9.13.3
 *********************************************************
 - support to files without extension

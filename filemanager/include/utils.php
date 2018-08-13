@@ -94,6 +94,32 @@ if ( ! function_exists('trans'))
 	}
 }
 
+
+
+
+/**
+* Check relative path
+*
+* @param  string  $path
+*
+* @return boolean is it correct?
+*/
+function checkRelativePath($path){
+	$path_correct = true;
+	$path_decoded = rawurldecode($path);
+	if (strpos($path, '../') !== false
+        || strpos($path, './') !== false
+        || strpos($path, '..\\') !== false
+        || strpos($path, '.\\') !== false
+    	|| strpos($path_decoded, '../') !== false
+        || strpos($path_decoded, './') !== false
+        || strpos($path_decoded, '..\\') !== false
+        || strpos($path_decoded, '.\\') !== false) {
+        $path_correct = false;
+    }
+    return $path_correct;
+}
+
 /**
 * Delete file
 *
@@ -567,6 +593,34 @@ function check_files_extensions_on_path($path, $ext)
 	}
 }
 
+
+/**
+* Check file extension 
+*
+* @param  string  $extension
+* @param  array   $config
+*/
+
+function check_file_extension($extension,$config){
+	$check = false;
+	if (!$config['ext_blacklist']) {
+		if(in_array(mb_strtolower($extension), $conf['ext'])){
+			$check = true;
+		}
+    } else {
+    	if(!in_array(mb_strtolower($extension), $conf['ext_blacklist'])){
+			$check = true;
+		}
+    }
+
+	if($config['files_without_extension'] && $extension == ''){
+		$check = true;
+	}
+
+	return $check;
+}
+
+
 /**
 * Get file extension present in PHAR file
 *
@@ -575,13 +629,13 @@ function check_files_extensions_on_path($path, $ext)
 * @param  string  $basepath
 * @param  string  $ext
 */
-function check_files_extensions_on_phar($phar, &$files, $basepath, $ext)
+function check_files_extensions_on_phar($phar, &$files, $basepath, $config)
 {
 	foreach ($phar as $file)
 	{
 		if ($file->isFile())
 		{
-			if (in_array(mb_strtolower($file->getExtension()), $ext))
+			if (check_file_extension($file->getExtension()))
 			{
 				$files[] = $basepath . $file->getFileName();
 			}
@@ -591,7 +645,7 @@ function check_files_extensions_on_phar($phar, &$files, $basepath, $ext)
 			if ($file->isDir())
 			{
 				$iterator = new DirectoryIterator($file);
-				check_files_extensions_on_phar($iterator, $files, $basepath . $file->getFileName() . '/', $ext);
+				check_files_extensions_on_phar($iterator, $files, $basepath . $file->getFileName() . '/', $config);
 			}
 		}
 	}
