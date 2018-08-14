@@ -105,7 +105,7 @@ $config = array(
 	| If you want to be forced to assign the extension starting from the mime type
 	|
 	*/
-	'mime_extension_rename'	=> false,
+	'mime_extension_rename'	=> true,
 
 
 	/*
