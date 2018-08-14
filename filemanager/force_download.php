@@ -15,13 +15,13 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
 if (!checkRelativePath($_POST['path']) ||
     strpos($_POST['path'], '/') === 0
 ) {
-    response(trans('wrong path'), 400)->send();
+    response(trans('wrong path').AddErrorLocation(), 400)->send();
     exit;
 }
 
 
 if (strpos($_POST['name'], '/') !== false) {
-    response(trans('wrong path' ), 400)->send();
+    response(trans('wrong path').AddErrorLocation(), 400)->send();
     exit;
 }
 
@@ -35,7 +35,7 @@ $name = $_POST['name'];
 $info = pathinfo($name);
 
 if (!check_extension($info['extension'], $config)) {
-    response(trans('wrong extension' . AddErrorLocation()), 400)->send();
+    response(trans('wrong extension').AddErrorLocation(), 400)->send();
     exit;
 }
 
@@ -52,7 +52,7 @@ if ($ftp) {
     readfile($file_path);
 } elseif (is_file($file_path) && is_readable($file_path)) {
     if (!file_exists($path . $name)) {
-        response(trans('File_Not_Found' . AddErrorLocation()), 404)->send();
+        response(trans('File_Not_Found') . AddErrorLocation(), 404)->send();
         exit;
     }
 

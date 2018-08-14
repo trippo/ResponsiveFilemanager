@@ -35,7 +35,7 @@ try {
     $fldr = rawurldecode(trim(strip_tags($_POST['fldr']), "/") . "/");
 
     if (!checkRelativePath($fldr)) {
-        response(trans('wrong path'))->send();
+        response(trans('wrong path').AddErrorLocation())->send();
         exit;
     }
 

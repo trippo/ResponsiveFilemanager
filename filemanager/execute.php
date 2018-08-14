@@ -11,7 +11,7 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 
 if (!checkRelativePath($_POST['path']))
 {
-	response(trans('wrong path'))->send();
+	response(trans('wrong path').AddErrorLocation())->send();
 	exit;
 }
 
@@ -161,7 +161,7 @@ if (isset($_GET['action']))
 		case 'rename_folder':
 			if ($config['rename_folders']){
                 if(!is_dir($path)) {
-                    response(trans('wrong path'))->send();
+                    response(trans('wrong path').AddErrorLocation())->send();
                     exit;
                 }
 				$name=fix_filename($name,$config);
@@ -216,7 +216,7 @@ if (isset($_GET['action']))
 			// check extension
 			$parts = explode('.', $name);
 			if (!in_array(end($parts), $config['editable_text_file_exts'])) {
-				response(trans('Error_extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $config['editable_text_file_exts'])), 400)->send();
+				response(trans('Error_extension').' '.sprintf(trans('Valid_Extensions'), implode(', ', $config['editable_text_file_exts'])).AddErrorLocation(), 400)->send();
 				exit;
 			}
 
@@ -369,7 +369,7 @@ if (isset($_GET['action']))
 
 			// something terribly gone wrong
 			if ($action != 'copy' && $action != 'cut'){
-				response(trans('wrong action'))->send();
+				response(trans('wrong action').AddErrorLocation())->send();
 				exit;
 			}
 			if($ftp){
@@ -510,7 +510,7 @@ if (isset($_GET['action']))
 
 			break;
 		default:
-			response(trans('wrong action'))->send();
+			response(trans('wrong action').AddErrorLocation())->send();
 			exit;
 	}
 }

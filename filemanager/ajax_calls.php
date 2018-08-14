@@ -27,13 +27,13 @@ if (isset($_SESSION['RF']['language']) && file_exists('lang/' . basename($_SESSI
 
 //check $_GET['file']
 if(isset($_GET['file']) && !checkRelativePath($_GET['file'])) {
-    response(trans('wrong path'))->send();
+    response(trans('wrong path').AddErrorLocation())->send();
     exit;
 }
 
 //check $_GET['file']
 if(isset($_GET['path']) && !checkRelativePath($_GET['path'])) {
-    response(trans('wrong path'))->send();
+    response(trans('wrong path').AddErrorLocation())->send();
     exit;
 }
 
@@ -146,7 +146,7 @@ if(isset($_GET['action']))
 			break;
 		case 'extract':
 			if(!$config['extract_files']){
-				response(trans('wrong action'))->send();
+				response(trans('wrong action').AddErrorLocation())->send();
 			}
 			if($ftp){
 				$path = $config['ftp_base_url'].$config['upload_dir'] . $_POST['path'];
@@ -365,7 +365,7 @@ if(isset($_GET['action']))
 		case 'copy_cut':
 			if ($_POST['sub_action'] != 'copy' && $_POST['sub_action'] != 'cut')
 			{
-				response(trans('wrong sub-action'))->send();
+				response(trans('wrong sub-action').AddErrorLocation())->send();
 				exit;
 			}
 
@@ -602,7 +602,7 @@ if(isset($_GET['action']))
 
 			if ($sub_action != 'preview' && $sub_action != 'edit')
 			{
-				response(trans('wrong action'))->send();
+				response(trans('wrong action').AddErrorLocation())->send();
 				exit;
 			}
 
