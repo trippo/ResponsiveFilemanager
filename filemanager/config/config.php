@@ -1,5 +1,5 @@
 <?php
-$version = "9.13.2";
+$version = "9.13.4";
 if (session_id() == '') session_start();
 
 mb_internal_encoding('UTF-8');
