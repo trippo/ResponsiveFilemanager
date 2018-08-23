@@ -835,7 +835,12 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 		$K64 = 65536; // number of bytes in 64K
 		$memory_usage = memory_get_usage();
 		if(ini_get('memory_limit') > 0 ){
-			$memory_limit = abs(intval(str_replace('M', '', ini_get('memory_limit')) * 1024 * 1024));
+			
+			$mem = ini_get('memory_limit');
+			$memory_limit = 0;
+			if (strpos($mem, 'M') !== false) $memory_limit = abs(intval(str_replace(array('M'), '', $mem) * 1024 * 1024));
+			if (strpos($mem, 'G') !== false) $memory_limit = abs(intval(str_replace(array('G'), '', $mem) * 1024 * 1024 * 1024));
+			
 			$image_properties = getimagesize($img);
 			$image_width = $image_properties[0];
 			$image_height = $image_properties[1];
