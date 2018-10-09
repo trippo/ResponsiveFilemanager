@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Перетягніть сюди файл для завантаження",
 
     'SERVER ERROR' => "ПОМИЛКА СЕРВЕРА",
-    'forbiden' => "Заборонено",
+    'forbidden' => "Заборонено",
     'wrong path' => "Хибний шлях",
     'wrong name' => "Хибне ім`я",
     'wrong extension' => "Хибне розширення",

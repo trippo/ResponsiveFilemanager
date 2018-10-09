@@ -122,7 +122,7 @@ return array(
     'Upload_message' => 'Glissez les fichiers ici pour les ajouter',
 
     'SERVER ERROR' => "ERREUR SERVEUR",
-    'forbiden' => "Interdit",
+    'forbidden' => "Interdit",
     'wrong path' => "Chemin invalide",
     'wrong name' => "Nom invalide",
     'wrong extension' => "Extension invalide",

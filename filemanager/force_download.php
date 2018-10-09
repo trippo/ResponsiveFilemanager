@@ -7,7 +7,7 @@ include 'include/utils.php';
 $ftp = ftp_con($config);
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
-    response(trans('forbiden') . AddErrorLocation(), 403)->send();
+    response(trans('forbidden') . AddErrorLocation(), 403)->send();
     exit;
 }
 

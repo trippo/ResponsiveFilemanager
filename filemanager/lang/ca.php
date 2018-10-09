@@ -101,7 +101,7 @@ return array(
     'Upload_message' => "Arrossega arxiu aquí per carregar.",
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Forbiden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",

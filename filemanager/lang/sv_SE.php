@@ -122,7 +122,7 @@ return array(
     'Upload_message' => 'Släpp fil här för att ladda upp', // "Drop file here to upload"
 
     'SERVER ERROR' => 'SERVER FEL', // "SERVER ERROR",
-    'forbiden' => 'Förbjudet', // "Forbiden",
+    'forbidden' => 'Förbjudet', // "Forbiden",
     'wrong path' => 'Fel sökväg', // "Wrong path",
     'wrong name' => 'Fel namn', // "Wrong name",
     'wrong extension' => 'Fel filändelse', // "Wrong extension",

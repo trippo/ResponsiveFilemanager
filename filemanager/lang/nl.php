@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Sleep hier bestanden om te uploaden",
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Verboden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",

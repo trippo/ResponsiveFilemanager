@@ -9,6 +9,9 @@ return PhpCsFixer\Config::create()
     ->setUsingCache(false)
     ->setRules([
         '@PSR2' => true,
+        'phpdoc_order' => true,
+        'phpdoc_summary' => false,
+        'concat_space' => ['spacing' => 'one'],
     ])
     ->setFinder($finder)
     ;

@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "فایل ها را اینجا بکشید تا آپلود شوند ",
 
     'SERVER ERROR' => "خطای سرور",
-    'forbiden' => "ممنوع",
+    'forbidden' => "ممنوع",
     'wrong path' => "مسیر اشتباه",
     'wrong name' => "نام غیر مجاز",
     'wrong extension' => "پسوند غیر مجاز",

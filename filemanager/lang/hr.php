@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Drop file here to upload",
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Forbiden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",

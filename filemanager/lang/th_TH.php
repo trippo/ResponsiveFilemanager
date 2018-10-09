@@ -130,7 +130,7 @@ return array(
     'Upload_message' => "ลากไฟล์มาวางหรือคลิกที่นี่ เพื่ออัพโหลด",
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Forbiden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",

@@ -8,7 +8,7 @@ try {
     include 'include/utils.php';
 
     if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
-        response(trans('forbiden') . AddErrorLocation(), 403)->send();
+        response(trans('forbidden') . AddErrorLocation(), 403)->send();
         exit;
     }
 
@@ -35,7 +35,7 @@ try {
     $fldr = rawurldecode(trim(strip_tags($_POST['fldr']), "/") . "/");
 
     if (!checkRelativePath($fldr)) {
-        response(trans('wrong path').AddErrorLocation())->send();
+        response(trans('wrong path') . AddErrorLocation())->send();
         exit;
     }
 
@@ -142,15 +142,18 @@ try {
         'correct_image_extensions' => true,
         'print_response' => false
     );
+
     if (!$config['ext_blacklist']) {
         $uploadConfig['accept_file_types'] = '/\.(' . implode('|', $config['ext']) . ')$/i';
-        if($config['files_without_extension']){
-        	$uploadConfig['accept_file_types'] = '/((\.(' . implode('|', $config['ext']) . ')$)|(^[^.]+$))$/i';
+
+        if ($config['files_without_extension']) {
+            $uploadConfig['accept_file_types'] = '/((\.(' . implode('|', $config['ext']) . ')$)|(^[^.]+$))$/i';
         }
     } else {
         $uploadConfig['accept_file_types'] = '/\.(?!' . implode('|', $config['ext_blacklist']) . '$)/i';
-        if($config['files_without_extension']){
-        	$uploadConfig['accept_file_types'] = '/((\.(?!' . implode('|', $config['ext_blacklist']) . '$))|(^[^.]+$))/i';
+
+        if ($config['files_without_extension']) {
+            $uploadConfig['accept_file_types'] = '/((\.(?!' . implode('|', $config['ext_blacklist']) . '$))|(^[^.]+$))/i';
         }
     }
 
@@ -158,15 +161,18 @@ try {
         if (!is_dir($config['ftp_temp_folder'])) {
             mkdir($config['ftp_temp_folder'], $config['folderPermission'], true);
         }
+
         if (!is_dir($config['ftp_temp_folder'] . "thumbs")) {
             mkdir($config['ftp_temp_folder'] . "thumbs", $config['folderPermission'], true);
         }
+
         $uploadConfig['upload_dir'] = $config['ftp_temp_folder'];
     }
 
     $upload_handler = new UploadHandler($uploadConfig, true, $messages);
 } catch (Exception $e) {
     $return = array();
+
     if ($_FILES['files']) {
         foreach ($_FILES['files']['name'] as $i => $name) {
             $return[] = array(
@@ -181,5 +187,5 @@ try {
         return;
     }
 
-    echo json_encode(array("error" =>$e->getMessage()));
+    echo json_encode(array("error" => $e->getMessage()));
 }

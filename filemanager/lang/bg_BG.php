@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Провлачете и спуснете файла тук за да го качите.",
 
     'SERVER ERROR' => "СЪРВЪРНА ГРЕШКА",
-    'forbiden' => "Забранено",
+    'forbidden' => "Забранено",
     'wrong path' => "Грешен път",
     'wrong name' => "Грешно име",
     'wrong extension' => "Грешно разширение",

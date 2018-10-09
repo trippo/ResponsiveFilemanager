@@ -121,7 +121,7 @@ return array(
     'Valid_Extensions' => 'Valid extensions: %s', // %s = txt,log etc.
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Forbidden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",

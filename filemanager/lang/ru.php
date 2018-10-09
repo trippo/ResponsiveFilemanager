@@ -121,7 +121,7 @@ return array(
     'Valid_Extensions' => 'Разрешённые расширения файла: %s', // %s = txt,log etc.
     'Upload_message' => "Перетащите файл сюда, чтобы загрузить",
     'SERVER ERROR' => "СЕРВЕРНАЯ ОШИБКА",
-    'forbiden' => "Запрещено",
+    'forbidden' => "Запрещено",
     'wrong path' => "Неверный путь",
     'wrong name' => "Неверное имя",
     'wrong extension' => "Неверное расширение",

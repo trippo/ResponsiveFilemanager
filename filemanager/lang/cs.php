@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Pro nahrání přetáhněte soubor(y) sem",
 
     'SERVER ERROR' => "CHYBA SERVERU",
-    'forbiden' => "Zakázáno",
+    'forbidden' => "Zakázáno",
     'wrong path' => "Neplatná cesta",
     'wrong name' => "Neplatná název",
     'wrong extension' => "Neplatná přípona",

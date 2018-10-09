@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Arraste arquivo aqui para enviar",
 
     'SERVER ERROR' => "ERRO SERVIDOR",
-    'forbiden' => "proibido",
+    'forbidden' => "proibido",
     'wrong path' => "caminho errado",
     'wrong name' => "nome errado",
     'wrong extension' => "extensão errada",

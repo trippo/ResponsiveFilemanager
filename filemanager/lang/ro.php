@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Drag & drop la fișiere pentru upload",
 
     'SERVER ERROR' => "EROARE SERVER",
-    'forbiden' => "Interzis",
+    'forbidden' => "Interzis",
     'wrong path' => "Cale incorectă",
     'wrong name' => "Denumire incorectă",
     'wrong extension' => "Extensie incorectă",

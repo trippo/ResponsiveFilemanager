@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Upuść plik aby go przesłać",
 
     'SERVER ERROR' => "Błąd serwera",
-    'forbiden' => "Brak dostępu",
+    'forbidden' => "Brak dostępu",
     'wrong path' => "Nieprawidłowa ścieżka",
     'wrong name' => "Nieprawidłowa nazwa",
     'wrong extension' => "Nieprawidłowe rozszerzenie pliku",

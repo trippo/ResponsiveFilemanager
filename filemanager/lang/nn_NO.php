@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Slepp fila her for å laste opp",
 
     'SERVER ERROR' => "SERVERFEIL",
-    'forbiden' => "Ikkje lov",
+    'forbidden' => "Ikkje lov",
     'wrong path' => "Feil bane",
     'wrong name' => "Feil namn",
     'wrong extension' => "Feil utviding",
