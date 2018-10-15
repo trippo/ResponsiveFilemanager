@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  app_server:
+    image: webdevops/php-apache-dev:7.1
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/app
+    environment:
+      PHP_DISPLAY_ERRORS: 1
+      PHP_POST_MAX_SIZE: 100M
+      PHP_UPLOAD_MAX_FILESIZE: 100M
+      WEB_DOCUMENT_INDEX: demo.html
