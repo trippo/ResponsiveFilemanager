@@ -64,7 +64,7 @@ function returnPaths($_path, $_name, $config)
             exit;
         }
     }
-    return array($path,$path_thumb,$name);
+    return array($path, $path_thumb, $name);
 }
 
 if (isset($_POST['paths'])) {
@@ -88,7 +88,7 @@ if (isset($_POST['paths'])) {
 }
 
 $info = pathinfo($path);
-if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action']=='delete_folder') &&
+if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action'] == 'delete_folder') &&
     !check_extension($info['extension'], $config)
     && $_GET['action'] != 'create_file') {
     response(trans('wrong extension') . AddErrorLocation())->send();
@@ -123,12 +123,12 @@ if (isset($_GET['action'])) {
                     if (is_dir($path)) {
                         deleteDir($path);
                         if ($config['fixed_image_creation']) {
-                            foreach ($config['fixed_path_from_filemanager'] as $k=>$paths) {
-                                if ($paths!="" && $paths[strlen($paths)-1] != "/") {
-                                    $paths.="/";
+                            foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
+                                if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                                    $paths .= "/";
                                 }
 
-                                $base_dir=$paths . substr_replace($path, '', 0, strlen($config['current_path']));
+                                $base_dir = $paths . substr_replace($path, '', 0, strlen($config['current_path']));
                                 if (is_dir($base_dir)) {
                                     deleteDir($base_dir);
                                 }
@@ -145,6 +145,7 @@ if (isset($_GET['action'])) {
                 $path .= $name;
                 $path_thumb .= $name;
                 $res = create_folder(fix_path($path, $config), fix_path($path_thumb, $config), $ftp, $config);
+
                 if (!$res) {
                     response(trans('Rename_existing_folder') . AddErrorLocation())->send();
                 }
@@ -157,8 +158,8 @@ if (isset($_GET['action'])) {
                     response(trans('wrong path') . AddErrorLocation())->send();
                     exit;
                 }
-                $name=fix_filename($name, $config);
-                $name=str_replace('.', '', $name);
+                $name = fix_filename($name, $config);
+                $name = str_replace('.', '', $name);
 
                 if (!empty($name)) {
                     if (!rename_folder($path, $name, $ftp, $config)) {
@@ -167,12 +168,12 @@ if (isset($_GET['action'])) {
                     }
                     rename_folder($path_thumb, $name, $ftp, $config);
                     if (!$ftp && $config['fixed_image_creation']) {
-                        foreach ($config['fixed_path_from_filemanager'] as $k=>$paths) {
-                            if ($paths!="" && $paths[strlen($paths)-1] != "/") {
-                                $paths.="/";
+                        foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
+                            if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                                $paths .= "/";
                             }
 
-                            $base_dir=$paths . substr_replace($path, '', 0, strlen($config['current_path']));
+                            $base_dir = $paths . substr_replace($path, '', 0, strlen($config['current_path']));
                             rename_folder($base_dir, $name, $ftp, $config);
                         }
                     }
@@ -201,7 +202,7 @@ if (isset($_GET['action'])) {
 
             // correct name
             $old_name = $name;
-            $name=fix_filename($name, $config);
+            $name = fix_filename($name, $config);
             if (empty($name)) {
                 response(trans('Empty_name') . AddErrorLocation())->send();
                 exit;
@@ -249,7 +250,7 @@ if (isset($_GET['action'])) {
 
         case 'rename_file':
             if ($config['rename_files']) {
-                $name=fix_filename($name, $config);
+                $name = fix_filename($name, $config);
                 if (!empty($name)) {
                     if (!rename_file($path, $name, $ftp, $config)) {
                         response(trans('Rename_existing_file') . AddErrorLocation())->send();
@@ -259,11 +260,11 @@ if (isset($_GET['action'])) {
                     rename_file($path_thumb, $name, $ftp, $config);
 
                     if ($config['fixed_image_creation']) {
-                        $info=pathinfo($path);
+                        $info = pathinfo($path);
 
-                        foreach ($config['fixed_path_from_filemanager'] as $k=>$paths) {
-                            if ($paths!="" && $paths[strlen($paths)-1] != "/") {
-                                $paths.="/";
+                        foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
+                            if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                                $paths .= "/";
                             }
 
                             $base_dir = $paths . substr_replace($info['dirname'] . "/", '', 0, strlen($config['current_path']));
@@ -281,7 +282,7 @@ if (isset($_GET['action'])) {
 
         case 'duplicate_file':
             if ($config['duplicate_files']) {
-                $name=fix_filename($name, $config);
+                $name = fix_filename($name, $config);
                 if (!empty($name)) {
                     if (!$ftp && !checkresultingsize(filesize($path))) {
                         response(sprintf(trans('max_size_reached'), $config['MaxSizeTotal']) . AddErrorLocation())->send();
@@ -295,13 +296,13 @@ if (isset($_GET['action'])) {
                     duplicate_file($path_thumb, $name, $ftp, $config);
 
                     if (!$ftp && $config['fixed_image_creation']) {
-                        $info=pathinfo($path);
-                        foreach ($config['fixed_path_from_filemanager'] as $k=>$paths) {
-                            if ($paths!="" && $paths[strlen($paths)-1] != "/") {
-                                $paths.= "/";
+                        $info = pathinfo($path);
+                        foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
+                            if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                                $paths .= "/";
                             }
 
-                            $base_dir=$paths . substr_replace($info['dirname'] . "/", '', 0, strlen($config['current_path']));
+                            $base_dir = $paths . substr_replace($info['dirname'] . "/", '', 0, strlen($config['current_path']));
 
                             if (file_exists($base_dir . $config['fixed_image_creation_name_to_prepend'][$k] . $info['filename'] . $config['fixed_image_creation_to_append'][$k] . "." . $info['extension'])) {
                                 duplicate_file($base_dir . $config['fixed_image_creation_name_to_prepend'][$k] . $info['filename'] . $config['fixed_image_creation_to_append'][$k] . "." . $info['extension'], $config['fixed_image_creation_name_to_prepend'][$k] . $name . $config['fixed_image_creation_to_append'][$k]);
@@ -316,7 +317,7 @@ if (isset($_GET['action'])) {
             break;
 
         case 'paste_clipboard':
-            if (! isset($_SESSION['RF']['clipboard_action'], $_SESSION['RF']['clipboard']['path'])
+            if (!isset($_SESSION['RF']['clipboard_action'], $_SESSION['RF']['clipboard']['path'])
                 || $_SESSION['RF']['clipboard_action'] == ''
                 || $_SESSION['RF']['clipboard']['path'] == '') {
                 response()->send();
@@ -328,12 +329,12 @@ if (isset($_GET['action'])) {
 
 
             if ($ftp) {
-                if ($_POST['path']!="") {
-                    $path.=DIRECTORY_SEPARATOR;
-                    $path_thumb.=DIRECTORY_SEPARATOR;
+                if ($_POST['path'] != "") {
+                    $path .= DIRECTORY_SEPARATOR;
+                    $path_thumb .= DIRECTORY_SEPARATOR;
                 }
                 $path_thumb .= basename($data['path']);
-                $path .= basename($data['path']) ;
+                $path .= basename($data['path']);
                 $data['path_thumb'] = DIRECTORY_SEPARATOR . $config['ftp_base_folder'] . $config['ftp_thumbs_dir'] . $data['path'];
                 $data['path'] = DIRECTORY_SEPARATOR . $config['ftp_base_folder'] . $config['upload_dir'] . $data['path'];
             } else {
@@ -462,11 +463,7 @@ if (isset($_GET['action'])) {
             if ($ftp) {
                 $tmp = time();
                 file_put_contents($tmp, $content);
-                try {
-                    $ftp->put("/" . $path, $tmp, FTP_BINARY);
-                } catch (FtpClient\FtpException $e) {
-                    echo $e->getMessage();
-                }
+                $ftp->put("/" . $path, $tmp, FTP_BINARY);
                 unlink($tmp);
                 response(trans('File_Save_OK'))->send();
             } else {

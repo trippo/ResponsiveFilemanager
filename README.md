@@ -10,7 +10,12 @@ PRODUCTION VERSION DOWNLOAD: https://github.com/trippo/ResponsiveFilemanager/rel
 
 Released under Creative Commons Attribution-NonCommercial 3.0 Unported License.
 
-Creator : info@albertoperipolli.com - tr1pp0
+Creator: info@albertoperipolli.com - tr1pp0
+
+### Server Requirements
+
+- PHP 7.1 or above strongly recommended
+- [Apache 2.2 or 2.4](https://httpd.apache.org/)
 
 ### Localization
 

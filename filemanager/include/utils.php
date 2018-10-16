@@ -4,7 +4,7 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
     die('forbidden');
 }
 
-require dirname(__FILE__) . '/Response.php';
+require __DIR__ . '/Response.php';
 
 if (!function_exists('response')) {
     /**
@@ -650,11 +650,9 @@ function check_extension($extension, $config)
 /**
  * Cleanup filename
  *
- * @param  string $str
- * @param  bool $transliteration
- * @param  bool $convert_spaces
- * @param  string $replace_with
- * @param  bool $is_folder
+ * @param string $str
+ * @param array $config
+ * @param bool $is_folder
  *
  * @return string
  */
@@ -1190,13 +1188,12 @@ function is_php($version = '5.0.0')
 
 /**
  * Return the caller location if set in config.php
- * @param  string $version
  *
  * @return  bool
  */
 function AddErrorLocation()
 {
-    if (defined('DEBUG_ERROR_MESSAGE') and DEBUG_ERROR_MESSAGE) {
+    if (defined('DEBUG_ERROR_MESSAGE') && DEBUG_ERROR_MESSAGE) {
         $pile=debug_backtrace();
         return " (@" . $pile[0]["file"] . "#" . $pile[0]["line"] . ")";
     }

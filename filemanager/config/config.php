@@ -463,13 +463,13 @@ $config = array(
 	'relative_image_creation_name_to_append'  => array( '_thumb', '_thumb1' ), //name to append on filename
 	'relative_image_creation_width'           => array( 300, 400 ), //width of image
 	'relative_image_creation_height'          => array( 200, 300 ), //height of image
-	/*
-	#             $option:     0 / exact = defined size;
-	#                          1 / portrait = keep aspect set height;
-	#                          2 / landscape = keep aspect set width;
-	#                          3 / auto = auto;
-	#                          4 / crop= resize and crop;
-	*/
+    /*
+     * $option:     0 / exact = defined size;
+     *              1 / portrait = keep aspect set height;
+     *              2 / landscape = keep aspect set width;
+     *              3 / auto = auto;
+     *              4 / crop= resize and crop;
+     */
 	'relative_image_creation_option'          => array( 'crop', 'crop' ), //set the type of the crop
 
 

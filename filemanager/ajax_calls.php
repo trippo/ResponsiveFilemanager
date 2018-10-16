@@ -78,15 +78,6 @@ if (isset($_GET['action'])) {
             }
             break;
 
-        case 'image_size': // not used
-            $pos = strpos($_POST['path'], $config['upload_dir']);
-            if ($pos !== false) {
-                $info = getimagesize(substr_replace($_POST['path'], $config['current_path'], $pos, strlen($config['upload_dir'])));
-                response($info)->send();
-                exit;
-            }
-            break;
-
         case 'save_img':
             $info = pathinfo($_POST['name']);
 

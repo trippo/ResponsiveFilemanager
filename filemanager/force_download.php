@@ -15,13 +15,13 @@ if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
 if (!checkRelativePath($_POST['path']) ||
     strpos($_POST['path'], '/') === 0
 ) {
-    response(trans('wrong path').AddErrorLocation(), 400)->send();
+    response(trans('wrong path') . AddErrorLocation(), 400)->send();
     exit;
 }
 
 
 if (strpos($_POST['name'], '/') !== false) {
-    response(trans('wrong path').AddErrorLocation(), 400)->send();
+    response(trans('wrong path') . AddErrorLocation(), 400)->send();
     exit;
 }
 
@@ -35,13 +35,13 @@ $name = $_POST['name'];
 $info = pathinfo($name);
 
 if (!check_extension($info['extension'], $config)) {
-    response(trans('wrong extension').AddErrorLocation(), 400)->send();
+    response(trans('wrong extension') . AddErrorLocation(), 400)->send();
     exit;
 }
 
-$file_name  = $info['basename'];
-$file_ext   = $info['extension'];
-$file_path  = $path . $name;
+$file_name = $info['basename'];
+$file_ext = $info['extension'];
+$file_path = $path . $name;
 
 
 // make sure the file exists
@@ -101,6 +101,7 @@ if ($ftp) {
 
     $chunksize = 1 * (1024 * 1024);
     $bytes_send = 0;
+
     if ($file = fopen($file_path, 'r')) {
         if (isset($_SERVER['HTTP_RANGE'])) {
             fseek($file, $range);
