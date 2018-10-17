@@ -380,6 +380,10 @@ class UploadHandler
 			$file->error = $this->get_error_message('accept_file_types');
 			return false;
 		}
+		if (preg_match($this->options['image_file_types'], $file->name) && function_exists('exif_imagetype') && !@exif_imagetype($uploaded_file)) {
+			$file->error = $this->get_error_message('accept_file_types');
+			return false;
+		}
 		if ($uploaded_file && is_uploaded_file($uploaded_file)) {
 			$file_size = $this->get_file_size($uploaded_file);
 		} else {
