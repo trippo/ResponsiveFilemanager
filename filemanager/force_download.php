@@ -3,6 +3,7 @@
 $config = include 'config/config.php';
 
 include 'include/utils.php';
+include 'include/mime_type_lib.php';
 
 $ftp = ftp_con($config);
 

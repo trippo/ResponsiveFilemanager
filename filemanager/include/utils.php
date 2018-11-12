@@ -1,6 +1,6 @@
 <?php
 
-if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
+if (!isset($_SESSION['RF']) || $_SESSION['RF']["verify"] != "RESPONSIVEfilemanager")
 {
 	die('forbiden');
 }
@@ -95,7 +95,19 @@ if ( ! function_exists('trans'))
 }
 
 
-
+function checkRelativePathPartial($path){
+	if (strpos($path, '../') !== false
+        || strpos($path, './') !== false
+        || strpos($path, '/..') !== false
+        || strpos($path, '..\\') !== false
+        || strpos($path, '\\..') !== false
+        || strpos($path, '.\\') !== false
+        || $path === ".."
+    ){
+		return false;
+    }
+    return true;
+}
 
 /**
 * Check relative path
@@ -105,18 +117,11 @@ if ( ! function_exists('trans'))
 * @return boolean is it correct?
 */
 function checkRelativePath($path){
-	$path_correct = true;
-	$path_decoded = rawurldecode($path);
-	if (strpos($path, '../') !== false
-        || strpos($path, './') !== false
-        || strpos($path, '..\\') !== false
-        || strpos($path, '.\\') !== false
-    	|| strpos($path_decoded, '../') !== false
-        || strpos($path_decoded, './') !== false
-        || strpos($path_decoded, '..\\') !== false
-        || strpos($path_decoded, '.\\') !== false) {
-        $path_correct = false;
-    }
+	$path_correct = checkRelativePathPartial($path);
+	if($path_correct){
+		$path_decoded = rawurldecode($path);
+		$path_correct = checkRelativePathPartial($path_decoded);
+	}
     return $path_correct;
 }
 
@@ -681,6 +686,20 @@ function check_extension($extension,$config){
 }
 
 
+
+
+/**
+* Sanitize filename
+*
+* @param  string  $str
+*
+* @return string
+*/
+function sanitize($str)
+{
+	return strip_tags(htmlspecialchars($str));
+}
+
 /**
 * Cleanup filename
 *
@@ -694,6 +713,7 @@ function check_extension($extension,$config){
 */
 function fix_filename($str, $config, $is_folder = false)
 {
+	$str = sanitize($str);
 	if ($config['convert_spaces'])
 	{
 		$str = str_replace(' ', $config['replace_with'], $str);

@@ -937,8 +937,8 @@ $files=$sorted;
 		<div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
 		<?php }else{ ?>
 		<h4 id="help"><?php echo trans('Swipe_help');?></h4>
-		<?php if(isset($folder_message)){ ?>
-		<div class="alert alert-block"><?php echo $folder_message;?></div>
+		<?php if(isset($config['folder_message'])){ ?>
+		<div class="alert alert-block"><?php echo $config['folder_message'];?></div>
 		<?php } ?>
 		<?php if($config['show_sorting_bar']){ ?>
 		<!-- sorter -->

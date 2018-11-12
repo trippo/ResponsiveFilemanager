@@ -75,6 +75,11 @@ function returnPaths($_path,$_name,$config){
 if(isset($_POST['paths'])){
 	$paths = $paths_thumb = $names = array();
 	foreach ($_POST['paths'] as $key => $path) {
+		if (!checkRelativePath($path))
+		{
+			response(trans('wrong path').AddErrorLocation())->send();
+			exit;
+		}
 		$name = null;
 		if(isset($_POST['names'][$key])){
 			$name = $_POST['names'][$key];
@@ -118,7 +123,7 @@ if (isset($_GET['action']))
 
 			break;
 		case 'delete_folder':
-			if ($config['delete_folders']){
+			if ($config['delete_folders'] && !empty($path) && !empty($path_thumb)){
 
 				if($ftp){
 					deleteDir($path,$ftp,$config);
@@ -159,7 +164,7 @@ if (isset($_GET['action']))
 			}
 			break;
 		case 'rename_folder':
-			if ($config['rename_folders']){
+			if ($config['rename_folders'] && !empty($path) && !empty($path_thumb)){
                 if(!is_dir($path)) {
                     response(trans('wrong path').AddErrorLocation())->send();
                     exit;
@@ -253,7 +258,7 @@ if (isset($_GET['action']))
 
 			break;
 		case 'rename_file':
-			if ($config['rename_files']){
+			if ($config['rename_files'] && !empty($path) && !empty($path_thumb)){
 				$name=fix_filename($name,$config);
 				if (!empty($name))
 				{

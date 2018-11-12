@@ -3,7 +3,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 {
 	"use strict";
 
-	var version = "9.13.4";
+	var version = "9.14.0";
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
@@ -1234,6 +1234,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						"callback": function ()
 						{
 							var newContent = jQuery('#textfile_edit_area').val();
+							if(window.editor){
+								newContent = window.editor.getData();
+							}
 							// post ajax
 							$.ajax({
 								type: "POST",
@@ -1756,15 +1759,17 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var sub_folder = jQuery('#sub_folder').val();
 		sub_folder = sub_folder.replace('\\', '/');
 		var base_url = jQuery('#base_url').val();
+		var fldr = jQuery('#fldr_value').val();
+		fldr = fldr.replace('\\', '/');
 		var urls=[];
 		var is_return_relative_url = jQuery('#return_relative_url').val();
 		var is_ftp = jQuery('#ftp').val() == true;
 		for(var i = 0; i< files.length; i++){
 			var file = files[i];
 			if(is_ftp){
-				urls.push(encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + file));
+				urls.push(encodeURL(jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + fldr + file));
 			}else{
-				urls.push(encodeURL((is_return_relative_url == 1 ? sub_folder : base_url + path) + file));
+				urls.push(encodeURL((is_return_relative_url == 1 ? sub_folder + fldr : base_url + path) + file));
 			}
 		}
 		return urls;

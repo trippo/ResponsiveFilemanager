@@ -31,8 +31,8 @@ if(isset($_GET['file']) && !checkRelativePath($_GET['file'])) {
     exit;
 }
 
-//check $_GET['file']
-if(isset($_GET['path']) && !checkRelativePath($_GET['path'])) {
+//check $_POST['file']
+if(isset($_POST['path']) && !checkRelativePath($_POST['path'])) {
     response(trans('wrong path').AddErrorLocation())->send();
     exit;
 }
@@ -84,15 +84,6 @@ if(isset($_GET['action']))
 			if (isset($_GET['descending']))
 			{
 				$_SESSION['RF']["descending"] = $_GET['descending'];
-			}
-			break;
-		case 'image_size': // not used
-			$pos = strpos($_POST['path'], $config['upload_dir']);
-			if ($pos !== false)
-			{
-				$info = getimagesize(substr_replace($_POST['path'], $config['current_path'], $pos, strlen($config['upload_dir'])));
-				response($info)->send();
-				exit;
 			}
 			break;
 		case 'save_img':
@@ -251,6 +242,12 @@ if(isset($_GET['action']))
 
 			break;
 		case 'media_preview':
+			if(isset($_GET['file'])){
+				$_GET['file'] = sanitize($_GET['file']);
+			}
+			if(isset($_GET['title'])){
+				$_GET['title'] = sanitize($_GET['title']);
+			}
 			if($ftp){
 				$preview_file = $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'];
 			}else{
@@ -259,7 +256,7 @@ if(isset($_GET['action']))
 			$info = pathinfo($preview_file);
 			ob_start();
 			?>
-			<div id="jp_container_1" class="jp-video " style="margin:0 auto;">
+			<div id="jp_container_1" class="jp-video" style="margin:0 auto;">
 				<div class="jp-type-single">
 				<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 				<div class="jp-gui">
@@ -671,7 +668,13 @@ if(isset($_GET['action']))
 				}
 			}else{
 				$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
-				$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
+				if(in_array($info['extension'],array('html','html'))){
+					$ret = '<script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script><textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea><script>setTimeout(function(){ ClassicEditor
+				.create( document.querySelector( "#textfile_edit_area" ),{ }).then( newEditor => { window.editor = newEditor; } );  }, 500);</script>';
+				}else{
+					$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
+				}
+
 			}
 
 			response($ret)->send();
