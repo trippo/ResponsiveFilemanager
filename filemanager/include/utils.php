@@ -126,6 +126,24 @@ function checkRelativePath($path){
 }
 
 /**
+* Check if the given path is an upload dir based on config
+*
+* @param  string  $path
+* @param  array $config
+*
+* @return boolean is it an upload dir?
+*/
+function isUploadDir($path, $config){
+	$upload_dir = $config['current_path'];
+	$thumbs_dir = $config['thumbs_base_path'];
+	if (realpath($path) === realpath($upload_dir) || realpath($path) === realpath($thumbs_dir))
+	{
+		return true;
+	}
+	return false;
+}
+
+/**
 * Delete file
 *
 * @param  string  $path
@@ -202,7 +220,7 @@ function deleteDir($dir,$ftp = null, $config = null)
 		}
 
 	}else{
-		if ( ! file_exists($dir))
+		if ( ! file_exists($dir) || isUploadDir($dir, $config))
 		{
 			return false;
 		}
@@ -250,7 +268,7 @@ function duplicate_file( $old_path, $name, $ftp = null, $config = null )
 			return null;
 		}
 	}else{
-		if (file_exists($old_path))
+		if (file_exists($old_path) && is_file($old_path))
 		{
 			if (file_exists($new_path) && $old_path == $new_path)
 			{
@@ -284,7 +302,7 @@ function rename_file($old_path, $name, $ftp = null, $config = null)
 			return false;
 		}
 	}else{
-		if (file_exists($old_path))
+		if (file_exists($old_path) && is_file($old_path))
 		{
 			$new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
 			if (file_exists($new_path) && $old_path == $new_path)
@@ -333,13 +351,12 @@ function rename_folder($old_path, $name, $ftp = null, $config = null)
 			return $ftp->rename("/".$old_path, "/".$new_path);
 		}
 	}else{
-		if (file_exists($old_path))
+		if (file_exists($old_path) && is_dir($old_path) && !isUploadDir($old_path, $config))
 		{
 			if (file_exists($new_path) && $old_path == $new_path)
 			{
 				return false;
 			}
-
 			return rename($old_path, $new_path);
 		}
 	}

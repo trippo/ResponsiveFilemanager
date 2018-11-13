@@ -123,7 +123,7 @@ if (isset($_GET['action']))
 
 			break;
 		case 'delete_folder':
-			if ($config['delete_folders'] && !empty($path) && !empty($path_thumb)){
+			if ($config['delete_folders']){
 
 				if($ftp){
 					deleteDir($path,$ftp,$config);
@@ -131,19 +131,19 @@ if (isset($_GET['action']))
 				}else{
 					if (is_dir($path_thumb))
 					{
-						deleteDir($path_thumb);
+						deleteDir($path_thumb,NULL,$config);
 					}
 
 					if (is_dir($path))
 					{
-						deleteDir($path);
+						deleteDir($path,NULL,$config);
 						if ($config['fixed_image_creation'])
 						{
 							foreach($config['fixed_path_from_filemanager'] as $k=>$paths){
 								if ($paths!="" && $paths[strlen($paths)-1] != "/") $paths.="/";
 
 								$base_dir=$paths.substr_replace($path, '', 0, strlen($config['current_path']));
-								if (is_dir($base_dir)) deleteDir($base_dir);
+								if (is_dir($base_dir)) deleteDir($base_dir,NULL,$config);
 							}
 						}
 					}
@@ -164,7 +164,7 @@ if (isset($_GET['action']))
 			}
 			break;
 		case 'rename_folder':
-			if ($config['rename_folders'] && !empty($path) && !empty($path_thumb)){
+			if ($config['rename_folders']){
                 if(!is_dir($path)) {
                     response(trans('wrong path').AddErrorLocation())->send();
                     exit;
@@ -258,7 +258,7 @@ if (isset($_GET['action']))
 
 			break;
 		case 'rename_file':
-			if ($config['rename_files'] && !empty($path) && !empty($path_thumb)){
+			if ($config['rename_files']){
 				$name=fix_filename($name,$config);
 				if (!empty($name))
 				{
