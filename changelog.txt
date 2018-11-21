@@ -8,6 +8,9 @@ Responsive Filemanager Changelog
 - add ckEditor on html file edit
 - fix upload an image with malicius code inside
 - added compatibility with memory_limit expressed in G
+- fix relative url return
+- fix a vulnerability on url upload (thanks to donot-wong for reporting)
+- fix return on upload in same cases
 
 *********************************************************
 *  RFM 9.13.4
