@@ -84,17 +84,21 @@ if (!function_exists('trans')) {
     }
 }
 
-
-function checkRelativePathPartial($path){
-	if (strpos($path, '../') !== false
+/**
+ * @param $path
+ * @return bool
+ */
+function checkRelativePathPartial($path)
+{
+    if (strpos($path, '../') !== false
         || strpos($path, './') !== false
         || strpos($path, '/..') !== false
         || strpos($path, '..\\') !== false
         || strpos($path, '\\..') !== false
         || strpos($path, '.\\') !== false
         || $path === ".."
-    ){
-		return false;
+    ) {
+        return false;
     }
     return true;
 }
@@ -106,12 +110,13 @@ function checkRelativePathPartial($path){
 *
 * @return boolean is it correct?
 */
-function checkRelativePath($path){
-	$path_correct = checkRelativePathPartial($path);
-	if($path_correct){
-		$path_decoded = rawurldecode($path);
-		$path_correct = checkRelativePathPartial($path_decoded);
-	}
+function checkRelativePath($path)
+{
+    $path_correct = checkRelativePathPartial($path);
+    if ($path_correct) {
+        $path_decoded = rawurldecode($path);
+        $path_correct = checkRelativePathPartial($path_decoded);
+    }
     return $path_correct;
 }
 
@@ -123,14 +128,14 @@ function checkRelativePath($path){
 *
 * @return boolean is it an upload dir?
 */
-function isUploadDir($path, $config){
-	$upload_dir = $config['current_path'];
-	$thumbs_dir = $config['thumbs_base_path'];
-	if (realpath($path) === realpath($upload_dir) || realpath($path) === realpath($thumbs_dir))
-	{
-		return true;
-	}
-	return false;
+function isUploadDir($path, $config)
+{
+    $upload_dir = $config['current_path'];
+    $thumbs_dir = $config['thumbs_base_path'];
+    if (realpath($path) === realpath($upload_dir) || realpath($path) === realpath($thumbs_dir)) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -198,39 +203,31 @@ function deleteFile($path, $path_thumb, $config)
 *
 * @return  bool
 */
-function deleteDir($dir,$ftp = null, $config = null)
+function deleteDir($dir, $ftp = null, $config = null)
 {
-	if($ftp){
-
-		try{
-			$ftp->rmdir($dir);
-			return true;
-
-		}catch(FtpClient\FtpException $e){
-			return null;
-		}
-
-	}else{
-		if ( ! file_exists($dir) || isUploadDir($dir, $config))
-		{
-			return false;
-		}
-		if ( ! is_dir($dir))
-		{
-			return unlink($dir);
-		}
-		foreach (scandir($dir) as $item)
-		{
-			if ($item == '.' || $item == '..')
-			{
-				continue;
-			}
-			if ( ! deleteDir($dir . DIRECTORY_SEPARATOR . $item))
-			{
-				return false;
-			}
-		}
-	}
+    if ($ftp) {
+        try {
+            $ftp->rmdir($dir);
+            return true;
+        } catch (FtpClient\FtpException $e) {
+            return null;
+        }
+    } else {
+        if (! file_exists($dir) || isUploadDir($dir, $config)) {
+            return false;
+        }
+        if (! is_dir($dir)) {
+            return unlink($dir);
+        }
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') {
+                continue;
+            }
+            if (! deleteDir($dir . DIRECTORY_SEPARATOR . $item)) {
+                return false;
+            }
+        }
+    }
 
     return rmdir($dir);
 }
@@ -243,28 +240,25 @@ function deleteDir($dir,$ftp = null, $config = null)
 *
 * @return  bool
 */
-function duplicate_file( $old_path, $name, $ftp = null, $config = null )
+function duplicate_file($old_path, $name, $ftp = null, $config = null)
 {
-	$info = pathinfo($old_path);
-	$new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
-	if($ftp){
-		try{
-			$tmp = time().$name . "." . $info['extension'];
-			$ftp->get($tmp, "/".$old_path, FTP_BINARY);
-			$ftp->put("/".$new_path, $tmp, FTP_BINARY);
-			unlink($tmp);
-			return true;
-
-		}catch(FtpClient\FtpException $e){
-			return null;
-		}
-	}else{
-		if (file_exists($old_path) && is_file($old_path))
-		{
-			if (file_exists($new_path) && $old_path == $new_path)
-			{
-				return false;
-			}
+    $info = pathinfo($old_path);
+    $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
+    if ($ftp) {
+        try {
+            $tmp = time().$name . "." . $info['extension'];
+            $ftp->get($tmp, "/".$old_path, FTP_BINARY);
+            $ftp->put("/".$new_path, $tmp, FTP_BINARY);
+            unlink($tmp);
+            return true;
+        } catch (FtpClient\FtpException $e) {
+            return null;
+        }
+    } else {
+        if (file_exists($old_path) && is_file($old_path)) {
+            if (file_exists($new_path) && $old_path == $new_path) {
+                return false;
+            }
 
             return copy($old_path, $new_path);
         }
@@ -283,23 +277,21 @@ function duplicate_file( $old_path, $name, $ftp = null, $config = null )
  */
 function rename_file($old_path, $name, $ftp = null, $config = null)
 {
-	$name = fix_filename($name, $config);
-	$info = pathinfo($old_path);
-	$new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
-	if($ftp){
-		try{
-			return $ftp->rename("/".$old_path, "/".$new_path);
-		}catch(FtpClient\FtpException $e){
-			return false;
-		}
-	}else{
-		if (file_exists($old_path) && is_file($old_path))
-		{
-			$new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
-			if (file_exists($new_path) && $old_path == $new_path)
-			{
-				return false;
-			}
+    $name = fix_filename($name, $config);
+    $info = pathinfo($old_path);
+    $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
+    if ($ftp) {
+        try {
+            return $ftp->rename("/".$old_path, "/".$new_path);
+        } catch (FtpClient\FtpException $e) {
+            return false;
+        }
+    } else {
+        if (file_exists($old_path) && is_file($old_path)) {
+            $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
+            if (file_exists($new_path) && $old_path == $new_path) {
+                return false;
+            }
 
             return rename($old_path, $new_path);
         }
@@ -338,35 +330,33 @@ function tempdir()
 
 
 /**
-* Rename directory
-*
-* @param  string  $old_path         Directory to rename
-* @param  string  $name             New directory name
-* @param  bool    $transliteration
-*
-* @return bool
-*/
+ * Rename directory
+ *
+ * @param string $old_path Directory to rename
+ * @param string $name New directory name
+ * @param null $ftp
+ * @param null|array $config
+ * @return bool
+ */
 function rename_folder($old_path, $name, $ftp = null, $config = null)
 {
-	$name = fix_filename($name, $config, true);
-	$new_path = fix_dirname($old_path) . "/" . $name;
-	if($ftp){
-		if($ftp->chdir("/".$old_path)){
-			if(@$ftp->chdir($new_path)){
-				return false;
-			}
-			return $ftp->rename("/".$old_path, "/".$new_path);
-		}
-	}else{
-		if (file_exists($old_path) && is_dir($old_path) && !isUploadDir($old_path, $config))
-		{
-			if (file_exists($new_path) && $old_path == $new_path)
-			{
-				return false;
-			}
-			return rename($old_path, $new_path);
-		}
-	}
+    $name = fix_filename($name, $config, true);
+    $new_path = fix_dirname($old_path) . "/" . $name;
+    if ($ftp) {
+        if ($ftp->chdir("/".$old_path)) {
+            if (@$ftp->chdir($new_path)) {
+                return false;
+            }
+            return $ftp->rename("/".$old_path, "/".$new_path);
+        }
+    } else {
+        if (file_exists($old_path) && is_dir($old_path) && !isUploadDir($old_path, $config)) {
+            if (file_exists($new_path) && $old_path == $new_path) {
+                return false;
+            }
+            return rename($old_path, $new_path);
+        }
+    }
 }
 
 /**
@@ -678,7 +668,6 @@ function fix_get_params($str)
     return strip_tags(preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str));
 }
 
-
 /**
  * Check extension
  *
@@ -696,9 +685,6 @@ function check_extension($extension, $config)
     return true;
 }
 
-
-
-
 /**
 * Sanitize filename
 *
@@ -708,20 +694,18 @@ function check_extension($extension, $config)
 */
 function sanitize($str)
 {
-	return strip_tags(htmlspecialchars($str));
+    return strip_tags(htmlspecialchars($str));
 }
 
 /**
-* Cleanup filename
-*
-* @param  string  $str
-* @param  bool    $transliteration
-* @param  bool    $convert_spaces
-* @param  string  $replace_with
-* @param  bool    $is_folder
-*
-* @return string
-*/
+ * Cleanup filename
+ *
+ * @param string $str
+ * @param array $config
+ * @param bool $is_folder
+ *
+ * @return string
+ */
 function fix_filename($str, $config, $is_folder = false)
 {
     $str = sanitize($str);
@@ -800,8 +784,8 @@ function fix_strtolower($str)
 }
 
 /**
- * @param $path
- * @param $config
+ * @param string $path
+ * @param array $config
  * @return string
  */
 function fix_path($path, $config)
@@ -811,14 +795,13 @@ function fix_path($path, $config)
     $str = fix_filename($info['filename'], $config);
     if ($tmp_path != "") {
         return $tmp_path . DIRECTORY_SEPARATOR . $str;
-    } else {
-        return $str;
     }
+    return $str;
 }
 
 /**
- * @param  $current_path
- * @param  $fld
+ * @param string $current_path
+ * @param $fld
  *
  * @return  bool
  */
@@ -1055,7 +1038,7 @@ function is_function_callable($name)
 }
 
 /**
- * recursivly copies everything
+ * Recursively copies everything
  *
  * @param  string $source
  * @param  string $destination
@@ -1094,7 +1077,7 @@ function rcopy($source, $destination, $is_rec = false)
 
 
 /**
- * recursivly renames everything
+ * Recursively renames everything
  *
  * I know copy and rename could be done with just one function
  * but i split the 2 because sometimes rename fails on windows
