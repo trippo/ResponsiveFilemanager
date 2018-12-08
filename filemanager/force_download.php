@@ -4,26 +4,22 @@ $config = include 'config/config.php';
 
 include 'include/utils.php';
 
-$ftp = ftp_con($config);
-
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
     response(trans('forbidden') . AddErrorLocation(), 403)->send();
     exit;
 }
 
-
-if (!checkRelativePath($_POST['path']) ||
-    strpos($_POST['path'], '/') === 0
-) {
+if (!checkRelativePath($_POST['path']) || strpos($_POST['path'], '/') === 0) {
     response(trans('wrong path') . AddErrorLocation(), 400)->send();
     exit;
 }
-
 
 if (strpos($_POST['name'], '/') !== false) {
     response(trans('wrong path') . AddErrorLocation(), 400)->send();
     exit;
 }
+
+$ftp = ftp_con($config);
 
 if ($ftp) {
     $path = $config['ftp_base_url'] . $config['upload_dir'] . $_POST['path'];

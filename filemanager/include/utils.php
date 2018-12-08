@@ -209,22 +209,21 @@ function deleteDir($dir, $ftp = null)
  * @param  string $old_path
  * @param  string $name New file name without extension
  *
+ * @param null|\FtpClient\FtpClient $ftp
+ * @param null|array $config
  * @return  bool
  */
 function duplicate_file($old_path, $name, $ftp = null, $config = null)
 {
     $info = pathinfo($old_path);
     $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
+
     if ($ftp) {
-        try {
-            $tmp = time() . $name . "." . $info['extension'];
-            $ftp->get($tmp, "/" . $old_path, FTP_BINARY);
-            $ftp->put("/" . $new_path, $tmp, FTP_BINARY);
-            unlink($tmp);
-            return true;
-        } catch (FtpClient\FtpException $e) {
-            return null;
-        }
+        $tmp = time() . $name . "." . $info['extension'];
+        $ftp->get($tmp, "/" . $old_path, FTP_BINARY);
+        $ftp->put("/" . $new_path, $tmp, FTP_BINARY);
+        unlink($tmp);
+        return true;
     } else {
         if (file_exists($old_path)) {
             if (file_exists($new_path) && $old_path == $new_path) {
@@ -240,10 +239,10 @@ function duplicate_file($old_path, $name, $ftp = null, $config = null)
 /**
  * Rename file
  *
- * @param  string $old_path File to rename
- * @param  string $name New file name without extension
- * @param  bool $transliteration
- *
+ * @param string $old_path File to rename
+ * @param string $name New file name without extension
+ * @param null|\FtpClient\FtpClient $ftp
+ * @param null|array $config
  * @return bool
  */
 function rename_file($old_path, $name, $ftp = null, $config = null)
@@ -269,7 +268,10 @@ function rename_file($old_path, $name, $ftp = null, $config = null)
     }
 }
 
-
+/**
+ * @param $url
+ * @return bool
+ */
 function url_exists($url)
 {
     if (!$fp = curl_init($url)) {
@@ -278,14 +280,19 @@ function url_exists($url)
     return true;
 }
 
-
+/**
+ * @return bool|string
+ */
 function tempdir()
 {
-    $tempfile=tempnam(sys_get_temp_dir(), '');
+    $tempfile = tempnam(sys_get_temp_dir(), '');
+
     if (file_exists($tempfile)) {
         unlink($tempfile);
     }
+
     mkdir($tempfile);
+
     if (is_dir($tempfile)) {
         return $tempfile;
     }
@@ -297,8 +304,8 @@ function tempdir()
  *
  * @param  string $old_path Directory to rename
  * @param  string $name New directory name
- * @param  bool $transliteration
- *
+ * @param null|\FtpClient\FtpClient $ftp
+ * @param null|array $config
  * @return bool
  */
 function rename_folder($old_path, $name, $ftp = null, $config = null)
@@ -326,18 +333,17 @@ function rename_folder($old_path, $name, $ftp = null, $config = null)
 /**
  * @param array $config
  * @return bool|\FtpClient\FtpClient
- * @throws \FtpClient\FtpException
  */
 function ftp_con($config)
 {
     if (isset($config['ftp_host']) && $config['ftp_host']) {
         // *** Include the class
-        include('include/FtpClient.php');
-        include('include/FtpException.php');
-        include('include/FtpWrapper.php');
+        include __DIR__ . '/FtpClient.php';
+        include __DIR__ . '/FtpException.php';
+        include __DIR__ . '/FtpWrapper.php';
 
-        $ftp = new \FtpClient\FtpClient();
         try {
+            $ftp = new \FtpClient\FtpClient();
             $ftp->connect($config['ftp_host'], $config['ftp_ssl'], $config['ftp_port']);
             $ftp->login($config['ftp_user'], $config['ftp_pass']);
             $ftp->pasv(true);
@@ -365,7 +371,7 @@ function ftp_con($config)
  * @param  int $newheight Optional thumbnail height
  * @param  string $option Type of resize
  *
- * @throws \Exception
+ * @param array $config
  * @return bool
  */
 function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop", $config = array())
@@ -384,6 +390,7 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
             $imgthumb = $temp;
         }
     }
+
     if (file_exists($imgfile) || strpos($imgfile, 'http')===0) {
         if (strpos($imgfile, 'http')===0 || image_check_memory_usage($imgfile, $newwidth, $newheight)) {
             require_once('php_image_magician.php');
@@ -397,7 +404,9 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
             $result = true;
         }
     }
+
     if ($result && isset($config['ftp_host']) && $config['ftp_host']) {
+        $ftp = ftp_con($config);
         $ftp->put($save_ftp, $imgthumb, FTP_BINARY);
         unlink($imgthumb);
     }
@@ -516,6 +525,8 @@ function checkresultingsize($sizeAdded)
  *
  * @param  string $path
  * @param  string $path_thumbs
+ *
+ * @return bool
  */
 function create_folder($path = null, $path_thumbs = null, $ftp = null, $config = null)
 {
@@ -595,10 +606,10 @@ function check_file_extension($extension, $config)
 /**
  * Get file extension present in PHAR file
  *
- * @param  string $phar
- * @param  array $files
- * @param  string $basepath
- * @param  string $ext
+ * @param string $phar
+ * @param array $files
+ * @param string $basepath
+ * @param array $config
  */
 function check_files_extensions_on_phar($phar, &$files, $basepath, $config)
 {

@@ -131,7 +131,10 @@ if (!$ftp) {
     $i = 0;
     while ($cycle && $i < $max_cycles) {
         $i++;
-        if ($parent == "./") $parent = "";
+
+        if ($parent == "./") {
+            $parent = "";
+        }
 
         if (file_exists($config['current_path'] . $parent . "config.php")) {
             $configTemp = include $config['current_path'] . $parent . 'config.php';
@@ -139,8 +142,11 @@ if (!$ftp) {
             $cycle = FALSE;
         }
 
-        if ($parent == "") $cycle = FALSE;
-        else $parent = fix_dirname($parent) . "/";
+        if ($parent == "") {
+            $cycle = FALSE;
+        } else {
+            $parent = fix_dirname($parent) . "/";
+        }
     }
 
     if (!is_dir($thumbs_path . $subdir)) {
@@ -263,14 +269,22 @@ if (isset($_GET['editor'])) {
 $field_id = isset($_GET['field_id']) ? fix_get_params($_GET['field_id']) : null;
 $type_param = fix_get_params($_GET['type']);
 $apply = null;
-if($multiple){
+
+if ($multiple) {
     $apply = 'apply_multiple';
 }
-if ($type_param == 1) $apply_type = 'apply_img';
-elseif ($type_param == 2) $apply_type = 'apply_link';
-elseif ($type_param == 0 && !$field_id) $apply_type = 'apply_none';
-elseif ($type_param == 3) $apply_type = 'apply_video';
-else $apply_type = 'apply';
+
+if ($type_param == 1) {
+    $apply_type = 'apply_img';
+} elseif ($type_param == 2) {
+    $apply_type = 'apply_link';
+} elseif ($type_param == 0 && !$field_id) {
+    $apply_type = 'apply_none';
+} elseif ($type_param == 3) {
+    $apply_type = 'apply_video';
+} else {
+    $apply_type = 'apply';
+}
 
 if(!$apply){
     $apply = $apply_type;
@@ -299,7 +313,7 @@ $get_params = http_build_query($get_params);
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="robots" content="noindex,nofollow">
@@ -1107,9 +1121,9 @@ $files = $sorted;
 
                         $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path.$subdir. $file;
 
-                        if(!file_exists($src_thumb) ){
-                            if(!create_img($file_path, $creation_thumb_path, 122, 91,'crop',$config)){
-                                $src_thumb=$mini_src="";
+                        if (!file_exists($src_thumb)) {
+                            if (!create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config)) {
+                                $src_thumb = $mini_src = "";
                             }
                         }
                         //check if is smaller than thumb
@@ -1260,16 +1274,15 @@ $files = $sorted;
 </div>
 
 <script>
-    var files_prevent_duplicate = new Array();
-    <?php
-    foreach ($files_prevent_duplicate as $key => $value): ?>
-        files_prevent_duplicate[<?php echo $key;?>] = '<?php echo $value;?>';
+    var files_prevent_duplicate = [];
+    <?php foreach ($files_prevent_duplicate as $key => $value): ?>
+    files_prevent_duplicate[<?php echo $key;?>] = '<?php echo $value;?>';
     <?php endforeach;?>
 </script>
 
     <!-- lightbox div start -->
-    <div id="previewLightbox" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">
-        <div class='lightbox-content'>
+    <div id="previewLightbox" class="lightbox hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="lightbox-content">
             <img id="full-img" src="">
         </div>
     </div>
@@ -1278,22 +1291,22 @@ $files = $sorted;
     <!-- loading div start -->
     <div id="loading_container" style="display:none;">
         <div id="loading" style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:100000"></div>
-        <img id="loading_animation" src="img/storing_animation.gif" alt="loading" style="z-index:10001; margin-left:-32px; margin-top:-32px; position:fixed; left:50%; top:50%"/>
+        <img id="loading_animation" src="img/storing_animation.gif" alt="loading" style="z-index:10001; margin-left:-32px; margin-top:-32px; position:fixed; left:50%; top:50%">
     </div>
     <!-- loading div end -->
 
     <!-- player div start -->
     <div class="modal hide fade" id="previewAV">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3><?php echo trans('Preview');?></h3>
-    </div>
-    <div class="modal-body">
-        <div class="row-fluid body-preview">
-                </div>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3><?php echo trans('Preview'); ?></h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid body-preview">
+            </div>
+        </div>
     </div>
 
-    </div>
     <!-- player div end -->
     <img id='aviary_img' src='' class="hide"/>
     <script>
