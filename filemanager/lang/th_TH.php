@@ -72,7 +72,6 @@ return array(
         'abort' => 'File upload aborted',
         'image_resize' => 'Failed to resize image'
     ),
-    'Upload_url' => 'อัพโหลดจาก url',
     'Type_dir' => 'dir',
     'Type' => 'ชนิด',
     'Dimension' => 'Dimension',
