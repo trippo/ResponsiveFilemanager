@@ -67,7 +67,7 @@ try {
     // make sure the length is limited to avoid DOS attacks
     if (isset($_POST['url']) && strlen($_POST['url']) < 2000) {
         $url = $_POST['url'];
-        $urlPattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/:?=&#]{1}[\da-z\.-]+)*[\/\?]?$/i';
+        $urlPattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/?=&#]{1}[\da-z\.-]+)*[\/\?]?$/i';
 
         if (preg_match($urlPattern, $url)) {
             $temp = tempnam('/tmp', 'RF');
@@ -105,7 +105,6 @@ try {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime_type = finfo_file($finfo, $_FILES['files']['tmp_name'][0]);
         } else {
-            include 'include/mime_type_lib.php';
             $mime_type = get_file_mime_type($_FILES['files']['tmp_name'][0]);
         }
         $extension = get_extension_from_mime($mime_type);
@@ -120,11 +119,16 @@ try {
     $_FILES['files']['name'][0] = fix_filename($filename, $config);
 
 
+
     // LowerCase
     if ($config['lower_case']) {
         $_FILES['files']['name'][0] = fix_strtolower($_FILES['files']['name'][0]);
     }
     if (!checkresultingsize($_FILES['files']['size'][0])) {
+    	if ( !isset($upload_handler->response['files'][0]) ) {
+            // Avoid " Warning: Creating default object from empty value ... "
+            $upload_handler->response['files'][0] = new stdClass();
+        }
         $upload_handler->response['files'][0]->error = sprintf(trans('max_size_reached'), $config['MaxSizeTotal']) . AddErrorLocation();
         echo json_encode($upload_handler->response);
         exit();

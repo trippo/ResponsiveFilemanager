@@ -3,6 +3,7 @@
 $config = include 'config/config.php';
 
 include 'include/utils.php';
+include 'include/mime_type_lib.php';
 
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
     response(trans('forbidden') . AddErrorLocation(), 403)->send();

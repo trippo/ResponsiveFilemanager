@@ -29,8 +29,8 @@ if (isset($_GET['file']) && !checkRelativePath($_GET['file'])) {
     exit;
 }
 
-//check $_GET['file']
-if (isset($_GET['path']) && !checkRelativePath($_GET['path'])) {
+//check $_POST['file']
+if(isset($_POST['path']) && !checkRelativePath($_POST['path'])) {
     response(trans('wrong path').AddErrorLocation())->send();
     exit;
 }
@@ -73,13 +73,13 @@ if (isset($_GET['action'])) {
                 $_SESSION['RF']["sort_by"] = $_GET['sort_by'];
             }
 
-            if (isset($_GET['descending'])) {
-                $_SESSION['RF']["descending"] = $_GET['descending'];
-            }
-            break;
-
-        case 'save_img':
-            $info = pathinfo($_POST['name']);
+			if (isset($_GET['descending']))
+			{
+				$_SESSION['RF']["descending"] = $_GET['descending'];
+			}
+			break;
+		case 'save_img':
+			$info = pathinfo($_POST['name']);
 
             if ((strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0 && strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
                 || $_POST['name'] != fix_filename($_POST['name'], $config)
@@ -220,65 +220,70 @@ if (isset($_GET['action'])) {
             }
 
 
-            break;
-
-        case 'media_preview':
-            if ($ftp) {
-                $preview_file = $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'];
-            } else {
-                $preview_file = $config['current_path'] . $_GET["file"];
-            }
-            $info = pathinfo($preview_file);
-            ob_start();
-            ?>
-            <div id="jp_container_1" class="jp-video " style="margin:0 auto;">
-                <div class="jp-type-single">
-                <div id="jquery_jplayer_1" class="jp-jplayer"></div>
-                <div class="jp-gui">
-                    <div class="jp-video-play">
-                    <a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
-                    </div>
-                    <div class="jp-interface">
-                    <div class="jp-progress">
-                        <div class="jp-seek-bar">
-                        <div class="jp-play-bar"></div>
-                        </div>
-                    </div>
-                    <div class="jp-current-time"></div>
-                    <div class="jp-duration"></div>
-                    <div class="jp-controls-holder">
-                        <ul class="jp-controls">
-                        <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-                        <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-                        <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
-                        <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-                        <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-                        <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-                        </ul>
-                        <div class="jp-volume-bar">
-                        <div class="jp-volume-bar-value"></div>
-                        </div>
-                        <ul class="jp-toggles">
-                        <li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
-                        <li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
-                        <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-                        <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-                        </ul>
-                    </div>
-                    <div class="jp-title" style="display:none;">
-                        <ul>
-                        <li></li>
-                        </ul>
-                    </div>
-                    </div>
-                </div>
-                <div class="jp-no-solution">
-                    <span>Update Required</span>
-                    To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                </div>
-                </div>
-            </div>
-            <?php if (in_array(strtolower($info['extension']), $config['ext_music'])): ?>
+			break;
+		case 'media_preview':
+			if(isset($_GET['file'])){
+				$_GET['file'] = sanitize($_GET['file']);
+			}
+			if(isset($_GET['title'])){
+				$_GET['title'] = sanitize($_GET['title']);
+			}
+			if($ftp){
+				$preview_file = $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'];
+			}else{
+				$preview_file = $config['current_path'] . $_GET["file"];
+			}
+			$info = pathinfo($preview_file);
+			ob_start();
+			?>
+			<div id="jp_container_1" class="jp-video" style="margin:0 auto;">
+				<div class="jp-type-single">
+				<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+				<div class="jp-gui">
+					<div class="jp-video-play">
+					<a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+					</div>
+					<div class="jp-interface">
+					<div class="jp-progress">
+						<div class="jp-seek-bar">
+						<div class="jp-play-bar"></div>
+						</div>
+					</div>
+					<div class="jp-current-time"></div>
+					<div class="jp-duration"></div>
+					<div class="jp-controls-holder">
+						<ul class="jp-controls">
+						<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+						<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+						<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+						<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+						<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+						<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+						</ul>
+						<div class="jp-volume-bar">
+						<div class="jp-volume-bar-value"></div>
+						</div>
+						<ul class="jp-toggles">
+						<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+						<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+						<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+						<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+						</ul>
+					</div>
+					<div class="jp-title" style="display:none;">
+						<ul>
+						<li></li>
+						</ul>
+					</div>
+					</div>
+				</div>
+				<div class="jp-no-solution">
+					<span>Update Required</span>
+					To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+				</div>
+				</div>
+			</div>
+			<?php if(in_array(strtolower($info['extension']), $config['ext_music'])): ?>
 
             <script type="text/javascript">
                 $(document).ready(function () {
@@ -613,16 +618,22 @@ if (isset($_GET['action'])) {
                         $url_file = $config['base_url'] . $config['upload_dir'] . str_replace($config['current_path'], '', $_GET["file"]);
                     }
 
-                    $googledoc_url = urlencode($url_file);
-                    $ret = "<iframe src=\"https://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
-                }
-            } else {
-                $data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
-                $ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
-            }
+					$googledoc_url = urlencode($url_file);
+					$ret = "<iframe src=\"https://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
+				}
+			}else{
+				$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
+				if(in_array($info['extension'],array('html','html'))){
+					$ret = '<script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script><textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea><script>setTimeout(function(){ ClassicEditor
+				.create( document.querySelector( "#textfile_edit_area" ),{ }).then( newEditor => { window.editor = newEditor; } );  }, 500);</script>';
+				}else{
+					$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
+				}
 
-            response($ret)->send();
-            exit;
+			}
+
+			response($ret)->send();
+			exit;
 
             break;
         default:

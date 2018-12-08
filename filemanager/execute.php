@@ -67,24 +67,30 @@ function returnPaths($_path, $_name, $config)
     return array($path, $path_thumb, $name);
 }
 
-if (isset($_POST['paths'])) {
-    $paths = $paths_thumb = $names = array();
-    foreach ($_POST['paths'] as $key => $path) {
-        $name = null;
-        if (isset($_POST['names'][$key])) {
-            $name = $_POST['names'][$key];
-        }
-        list($path, $path_thumb, $name) = returnPaths($path, $name, $config);
-        $paths[] = $path;
-        $paths_thumb[] = $path_thumb;
-        $names = $name;
-    }
+if(isset($_POST['paths'])){
+	$paths = $paths_thumb = $names = array();
+	foreach ($_POST['paths'] as $key => $path) {
+		if (!checkRelativePath($path))
+		{
+			response(trans('wrong path').AddErrorLocation())->send();
+			exit;
+		}
+		$name = null;
+		if(isset($_POST['names'][$key])){
+			$name = $_POST['names'][$key];
+		}
+		list($path,$path_thumb,$name) = returnPaths($path,$name,$config);
+		$paths[] = $path;
+		$paths_thumb[] = $path_thumb;
+		$names = $name;
+	}
 } else {
-    $name = null;
-    if (isset($_POST['name'])) {
-        $name = $_POST['name'];
-    }
-    list($path, $path_thumb, $name) = returnPaths($_POST['path'], $name, $config);
+	$name = null;
+	if(isset($_POST['name'])){
+		$name = $_POST['name'];
+	}
+	list($path,$path_thumb,$name) = returnPaths($_POST['path'],$name,$config);
+
 }
 
 $info = pathinfo($path);
@@ -108,54 +114,52 @@ if (isset($_GET['action'])) {
                 deleteFile($p, $paths_thumb[$key], $config);
             }
 
-            break;
+			break;
+		case 'delete_folder':
+			if ($config['delete_folders']){
 
-        case 'delete_folder':
-            if ($config['delete_folders']) {
-                if ($ftp) {
-                    deleteDir($path, $ftp);
-                    deleteDir($path_thumb, $ftp);
-                } else {
-                    if (is_dir($path_thumb)) {
-                        deleteDir($path_thumb);
-                    }
+				if($ftp){
+					deleteDir($path,$ftp,$config);
+					deleteDir($path_thumb,$ftp,$config);
+				}else{
+					if (is_dir($path_thumb))
+					{
+						deleteDir($path_thumb,NULL,$config);
+					}
 
-                    if (is_dir($path)) {
-                        deleteDir($path);
-                        if ($config['fixed_image_creation']) {
-                            foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
-                                if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
-                                    $paths .= "/";
-                                }
+					if (is_dir($path))
+					{
+						deleteDir($path,NULL,$config);
+						if ($config['fixed_image_creation'])
+						{
+							foreach($config['fixed_path_from_filemanager'] as $k=>$paths){
+								if ($paths!="" && $paths[strlen($paths)-1] != "/") $paths.="/";
 
-                                $base_dir = $paths . substr_replace($path, '', 0, strlen($config['current_path']));
-                                if (is_dir($base_dir)) {
-                                    deleteDir($base_dir);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            break;
+								$base_dir=$paths.substr_replace($path, '', 0, strlen($config['current_path']));
+								if (is_dir($base_dir)) deleteDir($base_dir,NULL,$config);
+							}
+						}
+					}
+				}
+			}
+			break;
+		case 'create_folder':
+			if ($config['create_folders'])
+			{
 
-        case 'create_folder':
-            if ($config['create_folders']) {
-                $name = fix_filename($_POST['name'], $config);
-                $path .= $name;
-                $path_thumb .= $name;
-                $res = create_folder(fix_path($path, $config), fix_path($path_thumb, $config), $ftp, $config);
-
-                if (!$res) {
-                    response(trans('Rename_existing_folder') . AddErrorLocation())->send();
-                }
-            }
-            break;
-
-        case 'rename_folder':
-            if ($config['rename_folders']) {
-                if (!is_dir($path)) {
-                    response(trans('wrong path') . AddErrorLocation())->send();
+				$name = fix_filename($_POST['name'],$config);
+				$path .= $name;
+				$path_thumb .= $name;
+				$res = create_folder(fix_path($path,$config),fix_path($path_thumb,$config),$ftp,$config);
+				if(!$res){
+					response(trans('Rename_existing_folder').AddErrorLocation())->send();
+				}
+			}
+			break;
+		case 'rename_folder':
+			if ($config['rename_folders']){
+                if(!is_dir($path)) {
+                    response(trans('wrong path').AddErrorLocation())->send();
                     exit;
                 }
                 $name = fix_filename($name, $config);
@@ -404,13 +408,13 @@ if (isset($_GET['action'])) {
                     rrename($data['path'], $path);
                     rrename($data['path_thumb'], $path_thumb);
 
-                    // cleanup
-                    if (is_dir($data['path']) === true) {
-                        rrename_after_cleaner($data['path']);
-                        rrename_after_cleaner($data['path_thumb']);
-                    }
-                }
-            }
+					// cleanup
+					if (is_dir($data['path']) === TRUE){
+						rrename_after_cleaner($data['path']);
+						rrename_after_cleaner($data['path_thumb']);
+					}
+				}
+			}
 
             // cleanup
             $_SESSION['RF']['clipboard']['path'] = null;

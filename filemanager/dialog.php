@@ -4,20 +4,16 @@ $time = time();
 
 $config = include 'config/config.php';
 
-if (USE_ACCESS_KEYS === true) {
-    include __DIR__ . '/include/Response.php';
-
-    if (!isset($_GET['akey'], $config['access_keys']) || empty($config['access_keys'])) {
-        (new Response('Access Denied!', 403))->send();
-        exit();
-    }
+if (USE_ACCESS_KEYS == true){
+	if (!isset($_GET['akey'], $config['access_keys']) || empty($config['access_keys'])){
+		die('Access Denied!');
+	}
 
     $_GET['akey'] = strip_tags(preg_replace("/[^a-zA-Z0-9\._-]/", '', $_GET['akey']));
 
-    if (!in_array($_GET['akey'], $config['access_keys'])) {
-        (new Response('Access Denied!', 403))->send();
-        exit();
-    }
+	if (!in_array($_GET['akey'], $config['access_keys'])){
+		die('Access Denied!');
+	}
 }
 
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
@@ -705,7 +701,6 @@ foreach ($files as $k => $file) {
                     'extension' => fix_strtolower($file_ext)
                 );
 
-
                 if ($config['show_folder_size']) {
                     $sorted[$k]['nfiles'] = $nfiles;
                     $sorted[$k]['nfolders'] = $nfolders;
@@ -916,50 +911,50 @@ $files = $sorted;
     <?php } ?>
     <li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 
-    <li class="pull-right">
-        <div class="btn-group">
-        <a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
-        <i class="icon-signal"></i>
-        <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu pull-left sorting">
-            <li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
-        <li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></li>
-        <li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></li>
-        <li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></li>
-        <li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></li>
-        </ul>
-        </div>
-    </li>
-    <li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
-    <?php if($config['show_total_size']){ ?>
-    <li><small class="hidden-phone"><span title="<?php echo trans('total size').$config['MaxSizeTotal'];?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal']))? '/'.$config['MaxSizeTotal'].' '.trans('MB'):'');?></span></small>
-    </li>
-    <?php } ?>
-    </ul>
-    </div>
-    <!-- breadcrumb div end -->
-    <div class="row-fluid ff-container">
-    <div class="span12">
-        <?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
-        <br/>
-        <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
-        <?php }else{ ?>
-        <h4 id="help"><?php echo trans('Swipe_help');?></h4>
-        <?php if(isset($folder_message)){ ?>
-        <div class="alert alert-block"><?php echo $folder_message;?></div>
-        <?php } ?>
-        <?php if($config['show_sorting_bar']){ ?>
-        <!-- sorter -->
-        <div class="sorter-container <?php echo "list-view".$view;?>">
-        <div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></div>
-        <div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></div>
-        <div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></div>
-        <div class='img-dimension'><?php echo trans('Dimension');?></div>
-        <div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></div>
-        <div class='file-operations'><?php echo trans('Operations');?></div>
-        </div>
-        <?php } ?>
+	<li class="pull-right">
+		<div class="btn-group">
+		<a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
+		<i class="icon-signal"></i>
+		<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu pull-left sorting">
+			<li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
+		<li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></li>
+		<li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></li>
+		<li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></li>
+		<li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></li>
+		</ul>
+		</div>
+	</li>
+	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
+	<?php if($config['show_total_size']){ ?>
+	<li><small class="hidden-phone"><span title="<?php echo trans('total size').$config['MaxSizeTotal'];?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal']))? '/'.$config['MaxSizeTotal'].' '.trans('MB'):'');?></span></small>
+	</li>
+	<?php } ?>
+	</ul>
+	</div>
+	<!-- breadcrumb div end -->
+	<div class="row-fluid ff-container">
+	<div class="span12">
+		<?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
+		<br/>
+		<div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
+		<?php }else{ ?>
+		<h4 id="help"><?php echo trans('Swipe_help');?></h4>
+		<?php if(isset($config['folder_message'])){ ?>
+		<div class="alert alert-block"><?php echo $config['folder_message'];?></div>
+		<?php } ?>
+		<?php if($config['show_sorting_bar']){ ?>
+		<!-- sorter -->
+		<div class="sorter-container <?php echo "list-view".$view;?>">
+		<div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></div>
+		<div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></div>
+		<div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></div>
+		<div class='img-dimension'><?php echo trans('Dimension');?></div>
+		<div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></div>
+		<div class='file-operations'><?php echo trans('Operations');?></div>
+		</div>
+		<?php } ?>
 
         <input type="hidden" id="file_number" value="<?php echo $n_files;?>" />
         <!--ul class="thumbnails ff-items"-->
