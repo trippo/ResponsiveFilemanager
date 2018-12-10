@@ -11,8 +11,8 @@ return array(
 
     'Select' => 'เลือก',
     'Deselect_All' => 'Deselect All',
-	'Select_All' => 'Select All',
-	'Erase' => 'ลบ',
+    'Select_All' => 'Select All',
+    'Erase' => 'ลบ',
     'Open' => 'เปิด',
     'Confirm_del' => 'คุณต้องการลบไฟล์นี้ ใช่ หรือ ไม่ ?',
     'All' => 'ทั้งหมด',
@@ -72,7 +72,6 @@ return array(
         'abort' => 'File upload aborted',
         'image_resize' => 'Failed to resize image'
     ),
-    'Upload_url' => 'อัพโหลดจาก url',
     'Type_dir' => 'dir',
     'Type' => 'ชนิด',
     'Dimension' => 'Dimension',
@@ -130,7 +129,7 @@ return array(
     'Upload_message' => "ลากไฟล์มาวางหรือคลิกที่นี่ เพื่ออัพโหลด",
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Forbiden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",

@@ -5,26 +5,22 @@ $config = include 'config/config.php';
 include 'include/utils.php';
 include 'include/mime_type_lib.php';
 
-$ftp = ftp_con($config);
-
 if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
-    response(trans('forbiden') . AddErrorLocation(), 403)->send();
+    response(trans('forbidden') . AddErrorLocation(), 403)->send();
     exit;
 }
 
-
-if (!checkRelativePath($_POST['path']) ||
-    strpos($_POST['path'], '/') === 0
-) {
-    response(trans('wrong path').AddErrorLocation(), 400)->send();
+if (!checkRelativePath($_POST['path']) || strpos($_POST['path'], '/') === 0) {
+    response(trans('wrong path') . AddErrorLocation(), 400)->send();
     exit;
 }
-
 
 if (strpos($_POST['name'], '/') !== false) {
-    response(trans('wrong path').AddErrorLocation(), 400)->send();
+    response(trans('wrong path') . AddErrorLocation(), 400)->send();
     exit;
 }
+
+$ftp = ftp_con($config);
 
 if ($ftp) {
     $path = $config['ftp_base_url'] . $config['upload_dir'] . $_POST['path'];
@@ -36,13 +32,13 @@ $name = $_POST['name'];
 $info = pathinfo($name);
 
 if (!check_extension($info['extension'], $config)) {
-    response(trans('wrong extension').AddErrorLocation(), 400)->send();
+    response(trans('wrong extension') . AddErrorLocation(), 400)->send();
     exit;
 }
 
-$file_name  = $info['basename'];
-$file_ext   = $info['extension'];
-$file_path  = $path . $name;
+$file_name = $info['basename'];
+$file_ext = $info['extension'];
+$file_path = $path . $name;
 
 
 // make sure the file exists
@@ -102,6 +98,7 @@ if ($ftp) {
 
     $chunksize = 1 * (1024 * 1024);
     $bytes_send = 0;
+
     if ($file = fopen($file_path, 'r')) {
         if (isset($_SERVER['HTTP_RANGE'])) {
             fseek($file, $range);

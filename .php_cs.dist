@@ -1,0 +1,17 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__ . '/filemanager/lang')
+    ->name('*.php')
+;
+
+return PhpCsFixer\Config::create()
+    ->setUsingCache(false)
+    ->setRules([
+        '@PSR2' => true,
+        'phpdoc_order' => true,
+        'phpdoc_summary' => false,
+        'concat_space' => ['spacing' => 'one'],
+    ])
+    ->setFinder($finder)
+    ;

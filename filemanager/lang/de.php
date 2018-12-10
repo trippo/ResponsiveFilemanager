@@ -122,7 +122,7 @@ return array(
     'Upload_message' => "Datei hier zum Hochladen ablegen",
 
     'SERVER ERROR' => "SERVER FEHLER",
-    'forbiden' => "Verboten",
+    'forbidden' => "Verboten",
     'wrong path' => "Falscher Pfad",
     'wrong name' => "Falscher Name",
     'wrong extension' => "Falsche Erweiterung",
