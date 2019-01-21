@@ -615,11 +615,11 @@ function check_file_extension($extension, $config)
 {
     $check = false;
     if (!$config['ext_blacklist']) {
-        if (in_array(mb_strtolower($extension), $conf['ext'])) {
+        if (in_array(mb_strtolower($extension), $config['ext'])) {
             $check = true;
         }
     } else {
-        if (!in_array(mb_strtolower($extension), $conf['ext_blacklist'])) {
+        if (!in_array(mb_strtolower($extension), $config['ext_blacklist'])) {
             $check = true;
         }
     }

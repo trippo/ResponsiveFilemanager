@@ -21,7 +21,6 @@ $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
 if (isset($_POST['submit'])) {
     include 'upload.php';
 } else {
-    $config['default_language'] = $config['default_language'];
     $available_languages = include 'lang/languages.php';
 
     list($preferred_language) = array_values(array_filter(array(
@@ -252,6 +251,7 @@ if (isset($_GET['extensions'])) {
     }
     if ($extensions) {
         $ext = $ext_tmp;
+        $config['ext'] = $ext_tmp;
         $config['show_filter_buttons'] = false;
     }
 }
@@ -287,16 +287,16 @@ if(!$apply){
 }
 
 $get_params = array(
-    'editor'    => $editor,
-    'type'      => $type_param,
-    'lang'      => $lang,
-    'popup'     => $popup,
-    'crossdomain' => $crossdomain,
-    'extensions' => ($extensions) ? urlencode(json_encode($extensions)) : null ,
-    'field_id'  => $field_id,
-    'multiple'    => $multiple,
-    'relative_url' => $return_relative_url,
-    'akey' 		=> (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
+    'editor'        => $editor,
+    'type'          => $type_param,
+    'lang'          => $lang,
+    'popup'         => $popup,
+    'crossdomain'   => $crossdomain,
+    'extensions'    => ($extensions) ? urlencode(json_encode($extensions)) : null ,
+    'field_id'      => $field_id,
+    'multiple'      => $multiple,
+    'relative_url'  => $return_relative_url,
+    'akey'          => (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
 );
 if (isset($_GET['CKEditorFuncNum'])) {
     $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
@@ -323,100 +323,105 @@ $get_params = http_build_query($get_params);
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.2.0/skin/blue.monday/jplayer.blue.monday.min.css" />
         <link href="css/style.css?v=<?php echo $version; ?>" rel="stylesheet" type="text/css" />
-    <!--[if lt IE 8]><style>
-    .img-container span, .img-container-mini span {
-        display: inline-block;
-        height: 100%;
-    }
-    </style><![endif]-->
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="js/plugins.js?v=<?php echo $version; ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-    <script src="js/modernizr.custom.js"></script>
-
-    <?php
-    if ($config['aviary_active']) {
-        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
-            <script src="https://dme0ih8comzn4.cloudfront.net/imaging/v3/editor.js"></script>
-        <?php } else { ?>
-            <script src="http://feather.aviary.com/imaging/v3/editor.js"></script>
-        <?php }
-    }
-    ?>
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
-    <![endif]-->
-
-    <script>
-        var ext_img=new Array('<?php echo implode("','", $config['ext_img'])?>');
-        var image_editor=<?php echo $config['aviary_active']?"true":"false";?>;
-        if (image_editor) {
-        var featherEditor = new Aviary.Feather({
-        <?php
-            foreach ($config['aviary_defaults_config'] as $aopt_key => $aopt_val) {
-                echo $aopt_key.": ".json_encode($aopt_val).",";
-            } ?>
-            onReady: function() {
-                hide_animation();
-            },
-            onSave: function(imageID, newURL) {
-                show_animation();
-                var img = document.getElementById(imageID);
-                img.src = newURL;
-                $.ajax({
-                    type: "POST",
-                    url: "ajax_calls.php?action=save_img",
-                    data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#aviary_img').attr('data-name') }
-                }).done(function( msg ) {
-                    featherEditor.close();
-                    d = new Date();
-                    $("figure[data-name='"+$('#aviary_img').attr('data-name')+"']").find('img').each(function(){
-                    $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
-                    });
-                    $("figure[data-name='"+$('#aviary_img').attr('data-name')+"']").find('figcaption a.preview').each(function(){
-                    $(this).attr('data-url',$(this).data('url')+"?"+d.getTime());
-                    });
-                    hide_animation();
-                });
-                return false;
-            },
-            onError: function(errorObj) {
-                    bootbox.alert(errorObj.message);
-                    hide_animation();
+        <!--[if lt IE 8]>
+        <style>
+            .img-container span, .img-container-mini span {
+                display: inline-block;
+                height: 100%;
             }
+        </style>
+        <![endif]-->
 
-    });
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="js/plugins.js?v=<?php echo $version; ?>"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
+        <script src="js/modernizr.custom.js"></script>
+
+        <?php
+        if ($config['aviary_active']) {
+            if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
+                <script src="https://dme0ih8comzn4.cloudfront.net/imaging/v3/editor.js"></script>
+            <?php } else { ?>
+                <script src="http://feather.aviary.com/imaging/v3/editor.js"></script>
+            <?php }
         }
-    </script>
-    <script src="js/include.js?v=<?php echo $version; ?>"></script>
+        ?>
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+        <![endif]-->
+
+        <script>
+            var ext_img = new Array('<?php echo implode("','", $config['ext_img'])?>');
+            var image_editor =<?php echo $config['aviary_active'] ? "true" : "false";?>;
+            if (image_editor) {
+                var featherEditor = new Aviary.Feather({
+                    <?php
+                    foreach ($config['aviary_defaults_config'] as $aopt_key => $aopt_val) {
+                        echo $aopt_key . ": " . json_encode($aopt_val) . ",";
+                    } ?>
+                    onReady: function () {
+                        hide_animation();
+                    },
+                    onSave: function (imageID, newURL) {
+                        show_animation();
+                        var img = document.getElementById(imageID);
+                        img.src = newURL;
+                        $.ajax({
+                            type: "POST",
+                            url: "ajax_calls.php?action=save_img",
+                            data: {
+                                url: newURL,
+                                path: $('#sub_folder').val() + $('#fldr_value').val(),
+                                name: $('#aviary_img').attr('data-name')
+                            }
+                        }).done(function (msg) {
+                            featherEditor.close();
+                            d = new Date();
+                            $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('img').each(function () {
+                                $(this).attr('src', $(this).attr('src') + "?" + d.getTime());
+                            });
+                            $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('figcaption a.preview').each(function () {
+                                $(this).attr('data-url', $(this).data('url') + "?" + d.getTime());
+                            });
+                            hide_animation();
+                        });
+                        return false;
+                    },
+                    onError: function (errorObj) {
+                        bootbox.alert(errorObj.message);
+                        hide_animation();
+                    }
+                });
+            }
+        </script>
+        <script src="js/include.js?v=<?php echo $version; ?>"></script>
 </head>
 <body>
-<!-- The Templates plugin is included to render the upload/download listings -->
-<script src="//blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
-<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="js/jquery.iframe-transport.js"></script>
-<!-- The basic File Upload plugin -->
-<script src="js/jquery.fileupload.js"></script>
-<!-- The File Upload processing plugin -->
-<script src="js/jquery.fileupload-process.js"></script>
-<!-- The File Upload image preview & resize plugin -->
-<script src="js/jquery.fileupload-image.js"></script>
-<!-- The File Upload audio preview plugin -->
-<script src="js/jquery.fileupload-audio.js"></script>
-<!-- The File Upload video preview plugin -->
-<script src="js/jquery.fileupload-video.js"></script>
-<!-- The File Upload validation plugin -->
-<script src="js/jquery.fileupload-validate.js"></script>
-<!-- The File Upload user interface plugin -->
-<script src="js/jquery.fileupload-ui.js"></script>
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <script src="//blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="js/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="js/jquery.fileupload-process.js"></script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="js/jquery.fileupload-image.js"></script>
+    <!-- The File Upload audio preview plugin -->
+    <script src="js/jquery.fileupload-audio.js"></script>
+    <!-- The File Upload video preview plugin -->
+    <script src="js/jquery.fileupload-video.js"></script>
+    <!-- The File Upload validation plugin -->
+    <script src="js/jquery.fileupload-validate.js"></script>
+    <!-- The File Upload user interface plugin -->
+    <script src="js/jquery.fileupload-ui.js"></script>
 
     <input type="hidden" id="ftp" value="<?php echo !!$ftp; ?>" />
     <input type="hidden" id="popup" value="<?php echo $popup;?>" />
@@ -1278,7 +1283,7 @@ $files = $sorted;
     <!-- lightbox div start -->
     <div id="previewLightbox" class="lightbox hide fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="lightbox-content">
-            <img id="full-img" src="">
+            <img id="full-img" src="" alt="">
         </div>
     </div>
     <!-- lightbox div end -->
@@ -1303,7 +1308,7 @@ $files = $sorted;
     </div>
 
     <!-- player div end -->
-    <img id='aviary_img' src='' class="hide"/>
+    <img class="hide" id="aviary_img" src="" alt="">
     <script>
         var ua = navigator.userAgent.toLowerCase();
         var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
