@@ -847,12 +847,23 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
             $image_properties = getimagesize($img);
             $image_width = $image_properties[0];
             $image_height = $image_properties[1];
+
             $image_bits = 0;
             $image_channels = 0;
             if (isset($image_properties['bits'])) {
                 $image_bits = $image_properties['bits'];
                 $image_channels = isset($image_properties['channels']) ? $image_properties['channels'] : 1;
             }
+
+            if ($image_properties[2] == IMAGETYPE_GIF) {
+                // GIF supports up to 8 bits per pixel
+                if (empty($image_bits)) {
+                    $image_bits = 8;
+                }
+                // GIF uses indexed color which obviates channels
+                $image_channels = 1;
+            }
+
             $image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits * $image_channels / 8) * 2);
             $thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits * $image_channels / 8) * 2);
             $memory_needed = abs(intval($memory_usage + $image_memory_usage + $thumb_memory_usage));
