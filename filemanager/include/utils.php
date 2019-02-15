@@ -844,7 +844,9 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
                 $memory_limit = abs(intval(str_replace(array('G'), '', $mem) * 1024 * 1024 * 1024));
             }
 
-            $image_properties = getimagesize($img);
+            if (($image_properties = getimagesize($img)) === false) {
+                return false;
+            }
             $image_width = $image_properties[0];
             $image_height = $image_properties[1];
 
