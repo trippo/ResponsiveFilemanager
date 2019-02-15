@@ -848,6 +848,15 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
             $image_width = $image_properties[0];
             $image_height = $image_properties[1];
 
+            if ($image_properties[2] == IMAGETYPE_PNG) {
+                // PHP's getimagesize() doesn't return the number of channels for PNG files
+                require_once 'get_png_imageinfo.php';
+                if ($png_properties = get_png_imageinfo($img)) {
+                    $image_properties['bits'] = $png_properties['bits'];
+                    $image_properties['channels'] = $png_properties['channels'];
+                }
+            }
+
             $image_bits = 0;
             $image_channels = 0;
             if (isset($image_properties['bits'])) {
