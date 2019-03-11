@@ -103,6 +103,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			duplicate: function($trigger)
 			{
 				var old_name = $trigger.find('h4').text().trim();
+				var full_path = $trigger.closest('figure').attr('data-path');
 
 				bootbox.prompt(jQuery('#lang_duplicate').val(), jQuery('#cancel').val(), jQuery('#ok').val(), function (name)
 				{
@@ -112,7 +113,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						if (name != old_name)
 						{
 							var _this = $trigger.find('.rename-file');
-							execute_action('duplicate_file', _this.attr('data-path'), name, _this, 'apply_file_duplicate');
+							execute_action('duplicate_file', full_path, name, _this, 'apply_file_duplicate');
 						}
 					}
 				}, old_name+" - copy");
