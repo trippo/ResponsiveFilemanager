@@ -88,16 +88,19 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			edit_img: function($trigger)
 			{
 				var filename = $trigger.attr('data-name');
+				var filepath = $trigger.attr('data-path');
 				if(jQuery('#ftp').val()==true){
 					var full_path = jQuery('#ftp_base_url').val() + jQuery('#upload_dir').val() + jQuery('#fldr_value').val() + filename;
 				}else{
-					var full_path = jQuery('#base_url').val() + jQuery('#cur_dir').val() + filename;
+					var full_path = jQuery('#base_url').val() + jQuery('#upload_dir').val() + filepath;
 				}
 
-				var aviaryElement = jQuery('#aviary_img');
-				aviaryElement.attr('data-name', filename);
+				var tuiElement = jQuery('#tui-image-editor');
+				tuiElement.attr('data-name', filename);
+				tuiElement.attr('data-path', full_path);
 				show_animation();
-				aviaryElement.attr('src', full_path).load(launchEditor(aviaryElement.attr('id'), full_path));
+				launchEditor(tuiElement.attr('id'), full_path);
+				tuiElement.removeClass('hide');
 			},
 
 			duplicate: function($trigger)
@@ -2488,10 +2491,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	function launchEditor(id, src)
 	{
-		featherEditor.launch({
-			image: id,
-			url: src
-		});
+		//load image into cropper. Set heights and refresh cropper.
+        imageEditor.loadImageFromURL(src, "SampleImage").then(result=>{
+		    imageEditor.ui.resizeEditor({
+		        imageSize: {oldWidth: result.oldWidth, oldHeight: result.oldHeight, newWidth: result.newWidth, newHeight: result.newHeight}
+		    });
+		}).catch(err=>{
+			bootbox.alert("Something went wrong: "+err);
+		})
+        hide_animation();
 		return false;
 	}
 

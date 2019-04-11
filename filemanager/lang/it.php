@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => 'I file o cartelle selezionati sono troppo grandi per %s. Il limite è: %d MB/operazione', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Hai selezionato troppi file/cartelle da %s. Il limite è: %d file/operazione', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Non hai i permessi per %s %s.', // %s(1) = cut or copy, %s(2) = files or folders
-    'Aviary_No_Save' => 'Non è stato possibile salvare l\'immagine',
+    'TUI_No_Save' => 'Non è stato possibile salvare l\'immagine',
     'Zip_No_Extract' => 'Non si può estrarre il pacchetto perchè sembra corrotto',
     'Zip_Invalid' => 'Questa estensione non è supportata. Le estensioni valide sono: zip, gz, tar.',
     'Dir_No_Write' => 'La cartella selezionata non è scrivibile.',

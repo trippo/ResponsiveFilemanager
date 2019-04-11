@@ -95,7 +95,7 @@ return array(
 	'Copy_Cut_Size_Limit' => 'Zvolené soubory/složky jsou příliš velké pro operaci %s. Limit: %d MB/operace', // %s = cut or copy
 	'Copy_Cut_Count_Limit' => 'Zvolili jste příliš mnoho souborů/složek pro operaci %s. Limit: %d souborů/operace', // %s = cut or copy
 	'Copy_Cut_Not_Allowed' => 'Nemáte oprávnění %s.', // %s(1) = cut or copy, %s(2) = files or folders
-	'Aviary_No_Save' => 'Obrázek nelze uložit',
+	'TUI_No_Save' => 'Obrázek nelze uložit',
 	'Zip_No_Extract' => 'Archív nelze rozbalit. Soubor může být poškozen.',
 	'Zip_Invalid' => 'Přípona není podporována. Povolené: zip, gz, tar.',
 	'Dir_No_Write' => 'Vybraná složka není zapisovatelná.',

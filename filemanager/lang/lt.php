@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => 'Pasirinkti failai/katalogai yra per dideli atlikti "%s" operacijai. Limitas: %d MB', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Pasirinkote per daug failų/katalogų atlikti "%s" operacijai. Limitas: %d failų/katalogų', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Jūs neturite teisių atlikti "%s" funkcijos failams.', // %s(1) = cut or copy, %s(2) = files or folders
-    'Aviary_No_Save' => 'Nepavyko išsaugoti nuotraukos',
+    'TUI_No_Save' => 'Nepavyko išsaugoti nuotraukos',
     'Zip_No_Extract' => 'Nepavyko ištraukti. Failas gali būti sugadintas.',
     'Zip_Invalid' => 'Toks formatas yra neleidžiamas. Galimi formatai: zip, gz, tar.',
     'Dir_No_Write' => 'Katalogas, kurį pasirinkote neturi įrašymo teisių.',
