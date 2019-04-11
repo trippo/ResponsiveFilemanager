@@ -82,8 +82,6 @@ if (isset($_GET['action'])) {
 			$info = pathinfo($_POST['name']);
             $image_data = $_POST['url'];
 
-            response('did not match data URI with image data'.AddErrorLocation())->send();
-
             if (preg_match('/^data:image\/(\w+);base64,/', $image_data, $type)) {
                 $image_data = substr($image_data, strpos($image_data, ',') + 1);
                 $type = strtolower($type[1]); // jpg, png, gif
