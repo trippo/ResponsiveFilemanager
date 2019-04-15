@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => 'Folderele/fișierele selectate sunt prea mari pentru a %1$s. Limita maximă: %2$d MB/operațiune', // %1$s = cut or copy, %2$d = max size
     'Copy_Cut_Count_Limit' => 'Ați selectat prea multe foldere/fișiere pentru a %1$s. Limita maximă: %2$d files/operațiune', // %1$s = cut or copy, %2$d = max count
     'Copy_Cut_Not_Allowed' => 'Nu aveți permisiuni pentru a %1$s %2$s.', // %12$s = cut or copy, %2$s = files or folders
-    'Aviary_No_Save' => 'Imaginea nu poate fi salvată',
+    'TUI_No_Save' => 'Imaginea nu poate fi salvată',
     'Zip_No_Extract' => 'Fisierele din arhivă nu pot fi extrase. Este posibil ca arhiva să fie coruptă.',
     'Zip_Invalid' => 'Extensia nu este suportată. Extensii valide: zip, gz, tar.',
     'Dir_No_Write' => 'Folderul selectat nu are permisiuni de scriere.',

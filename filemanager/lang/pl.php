@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => 'Wybrane pliki/foldery mają zbyt duży rozmiar by wykonać operację %s. Obowiązuje ograniczenie do: %d MB/etap operacji', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Wybrałeś zbyt wiele plików/folderów by wykonać operację %s. Limit: %d plików/etap operacji', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Nie masz uprawnień do wykonania działania %s na tych plikach.', // %s(1) = cut or copy, %s(2) = files or folders
-    'Aviary_No_Save' => 'Nie można zapisać obrazka',
+    'TUI_No_Save' => 'Nie można zapisać obrazka',
     'Zip_No_Extract' => 'Archiwum ZIP nie może zostać rozpakowane tam. Plik może być uszkodzony.',
     'Zip_Invalid' => 'Te rozszerzenia plików nie posiadają tutaj naszego wspierane. Dopuszczamy tylko format: zip, gz, tar.',
     'Dir_No_Write' => 'Folder który wybrałeś, nie posiada uprawnień chmod umożliwiających poprawny zapis.',

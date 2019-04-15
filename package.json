@@ -24,6 +24,7 @@
     "bootstrap-lightbox": "github:jbutz/bootstrap-lightbox#0.6.1",
     "bootstrap-modal": "github:jschr/bootstrap-modal#2.2.6",
     "clipboard": "^1.7.1",
+    "fabric": "1.7.22",
     "html5shiv": "^3.7.3",
     "jquery": "^3.0.0",
     "jquery-contextmenu": "^1.11.0",
@@ -31,6 +32,9 @@
     "jquery-touchswipe": "^1.6.18",
     "jquery-ui": "^1.10.5",
     "jquery-ui-touch-punch": "^0.2.3",
+    "tui-code-snippet": "^1.5.1",
+    "tui-color-picker": "^2.2.3",
+    "tui-image-editor": "^3.5.2",
     "vanilla-lazyload": "^10.14.0"
   }
 }

@@ -109,14 +109,14 @@ if (($ftp && !$ftp->isDir($config['ftp_base_folder'] . $config['upload_dir'] . $
 
 
 $cur_dir		= $config['upload_dir'].$rfm_subfolder.$subdir;
-$cur_path		= $config['current_path'].$rfm_subfolder.$subdir;
-$thumbs_path	= $config['thumbs_base_path'].$rfm_subfolder;
+$cur_dir_thumb	= $config['thumbs_upload_dir'].$rfm_subfolder.$subdir;
+$thumbs_path	= $config['thumbs_base_path'].$rfm_subfolder.$subdir;
 $parent			= $rfm_subfolder.$subdir;
 
 if ($ftp) {
     $cur_dir = $config['ftp_base_folder'] . $cur_dir;
-    $cur_path = str_replace(array('/..', '..'), '', $cur_dir);
-    $thumbs_path = str_replace(array('/..', '..'), '', $config['ftp_base_folder'] . $config['ftp_thumbs_dir'] . $rfm_subfolder);
+    $cur_dir_thumb = $config['ftp_base_folder'] . $cur_dir_thumb;
+    $thumbs_path = str_replace(array('/..', '..'), '', $cur_dir_thumb);
     $parent = $config['ftp_base_folder'] . $parent;
 }
 
@@ -144,8 +144,8 @@ if (!$ftp) {
         }
     }
 
-    if (!is_dir($thumbs_path . $subdir)) {
-        create_folder(FALSE, $thumbs_path . $subdir, $ftp, $config);
+    if (!is_dir($thumbs_path)) {
+        create_folder(FALSE, $thumbs_path, $ftp, $config);
     }
 }
 
@@ -338,65 +338,17 @@ $get_params = http_build_query($get_params);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
         <script src="js/modernizr.custom.js"></script>
 
-        <?php
-        if ($config['aviary_active']) {
-            if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
-                <script src="https://dme0ih8comzn4.cloudfront.net/imaging/v3/editor.js"></script>
-            <?php } else { ?>
-                <script src="http://feather.aviary.com/imaging/v3/editor.js"></script>
-            <?php }
-        }
-        ?>
-
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
         <![endif]-->
 
-        <script>
-            var ext_img = new Array('<?php echo implode("','", $config['ext_img'])?>');
-            var image_editor =<?php echo $config['aviary_active'] ? "true" : "false";?>;
-            if (image_editor) {
-                var featherEditor = new Aviary.Feather({
-                    <?php
-                    foreach ($config['aviary_defaults_config'] as $aopt_key => $aopt_val) {
-                        echo $aopt_key . ": " . json_encode($aopt_val) . ",";
-                    } ?>
-                    onReady: function () {
-                        hide_animation();
-                    },
-                    onSave: function (imageID, newURL) {
-                        show_animation();
-                        var img = document.getElementById(imageID);
-                        img.src = newURL;
-                        $.ajax({
-                            type: "POST",
-                            url: "ajax_calls.php?action=save_img",
-                            data: {
-                                url: newURL,
-                                path: $('#sub_folder').val() + $('#fldr_value').val(),
-                                name: $('#aviary_img').attr('data-name')
-                            }
-                        }).done(function (msg) {
-                            featherEditor.close();
-                            d = new Date();
-                            $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('img').each(function () {
-                                $(this).attr('src', $(this).attr('src') + "?" + d.getTime());
-                            });
-                            $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('figcaption a.preview').each(function () {
-                                $(this).attr('data-url', $(this).data('url') + "?" + d.getTime());
-                            });
-                            hide_animation();
-                        });
-                        return false;
-                    },
-                    onError: function (errorObj) {
-                        bootbox.alert(errorObj.message);
-                        hide_animation();
-                    }
-                });
-            }
+        <script type="text/javascript">
+            var ext_img=new Array('<?php echo implode("','", $config['ext_img'])?>');
+            var image_editor= <?php echo $config['tui_active']?"true":"false";?>;
         </script>
+
+        
         <script src="js/include.js?v=<?php echo $version; ?>"></script>
 </head>
 <body>
@@ -435,7 +387,7 @@ $get_params = http_build_query($get_params);
     <input type="hidden" id="type_param" value="<?php echo $type_param;?>" />
     <input type="hidden" id="upload_dir" value="<?php echo $config['upload_dir'];?>" />
     <input type="hidden" id="cur_dir" value="<?php echo $cur_dir;?>" />
-    <input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir;?>" />
+    <input type="hidden" id="cur_dir_thumb" value="<?php echo $cur_dir_thumb;?>" />
     <input type="hidden" id="insert_folder_name" value="<?php echo trans('Insert_Folder_Name');?>" />
     <input type="hidden" id="rename_existing_folder" value="<?php echo trans('Rename_existing_folder');?>" />
     <input type="hidden" id="new_folder" value="<?php echo trans('New_Folder');?>" />
@@ -511,7 +463,7 @@ $get_params = http_build_query($get_params);
                         <div class="container2">
                             <div class="fileupload-buttonbar">
                                  <!-- The global progress state -->
-                                <div class="fileupload-progress fade">
+                                <div class="fileupload-progress">
                                     <!-- The global progress bar -->
                                     <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                                         <div class="bar bar-success" style="width:0%;"></div>
@@ -544,7 +496,7 @@ $get_params = http_build_query($get_params);
                     <!-- The template to display files available for upload -->
                     <script id="template-upload" type="text/x-tmpl">
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
-                        <tr class="template-upload fade">
+                        <tr class="template-upload">
                             <td>
                                 <span class="preview"></span>
                             </td>
@@ -575,7 +527,7 @@ $get_params = http_build_query($get_params);
                     <!-- The template to display files available for download -->
                     <script id="template-download" type="text/x-tmpl">
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
-                        <tr class="template-download fade">
+                        <tr class="template-download">
                             <td>
                                 <span class="preview">
                                     {% if (file.error) { %}
@@ -980,8 +932,8 @@ $files = $sorted;
             }
             //add in thumbs folder if not exist
             if($file!='..'){
-                if(!$ftp && !file_exists($thumbs_path.$subdir.$file)){
-                    create_folder(false,$thumbs_path.$subdir.$file,$ftp,$config);
+                if(!$ftp && !file_exists($thumbs_path.$file)){
+                    create_folder(false,$thumbs_path.$file,$ftp,$config);
                 }
             }
 
@@ -1007,7 +959,7 @@ $files = $sorted;
                 ?><figure data-name="<?php echo $file ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>" class="<?php if($file=="..") echo "back-";?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
                 <?php if($file==".."){ ?>
                     <input type="hidden" class="path" value="<?php echo str_replace('.','',dirname($rfm_subfolder.$subdir));?>"/>
-                    <input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path.$subdir)."/";?>"/>
+                    <input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path)."/";?>"/>
                 <?php } ?>
                 <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".($callback?'callback='.$callback."&":'').uniqid() ?>">
                     <div class="img-precontainer">
@@ -1119,7 +1071,7 @@ $files = $sorted;
                         $creation_thumb_path = "/".$config['ftp_base_folder'].$config['ftp_thumbs_dir'].$subdir. $file;
                     }else{
 
-                        $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path.$subdir. $file;
+                        $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path. $file;
 
                         if (!file_exists($src_thumb)) {
                             if (!create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config)) {
@@ -1235,7 +1187,7 @@ $files = $sorted;
                     <a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" <?php if($config['download_files']) echo "onclick=\"$('#form".$nu."').submit();\"" ?>><i class="icon-download <?php if(!$config['download_files']) echo 'icon-white'; ?>"></i></a>
 
                     <?php if($is_img && $src_thumb!=""){ ?>
-                    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
+                    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-featherlight="<?php echo $src;?>"  href="#"><i class=" icon-eye-open"></i></a>
                     <?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$config['jplayer_exts'])){ ?>
                     <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
                     title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename;?>&file=<?php echo $rfm_subfolder.$subdir.$file;?>"
@@ -1280,14 +1232,6 @@ $files = $sorted;
     <?php endforeach;?>
 </script>
 
-    <!-- lightbox div start -->
-    <div id="previewLightbox" class="lightbox hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="lightbox-content">
-            <img id="full-img" src="" alt="">
-        </div>
-    </div>
-    <!-- lightbox div end -->
-
     <!-- loading div start -->
     <div id="loading_container" style="display:none;">
         <div id="loading" style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:100000"></div>
@@ -1296,7 +1240,7 @@ $files = $sorted;
     <!-- loading div end -->
 
     <!-- player div start -->
-    <div class="modal hide fade" id="previewAV">
+    <div class="modal hide" id="previewAV">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h3><?php echo trans('Preview'); ?></h3>
@@ -1308,7 +1252,106 @@ $files = $sorted;
     </div>
 
     <!-- player div end -->
-    <img class="hide" id="aviary_img" src="" alt="">
+    <?php if ( $config['tui_active'] ) { ?>
+
+        <div id="tui-image-editor" style="height: 800px;" class="hide">
+            <canvas></canvas>
+        </div>
+
+        <script src="js/tui-image-editor.js?v=<?php echo $version; ?>"></script>
+
+        <script>
+            var tuiTheme = {
+                <?php foreach ($config['tui_defaults_config'] as $aopt_key => $aopt_val) {
+                    if ( !empty($aopt_val) ) {
+                        echo "'$aopt_key':".json_encode($aopt_val).",";
+                    }
+                } ?>
+            }; 
+        </script>
+
+        <script>
+        if (image_editor) { 
+            //TUI initial init with a blank image (Needs to be initiated before a dynamic image can be loaded into it)
+            var imageEditor = new tui.ImageEditor('#tui-image-editor', {
+                includeUI: {
+                     loadImage: {
+                        path: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+                        name: 'Blank'
+                     },
+                     theme: tuiTheme,
+                     initMenu: 'filter',
+                     menuBarPosition: '<?php echo $config['tui_position'] ?>'
+                 },
+                cssMaxWidth: 1000, // Component default value: 1000
+                cssMaxHeight: 800,  // Component default value: 800
+                selectionStyle: {
+                    cornerSize: 20,
+                    rotatingPointOffset: 70
+                }
+            });
+            //cache loaded image
+            imageEditor.loadImageFromURL = (function() {
+                var cached_function = imageEditor.loadImageFromURL;
+                function waitUntilImageEditorIsUnlocked(imageEditor) {
+                    return new Promise((resolve,reject)=>{
+                        const interval = setInterval(()=>{
+                            if (!imageEditor._invoker._isLocked) {
+                                clearInterval(interval);
+                                resolve();
+                            }
+                        }, 100);
+                    })
+                }
+                return function() {
+                    return waitUntilImageEditorIsUnlocked(imageEditor).then(()=>cached_function.apply(this, arguments));
+                };
+            })();
+
+            //Replace Load button with exit button
+            $('.tui-image-editor-header-buttons div').
+            replaceWith('<button class="tui-image-editor-exit-btn" >Exit</button>');
+            $('.tui-image-editor-exit-btn').on('click', function() {
+                exitTUI();
+            });
+            //Replace download button with save
+            $('.tui-image-editor-download-btn').
+            replaceWith('<button class="tui-image-editor-save-btn" >Save</button>');
+            $('.tui-image-editor-save-btn').on('click', function() {
+                saveTUI();
+            });
+
+            function exitTUI()
+            {
+                imageEditor.clearObjects();
+                imageEditor.discardSelection();
+                $('#tui-image-editor').addClass('hide');
+            }
+
+            function saveTUI()
+            {
+                show_animation();
+                newURL = imageEditor.toDataURL();
+                $.ajax({
+                    type: "POST",
+                    url: "ajax_calls.php?action=save_img",
+                    data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#tui-image-editor').attr('data-name') }
+                }).done(function( msg ) {
+                    exitTUI();
+                    d = new Date();
+                    $("figure[data-name='"+$('#tui-image-editor').attr('data-name')+"']").find('.img-container img').each(function(){
+                    $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
+                    });
+                    $("figure[data-name='"+$('#tui-image-editor').attr('data-name')+"']").find('figcaption a.preview').each(function(){
+                    $(this).attr('data-url',$(this).data('url')+"?"+d.getTime());
+                    });
+                    hide_animation();
+                });
+                return false;
+            }
+        }
+        </script>
+    <?php } ?>
     <script>
         var ua = navigator.userAgent.toLowerCase();
         var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");

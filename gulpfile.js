@@ -23,6 +23,8 @@ elixir(function (mix) {
             '../../../node_modules/bootstrap/docs/assets/css/bootstrap-responsive.css',
             '../../../node_modules/bootstrap-modal/css/bootstrap-modal.css',
             '../../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.css',
+            '../../../node_modules/tui-color-picker/dist/tui-color-picker.css',
+            '../../../node_modules/tui-image-editor/dist/tui-image-editor.css',
             'lib.css',
             'style.css'
         ],
@@ -63,6 +65,17 @@ elixir(function (mix) {
             "jquery-ui-touch-punch/jquery.ui.touch-punch.js",
         ],
         'filemanager/js/plugins.js',
+        'node_modules'
+    );
+
+    mix.scripts(
+        [
+            "fabric/dist/fabric.js",
+            "tui-code-snippet/dist/tui-code-snippet.js",
+            "tui-color-picker/dist/tui-color-picker.js",
+            "tui-image-editor/dist/tui-image-editor.js",
+        ],
+        'filemanager/js/tui-image-editor.js',
         'node_modules'
     );
 

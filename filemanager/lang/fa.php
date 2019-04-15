@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => 'فایل/پوشه انتخابی از حداکثر حجم مجاز برای %s بزرگتر هستند. محدودیت: %d MB/عملیات', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'تعداد فایل/پوشه های انتخابی برای %s بسیار زیاد است . محدودیت: %d فایل/عملیات', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'شما اجازه %s این فایل را ندارید .', // %s(1) = cut or copy, %s(2) = files or folders
-    'Aviary_No_Save' => 'نتوانست تصویر را ذخیره کند .',
+    'TUI_No_Save' => 'نتوانست تصویر را ذخیره کند .',
     'Zip_No_Extract' => 'خطا در فرآیند Unzip . ممکن است فایل آسیب دیده باشد .',
     'Zip_Invalid' => 'پسوند مورد نظر پشیبانی نمیشود ، مجاز : zip, gz, tar.',
     'Dir_No_Write' => 'مسیر انتخابی قابل نوشتن نیست .',
