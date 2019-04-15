@@ -70,7 +70,7 @@ try {
         $urlPattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/?=&#]{1}[\da-z\.-]+)*[\/\?]?$/i';
 
         if (preg_match($urlPattern, $url)) {
-            $temp = tempnam('/tmp', 'RF');
+            $temp = tempnam('/tmp','RF');
 
             $ch = curl_init($url);
             $fp = fopen($temp, 'wb');
@@ -118,8 +118,10 @@ try {
     }
     $_FILES['files']['name'][0] = fix_filename($filename, $config);
 
+    if(!$_FILES['files']['type'][0]){
+        $_FILES['files']['type'][0] = $mime_type;
 
-
+    }
     // LowerCase
     if ($config['lower_case']) {
         $_FILES['files']['name'][0] = fix_strtolower($_FILES['files']['name'][0]);
@@ -173,6 +175,7 @@ try {
         $uploadConfig['upload_dir'] = $config['ftp_temp_folder'];
     }
 
+    //print_r($_FILES);die();
     $upload_handler = new UploadHandler($uploadConfig, true, $messages);
 } catch (Exception $e) {
     $return = array();
