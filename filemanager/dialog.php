@@ -338,65 +338,17 @@ $get_params = http_build_query($get_params);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
         <script src="js/modernizr.custom.js"></script>
 
-        <?php
-        if ($config['aviary_active']) {
-            if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { ?>
-                <script src="https://dme0ih8comzn4.cloudfront.net/imaging/v3/editor.js"></script>
-            <?php } else { ?>
-                <script src="http://feather.aviary.com/imaging/v3/editor.js"></script>
-            <?php }
-        }
-        ?>
-
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
         <![endif]-->
 
-        <script>
-            var ext_img = new Array('<?php echo implode("','", $config['ext_img'])?>');
-            var image_editor =<?php echo $config['aviary_active'] ? "true" : "false";?>;
-            if (image_editor) {
-                var featherEditor = new Aviary.Feather({
-                    <?php
-                    foreach ($config['aviary_defaults_config'] as $aopt_key => $aopt_val) {
-                        echo $aopt_key . ": " . json_encode($aopt_val) . ",";
-                    } ?>
-                    onReady: function () {
-                        hide_animation();
-                    },
-                    onSave: function (imageID, newURL) {
-                        show_animation();
-                        var img = document.getElementById(imageID);
-                        img.src = newURL;
-                        $.ajax({
-                            type: "POST",
-                            url: "ajax_calls.php?action=save_img",
-                            data: {
-                                url: newURL,
-                                path: $('#sub_folder').val() + $('#fldr_value').val(),
-                                name: $('#aviary_img').attr('data-name')
-                            }
-                        }).done(function (msg) {
-                            featherEditor.close();
-                            d = new Date();
-                            $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('img').each(function () {
-                                $(this).attr('src', $(this).attr('src') + "?" + d.getTime());
-                            });
-                            $("figure[data-name='" + $('#aviary_img').attr('data-name') + "']").find('figcaption a.preview').each(function () {
-                                $(this).attr('data-url', $(this).data('url') + "?" + d.getTime());
-                            });
-                            hide_animation();
-                        });
-                        return false;
-                    },
-                    onError: function (errorObj) {
-                        bootbox.alert(errorObj.message);
-                        hide_animation();
-                    }
-                });
-            }
+        <script type="text/javascript">
+            var ext_img=new Array('<?php echo implode("','", $config['ext_img'])?>');
+            var image_editor= <?php echo $config['tui_active']?"true":"false";?>;
         </script>
+
+        
         <script src="js/include.js?v=<?php echo $version; ?>"></script>
 </head>
 <body>
@@ -1300,7 +1252,106 @@ $files = $sorted;
     </div>
 
     <!-- player div end -->
-    <img class="hide" id="aviary_img" src="" alt="">
+    <?php if ( $config['tui_active'] ) { ?>
+
+        <div id="tui-image-editor" style="height: 800px;" class="hide">
+            <canvas></canvas>
+        </div>
+
+        <script src="js/tui-image-editor.js?v=<?php echo $version; ?>"></script>
+
+        <script>
+            var tuiTheme = {
+                <?php foreach ($config['tui_defaults_config'] as $aopt_key => $aopt_val) {
+                    if ( !empty($aopt_val) ) {
+                        echo "'$aopt_key':".json_encode($aopt_val).",";
+                    }
+                } ?>
+            }; 
+        </script>
+
+        <script>
+        if (image_editor) { 
+            //TUI initial init with a blank image (Needs to be initiated before a dynamic image can be loaded into it)
+            var imageEditor = new tui.ImageEditor('#tui-image-editor', {
+                includeUI: {
+                     loadImage: {
+                        path: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+                        name: 'Blank'
+                     },
+                     theme: tuiTheme,
+                     initMenu: 'filter',
+                     menuBarPosition: '<?php echo $config['tui_position'] ?>'
+                 },
+                cssMaxWidth: 1000, // Component default value: 1000
+                cssMaxHeight: 800,  // Component default value: 800
+                selectionStyle: {
+                    cornerSize: 20,
+                    rotatingPointOffset: 70
+                }
+            });
+            //cache loaded image
+            imageEditor.loadImageFromURL = (function() {
+                var cached_function = imageEditor.loadImageFromURL;
+                function waitUntilImageEditorIsUnlocked(imageEditor) {
+                    return new Promise((resolve,reject)=>{
+                        const interval = setInterval(()=>{
+                            if (!imageEditor._invoker._isLocked) {
+                                clearInterval(interval);
+                                resolve();
+                            }
+                        }, 100);
+                    })
+                }
+                return function() {
+                    return waitUntilImageEditorIsUnlocked(imageEditor).then(()=>cached_function.apply(this, arguments));
+                };
+            })();
+
+            //Replace Load button with exit button
+            $('.tui-image-editor-header-buttons div').
+            replaceWith('<button class="tui-image-editor-exit-btn" >Exit</button>');
+            $('.tui-image-editor-exit-btn').on('click', function() {
+                exitTUI();
+            });
+            //Replace download button with save
+            $('.tui-image-editor-download-btn').
+            replaceWith('<button class="tui-image-editor-save-btn" >Save</button>');
+            $('.tui-image-editor-save-btn').on('click', function() {
+                saveTUI();
+            });
+
+            function exitTUI()
+            {
+                imageEditor.clearObjects();
+                imageEditor.discardSelection();
+                $('#tui-image-editor').addClass('hide');
+            }
+
+            function saveTUI()
+            {
+                show_animation();
+                newURL = imageEditor.toDataURL();
+                $.ajax({
+                    type: "POST",
+                    url: "ajax_calls.php?action=save_img",
+                    data: { url: newURL, path:$('#sub_folder').val()+$('#fldr_value').val(), name:$('#tui-image-editor').attr('data-name') }
+                }).done(function( msg ) {
+                    exitTUI();
+                    d = new Date();
+                    $("figure[data-name='"+$('#tui-image-editor').attr('data-name')+"']").find('.img-container img').each(function(){
+                    $(this).attr('src',$(this).attr('src')+"?"+d.getTime());
+                    });
+                    $("figure[data-name='"+$('#tui-image-editor').attr('data-name')+"']").find('figcaption a.preview').each(function(){
+                    $(this).attr('data-url',$(this).data('url')+"?"+d.getTime());
+                    });
+                    hide_animation();
+                });
+                return false;
+            }
+        }
+        </script>
+    <?php } ?>
     <script>
         var ua = navigator.userAgent.toLowerCase();
         var isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");

@@ -80,17 +80,25 @@ if (isset($_GET['action'])) {
 			break;
 		case 'save_img':
 			$info = pathinfo($_POST['name']);
+            $image_data = $_POST['url'];
 
-            if ((strpos($_POST['url'], 'http://s3.amazonaws.com/feather') !== 0 && strpos($_POST['url'], 'https://s3.amazonaws.com/feather') !== 0)
-                || $_POST['name'] != fix_filename($_POST['name'], $config)
-                || ! in_array(strtolower($info['extension']), array( 'jpg', 'jpeg', 'png' ))
-            ) {
-                response(trans('wrong data').AddErrorLocation())->send();
+            if (preg_match('/^data:image\/(\w+);base64,/', $image_data, $type)) {
+                $image_data = substr($image_data, strpos($image_data, ',') + 1);
+                $type = strtolower($type[1]); // jpg, png, gif
+
+                $image_data = base64_decode($image_data);
+
+                if ($image_data === false) {
+                    response(trans('TUI_Decode_Failed').AddErrorLocation())->send();
+                exit;
+                }
+            } else {
+                response(trans('').AddErrorLocation())->send();
                 exit;
             }
-            $image_data = get_file_by_url($_POST['url']);
+
             if ($image_data === false) {
-                response(trans('Aviary_No_Save').AddErrorLocation())->send();
+                response(trans('').AddErrorLocation())->send();
                 exit;
             }
 

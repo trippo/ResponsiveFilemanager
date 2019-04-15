@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => '選択したファイルが/フォルダを％sするには大きすぎます。 リミット: %d MB/操作', // %s = cut or copy
     'Copy_Cut_Count_Limit' => '選択したファイルが/フォルダを％sするには大きすぎます。 リミット: %d ファイル/操作', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'ファイルを %s する許可がありません。', // %s(1) = cut or copy, %s(2) = files or folders
-    'Aviary_No_Save' => 'イメージを保存できませんでした',
+    'TUI_No_Save' => 'イメージを保存できませんでした',
     'Zip_No_Extract' => '解凍できませんでした。ファイルが破損している可能性があります。',
     'Zip_Invalid' => '拡張子がサポートされてません。有効：　zip, gz, tar.',
     'Dir_No_Write' => '選択したディレクトリに書き込み権限がありません',

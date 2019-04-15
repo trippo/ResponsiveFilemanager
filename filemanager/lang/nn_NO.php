@@ -95,7 +95,7 @@ return array(
     'Copy_Cut_Size_Limit' => 'Dei valde filene/mappene er for store for %s. Grense: %d MB/operasjon', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Du valde for mange filer/mapper for %s. Grense: %d filer/operasjon', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Du har ikkje lov til å %s filer.', // %s(1) = cut or copy, %s(2) = files or folders
-    'Aviary_No_Save' => 'Kunne ikkje lagre biletet',
+    'TUI_No_Save' => 'Kunne ikkje lagre biletet',
     'Zip_No_Extract' => 'Kunne ikkje pakke ut. Fila kan vere skada.',
     'Zip_Invalid' => 'Dette filetternamnet er ikkje støtta. Gyldige filer: zip, gz, tar.',
     'Dir_No_Write' => 'Mappa du valde kan ikkje skrivast til.',
