@@ -111,8 +111,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						name = fix_filename(name);
 						if (name != old_name)
 						{
-							var _this = $trigger.find('.rename-file');
-							execute_action('duplicate_file', _this.attr('data-path'), name, _this, 'apply_file_duplicate');
+							execute_action('duplicate_file', $trigger.attr('data-path'), name, $trigger, 'apply_file_duplicate');
 						}
 					}
 				}, old_name+" - copy");
@@ -332,7 +331,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					// fileinfo
 					options.items.sep = '----';
 					options.items.info = {
-						name: "<strong>" + jQuery('#lang_file_info').val() + "</strong>",
+						name: jQuery('#lang_file_info').val(),
 						disabled: true
 					};
 					options.items.name = {
@@ -1234,7 +1233,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 						"callback": function ()
 						{
 							var newContent = jQuery('#textfile_edit_area').val();
-							if(window.editor){
+							if(window.editor && typeof window.editor.getData === "function"){
 								newContent = window.editor.getData();
 							}
 							// post ajax
@@ -2158,7 +2157,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 
 	apply_file_duplicate = function(container, name)
 	{
-		var li_container = container.parent().parent().parent().parent();
+		var li_container = container.parent();
 
 		li_container.after("<li class='" + li_container.attr('class') + "' data-name='" + li_container.attr('data-name') + "'>" + li_container.html() + "</li>");
 

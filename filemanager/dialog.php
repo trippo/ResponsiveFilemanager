@@ -109,14 +109,14 @@ if (($ftp && !$ftp->isDir($config['ftp_base_folder'] . $config['upload_dir'] . $
 
 
 $cur_dir		= $config['upload_dir'].$rfm_subfolder.$subdir;
-$cur_path		= $config['current_path'].$rfm_subfolder.$subdir;
-$thumbs_path	= $config['thumbs_base_path'].$rfm_subfolder;
+$cur_dir_thumb	= $config['thumbs_upload_dir'].$rfm_subfolder.$subdir;
+$thumbs_path	= $config['thumbs_base_path'].$rfm_subfolder.$subdir;
 $parent			= $rfm_subfolder.$subdir;
 
 if ($ftp) {
     $cur_dir = $config['ftp_base_folder'] . $cur_dir;
-    $cur_path = str_replace(array('/..', '..'), '', $cur_dir);
-    $thumbs_path = str_replace(array('/..', '..'), '', $config['ftp_base_folder'] . $config['ftp_thumbs_dir'] . $rfm_subfolder);
+    $cur_dir_thumb = $config['ftp_base_folder'] . $cur_dir_thumb;
+    $thumbs_path = str_replace(array('/..', '..'), '', $cur_dir_thumb);
     $parent = $config['ftp_base_folder'] . $parent;
 }
 
@@ -144,8 +144,8 @@ if (!$ftp) {
         }
     }
 
-    if (!is_dir($thumbs_path . $subdir)) {
-        create_folder(FALSE, $thumbs_path . $subdir, $ftp, $config);
+    if (!is_dir($thumbs_path)) {
+        create_folder(FALSE, $thumbs_path, $ftp, $config);
     }
 }
 
@@ -435,7 +435,7 @@ $get_params = http_build_query($get_params);
     <input type="hidden" id="type_param" value="<?php echo $type_param;?>" />
     <input type="hidden" id="upload_dir" value="<?php echo $config['upload_dir'];?>" />
     <input type="hidden" id="cur_dir" value="<?php echo $cur_dir;?>" />
-    <input type="hidden" id="cur_dir_thumb" value="<?php echo $thumbs_path.$subdir;?>" />
+    <input type="hidden" id="cur_dir_thumb" value="<?php echo $cur_dir_thumb;?>" />
     <input type="hidden" id="insert_folder_name" value="<?php echo trans('Insert_Folder_Name');?>" />
     <input type="hidden" id="rename_existing_folder" value="<?php echo trans('Rename_existing_folder');?>" />
     <input type="hidden" id="new_folder" value="<?php echo trans('New_Folder');?>" />
@@ -511,7 +511,7 @@ $get_params = http_build_query($get_params);
                         <div class="container2">
                             <div class="fileupload-buttonbar">
                                  <!-- The global progress state -->
-                                <div class="fileupload-progress fade">
+                                <div class="fileupload-progress">
                                     <!-- The global progress bar -->
                                     <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                                         <div class="bar bar-success" style="width:0%;"></div>
@@ -544,7 +544,7 @@ $get_params = http_build_query($get_params);
                     <!-- The template to display files available for upload -->
                     <script id="template-upload" type="text/x-tmpl">
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
-                        <tr class="template-upload fade">
+                        <tr class="template-upload">
                             <td>
                                 <span class="preview"></span>
                             </td>
@@ -575,7 +575,7 @@ $get_params = http_build_query($get_params);
                     <!-- The template to display files available for download -->
                     <script id="template-download" type="text/x-tmpl">
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
-                        <tr class="template-download fade">
+                        <tr class="template-download">
                             <td>
                                 <span class="preview">
                                     {% if (file.error) { %}
@@ -980,8 +980,8 @@ $files = $sorted;
             }
             //add in thumbs folder if not exist
             if($file!='..'){
-                if(!$ftp && !file_exists($thumbs_path.$subdir.$file)){
-                    create_folder(false,$thumbs_path.$subdir.$file,$ftp,$config);
+                if(!$ftp && !file_exists($thumbs_path.$file)){
+                    create_folder(false,$thumbs_path.$file,$ftp,$config);
                 }
             }
 
@@ -1007,7 +1007,7 @@ $files = $sorted;
                 ?><figure data-name="<?php echo $file ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>" class="<?php if($file=="..") echo "back-";?>directory" data-type="<?php if($file!=".."){ echo "dir"; } ?>">
                 <?php if($file==".."){ ?>
                     <input type="hidden" class="path" value="<?php echo str_replace('.','',dirname($rfm_subfolder.$subdir));?>"/>
-                    <input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path.$subdir)."/";?>"/>
+                    <input type="hidden" class="path_thumb" value="<?php echo dirname($thumbs_path)."/";?>"/>
                 <?php } ?>
                 <a class="folder-link" href="dialog.php?<?php echo $get_params.rawurlencode($src)."&".($callback?'callback='.$callback."&":'').uniqid() ?>">
                     <div class="img-precontainer">
@@ -1119,7 +1119,7 @@ $files = $sorted;
                         $creation_thumb_path = "/".$config['ftp_base_folder'].$config['ftp_thumbs_dir'].$subdir. $file;
                     }else{
 
-                        $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path.$subdir. $file;
+                        $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path. $file;
 
                         if (!file_exists($src_thumb)) {
                             if (!create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config)) {
@@ -1235,7 +1235,7 @@ $files = $sorted;
                     <a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" <?php if($config['download_files']) echo "onclick=\"$('#form".$nu."').submit();\"" ?>><i class="icon-download <?php if(!$config['download_files']) echo 'icon-white'; ?>"></i></a>
 
                     <?php if($is_img && $src_thumb!=""){ ?>
-                    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-url="<?php echo $src;?>" data-toggle="lightbox" href="#previewLightbox"><i class=" icon-eye-open"></i></a>
+                    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-featherlight="<?php echo $src;?>"  href="#"><i class=" icon-eye-open"></i></a>
                     <?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$config['jplayer_exts'])){ ?>
                     <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
                     title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename;?>&file=<?php echo $rfm_subfolder.$subdir.$file;?>"
@@ -1280,14 +1280,6 @@ $files = $sorted;
     <?php endforeach;?>
 </script>
 
-    <!-- lightbox div start -->
-    <div id="previewLightbox" class="lightbox hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="lightbox-content">
-            <img id="full-img" src="" alt="">
-        </div>
-    </div>
-    <!-- lightbox div end -->
-
     <!-- loading div start -->
     <div id="loading_container" style="display:none;">
         <div id="loading" style="background-color:#000; position:fixed; width:100%; height:100%; top:0px; left:0px;z-index:100000"></div>
@@ -1296,7 +1288,7 @@ $files = $sorted;
     <!-- loading div end -->
 
     <!-- player div start -->
-    <div class="modal hide fade" id="previewAV">
+    <div class="modal hide" id="previewAV">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h3><?php echo trans('Preview'); ?></h3>

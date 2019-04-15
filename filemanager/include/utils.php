@@ -243,10 +243,14 @@ function deleteDir($dir, $ftp = null, $config = null)
 function duplicate_file($old_path, $name, $ftp = null, $config = null)
 {
     $info = pathinfo($old_path);
-    $new_path = $info['dirname'] . "/" . $name . "." . $info['extension'];
+    $ext="";
+    if(isset($info['extension']) && $info['extension']){
+        $ext = ".".$info['extension'];
+    }
+    $new_path = $info['dirname'] . "/" . $name . $ext;
     if ($ftp) {
         try {
-            $tmp = time().$name . "." . $info['extension'];
+            $tmp = time().$name . $ext;
             $ftp->get($tmp, "/".$old_path, FTP_BINARY);
             $ftp->put("/".$new_path, $tmp, FTP_BINARY);
             unlink($tmp);
@@ -560,8 +564,13 @@ function checkresultingsize($sizeAdded)
 function create_folder($path = null, $path_thumbs = null, $ftp = null, $config = null)
 {
     if ($ftp) {
-        $ftp->mkdir($path);
-        $ftp->mkdir($path_thumbs);
+        $result_path = $result_thumb = false;
+        $result_path = $ftp->mkdir($path);
+        $result_thumb = $ftp->mkdir($path_thumbs);
+        if (!$result_thumb || !$result_path){
+            return false;
+        }
+        return true;
     } else {
         if (file_exists($path) || file_exists($path_thumbs)) {
             return false;
