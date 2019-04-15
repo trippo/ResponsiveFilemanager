@@ -334,8 +334,8 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					// fileinfo
 					options.items.sep = '----';
 					options.items.info = {
-						name: jQuery('#lang_file_info').val(),
-						disabled: true
+						type: "html",
+						html: "<strong>" + jQuery('#lang_file_info').val() + "</strong>",
 					};
 					options.items.name = {
 						name: $trigger.attr('data-name'),
