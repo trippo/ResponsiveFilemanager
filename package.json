@@ -10,6 +10,7 @@
   "homepage": "http://www.responsivefilemanager.com/",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "tinymce": "^4.9.3",
     "laravel-elixir": "*"
   },
   "scripts": {
