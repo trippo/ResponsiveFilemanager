@@ -2105,37 +2105,17 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 		else
 		{
-			var editor = jQuery('#editor').val();
-			if (editor == 'ckeditor')
-			{
+			if (jQuery('#editor').val() === 'ckeditor') {
 				var funcNum = getUrlParam('CKEditorFuncNum');
 				window.opener.CKEDITOR.tools.callFunction(funcNum, url);
 				window.close();
-			}
-			else
-			{
-				// tinymce 3.X
-				if (parent.tinymce.majorVersion < 4)
-				{
-					parent.tinymce.activeEditor.windowManager.params.setUrl(url);
-					parent.tinymce.activeEditor.windowManager.close(parent.tinymce.activeEditor.windowManager.params.mce_window_id);
-				}
-				// tinymce 4.X
-				else if (parent.tinymce.majorVersion === 4)
-				{
-					parent.tinymce.activeEditor.windowManager.getParams().setUrl(url);
-					parent.tinymce.activeEditor.windowManager.close();
-				}
-				// tinymce 5.x
-				else
-				{
-					window.parent.postMessage({
-						sender: 'responsivefilemanager',
-						url: url,
-						field_id: null
-					}, window.location.origin);
-					parent.tinymce.activeEditor.windowManager.close();
-				}
+			} else {
+				window.parent.postMessage({
+					sender: 'responsivefilemanager',
+					url: url,
+					field_id: null
+				}, window.location.origin);
+				parent.tinymce.activeEditor.windowManager.close();
 			}
 		}
 	}
