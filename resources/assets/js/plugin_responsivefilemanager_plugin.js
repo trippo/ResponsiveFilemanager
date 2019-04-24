@@ -68,32 +68,64 @@ tinymce.PluginManager.add('responsivefilemanager', function(editor) {
 			}
 		}
 
-		win = editor.windowManager.open({
-			title: title,
-			file: editor.settings.external_filemanager_path+'dialog.php?type=4&descending='+descending+sort_by+fldr+crossdomain+'&lang='+editor.settings.language+'&akey='+akey,
-			width: width,
-			height: height,
-			inline: 1,
-			resizable: true,
-			maximizable: true
+		const fileUrl = editor.settings.external_filemanager_path+'dialog.php?type=4&descending='+descending+sort_by+fldr+crossdomain+'&lang='+editor.settings.language+'&akey='+akey;
+
+		if (tinymce.majorVersion < 5) {
+			win = editor.windowManager.open({
+				title: title,
+				file: fileUrl,
+				width: width,
+				height: height,
+				inline: 1,
+				resizable: true,
+				maximizable: true
+			});
+		} else {
+			win = editor.windowManager.openUrl({
+				title: title,
+				url: fileUrl,
+				width: width,
+				height: height,
+				inline: 1,
+				resizable: true,
+				maximizable: true
+			});
+		}
+	}
+
+	if (tinymce.majorVersion < 5) {
+		editor.addButton('responsivefilemanager', {
+			icon: 'browse',
+			tooltip: 'Insert file',
+			shortcut: 'Ctrl+E',
+			onClick: openmanager
+		});
+
+		editor.addShortcut('Ctrl+E', '', openmanager);
+
+		editor.addMenuItem('responsivefilemanager', {
+			icon: 'browse',
+			text: 'Insert file',
+			shortcut: 'Ctrl+E',
+			onClick: openmanager,
+			context: 'insert'
+		});
+	} else {
+		editor.ui.registry.addButton('responsivefilemanager', {
+			icon: 'browse',
+			tooltip: 'Insert file',
+			shortcut: 'Ctrl+E',
+			onAction: openmanager
+		});
+
+		editor.addShortcut('Ctrl+E', '', openmanager);
+
+		editor.ui.registry.addMenuItem('responsivefilemanager', {
+			icon: 'browse',
+			text: 'Insert file',
+			shortcut: 'Ctrl+E',
+			onAction: openmanager,
+			context: 'insert'
 		});
 	}
-    
-	editor.addButton('responsivefilemanager', {
-		icon: 'browse',
-		tooltip: 'Insert file',
-		shortcut: 'Ctrl+E',
-                onclick:openmanager
-	});
-        
-	editor.addShortcut('Ctrl+E', '', openmanager);
-
-	editor.addMenuItem('responsivefilemanager', {
-		icon: 'browse',
-		text: 'Insert file',
-		shortcut: 'Ctrl+E',
-		onclick: openmanager,
-		context: 'insert'
-	});
-	
 });
