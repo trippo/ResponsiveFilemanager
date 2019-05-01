@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Vybrané položky sú príliš veľké na to aby boli vystrihnuté alebo kopírované. Limit: %d MB/operácia', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Vybrali ste príliš veľa položiek na to aby boli vystrihnuté alebo kopírované. Limit: %d files/operácia', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Nemáte povolenie na vystrihnutie alebo kopírovanie položiek.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Obrázok nebol uložený.',
+    'Image_Editor_No_Save' => 'Obrázok nebol uložený.',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Súbor nemožno rozbaliť. Môže byť poškodený.',
     'Zip_Invalid' => 'Tento typ súboru nemožno rozbaliť. Povolené formáty: zip, gz, tar.',
     'Dir_No_Write' => 'Do vybraného adresára nemožno zapisovať.',

@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Les fichiers/dossiers sélectionnés sont trop gros pour %1$s. Limite: %2$d MB/opération', // %1$s = cut or copy, %2$d = max size
     'Copy_Cut_Count_Limit' => 'Vous avez sélectionné trop de fichiers/dossier pour %1$s. Limite: %2$d fichiers/opération', // %1$s = cut or copy, %2$d = max count
     'Copy_Cut_Not_Allowed' => 'Vous n\'êtes pas autorisé à %1$s des %2$s.', // %12$s = cut or copy, %2$s = files or folders
-    'TUI_No_Save' => 'Impossible d\'enregistrer l\'image',
+    'Image_Editor_No_Save' => 'Impossible d\'enregistrer l\'image',
+    'Image_Editor_Exit' => "Sortie",
+    'Image_Editor_Save' => "Sauvegarder",
     'Zip_No_Extract' => 'Extraction impossible. Le fichier est peut-être corrompu.',
     'Zip_Invalid' => 'Cette extension n\'est pas supportée. Extensions valides: zip, gz, tar.',
     'Dir_No_Write' => 'Le répertoire que vous avez sélectionné n\'est pas accessible en écriture.',

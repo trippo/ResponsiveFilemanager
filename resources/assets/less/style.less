@@ -879,6 +879,7 @@ form {
 }
 
 .selector {
+  z-index:100;
   .cont {
     display: block;
     position: relative;
@@ -936,6 +937,14 @@ form {
 }
 
 .list-view0.grid {
+
+  .selector {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 22px;
+  }
   .img-precontainer {
     .img-container {
 
@@ -957,13 +966,6 @@ form {
       font-size: 13px;
       line-height: 22px;
 
-    }
-    .selector {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 18px;
-      height: 22px;
     }
   }
   .cover {
@@ -1563,7 +1565,7 @@ form {
 }
 
 .tui-image-editor-container{
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 99999;

@@ -74,7 +74,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Els arxius/carpetes seleccionades són massa grans per %s. Limit: %d MB/operació', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Heu seleccionat massa fitxers/carpetes a %s. Limit: %d arxiu/operació', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'No te permisos per %s els arxius.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'No s’ha pogut desar la imatge.',
+    'Image_Editor_No_Save' => 'No s’ha pogut desar la imatge.',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'No es pot extreure. L’Arxiu podria estar corrupte.',
     'Zip_Invalid' => 'Aquesta extensió no és suportada. Vàlid: zip, gz, tar.',
     'Dir_No_Write' => 'El directori seleccionat no te permisos d’escriptura.',

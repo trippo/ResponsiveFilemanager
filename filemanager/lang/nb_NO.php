@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'De valgte filene/mappene er for store for %s. Grense: %d MB/operasjon', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Du valgte for mange filer/mapper for %s. Grense: %d filer/operasjon', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Du har ikke lov til å %s filer.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Kunne ikke lagre bildet',
+    'Image_Editor_No_Save' => 'Kunne ikke lagre bildet',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Kunne ikke pakke ut. Filen er muligens ødelagt.',
     'Zip_Invalid' => 'Dette filetternavnet er ikke støttet. Gyldige filer: zip, gz, tar.',
     'Dir_No_Write' => 'Mappen du valgte er ikke skrivbar.',

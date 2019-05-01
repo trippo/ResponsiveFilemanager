@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Τα επιλεγμένα αρχεία/φάκελοι είναι πολύ μεγάλα για %s. Όριο: %d MB/λειτουργία', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Επιλέξατε πάρα πολλά αρχεία/φακέλους για %s. Όριο: %d αρχεία/λειτουργία', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Δεν επιτρέπεται η %s αρχείων.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Δεν ήταν δυνατή η αποθήκευση της εικόνας',
+    'Image_Editor_No_Save' => 'Δεν ήταν δυνατή η αποθήκευση της εικόνας',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Δεν ήταν δυνατή η εξαγωγή. Το αρχείο μπορεί να είναι κατεστραμμένο.',
     'Zip_Invalid' => 'Η κατάληξη αυτή δεν υποστηρίζεται. Έγκυρα: zip, gz, tar.',
     'Dir_No_Write' => 'Ο φάκελος που επιλέξατε δεν είναι εγγράψιμος.',

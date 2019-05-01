@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Os ficheiros/pastas são demasiado grandes para %s. Limite: %d MB/operação', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Você selecionou muitos arquivos / pastas para %s. Limit: %d ficheiros/operação', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Não te permissão para %s ficheiros.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Não foi possível gravar imagem',
+    'Image_Editor_No_Save' => 'Não foi possível gravar imagem',
+    'Image_Editor_Exit' => "Saída",
+    'Image_Editor_Save' => "Salve",
     'Zip_No_Extract' => 'Não foi possível extrair. O arquivo pode estar corrompido.',
     'Zip_Invalid' => 'Extensão não suportada. Válidas: zip, gz, tar.',
     'Dir_No_Write' => 'A pasta escolhida não tem permissões para escrever.',

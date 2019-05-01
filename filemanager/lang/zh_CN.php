@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => '无法 %s 选择的文件，选择的文件太大，超过了允许的大小: %d MB', // %s = cut or copy
     'Copy_Cut_Count_Limit' => '无法 %s 选择的文件，您选择的文件和文件夹数目超过限制: %d 个文件', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => ' 您没有权限 %s 文件', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => '无法保存图片',
+    'Image_Editor_No_Save' => '无法保存图片',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => '文件解压缩失败。文件可能已经损坏',
     'Zip_Invalid' => '不支持此文件后缀，支持的后缀名: zip, gz, tar.',
     'Dir_No_Write' => '您选择的目录没有写权限',

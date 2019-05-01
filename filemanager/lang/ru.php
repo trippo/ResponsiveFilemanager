@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Выбранные файлы/папки слишком большие для %s. Ограничение: %d Мб за одну операцию', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Выбрано слишком много файлов/папок для %s. Ограничение: %d файлов за одну операцию', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Вы не можете %s файлы.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Невозможно сохранить изображение.',
+    'Image_Editor_No_Save' => 'Невозможно сохранить изображение.',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Извлечь невозможно. Возможно файл повреждён.',
     'Zip_Invalid' => 'Это расширение не поддерживается.  Разрешённые: zip, gz, tar.',
     'Dir_No_Write' => 'Выбранный каталог недоступен для записи.',

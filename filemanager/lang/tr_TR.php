@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Seçilen dosyalar/klasörler için çok büyük  %s. Limit: %d MB/İşlemi', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Siz çok fazla dosya/klasör seçtiniz %s. Limit:%d Dosyalar/İşlemler', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => '%s Dosyaları için izin verilmez.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Bu görüntü kaydedilemedi',
+    'Image_Editor_No_Save' => 'Bu görüntü kaydedilemedi',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Dışa çıkarma işlemi yapılamadı. Dosya bozuk olabilir.',
     'Zip_Invalid' => 'Bu dosya uzantısı desteklenmiyor. Geçerli Uzantılar: zip, gz, tar.',
     'Dir_No_Write' => 'Seçtiğiniz dizin yazılabilir değil.',

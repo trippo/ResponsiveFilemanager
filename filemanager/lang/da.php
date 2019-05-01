@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'De valgte filer/mapper er for store til at %s. Max.: %d MB/operation', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Du har valgt for mange filer/mapper til at %s. Max.: %d filer/operation', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Du har ikke tilladelse til at %s filer. Tal med din administrator.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Det var ikke muligt at gemme billedet',
+    'Image_Editor_No_Save' => 'Det var ikke muligt at gemme billedet',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Det var ikke muligt at hente. Filen er muligvis ødelagt.',
     'Zip_Invalid' => 'Denne filtype understøttes ikke. De mulige filtyper er: zip, gz, tar.',
     'Dir_No_Write' => 'Der kan ikke skrives til den valgte mappe. Kontakt din administrator.',

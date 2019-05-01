@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Вибрані файли/папки завеликі для %s. Обмеження: %d MB/операцію', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Ви вибрали забагато файлів/папок для %s. Обмеження: %d файлів/операцію', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'У вас немає прав доступу для %s файлів.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Неможливо зберегти зображення',
+    'Image_Editor_No_Save' => 'Неможливо зберегти зображення',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Неможливо видобути. Файл може бути пошкодженим',
     'Zip_Invalid' => 'Це розширення не підтримується. Можливі: zip, gz, tar.',
     'Dir_No_Write' => 'Обрана тека захищена від запису.',

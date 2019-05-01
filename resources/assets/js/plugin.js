@@ -9,8 +9,8 @@
 
 tinymce.PluginManager.add('filemanager', function(editor) {
 
-		editor.settings.file_picker_types = 'file image media';
-		editor.settings.file_picker_callback = filemanager;
+	editor.settings.file_picker_types = 'file image media';
+	editor.settings.file_picker_callback = filemanager;
 
 	function filemanager_onMessage(event){
 		if(editor.settings.external_filemanager_path.toLowerCase().indexOf(event.origin.toLowerCase()) === 0){
@@ -40,8 +40,8 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 
 		// DEFAULT AS FILE
 		urltype=2;
-		if (meta.mediaType === 'image') { urltype=1; }
-		if (meta.mediaType === 'media') { urltype=3; }
+		if (meta.filetype === 'image' || meta.mediaType === 'image') { urltype=1; }
+		if (meta.filetype === 'media' || meta.mediaType === 'media') { urltype=3; }
 
 		var title="RESPONSIVE FileManager";
 		if (typeof editor.settings.filemanager_title !== "undefined" && editor.settings.filemanager_title) {

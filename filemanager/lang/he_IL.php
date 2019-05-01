@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'גודל הקובצים / התיקיה גדולים מדי %s. הגבלה: %d MB/לפעולה', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'בחר יותר מדי תיקיות/קבצים לפעולה %s. הגבלה: %d files/operation', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'אינך ראשי ל%s קבצים.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save', 'לא ניתן לשמור את התמונה .',
+    'Image_Editor_No_Save', 'לא ניתן לשמור את התמונה .',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract', 'לא ניתן לחלץ , הקבץ פגום.',
     'Zip_Invalid', 'סוג או פורמט הקובץ אינו נתמך. חוקי: zip, gz, tar.',
     'Dir_No_Write', 'התיקיה שבחרת אינה ניתנת לכתיבה',

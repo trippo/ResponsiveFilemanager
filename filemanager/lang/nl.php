@@ -96,7 +96,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'De geselecteerde mappen/bestanden zijn te groot om te %s. Maximaal: %d MB/operation', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'er zijn teveel mappen/bestanden geselecteerd om te %s. Maximaal: %d files/operation', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Het is niet toegestaan bestanden te %s.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Kan de afbeelding niet opslaan',
+    'Image_Editor_No_Save' => 'Kan de afbeelding niet opslaan',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Kan niet uitpakken. Bestand is wellicht beschadigt.',
     'Zip_Invalid' => 'Deze extensie is niet toegestaan. Valid: zip, gz, tar.',
     'Dir_No_Write' => 'De geselecteerde map is niet beschrijfbaar.',

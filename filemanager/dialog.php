@@ -1,5 +1,4 @@
 <?php
-
 $time = time();
 
 $config = include 'config/config.php';
@@ -321,7 +320,8 @@ $get_params = http_build_query($get_params);
         <!-- CSS adjustments for browsers with JavaScript disabled -->
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-noscript.css"></noscript>
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.2.0/skin/blue.monday/jplayer.blue.monday.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.7.1/skin/blue.monday/jplayer.blue.monday.min.css" />
+        <link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css">
         <link href="css/style.css?v=<?php echo $version; ?>" rel="stylesheet" type="text/css" />
         <!--[if lt IE 8]>
         <style>
@@ -332,10 +332,16 @@ $get_params = http_build_query($get_params);
         </style>
         <![endif]-->
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
         <script src="js/plugins.js?v=<?php echo $version; ?>"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
+        <link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.css" rel="stylesheet">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7/fabric.js"></script>
+        <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+        <script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.js"></script>
+        <script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.js"></script>
         <script src="js/modernizr.custom.js"></script>
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -1135,16 +1141,17 @@ $files = $sorted;
             }
             ?>
             <figure data-name="<?php echo $file ?>" data-path="<?php echo $rfm_subfolder.$subdir.$file;?>" data-type="<?php if($is_img){ echo "img"; }else{ echo "file"; } ?>">
-                <a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
-                <div class="img-precontainer">
-                    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div><?php } ?>
-                    <?php if($config['multiple_selection']){ ?><div class="selector">
+            <?php if($config['multiple_selection']){ ?><div class="selector">
                         <label class="cont">
                             <input type="checkbox" class="selection" name="selection[]" value="<?php echo $file;?>">
                             <span class="checkmark"></span>
                         </label>
                     </div>
                     <?php } ?>
+                <a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
+                <div class="img-precontainer">
+                    <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div><?php } ?>
+                    
                     <div class="img-container">
                         <img class="<?php echo $show_original ? "original" : "" ?><?php echo $is_icon_thumb ? " icon" : "" ?>" data-src="<?php echo $src_thumb;?>">
                     </div>
@@ -1258,8 +1265,6 @@ $files = $sorted;
             <canvas></canvas>
         </div>
 
-        <script src="js/tui-image-editor.js?v=<?php echo $version; ?>"></script>
-
         <script>
             var tuiTheme = {
                 <?php foreach ($config['tui_defaults_config'] as $aopt_key => $aopt_val) {
@@ -1287,7 +1292,7 @@ $files = $sorted;
                 cssMaxHeight: 800,  // Component default value: 800
                 selectionStyle: {
                     cornerSize: 20,
-                    rotatingPointOffset: 70
+                    rotxatingPointOffset: 70
                 }
             });
             //cache loaded image
@@ -1310,13 +1315,13 @@ $files = $sorted;
 
             //Replace Load button with exit button
             $('.tui-image-editor-header-buttons div').
-            replaceWith('<button class="tui-image-editor-exit-btn" >Exit</button>');
+            replaceWith('<button class="tui-image-editor-exit-btn" ><?php echo trans('Image_Editor_Exit');?></button>');
             $('.tui-image-editor-exit-btn').on('click', function() {
                 exitTUI();
             });
             //Replace download button with save
             $('.tui-image-editor-download-btn').
-            replaceWith('<button class="tui-image-editor-save-btn" >Save</button>');
+            replaceWith('<button class="tui-image-editor-save-btn" ><?php echo trans('Image_Editor_Save');?></button>');
             $('.tui-image-editor-save-btn').on('click', function() {
                 saveTUI();
             });

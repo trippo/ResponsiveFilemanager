@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'De valda filerna/mapparna är för stora för att %s. Gräns: %d MB per operation', // The selected files/folders are too big to %s. Limit: %d MB/operation      %s = cut or copy
     'Copy_Cut_Count_Limit' => 'För många filer/mappar är valda för att de ska kunna %s. Gräns: #d filer per operation', // You selected too many files/folders to %s. Limit: %d files/operation     %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Du har ej behörighet att %s filer.', // You are not allowed to %s files.        %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Misslyckades med att spara bild', // Could not save image
+    'Image_Editor_No_Save' => 'Misslyckades med att spara bild', // Could not save image
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Misslyckades med att packa upp. Filen kan eventuellt vara korrupt.', // Could not extract. File might be corrupt.
     'Zip_Invalid' => 'Filtypen stöds ej. Stödja filtyper: zip, gz och tar.', // This extension is not supported. Valid: zip, gz, tar.
     'Dir_No_Write' => 'Det går ej att skriva till den valda sökvägen.', // The directory you selected is not writable.

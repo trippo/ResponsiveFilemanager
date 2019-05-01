@@ -7,6 +7,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	var active_contextmenu = true;
 	var myLazyLoad = null;
 	var clipboard = null;
+	var checked=0;
 
 	var delay = (function ()
 	{
@@ -392,6 +393,15 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			});
 		},
 
+		updateMultipleSelectionButtons: function()
+		{
+			if(checked>0){
+				jQuery("#multiple-selection").show(300);
+			}else{
+				jQuery("#multiple-selection").hide(300);
+			}
+		},
+
 		bindGridEvents: function()
 		{
 			var grid = jQuery('ul.grid');
@@ -565,6 +575,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		{
 			jQuery('#filter-input').on('keyup', function ()
 			{
+				checked=0;
+				$('.selection:checkbox').removeAttr('checked');
+				FileManager.updateMultipleSelectionButtons();
 				jQuery('.filters label').removeClass("btn-inverse");
 				jQuery('.filters label').find('i').removeClass('icon-white');
 				jQuery('#ff-item-type-all').addClass("btn-inverse");
@@ -705,7 +718,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				var li = jQuery(this).attr('data-item');
 				var liElement = jQuery('#' + li);
 				var labelElement = jQuery('.filters label');
-
+				checked = 0;
+				$('.selection:checkbox').removeAttr('checked');
+				FileManager.updateMultipleSelectionButtons();
 				labelElement.removeClass("btn-inverse");
 				labelElement.find('i').removeClass('icon-white');
 
@@ -803,16 +818,16 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 				jQuery('.grid li.' + li).show(300);
 			}
 		}
-		jQuery('.selector').on('click',function(e){
+		jQuery('.ff-container').on('click','.checkmark',function(e){
+			
 			e.stopPropagation();
-			if(jQuery('.selection:checkbox:checked:visible').length>0){
-				jQuery("#multiple-selection").show(300);
+			
+			if(!jQuery(this).parent().find('input').is(':checked')){
+				checked++;
 			}else{
-				jQuery("#multiple-selection").hide(300);
+				checked--;
 			}
-			// var i = jQuery(this).closest('input');
-			// console.log(i);
-			// i.prop('checked', !i.prop("checked"));
+			FileManager.updateMultipleSelectionButtons();
 		})
 
 		// preview image
@@ -2378,7 +2393,9 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 	{
 		var lis_dir = jQuery('li.dir', 'ul.grid').filter(':visible');
 		var lis_file = jQuery('li.file', 'ul.grid').filter(':visible');
-
+		checked=0;
+		$('.selection:checkbox').removeAttr('checked');
+		FileManager.updateMultipleSelectionButtons();
 		var vals_dir = [];
 		var values_dir = [];
 		var vals_file = [];

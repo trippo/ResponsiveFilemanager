@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'Избраните файлове/папки са прекалено големи за %s. Лимит: %d MB/действие', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Избрали сте прекаленено много файлове/папки за %s. Лимит: %d файла/действие', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Нямате право за %s на файлове.', // %s(1) = cut or copy =>  %s(2) = files or folders
-    'TUI_No_Save' =>  'Изображението не може да бъде записано',
+    'Image_Editor_No_Save' =>  'Изображението не може да бъде записано',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' =>  'Невъзможно разархивиране. Файлът вероятно е повреден.',
     'Zip_Invalid' =>  'Това разширене не се поддържа. Валидни: zip, gz, tar.',
     'Dir_No_Write' =>  'Нямате права за запис в избраната папка.',

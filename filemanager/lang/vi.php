@@ -95,7 +95,9 @@ return array(
     'Copy_Cut_Size_Limit' => 'File/folder được chọn quá lớn để %s. Giới hạn: %d MB/thao tác', // %s = cut or copy
     'Copy_Cut_Count_Limit' => 'Bạn đã chọn quá nhiều file/folder để %s. Giới hạn: %d files/thao tác', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Bạn không được phép để %s file.', // %s(1) = cut or copy, %s(2) = files or folders
-    'TUI_No_Save' => 'Không thể lưu image',
+    'Image_Editor_No_Save' => 'Không thể lưu image',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Không thể giải nén. File có thể bị lỗi.',
     'Zip_Invalid' => 'Định dạng này không được hỗ trợ. Chấp nhận: zip, gz, tar.',
     'Dir_No_Write' => 'Thư mục bạn chọn không cho phép ghi dữ liệu vào.',
