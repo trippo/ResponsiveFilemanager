@@ -879,7 +879,7 @@ form {
 }
 
 .selector {
-  z-index:100;
+  z-index:1;
   .cont {
     display: block;
     position: relative;
@@ -1060,7 +1060,8 @@ form {
   .img-precontainer-mini {
     display: block;
     position: absolute;
-    width: 67px;
+    width: 45px;
+    left: 22px;
     height: 34px;
     overflow: hidden;
     text-align: center;
@@ -1071,8 +1072,8 @@ form {
     .filetype {
       position: absolute;
       top: 1px;
+      left:0;
       text-align: center;
-      left: 24px;
       padding: 1px 2px;
       font-size: 13px;
       line-height: 32px;
@@ -1081,28 +1082,28 @@ form {
       color: #fff;
       background: #333;
     }
-    .selector {
-      position: absolute;
-      left: 3px;
-      top: 8px;
-      width: 18px;
-      height: 22px;
-    }
-
   }
   .cover {
     display: none;
+  }
+
+  .selector{
+    top: 8px;
+    left: 2px;
+    position: relative;
+    .cont{
+      margin:0;
+    }
   }
   .img-container-mini {
     width: 45px;
     height: 34px;
     border: none;
     overflow: hidden;
-    display: table-cell;
     text-align: center;
     vertical-align: middle;
     margin: auto;
-    padding-left: 24px;
+    left: 24px;
 
   }
   .img-precontainer-mini.original-thumb {

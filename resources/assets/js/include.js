@@ -541,7 +541,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					$el.find('.selection:visible').trigger('click');
 					$el.find('.selector:visible').trigger('click');
 				}else{
-					window[fun]($el.attr('data-file'), jQuery('#field_id').val());	
+					window[fun]($el.attr('data-file'), jQuery('#field_id').val(),$el);	
 				}
 			}
 
@@ -2091,9 +2091,10 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		}
 	}
 
-	apply_none = function(file/*, external*/)
+	apply_none = function(file, external,el)
 	{
-		var _this = jQuery('ul.grid').find('li[data-name="' + file + '"] figcaption a');
+		console.log(el);
+		var _this = el.parent().find('form a');
 		_this[1].click();
 		jQuery('.tip-right').tooltip('hide');
 	}
@@ -2177,7 +2178,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 		var new_form_id = 'form' + new Date().getTime();
 
 		form.attr('id', new_form_id);
-		form.find('.tip-right').attr('onclick', "jQuery('#" + new_form_id + "').submit();");
+		form.find('.tip-right').first().attr('onclick', "jQuery('#" + new_form_id + "').submit();");
 	}
 
 	apply_file_rename = function(container, name)

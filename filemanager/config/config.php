@@ -98,6 +98,17 @@ $config = array(
     */
     'thumbs_base_path' => '../thumbs/',
 
+    /*
+    |--------------------------------------------------------------------------
+    | path from base_url to base of thumbs folder
+    |--------------------------------------------------------------------------
+    |
+    | with final /
+    | DO NOT put inside upload folder
+    |
+    */
+    'thumbs_upload_dir' => '/thumbs/',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -555,9 +566,9 @@ return array_merge(
             $config['ext_music']
         ),
         'tui_defaults_config' => array(
-            'common.bi.image'                   => $config['common.bi.image'],
-            'common.bisize.width'               => $config['common.bisize.width'],
-            'common.bisize.height'              => $config['common.bisize.height'], 
+            //'common.bi.image'                   => $config['common.bi.image'],
+            //'common.bisize.width'               => $config['common.bisize.width'],
+            //'common.bisize.height'              => $config['common.bisize.height'], 
             'common.backgroundImage'            => $config['common.backgroundImage'],
             'common.backgroundColor'            => $config['common.backgroundColor'], 
             'common.border'                     => $config['common.border'],
@@ -585,7 +596,7 @@ return array_merge(
             'submenu.normalLabel.color'         => $config['submenu.normalLabel.color'],
             'submenu.normalLabel.fontWeight'    => $config['submenu.normalLabel.fontWeight'],
             'submenu.activeLabel.color'         => $config['submenu.activeLabel.color'],
-            'submenu.activeLabel.fontWeight'    => $config['submenu.activeLabel.fontWeightcommon.bi.image'],
+            //'submenu.activeLabel.fontWeight'    => $config['submenu.activeLabel.fontWeightcommon.bi.image'],
             'checkbox.border'                   => $config['checkbox.border'],
             'checkbox.backgroundColor'          => $config['checkbox.backgroundColor'],
             'range.pointer.color'               => $config['range.pointer.color'],

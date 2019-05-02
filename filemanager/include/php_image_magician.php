@@ -229,7 +229,6 @@ class imageLib {
 		// *** Open up the file
 		$this->image = $this->openImage($fileName);
 
-
 		// *** Assign here so we don't modify the original
 		$this->imageResized = $this->image;
 
@@ -2736,6 +2735,7 @@ class imageLib {
 				$img = @imagecreatefrompng($file);
 				break;
 			case 'bmp':
+			case 'x-ms-bmp':
 				$img = @$this->imagecreatefrombmp($file);
 				break;
 			case 'psd':
