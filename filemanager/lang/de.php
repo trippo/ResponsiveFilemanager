@@ -96,8 +96,8 @@ return array(
     'Copy_Cut_Count_Limit' => 'Sie haben zu viele Dateien/Ordner zum %s ausgew&auml;lt. Limit: %d Dateien pro Aktion', // %s = cut or copy
     'Copy_Cut_Not_Allowed' => 'Sie haben nicht die Berechtigungen zum %s von Dateien.', // %s(1) = cut or copy, %s(2) = files or folders
     'Image_Editor_No_Save' => 'Das Bild konnte nicht gespeichert werden.',
-    'Image_Editor_Exit' => "Ausgang",
-    'Image_Editor_Save' => "Sparen",
+    'Image_Editor_Exit' => "Schlie&szlig;en",
+    'Image_Editor_Save' => "Speichern",
     'Zip_No_Extract' => 'Zip Datei konnte nicht entpackt werden. Die Datei ist m&ouml;glicherweise besch&auml;digt.',
     'Zip_Invalid' => 'Dieses Dateiformat wird nicht unterst&uuml;zt. Zugelassene Formate: zip, gz und tar.',
     'Dir_No_Write' => 'Dieses Dateiverzeichis ist schreibgesch&uuml;tzt.',
