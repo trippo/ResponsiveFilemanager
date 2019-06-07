@@ -43,7 +43,7 @@ return array(
 	'Upload_base' => 'Základní nahrávání',
 	'Upload_base_help' => "Soubory přetáhněte (pouze moderní prohlížeče) nebo klikněte na horní tlačítko 'Přidat soubor(y)' a poté na tlačítko 'Sputit nahrávání'. Až bude nahrávání dokončeno, klikněte na 'Zpět k seznamu souborů'.",
 	'Upload_add_files' => 'Přidat soubor(y)',
-	'Upload_start' => 'Sputit nahrávání',
+	'Upload_start' => 'Spustit nahrávání',
 	'Upload_error_messages' =>array(
 		1 => 'Nahrávaný soubor má větší velikost, než co povoluje direktiva upload_max_filesize v php.ini',
 		2 => 'Nahrávaný soubor má větší velikost, než co povoluje direktiva MAX_FILE_SIZE uvedená v HTML formuláři',
