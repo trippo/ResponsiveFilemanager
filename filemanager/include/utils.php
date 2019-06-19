@@ -785,7 +785,7 @@ function fix_strtoupper($str)
  */
 function fix_strtolower($str)
 {
-    if (function_exists('mb_strtoupper')) {
+    if (function_exists('mb_strtolower')) {
         return mb_strtolower($str);
     } else {
         return strtolower($str);
