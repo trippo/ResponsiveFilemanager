@@ -354,7 +354,7 @@ $get_params = http_build_query($get_params);
             var image_editor= <?php echo $config['tui_active']?"true":"false";?>;
         </script>
 
-        
+
         <script src="js/include.js?v=<?php echo $version; ?>"></script>
 </head>
 <body>
@@ -1151,7 +1151,7 @@ $files = $sorted;
                 <a href="javascript:void('')" class="link" data-file="<?php echo $file;?>" data-function="<?php echo $apply;?>">
                 <div class="img-precontainer">
                     <?php if($is_icon_thumb){ ?><div class="filetype"><?php echo $file_array['extension'] ?></div><?php } ?>
-                    
+
                     <div class="img-container">
                         <img class="<?php echo $show_original ? "original" : "" ?><?php echo $is_icon_thumb ? " icon" : "" ?>" data-src="<?php echo $src_thumb;?>">
                     </div>
@@ -1189,7 +1189,7 @@ $files = $sorted;
                     <a title="<?php echo trans('Download')?>" class="tip-right" href="javascript:void('')" <?php if($config['download_files']) echo "onclick=\"$('#form".$nu."').submit();\"" ?>><i class="icon-download <?php if(!$config['download_files']) echo 'icon-white'; ?>"></i></a>
 
                     <?php if($is_img && $src_thumb!=""){ ?>
-                    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-featherlight="<?php echo $src;?>"  href="#"><i class=" icon-eye-open"></i></a>
+                    <a class="tip-right preview" title="<?php echo trans('Preview')?>" data-featherlight="image" href="<?php echo $src;?>"><i class=" icon-eye-open"></i></a>
                     <?php }elseif(($is_video || $is_audio) && in_array($file_array['extension'],$config['jplayer_exts'])){ ?>
                     <a class="tip-right modalAV <?php if($is_audio){ echo "audio"; }else{ echo "video"; } ?>"
                     title="<?php echo trans('Preview')?>" data-url="ajax_calls.php?action=media_preview&title=<?php echo $filename;?>&file=<?php echo $rfm_subfolder.$subdir.$file;?>"
@@ -1267,11 +1267,11 @@ $files = $sorted;
                         echo "'$aopt_key':".json_encode($aopt_val).",";
                     }
                 } ?>
-            }; 
+            };
         </script>
 
         <script>
-        if (image_editor) { 
+        if (image_editor) {
             //TUI initial init with a blank image (Needs to be initiated before a dynamic image can be loaded into it)
             var imageEditor = new tui.ImageEditor('#tui-image-editor', {
                 includeUI: {
