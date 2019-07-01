@@ -900,8 +900,8 @@ $files = $sorted;
 	<div class="row-fluid ff-container">
 	<div class="span12">
 		<?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
-		<br/>
-		<div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
+      <br/>
+      <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
 		<?php }else{ ?>
 		<h4 id="help"><?php echo trans('Swipe_help');?></h4>
 		<?php if(isset($config['folder_message'])){ ?>
@@ -1214,17 +1214,18 @@ $files = $sorted;
                     </a>
                     </form>
                 </figcaption>
-            </figure>
-        </li>
+              </figure>
+            </li>
             <?php
             }
-            }
-
-    ?></div>
+          }
+          ?>
         </ul>
-        <?php } ?>
+        <?php
+      }
+      ?>
     </div>
-    </div>
+  </div>
 </div>
 
 <script>
