@@ -131,8 +131,21 @@ if (!$ftp) {
         }
 
         if (file_exists($config['current_path'] . $parent . "config.php")) {
+			$configMain = $config;
             $configTemp = include $config['current_path'] . $parent . 'config.php';
-            $config = array_merge($config, $configTemp);
+			if(is_array($configTemp) && count($configTemp) > 0){
+                $config = array_merge($configMain, $configTemp);                
+                $config['ext'] = array_merge(
+                    $config['ext_img'],
+                    $config['ext_file'],
+                    $config['ext_misc'],
+                    $config['ext_video'],
+                    $config['ext_music']
+                );
+			}
+			else{
+				$config = $configMain;
+			}
             $cycle = FALSE;
         }
 
