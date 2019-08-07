@@ -495,7 +495,7 @@ $get_params = http_build_query($get_params);
                                     <span class="btn btn-success fileinput-button">
                                         <i class="glyphicon glyphicon-plus"></i>
                                         <span><?php echo trans('Upload_add_files');?></span>
-                                        <input type="file" name="files[]" multiple="multiple">
+                                        <input type="file" name="files[]" multiple="multiple" accept="<?php echo '.' . implode(',.', $config['ext']);?>">
                                     </span>
                                     <button type="submit" class="btn btn-primary start">
                                         <i class="glyphicon glyphicon-upload"></i>
