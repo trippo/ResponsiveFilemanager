@@ -348,9 +348,9 @@ $get_params = http_build_query($get_params);
         <?php if($config['tui_active'] === true){ ?>
           <link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css">
           <link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.css" rel="stylesheet">
+          <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
           <script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.js"></script>
           <script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.js"></script>
-          <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
         <?php } ?>
 
         <script type="text/javascript">
