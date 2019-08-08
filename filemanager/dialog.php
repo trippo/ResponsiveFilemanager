@@ -488,7 +488,7 @@ $get_params = http_build_query($get_params);
                                         <span><?php echo trans('Upload_add_files');?></span>
                                         <input type="file" name="files[]" multiple="multiple">
                                     </span>
-                                    <button type="submit" class="btn btn-primary start">
+                                    <button type="submit" class="btn btn-warning start">
                                         <i class="glyphicon glyphicon-upload"></i>
                                         <span><?php echo trans('Upload_start');?></span>
                                     </button>
@@ -537,7 +537,11 @@ $get_params = http_build_query($get_params);
                     <!-- The template to display files available for download -->
                     <script id="template-download" type="text/x-tmpl">
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
-                        <tr class="template-download">
+                        {% if (file.error) { %}
+                        <tr class="template-download error">
+                        {% } else { %}
+                        <tr class="template-download success">
+                        {% } %}
                             <td>
                                 <span class="preview">
                                     {% if (file.error) { %}
@@ -556,7 +560,7 @@ $get_params = http_build_query($get_params);
                                     {% } %}
                                 </p>
                                 {% if (file.error) { %}
-                                    <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+                                    <div><span class="text-error">Error</span> {%=file.error%}</div>
                                 {% } %}
                             </td>
                             <td>
@@ -579,7 +583,7 @@ $get_params = http_build_query($get_params);
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button class="btn btn-primary" id="uploadURL"><?php echo  trans('Upload_file');?></button>
+                                <button class="btn btn-warning" id="uploadURL"><?php echo  trans('Upload_file');?></button>
                             </div>
                         </div>
                     </form>
@@ -774,42 +778,43 @@ $files = $sorted;
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         </button>
-        <div class="brand"><?php echo trans('Toolbar');?></div>
-        <div class="nav-collapse collapse">
+        <div class="brand"></div>
         <div class="filters">
-            <div class="row-fluid">
+          <div class="row-fluid">
             <div class="span4 half">
                 <?php if($config['upload_files']){ ?>
-                <button class="tip btn upload-btn" title="<?php echo  trans('Upload_file');?>"><i class="rficon-upload"></i></button>
+                <button class="tip btn upload-btn btn-success btn-large" title="<?php echo  trans('Upload_file');?>"><i class="rficon-upload"></i> <?php echo  trans('Upload_file');?></button>
                 <?php } ?>
                 <?php if($config['create_text_files']){ ?>
-                <button class="tip btn create-file-btn" title="<?php echo  trans('New_File');?>"><i class="icon-plus"></i><i class="icon-file"></i></button>
+                <button class="tip btn create-file-btn btn-large" title="<?php echo  trans('New_File');?>"><i class="icon-plus"></i><i class="icon-file"></i></button>
                 <?php } ?>
                 <?php if($config['create_folders']){ ?>
-                <button class="tip btn new-folder" title="<?php echo  trans('New_Folder')?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button>
+                <button class="tip btn new-folder btn-large" title="<?php echo  trans('New_Folder')?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button>
                 <?php } ?>
                 <?php if($config['copy_cut_files'] || $config['copy_cut_dirs']){ ?>
-                <button class="tip btn paste-here-btn" title="<?php echo trans('Paste_Here');?>"><i class="rficon-clipboard-apply"></i></button>
-                <button class="tip btn clear-clipboard-btn" title="<?php echo trans('Clear_Clipboard');?>"><i class="rficon-clipboard-clear"></i></button>
+                <button class="tip btn paste-here-btn btn-large" title="<?php echo trans('Paste_Here');?>"><i class="rficon-clipboard-apply"></i></button>
+                <button class="tip btn clear-clipboard-btn btn-large" title="<?php echo trans('Clear_Clipboard');?>"><i class="rficon-clipboard-clear"></i></button>
                 <?php } ?>
                 <div id="multiple-selection" style="display:none;">
                 <?php if($config['multiple_selection']){ ?>
                 <?php if($config['delete_files']){ ?>
-                <button class="tip btn multiple-delete-btn" title="<?php echo trans('Erase');?>" data-confirm="<?php echo trans('Confirm_del');?>"><i class="icon-trash"></i></button>
+                <button class="tip btn multiple-delete-btn btn-large" title="<?php echo trans('Erase');?>" data-confirm="<?php echo trans('Confirm_del');?>"><i class="icon-trash"></i></button>
                 <?php } ?>
-                <button class="tip btn multiple-select-btn" title="<?php echo trans('Select_All');?>"><i class="icon-check"></i></button>
-                <button class="tip btn multiple-deselect-btn" title="<?php echo trans('Deselect_All');?>"><i class="icon-ban-circle"></i></button>
+                <button class="tip btn multiple-select-btn btn-large" title="<?php echo trans('Select_All');?>"><i class="icon-check"></i></button>
+                <button class="tip btn multiple-deselect-btn btn-large" title="<?php echo trans('Deselect_All');?>"><i class="icon-ban-circle"></i></button>
                 <?php if($apply_type!="apply_none" && $config['multiple_selection_action_button']){ ?>
-                <button class="btn multiple-action-btn btn-inverse" data-function="<?php echo $apply_type;?>"><?php echo trans('Select'); ?></button>
+                <button class="btn multiple-action-btn btn-inverse btn-large" data-function="<?php echo $apply_type;?>"><?php echo trans('Select'); ?></button>
                 <?php } ?>
                 <?php } ?>
                 </div>
             </div>
             <div class="span2 half view-controller">
-                <button class="btn tip<?php if($view==0) echo " btn-inverse";?>" id="view0" data-value="0" title="<?php echo trans('View_boxes');?>"><i class="icon-th <?php if($view==0) echo "icon-white";?>"></i></button>
-                <button class="btn tip<?php if($view==1) echo " btn-inverse";?>" id="view1" data-value="1" title="<?php echo trans('View_list');?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white";?>"></i></button>
-                <button class="btn tip<?php if($view==2) echo " btn-inverse";?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list');?>"><i class="icon-fire <?php if($view==2) echo "icon-white";?>"></i></button>
+                <button class="btn tip<?php if($view==0) echo " btn-inverse btn-large";?>" id="view0" data-value="0" title="<?php echo trans('View_boxes');?>"><i class="icon-th <?php if($view==0) echo "icon-white";?>"></i></button>
+                <button class="btn tip<?php if($view==1) echo " btn-inverse btn-large";?>" id="view1" data-value="1" title="<?php echo trans('View_list');?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white btn-large";?>"></i></button>
+                <button class="btn tip<?php if($view==2) echo " btn-inverse btn-large";?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list');?>"><i class="icon-fire <?php if($view==2) echo "icon-white";?>"></i></button>
             </div>
+        <div class="nav-collapse collapse">
+
             <div class="span6 entire types">
                 <span><?php echo trans('Filters');?>:</span>
                 <?php if($_GET['type']!=1 && $_GET['type']!=3 && $config['show_filter_buttons']){ ?>
@@ -1008,7 +1013,7 @@ $files = $sorted;
                     <figcaption>
                         <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($config['rename_folders'] && !$file_prevent_rename) echo "rename-folder";?>" title="<?php echo trans('Rename')?>" data-folder="1" data-permissions="<?php echo $file_array['permissions']; ?>">
                         <i class="icon-pencil <?php if(!$config['rename_folders'] || $file_prevent_rename) echo 'icon-white';?>"></i></a>
-                        <a href="javascript:void('')" class="tip-left erase-button <?php if($config['delete_folders'] && !$file_prevent_delete) echo "delete-folder";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del');?>" >
+                        <a href="javascript:void('')" class="tip-left erase-button btn-danger btn-large <?php if($config['delete_folders'] && !$file_prevent_delete) echo "delete-folder";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del');?>" >
                         <i class="icon-trash <?php if(!$config['delete_folders'] || $file_prevent_delete) echo 'icon-white';?>"></i>
                         </a>
                     </figcaption>
