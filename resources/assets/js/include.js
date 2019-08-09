@@ -154,7 +154,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 					}
 					else
 					{
-						var target = jQuery('#' + external, windowParent.document);
+						var target = windowParent.jQuery('#' + external);
 						target.val(url).trigger('change');
 						if (typeof windowParent.responsive_filemanager_callback == 'function')
 						{
@@ -1844,8 +1844,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = jQuery('#' + external, windowParent.document);
-
+				var target = windowParent.jQuery('#' + external);
 				target.val(res).trigger('change');
 				if(callback==0)
 				{
@@ -1962,7 +1961,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = jQuery('#' + external, windowParent.document);
+        var target = windowParent.jQuery('#' + external);
 				target.val(res).trigger('change');
 				if(callback==0)
 				{
@@ -2013,7 +2012,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = jQuery('#' + external, windowParent.document);
+				var target = windowParent.jQuery('#' + external);
 				target.val(res).trigger('change');
 				if(callback==0)
 				{
@@ -2068,7 +2067,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			}
 			else
 			{
-				var target = jQuery('#' + external, windowParent.document);
+				var target = windowParent.jQuery('#' + external);
 				target.val(res).trigger('change');
 				if(callback==0)
 				{
