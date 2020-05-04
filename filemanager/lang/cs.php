@@ -41,7 +41,7 @@ return array(
 	'Text_filter' => 'textový filtr',
 	'Swipe_help' => 'Pro zobrazení možností klikněte na název souboru/složky.',
 	'Upload_base' => 'Základní nahrávání',
-	'Upload_base_help' => "Soubory přetáhněte (pouze moderní prohlížeče) nebo klikněte na horní tlačítko 'Přidat soubor(y)' a poté na tlačítko 'Sputit nahrávání'. Až bude nahrávání dokončeno, klikněte na 'Zpět k seznamu souborů'.",
+	'Upload_base_help' => "Soubory přetáhněte (pouze moderní prohlížeče) nebo klikněte na horní tlačítko 'Přidat soubor(y)' a poté na tlačítko 'Spustit nahrávání'. Až bude nahrávání dokončeno, klikněte na 'Zpět k seznamu souborů'.",
 	'Upload_add_files' => 'Přidat soubor(y)',
 	'Upload_start' => 'Spustit nahrávání',
 	'Upload_error_messages' =>array(
