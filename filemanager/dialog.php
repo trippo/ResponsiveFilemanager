@@ -131,8 +131,21 @@ if (!$ftp) {
         }
 
         if (file_exists($config['current_path'] . $parent . "config.php")) {
+			$configMain = $config;
             $configTemp = include $config['current_path'] . $parent . 'config.php';
-            $config = array_merge($config, $configTemp);
+			if(is_array($configTemp) && count($configTemp) > 0){
+                $config = array_merge($configMain, $configTemp);                
+                $config['ext'] = array_merge(
+                    $config['ext_img'],
+                    $config['ext_file'],
+                    $config['ext_misc'],
+                    $config['ext_video'],
+                    $config['ext_music']
+                );
+			}
+			else{
+				$config = $configMain;
+			}
             $cycle = FALSE;
         }
 
@@ -486,7 +499,7 @@ $get_params = http_build_query($get_params);
                                     <span class="btn btn-success fileinput-button">
                                         <i class="glyphicon glyphicon-plus"></i>
                                         <span><?php echo trans('Upload_add_files');?></span>
-                                        <input type="file" name="files[]" multiple="multiple">
+                                        <input type="file" name="files[]" multiple="multiple" accept="<?php echo '.' . implode(',.', $config['ext']);?>">
                                     </span>
                                     <button type="submit" class="btn btn-warning start">
                                         <i class="glyphicon glyphicon-upload"></i>

@@ -41,7 +41,21 @@ while ($cycle && $i < $max_cycles) {
     }
 
     if (file_exists($path . "config.php")) {
-        require_once $path . "config.php";
+        $configMain = $config;
+        $configTemp = include $path . "config.php";
+        if(is_array($configTemp) && count($configTemp) > 0){
+            $config = array_merge($configMain, $configTemp);                
+            $config['ext'] = array_merge(
+                $config['ext_img'],
+                $config['ext_file'],
+                $config['ext_misc'],
+                $config['ext_video'],
+                $config['ext_music']
+            );
+        }
+        else{
+            $config = $configMain;
+        }
         $cycle = false;
     }
     $path = fix_dirname($path) . "/";
