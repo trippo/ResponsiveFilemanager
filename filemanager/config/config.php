@@ -118,7 +118,7 @@ $config = array(
     | If you want to be forced to assign the extension starting from the mime type
     |
     */
-    'mime_extension_rename'	=> true,
+    'mime_extension_rename'   => true,
 
 
     /*
@@ -243,27 +243,40 @@ $config = array(
 
 
     //Show or not total size in filemanager (is possible to greatly increase the calculations)
-    'show_total_size'						=> false,
+    'show_total_size'                  => false,
     //Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
-    'show_folder_size'						=> false,
+    'show_folder_size'                 => false,
     //Show or not show sorting feature in filemanager
-    'show_sorting_bar'						=> true,
+    'show_sorting_bar'                 => true,
     //Show or not show filters button in filemanager
     'show_filter_buttons'                   => true,
     //Show or not language selection feature in filemanager
-    'show_language_selection'				=> true,
+    'show_language_selection'          => true,
     //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
-    'transliteration'						=> false,
+    'transliteration'                  => false,
     //convert all spaces on files name and folders name with $replace_with variable
-    'convert_spaces'						=> false,
+    'convert_spaces'                => false,
     //convert all spaces on files name and folders name this value
-    'replace_with'							=> "_",
+    'replace_with'                     => "_",
     //convert to lowercase the files and folders name
-    'lower_case'							=> false,
+    'lower_case'                    => false,
 
     //Add ?484899493349 (time value) to returned images to prevent cache
     'add_time_to_img'                       => false,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Load more
+    |--------------------------------------------------------------------------
+    */
+  
+    // Enable "Load more" functionality
+    'load_more' => false,
+    // Number of files/folders displayed at once
+    // Should be greater than "file_number_limit_js"
+    'load_more_limit' => 120,
+    // Enable auto-loading on scroll
+    'load_more_auto' => true,
 
     //*******************************************
     //Images limit and resizing configuration
@@ -351,7 +364,7 @@ $config = array(
     'preview_text_files'                      => true, // eg.: txt, log etc.
     'edit_text_files'                         => true, // eg.: txt, log etc.
     'create_text_files'                       => true, // only create files with exts. defined in $config['editable_text_file_exts']
-    'download_files'			  => true, // allow download files or just preview
+    'download_files'         => true, // allow download files or just preview
 
     // you can preview these type of files if $preview_text_files is true
     'previewable_text_file_exts'              => array( "bsh", "c","css", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml","xsl",'txt', 'log','' ),
@@ -392,7 +405,7 @@ $config = array(
     //  If you insert an extensions blacklist array the filemanager don't check any extensions but simply block the extensions in the list
     //  otherwise check Allowed extensions configuration
     //*********************
-    'ext_blacklist'							  => false,//['exe','bat','jpg'],
+    'ext_blacklist'                      => false,//['exe','bat','jpg'],
 
 
     //Empty filename permits like .htaccess, .env, ...
@@ -406,7 +419,7 @@ $config = array(
     | If you want to accept files without extension, remember to add '' extension on allowed extension
     |
     */
-    'files_without_extension'	              => false,
+    'files_without_extension'               => false,
 
     /******************
     * TUI Image Editor config

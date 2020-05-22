@@ -4,15 +4,15 @@ $time = time();
 $config = include 'config/config.php';
 
 if (USE_ACCESS_KEYS == true){
-	if (!isset($_GET['akey'], $config['access_keys']) || empty($config['access_keys'])){
-		die('Access Denied!');
-	}
+   if (!isset($_GET['akey'], $config['access_keys']) || empty($config['access_keys'])){
+      die('Access Denied!');
+   }
 
     $_GET['akey'] = strip_tags(preg_replace("/[^a-zA-Z0-9\._-]/", '', $_GET['akey']));
 
-	if (!in_array($_GET['akey'], $config['access_keys'])){
-		die('Access Denied!');
-	}
+   if (!in_array($_GET['akey'], $config['access_keys'])){
+      die('Access Denied!');
+   }
 }
 
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
@@ -107,10 +107,10 @@ if (($ftp && !$ftp->isDir($config['ftp_base_folder'] . $config['upload_dir'] . $
 }
 
 
-$cur_dir		= $config['upload_dir'].$rfm_subfolder.$subdir;
-$cur_dir_thumb	= $config['thumbs_upload_dir'].$rfm_subfolder.$subdir;
-$thumbs_path	= $config['thumbs_base_path'].$rfm_subfolder.$subdir;
-$parent			= $rfm_subfolder.$subdir;
+$cur_dir    = $config['upload_dir'].$rfm_subfolder.$subdir;
+$cur_dir_thumb = $config['thumbs_upload_dir'].$rfm_subfolder.$subdir;
+$thumbs_path   = $config['thumbs_base_path'].$rfm_subfolder.$subdir;
+$parent        = $rfm_subfolder.$subdir;
 
 if ($ftp) {
     $cur_dir = $config['ftp_base_folder'] . $cur_dir;
@@ -373,6 +373,11 @@ $get_params = http_build_query($get_params);
 
 
         <script src="js/include.js?v=<?php echo $version; ?>"></script>
+
+        <?php if ($config['load_more']): ?>
+        <script src="js/load_more.js?v=<?php echo $version; ?>"></script>
+        <?php endif; ?>
+
 </head>
 <body>
     <!-- The Templates plugin is included to render the upload/download listings -->
@@ -781,6 +786,83 @@ if ($subdir != "") {
 }
 
 $files = $sorted;
+
+//
+// Generate a list of files visible to the file manager
+//
+
+$files_visible = array();
+foreach ($files as $file_array) {
+    $file = $file_array['file'];
+
+    if (
+        $file == '.'
+        or (
+            substr($file, 0, 1) == '.'
+            and isset($file_array[ 'extension' ])
+            and $file_array[ 'extension' ] == fix_strtolower(trans('Type_dir'))
+        )
+        or (
+            isset($file_array['extension'])
+            and $file_array['extension'] == fix_strtolower(trans('Type_dir'))
+            and (
+                ($file == '..' and $subdir == '')
+                or in_array($file, $config['hidden_folders'])
+                or (
+                    $filter != ''
+                    and $n_files > $config['file_number_limit_js']
+                    and $file != '..'
+                    and stripos($file, $filter) === false
+                )
+            )
+        )
+        or (
+            isset($file_array['extension'])
+            and $file_array['extension'] != fix_strtolower(trans('Type_dir'))
+            and (
+                !check_file_extension($file_array['extension'], $config)
+                or (
+                    $filter != ''
+                    and $n_files > $config['file_number_limit_js']
+                    and stripos($file, $filter) === false
+                )
+            )
+        )
+    ) {
+        continue;
+    }
+
+    if (
+        isset($file_array['extension'])
+        and $file_array['extension'] != fix_strtolower(trans('Type_dir'))
+    ) {
+        foreach ($config['hidden_files'] as $hidden_file) {
+            if (fnmatch($hidden_file, $file, FNM_PATHNAME)) {
+                continue 2;
+            }
+        }
+    }
+
+    array_push($files_visible, $file_array);
+}
+
+$files = $files_visible;
+
+
+// If "Load more" functionality is enabled
+if ($config['load_more']) {
+    // Determine starting file number
+    $load_more_start = (isset($_GET['load_more_start']) and is_numeric($_GET['load_more_start']))
+        ? intval($_GET['load_more_start'])
+        : 0;
+
+    // Determine if there are more files available that would be displayed
+    $load_more_avail = ($load_more_start + $config['load_more_limit'] < $n_files) ? true : false;
+
+    // Extract files that will be displayed during this request
+    $files = array_slice($files, $load_more_start, $config['load_more_limit']);
+}
+
 ?>
 <!-- header div start -->
 <div class="navbar navbar-fixed-top">
@@ -896,50 +978,50 @@ $files = $sorted;
     <?php } ?>
     <li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 
-	<li class="pull-right">
-		<div class="btn-group">
-		<a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
-		<i class="icon-signal"></i>
-		<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu pull-left sorting">
-			<li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
-		<li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></li>
-		<li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></li>
-		<li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></li>
-		<li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></li>
-		</ul>
-		</div>
-	</li>
-	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
-	<?php if($config['show_total_size']){ ?>
-	<li><small class="hidden-phone"><span title="<?php echo trans('total size').$config['MaxSizeTotal'];?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal']))? '/'.$config['MaxSizeTotal'].' '.trans('MB'):'');?></span></small>
-	</li>
-	<?php } ?>
-	</ul>
-	</div>
-	<!-- breadcrumb div end -->
-	<div class="row-fluid ff-container">
-	<div class="span12">
-		<?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
+   <li class="pull-right">
+      <div class="btn-group">
+      <a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
+      <i class="icon-signal"></i>
+      <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu pull-left sorting">
+         <li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
+      <li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></li>
+      <li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></li>
+      <li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></li>
+      <li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></li>
+      </ul>
+      </div>
+   </li>
+   <li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
+   <?php if($config['show_total_size']){ ?>
+   <li><small class="hidden-phone"><span title="<?php echo trans('total size').$config['MaxSizeTotal'];?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal']))? '/'.$config['MaxSizeTotal'].' '.trans('MB'):'');?></span></small>
+   </li>
+   <?php } ?>
+   </ul>
+   </div>
+   <!-- breadcrumb div end -->
+   <div class="row-fluid ff-container">
+   <div class="span12">
+      <?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
       <br/>
       <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
-		<?php }else{ ?>
-		<h4 id="help"><?php echo trans('Swipe_help');?></h4>
-		<?php if(isset($config['folder_message'])){ ?>
-		<div class="alert alert-block"><?php echo $config['folder_message'];?></div>
-		<?php } ?>
-		<?php if($config['show_sorting_bar']){ ?>
-		<!-- sorter -->
-		<div class="sorter-container <?php echo "list-view".$view;?>">
-		<div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></div>
-		<div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></div>
-		<div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></div>
-		<div class='img-dimension'><?php echo trans('Dimension');?></div>
-		<div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></div>
-		<div class='file-operations'><?php echo trans('Operations');?></div>
-		</div>
-		<?php } ?>
+      <?php }else{ ?>
+      <h4 id="help"><?php echo trans('Swipe_help');?></h4>
+      <?php if(isset($config['folder_message'])){ ?>
+      <div class="alert alert-block"><?php echo $config['folder_message'];?></div>
+      <?php } ?>
+      <?php if($config['show_sorting_bar']){ ?>
+      <!-- sorter -->
+      <div class="sorter-container <?php echo "list-view".$view;?>">
+      <div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></div>
+      <div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></div>
+      <div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></div>
+      <div class='img-dimension'><?php echo trans('Dimension');?></div>
+      <div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></div>
+      <div class='file-operations'><?php echo trans('Operations');?></div>
+      </div>
+      <?php } ?>
 
         <input type="hidden" id="file_number" value="<?php echo $n_files;?>" />
         <!--ul class="thumbnails ff-items"-->
@@ -1236,7 +1318,7 @@ $files = $sorted;
                     </a>
                     </form>
                 </figcaption>
-              </figure>
+            </figure>
             </li>
             <?php
             }
@@ -1249,6 +1331,20 @@ $files = $sorted;
     </div>
   </div>
 </div>
+
+<?php if ($config['load_more'] and $load_more_avail): ?>
+<div id="load-more-container" data-start="<?php echo htmlspecialchars($config['load_more_limit']); ?>" data-auto="<?php echo ($config['load_more_auto'] ? '1' : '0'); ?>">
+   <div id="load-more-indicator" style="display:none; padding:2em 0; text-align:center;">
+      <img src="img/processing.gif" alt="Please wait...">
+   </div>
+
+   <?php if (!$config['load_more_auto']): ?>
+   <div style="padding:2em 0; text-align:center;">
+      <button id="btn-load-more" type="button" class="btn">Load More</button>
+   </div>
+   <?php endif; ?>
+</div>
+<?php endif; ?>
 
 <script>
     var files_prevent_duplicate = [];

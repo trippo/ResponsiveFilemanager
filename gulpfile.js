@@ -101,4 +101,9 @@ elixir(function (mix) {
         ['modernizr.custom.js'],
         'filemanager/js/modernizr.custom.js'
     );
+
+    mix.scripts(
+        ['load_more.js'],
+        'filemanager/js/load_more.js'
+    );
 });
