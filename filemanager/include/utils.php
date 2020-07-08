@@ -371,9 +371,9 @@ function ftp_con($config)
 {
     if (isset($config['ftp_host']) && $config['ftp_host']) {
         // *** Include the class
-        include __DIR__ . '/FtpClient.php';
-        include __DIR__ . '/FtpException.php';
-        include __DIR__ . '/FtpWrapper.php';
+        require_once __DIR__ . '/FtpClient.php';
+        require_once __DIR__ . '/FtpException.php';
+        require_once __DIR__ . '/FtpWrapper.php';
 
         try {
             $ftp = new \FtpClient\FtpClient();
