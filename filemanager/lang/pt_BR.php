@@ -4,7 +4,7 @@ return array(
 
     'Select' => 'Selecionar',
     'Deselect_All' => 'Desmarcar todos',
-    'Select_All' => 'Selecionar All',
+    'Select_All' => 'Selecionar todos',
     'Erase' => 'Apagar',
     'Open' => 'Abrir',
     'Confirm_del' => 'Tem certeza que quer deletar este arquivo?',
