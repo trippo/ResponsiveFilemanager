@@ -670,7 +670,7 @@ foreach ($files as $k => $file) {
     } else {
 
 
-        if ($file != "." && $file != "..") {
+        if ($file != "." && $file != ".." && $file != ".gitkeep" && $file != ".gitignore") {
             if (is_dir($config['current_path'] . $rfm_subfolder . $subdir . $file)) {
                 $date = filemtime($config['current_path'] . $rfm_subfolder . $subdir . $file);
                 $current_folders_number++;
