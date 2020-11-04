@@ -658,6 +658,10 @@ class UploadHandler
         if (!function_exists('exif_read_data')) {
             return false;
         }
+        $newFilePath = explode(".", $file_path);
+        if ($newFilePath[1] != 'png') {
+            return false;
+        }
         $exif = @exif_read_data($file_path);
         if ($exif === false) {
             return false;
@@ -1216,11 +1220,19 @@ class UploadHandler
     }
 
     protected function get_query_param($id) {
-        return @$_GET[$id];
+        if (isset($_GET[$id])) {
+            return @$_GET[$id];
+        }
+
+        return false;
     }
 
     protected function get_server_var($id) {
-        return @$_SERVER[$id];
+        if (isset($_SERVER[$id])) {
+            return @$_SERVER[$id];
+        }
+
+        return false;
     }
 
     protected function handle_form_data($file, $index) {

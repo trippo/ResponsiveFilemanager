@@ -4,15 +4,15 @@ $time = time();
 $config = include 'config/config.php';
 
 if (USE_ACCESS_KEYS == true){
-	if (!isset($_GET['akey'], $config['access_keys']) || empty($config['access_keys'])){
-		die('Access Denied!');
-	}
+   if (!isset($_GET['akey'], $config['access_keys']) || empty($config['access_keys'])){
+      die('Access Denied!');
+   }
 
     $_GET['akey'] = strip_tags(preg_replace("/[^a-zA-Z0-9\._-]/", '', $_GET['akey']));
 
-	if (!in_array($_GET['akey'], $config['access_keys'])){
-		die('Access Denied!');
-	}
+   if (!in_array($_GET['akey'], $config['access_keys'])){
+      die('Access Denied!');
+   }
 }
 
 $_SESSION['RF']["verify"] = "RESPONSIVEfilemanager";
@@ -107,10 +107,10 @@ if (($ftp && !$ftp->isDir($config['ftp_base_folder'] . $config['upload_dir'] . $
 }
 
 
-$cur_dir		= $config['upload_dir'].$rfm_subfolder.$subdir;
-$cur_dir_thumb	= $config['thumbs_upload_dir'].$rfm_subfolder.$subdir;
-$thumbs_path	= $config['thumbs_base_path'].$rfm_subfolder.$subdir;
-$parent			= $rfm_subfolder.$subdir;
+$cur_dir    = $config['upload_dir'].$rfm_subfolder.$subdir;
+$cur_dir_thumb = $config['thumbs_upload_dir'].$rfm_subfolder.$subdir;
+$thumbs_path   = $config['thumbs_base_path'].$rfm_subfolder.$subdir;
+$parent        = $rfm_subfolder.$subdir;
 
 if ($ftp) {
     $cur_dir = $config['ftp_base_folder'] . $cur_dir;
@@ -131,8 +131,21 @@ if (!$ftp) {
         }
 
         if (file_exists($config['current_path'] . $parent . "config.php")) {
+			$configMain = $config;
             $configTemp = include $config['current_path'] . $parent . 'config.php';
-            $config = array_merge($config, $configTemp);
+			if(is_array($configTemp) && count($configTemp) > 0){
+                $config = array_merge($configMain, $configTemp);                
+                $config['ext'] = array_merge(
+                    $config['ext_img'],
+                    $config['ext_file'],
+                    $config['ext_misc'],
+                    $config['ext_video'],
+                    $config['ext_music']
+                );
+			}
+			else{
+				$config = $configMain;
+			}
             $cycle = FALSE;
         }
 
@@ -321,7 +334,6 @@ $get_params = http_build_query($get_params);
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-noscript.css"></noscript>
         <noscript><link rel="stylesheet" href="css/jquery.fileupload-ui-noscript.css"></noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.7.1/skin/blue.monday/jplayer.blue.monday.min.css" />
-        <link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css">
         <link href="css/style.css?v=<?php echo $version; ?>" rel="stylesheet" type="text/css" />
         <!--[if lt IE 8]>
         <style>
@@ -336,18 +348,23 @@ $get_params = http_build_query($get_params);
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
         <script src="js/plugins.js?v=<?php echo $version; ?>"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-        <link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.css" rel="stylesheet">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.7/fabric.js"></script>
-        <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
-        <script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.js"></script>
-        <script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.js"></script>
         <script src="js/modernizr.custom.js"></script>
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
         <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
         <![endif]-->
+
+        <!-- Only load TUI Libraries if we need it -->
+        <?php if($config['tui_active'] === true){ ?>
+          <link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css">
+          <link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.css" rel="stylesheet">
+          <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+          <script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.0/tui-color-picker.js"></script>
+          <script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.js"></script>
+        <?php } ?>
 
         <script type="text/javascript">
             var ext_img=new Array('<?php echo implode("','", $config['ext_img'])?>');
@@ -356,6 +373,11 @@ $get_params = http_build_query($get_params);
 
 
         <script src="js/include.js?v=<?php echo $version; ?>"></script>
+
+        <?php if ($config['load_more']): ?>
+        <script src="js/load_more.js?v=<?php echo $version; ?>"></script>
+        <?php endif; ?>
+
 </head>
 <body>
     <!-- The Templates plugin is included to render the upload/download listings -->
@@ -482,9 +504,9 @@ $get_params = http_build_query($get_params);
                                     <span class="btn btn-success fileinput-button">
                                         <i class="glyphicon glyphicon-plus"></i>
                                         <span><?php echo trans('Upload_add_files');?></span>
-                                        <input type="file" name="files[]" multiple="multiple">
+                                        <input type="file" name="files[]" multiple="multiple" accept="<?php echo '.' . implode(',.', $config['ext']);?>">
                                     </span>
-                                    <button type="submit" class="btn btn-primary start">
+                                    <button type="submit" class="btn btn-warning start">
                                         <i class="glyphicon glyphicon-upload"></i>
                                         <span><?php echo trans('Upload_start');?></span>
                                     </button>
@@ -533,7 +555,11 @@ $get_params = http_build_query($get_params);
                     <!-- The template to display files available for download -->
                     <script id="template-download" type="text/x-tmpl">
                     {% for (var i=0, file; file=o.files[i]; i++) { %}
-                        <tr class="template-download">
+                        {% if (file.error) { %}
+                        <tr class="template-download error">
+                        {% } else { %}
+                        <tr class="template-download success">
+                        {% } %}
                             <td>
                                 <span class="preview">
                                     {% if (file.error) { %}
@@ -552,7 +578,7 @@ $get_params = http_build_query($get_params);
                                     {% } %}
                                 </p>
                                 {% if (file.error) { %}
-                                    <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+                                    <div><span class="text-error">Error</span> {%=file.error%}</div>
                                 {% } %}
                             </td>
                             <td>
@@ -575,7 +601,7 @@ $get_params = http_build_query($get_params);
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button class="btn btn-primary" id="uploadURL"><?php echo  trans('Upload_file');?></button>
+                                <button class="btn btn-warning" id="uploadURL"><?php echo  trans('Upload_file');?></button>
                             </div>
                         </div>
                     </form>
@@ -644,7 +670,7 @@ foreach ($files as $k => $file) {
     } else {
 
 
-        if ($file != "." && $file != "..") {
+        if ($file != "." && $file != ".." && $file != ".gitkeep" && $file != ".gitignore") {
             if (is_dir($config['current_path'] . $rfm_subfolder . $subdir . $file)) {
                 $date = filemtime($config['current_path'] . $rfm_subfolder . $subdir . $file);
                 $current_folders_number++;
@@ -760,6 +786,83 @@ if ($subdir != "") {
 }
 
 $files = $sorted;
+
+//
+// Generate a list of files visible to the file manager
+//
+
+$files_visible = array();
+foreach ($files as $file_array) {
+    $file = $file_array['file'];
+
+    if (
+        $file == '.'
+        or (
+            substr($file, 0, 1) == '.'
+            and isset($file_array[ 'extension' ])
+            and $file_array[ 'extension' ] == fix_strtolower(trans('Type_dir'))
+        )
+        or (
+            isset($file_array['extension'])
+            and $file_array['extension'] == fix_strtolower(trans('Type_dir'))
+            and (
+                ($file == '..' and $subdir == '')
+                or in_array($file, $config['hidden_folders'])
+                or (
+                    $filter != ''
+                    and $n_files > $config['file_number_limit_js']
+                    and $file != '..'
+                    and stripos($file, $filter) === false
+                )
+            )
+        )
+        or (
+            isset($file_array['extension'])
+            and $file_array['extension'] != fix_strtolower(trans('Type_dir'))
+            and (
+                !check_file_extension($file_array['extension'], $config)
+                or (
+                    $filter != ''
+                    and $n_files > $config['file_number_limit_js']
+                    and stripos($file, $filter) === false
+                )
+            )
+        )
+    ) {
+        continue;
+    }
+
+    if (
+        isset($file_array['extension'])
+        and $file_array['extension'] != fix_strtolower(trans('Type_dir'))
+    ) {
+        foreach ($config['hidden_files'] as $hidden_file) {
+            if (fnmatch($hidden_file, $file, FNM_PATHNAME)) {
+                continue 2;
+            }
+        }
+    }
+
+    array_push($files_visible, $file_array);
+}
+
+$files = $files_visible;
+
+
+// If "Load more" functionality is enabled
+if ($config['load_more']) {
+    // Determine starting file number
+    $load_more_start = (isset($_GET['load_more_start']) and is_numeric($_GET['load_more_start']))
+        ? intval($_GET['load_more_start'])
+        : 0;
+
+    // Determine if there are more files available that would be displayed
+    $load_more_avail = ($load_more_start + $config['load_more_limit'] < $n_files) ? true : false;
+
+    // Extract files that will be displayed during this request
+    $files = array_slice($files, $load_more_start, $config['load_more_limit']);
+}
+
 ?>
 <!-- header div start -->
 <div class="navbar navbar-fixed-top">
@@ -770,42 +873,43 @@ $files = $sorted;
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         </button>
-        <div class="brand"><?php echo trans('Toolbar');?></div>
-        <div class="nav-collapse collapse">
+        <div class="brand"></div>
         <div class="filters">
-            <div class="row-fluid">
+          <div class="row-fluid">
             <div class="span4 half">
                 <?php if($config['upload_files']){ ?>
-                <button class="tip btn upload-btn" title="<?php echo  trans('Upload_file');?>"><i class="rficon-upload"></i></button>
+                <button class="tip btn upload-btn btn-success btn-large" title="<?php echo  trans('Upload_file');?>"><i class="rficon-upload"></i> <?php echo  trans('Upload_file');?></button>
                 <?php } ?>
                 <?php if($config['create_text_files']){ ?>
-                <button class="tip btn create-file-btn" title="<?php echo  trans('New_File');?>"><i class="icon-plus"></i><i class="icon-file"></i></button>
+                <button class="tip btn create-file-btn btn-large" title="<?php echo  trans('New_File');?>"><i class="icon-plus"></i><i class="icon-file"></i></button>
                 <?php } ?>
                 <?php if($config['create_folders']){ ?>
-                <button class="tip btn new-folder" title="<?php echo  trans('New_Folder')?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button>
+                <button class="tip btn new-folder btn-large" title="<?php echo  trans('New_Folder')?>"><i class="icon-plus"></i><i class="icon-folder-open"></i></button>
                 <?php } ?>
                 <?php if($config['copy_cut_files'] || $config['copy_cut_dirs']){ ?>
-                <button class="tip btn paste-here-btn" title="<?php echo trans('Paste_Here');?>"><i class="rficon-clipboard-apply"></i></button>
-                <button class="tip btn clear-clipboard-btn" title="<?php echo trans('Clear_Clipboard');?>"><i class="rficon-clipboard-clear"></i></button>
+                <button class="tip btn paste-here-btn btn-large" title="<?php echo trans('Paste_Here');?>"><i class="rficon-clipboard-apply"></i></button>
+                <button class="tip btn clear-clipboard-btn btn-large" title="<?php echo trans('Clear_Clipboard');?>"><i class="rficon-clipboard-clear"></i></button>
                 <?php } ?>
                 <div id="multiple-selection" style="display:none;">
                 <?php if($config['multiple_selection']){ ?>
                 <?php if($config['delete_files']){ ?>
-                <button class="tip btn multiple-delete-btn" title="<?php echo trans('Erase');?>" data-confirm="<?php echo trans('Confirm_del');?>"><i class="icon-trash"></i></button>
+                <button class="tip btn multiple-delete-btn btn-large" title="<?php echo trans('Erase');?>" data-confirm="<?php echo trans('Confirm_del');?>"><i class="icon-trash"></i></button>
                 <?php } ?>
-                <button class="tip btn multiple-select-btn" title="<?php echo trans('Select_All');?>"><i class="icon-check"></i></button>
-                <button class="tip btn multiple-deselect-btn" title="<?php echo trans('Deselect_All');?>"><i class="icon-ban-circle"></i></button>
+                <button class="tip btn multiple-select-btn btn-large" title="<?php echo trans('Select_All');?>"><i class="icon-check"></i></button>
+                <button class="tip btn multiple-deselect-btn btn-large" title="<?php echo trans('Deselect_All');?>"><i class="icon-ban-circle"></i></button>
                 <?php if($apply_type!="apply_none" && $config['multiple_selection_action_button']){ ?>
-                <button class="btn multiple-action-btn btn-inverse" data-function="<?php echo $apply_type;?>"><?php echo trans('Select'); ?></button>
+                <button class="btn multiple-action-btn btn-inverse btn-large" data-function="<?php echo $apply_type;?>"><?php echo trans('Select'); ?></button>
                 <?php } ?>
                 <?php } ?>
                 </div>
             </div>
             <div class="span2 half view-controller">
-                <button class="btn tip<?php if($view==0) echo " btn-inverse";?>" id="view0" data-value="0" title="<?php echo trans('View_boxes');?>"><i class="icon-th <?php if($view==0) echo "icon-white";?>"></i></button>
-                <button class="btn tip<?php if($view==1) echo " btn-inverse";?>" id="view1" data-value="1" title="<?php echo trans('View_list');?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white";?>"></i></button>
-                <button class="btn tip<?php if($view==2) echo " btn-inverse";?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list');?>"><i class="icon-fire <?php if($view==2) echo "icon-white";?>"></i></button>
+                <button class="btn tip<?php if($view==0) echo " btn-inverse btn-large";?>" id="view0" data-value="0" title="<?php echo trans('View_boxes');?>"><i class="icon-th <?php if($view==0) echo "icon-white";?>"></i></button>
+                <button class="btn tip<?php if($view==1) echo " btn-inverse btn-large";?>" id="view1" data-value="1" title="<?php echo trans('View_list');?>"><i class="icon-align-justify <?php if($view==1) echo "icon-white btn-large";?>"></i></button>
+                <button class="btn tip<?php if($view==2) echo " btn-inverse btn-large";?>" id="view2" data-value="2" title="<?php echo trans('View_columns_list');?>"><i class="icon-fire <?php if($view==2) echo "icon-white";?>"></i></button>
             </div>
+        <div class="nav-collapse collapse">
+
             <div class="span6 entire types">
                 <span><?php echo trans('Filters');?>:</span>
                 <?php if($_GET['type']!=1 && $_GET['type']!=3 && $config['show_filter_buttons']){ ?>
@@ -874,50 +978,50 @@ $files = $sorted;
     <?php } ?>
     <li class="pull-right"><a id="refresh" class="btn-small" href="dialog.php?<?php echo $get_params.$subdir."&".uniqid() ?>"><i class="icon-refresh"></i></a></li>
 
-	<li class="pull-right">
-		<div class="btn-group">
-		<a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
-		<i class="icon-signal"></i>
-		<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu pull-left sorting">
-			<li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
-		<li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></li>
-		<li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></li>
-		<li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></li>
-		<li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></li>
-		</ul>
-		</div>
-	</li>
-	<li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
-	<?php if($config['show_total_size']){ ?>
-	<li><small class="hidden-phone"><span title="<?php echo trans('total size').$config['MaxSizeTotal'];?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal']))? '/'.$config['MaxSizeTotal'].' '.trans('MB'):'');?></span></small>
-	</li>
-	<?php } ?>
-	</ul>
-	</div>
-	<!-- breadcrumb div end -->
-	<div class="row-fluid ff-container">
-	<div class="span12">
-		<?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
+   <li class="pull-right">
+      <div class="btn-group">
+      <a class="btn dropdown-toggle sorting-btn" data-toggle="dropdown" href="#">
+      <i class="icon-signal"></i>
+      <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu pull-left sorting">
+         <li class="text-center"><strong><?php echo trans('Sorting') ?></strong></li>
+      <li><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></li>
+      <li><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></li>
+      <li><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></li>
+      <li><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></li>
+      </ul>
+      </div>
+   </li>
+   <li><small class="hidden-phone">(<span id="files_number"><?php echo $current_files_number."</span> ".trans('Files')." - <span id='folders_number'>".$current_folders_number."</span> ".trans('Folders');?>)</small></li>
+   <?php if($config['show_total_size']){ ?>
+   <li><small class="hidden-phone"><span title="<?php echo trans('total size').$config['MaxSizeTotal'];?>"><?php echo trans('total size').": ".makeSize($sizeCurrentFolder).(($config['MaxSizeTotal'] !== false && is_int($config['MaxSizeTotal']))? '/'.$config['MaxSizeTotal'].' '.trans('MB'):'');?></span></small>
+   </li>
+   <?php } ?>
+   </ul>
+   </div>
+   <!-- breadcrumb div end -->
+   <div class="row-fluid ff-container">
+   <div class="span12">
+      <?php if( ($ftp && !$ftp->isDir($config['ftp_base_folder'].$config['upload_dir'].$rfm_subfolder.$subdir))  || (!$ftp && @opendir($config['current_path'].$rfm_subfolder.$subdir)===FALSE)){ ?>
       <br/>
       <div class="alert alert-error">There is an error! The upload folder there isn't. Check your config.php file. </div>
-		<?php }else{ ?>
-		<h4 id="help"><?php echo trans('Swipe_help');?></h4>
-		<?php if(isset($config['folder_message'])){ ?>
-		<div class="alert alert-block"><?php echo $config['folder_message'];?></div>
-		<?php } ?>
-		<?php if($config['show_sorting_bar']){ ?>
-		<!-- sorter -->
-		<div class="sorter-container <?php echo "list-view".$view;?>">
-		<div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></div>
-		<div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></div>
-		<div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></div>
-		<div class='img-dimension'><?php echo trans('Dimension');?></div>
-		<div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></div>
-		<div class='file-operations'><?php echo trans('Operations');?></div>
-		</div>
-		<?php } ?>
+      <?php }else{ ?>
+      <h4 id="help"><?php echo trans('Swipe_help');?></h4>
+      <?php if(isset($config['folder_message'])){ ?>
+      <div class="alert alert-block"><?php echo $config['folder_message'];?></div>
+      <?php } ?>
+      <?php if($config['show_sorting_bar']){ ?>
+      <!-- sorter -->
+      <div class="sorter-container <?php echo "list-view".$view;?>">
+      <div class="file-name"><a class="sorter sort-name <?php if($sort_by=="name"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="name"><?php echo trans('Filename');?></a></div>
+      <div class="file-date"><a class="sorter sort-date <?php if($sort_by=="date"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="date"><?php echo trans('Date');?></a></div>
+      <div class="file-size"><a class="sorter sort-size <?php if($sort_by=="size"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="size"><?php echo trans('Size');?></a></div>
+      <div class='img-dimension'><?php echo trans('Dimension');?></div>
+      <div class='file-extension'><a class="sorter sort-extension <?php if($sort_by=="extension"){ echo ($descending)?"descending":"ascending"; } ?>" href="javascript:void('')" data-sort="extension"><?php echo trans('Type');?></a></div>
+      <div class='file-operations'><?php echo trans('Operations');?></div>
+      </div>
+      <?php } ?>
 
         <input type="hidden" id="file_number" value="<?php echo $n_files;?>" />
         <!--ul class="thumbnails ff-items"-->
@@ -1004,7 +1108,7 @@ $files = $sorted;
                     <figcaption>
                         <a href="javascript:void('')" class="tip-left edit-button rename-file-paths <?php if($config['rename_folders'] && !$file_prevent_rename) echo "rename-folder";?>" title="<?php echo trans('Rename')?>" data-folder="1" data-permissions="<?php echo $file_array['permissions']; ?>">
                         <i class="icon-pencil <?php if(!$config['rename_folders'] || $file_prevent_rename) echo 'icon-white';?>"></i></a>
-                        <a href="javascript:void('')" class="tip-left erase-button <?php if($config['delete_folders'] && !$file_prevent_delete) echo "delete-folder";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del');?>" >
+                        <a href="javascript:void('')" class="tip-left erase-button btn-danger btn-large <?php if($config['delete_folders'] && !$file_prevent_delete) echo "delete-folder";?>" title="<?php echo trans('Erase')?>" data-confirm="<?php echo trans('Confirm_Folder_del');?>" >
                         <i class="icon-trash <?php if(!$config['delete_folders'] || $file_prevent_delete) echo 'icon-white';?>"></i>
                         </a>
                     </figcaption>
@@ -1214,7 +1318,7 @@ $files = $sorted;
                     </a>
                     </form>
                 </figcaption>
-              </figure>
+            </figure>
             </li>
             <?php
             }
@@ -1227,6 +1331,20 @@ $files = $sorted;
     </div>
   </div>
 </div>
+
+<?php if ($config['load_more'] and $load_more_avail): ?>
+<div id="load-more-container" data-start="<?php echo htmlspecialchars($config['load_more_limit']); ?>" data-auto="<?php echo ($config['load_more_auto'] ? '1' : '0'); ?>">
+   <div id="load-more-indicator" style="display:none; padding:2em 0; text-align:center;">
+      <img src="img/processing.gif" alt="Please wait...">
+   </div>
+
+   <?php if (!$config['load_more_auto']): ?>
+   <div style="padding:2em 0; text-align:center;">
+      <button id="btn-load-more" type="button" class="btn">Load More</button>
+   </div>
+   <?php endif; ?>
+</div>
+<?php endif; ?>
 
 <script>
     var files_prevent_duplicate = [];
