@@ -260,6 +260,9 @@ $config = array(
     'replace_with'                     => "_",
     //convert to lowercase the files and folders name
     'lower_case'                    => false,
+    //Should we rename (translitareation and convert_space) files that are already on the filesystem (true)
+    //or only the news files (false => keeps the existing files and folders intact)
+    'fix_existing_files'            => true,
 
     //Add ?484899493349 (time value) to returned images to prevent cache
     'add_time_to_img'                       => false,

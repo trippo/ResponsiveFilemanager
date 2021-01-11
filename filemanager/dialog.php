@@ -1035,7 +1035,7 @@ if ($config['load_more']) {
                 continue;
             }
             $new_name=fix_filename($file,$config);
-            if($ftp && $file!='..' && $file!=$new_name){
+            if($ftp && $file!='..' && $file!=$new_name && !empty($config['fix_existing_files']){
                 //rename
                 rename_folder($config['current_path'].$subdir.$file,$new_name,$ftp,$config);
                 $file=$new_name;
@@ -1138,7 +1138,7 @@ if ($config['load_more']) {
                     $file_path=$config['current_path'].$rfm_subfolder.$subdir.$file;
                     //check if file have illegal caracter
 
-                    if($file!=fix_filename($file,$config)){
+                    if(!empty($config['fix_existing_files'] && $file!=fix_filename($file,$config)){
                         $file1=fix_filename($file,$config);
                         $file_path1=($config['current_path'].$rfm_subfolder.$subdir.$file1);
                         if(file_exists($file_path1)){
