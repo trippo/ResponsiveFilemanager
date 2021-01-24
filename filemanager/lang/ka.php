@@ -1,8 +1,8 @@
 <?php
 
 return array(
-
-    'Select' => 'არჩება',
+    
+    'Select' => 'არჩევა',
     'Deselect_All' => 'ყველას გაუქმება',
     'Select_All' => 'ყველას არჩევა',
     'Erase' => 'წაშლა',
