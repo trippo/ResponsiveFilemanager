@@ -1184,7 +1184,7 @@ if ($config['load_more']) {
                         $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path. $file;
 
                         if (!file_exists($src_thumb)) {
-                            if (!create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config)) {
+                            if (create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config) !== true) {
                                 $src_thumb = $mini_src = "";
                             }
                         }
