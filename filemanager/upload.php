@@ -53,7 +53,7 @@ try {
             $configMain = $config;
             $configTemp = include $path . 'config.php';
             if(is_array($configTemp) && count($configTemp) > 0){
-                $config = array_merge($configMain, $configTemp);                
+                $config = array_merge($configMain, $configTemp);
                 $config['ext'] = array_merge(
                     $config['ext_img'],
                     $config['ext_file'],
@@ -76,7 +76,6 @@ try {
     if (trans("Upload_error_messages") !== "Upload_error_messages") {
         $messages = trans("Upload_error_messages");
     }
-
     if ($config['url_upload']) {
         // make sure the length is limited to avoid DOS attacks
         if (isset($_POST['url']) && strlen($_POST['url']) < 2000) {
@@ -84,7 +83,7 @@ try {
             $urlPattern = '/^(https?:\/\/)?([\da-z\.-]+\.[a-z\.]{2,6}|[\d\.]+)([\/?=&#]{1}[\da-z\.-]+)*[\/\?]?$/i';
 
             if (preg_match($urlPattern, $url)) {
-                $temp = tempnam('/tmp','RF');
+                $temp = tempnam('/tmp', 'RF');
 
                 $ch = curl_init($url);
                 $fp = fopen($temp, 'wb');
@@ -109,6 +108,7 @@ try {
             }
         }
     }
+
 
     if ($config['mime_extension_rename']) {
         $info = pathinfo($_FILES['files']['name'][0]);
