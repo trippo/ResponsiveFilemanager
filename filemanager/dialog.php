@@ -719,12 +719,13 @@ function filenameSort($x, $y)
     global $descending;
 
     if ($x['is_dir'] !== $y['is_dir']) {
-        return $y['is_dir'];
+        $greater = $y['is_dir'];
     } else {
-        return ($descending)
+        $greater = ($descending)
             ? $x['file_lcase'] < $y['file_lcase']
             : $x['file_lcase'] >= $y['file_lcase'];
     }
+	return $greater ? 1 : -1;
 }
 
 function dateSort($x, $y)
@@ -732,12 +733,13 @@ function dateSort($x, $y)
     global $descending;
 
     if ($x['is_dir'] !== $y['is_dir']) {
-        return $y['is_dir'];
+        $greater = $y['is_dir'];
     } else {
-        return ($descending)
+        $greater = ($descending)
             ? $x['date'] < $y['date']
             : $x['date'] >= $y['date'];
     }
+	return $greater ? 1 : -1;
 }
 
 function sizeSort($x, $y)
@@ -745,12 +747,13 @@ function sizeSort($x, $y)
     global $descending;
 
     if ($x['is_dir'] !== $y['is_dir']) {
-        return $y['is_dir'];
+        $greater = $y['is_dir'];
     } else {
-        return ($descending)
+        $greater = ($descending)
             ? $x['size'] < $y['size']
             : $x['size'] >= $y['size'];
     }
+	return $greater ? 1 : -1;
 }
 
 function extensionSort($x, $y)
@@ -758,12 +761,13 @@ function extensionSort($x, $y)
     global $descending;
 
     if ($x['is_dir'] !== $y['is_dir']) {
-        return $y['is_dir'];
+        $greater = $y['is_dir'];
     } else {
-        return ($descending)
+        $greater = ($descending)
             ? $x['extension'] < $y['extension']
             : $x['extension'] >= $y['extension'];
     }
+	return $greater ? 1 : -1;
 }
 
 switch ($sort_by) {
