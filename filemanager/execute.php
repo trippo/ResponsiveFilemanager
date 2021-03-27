@@ -44,7 +44,7 @@ while ($cycle && $i < $max_cycles) {
         $configMain = $config;
         $configTemp = include $path . "config.php";
         if(is_array($configTemp) && count($configTemp) > 0){
-            $config = array_merge($configMain, $configTemp);                
+            $config = array_merge($configMain, $configTemp);
             $config['ext'] = array_merge(
                 $config['ext_img'],
                 $config['ext_file'],

@@ -45,14 +45,14 @@ return array(
     'Upload_add_files' => 'Dodaj plik(i)',
     'Upload_start' => 'Rozpocznij wgrywanie',
     'Upload_error_messages' =>array(
-        1 => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 40MB', //upload_max_filesize
-        2 => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 40MB',//MAX_FILE_SIZE - takie coś można dodać w html w formie. Dodaje sie inputa typu hidden o name="MAX_FILE_SIZE" i w value podajesz maksymalna wartosc pliku w bitach
+        1 => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 10MB', //upload_max_filesize
+        2 => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 10MB',//MAX_FILE_SIZE - takie coś można dodać w html w formie. Dodaje sie inputa typu hidden o name="MAX_FILE_SIZE" i w value podajesz maksymalna wartosc pliku w bitach
         3 => 'Przesłany plik został przesłany tylko częściowo',
         4 => 'Żaden plik nie został przesłany',
         6 => 'Brak folderu tymczasowego',
         7 => 'Nie udało się zapisać pliku na serwerze',
         8 => 'Rozszerzenie PHP zatrzymało przesyłanie pliku', // PHP nie pozwala ustalić, które rozszerzenie spowodowało zatrzymanie przesyłania pliku; pomocne może być sprawdzenie listy załadowanych rozszerzeń za pomocą phpinfo () .
-        'post_max_size' => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 40MB',
+        'post_max_size' => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 10MB',
         'max_file_size' => 'Plik jest za duży',
         'min_file_size' => 'Plik jest za mały',
         'accept_file_types' => 'Typ pliku jest niedozwolony',
