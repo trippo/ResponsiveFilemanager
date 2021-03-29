@@ -867,12 +867,13 @@ if ($config['upload_files']) { ?>
         global $descending;
 
         if ($x['is_dir'] !== $y['is_dir']) {
-            return $y['is_dir'];
+            $greater = $y['is_dir'];
         } else {
-            return ($descending)
+            $greater = ($descending)
                 ? $x['file_lcase'] < $y['file_lcase']
                 : $x['file_lcase'] >= $y['file_lcase'];
         }
+        return $greater ? 1 : -1;
     }
 
     function dateSort($x, $y)
@@ -880,25 +881,28 @@ if ($config['upload_files']) { ?>
         global $descending;
 
         if ($x['is_dir'] !== $y['is_dir']) {
-            return $y['is_dir'];
+            $greater = $y['is_dir'];
         } else {
-            return ($descending)
+            $greater = ($descending)
                 ? $x['date'] < $y['date']
                 : $x['date'] >= $y['date'];
         }
+        return $greater ? 1 : -1;
     }
+
 
     function sizeSort($x, $y)
     {
         global $descending;
 
         if ($x['is_dir'] !== $y['is_dir']) {
-            return $y['is_dir'];
+            $greater = $y['is_dir'];
         } else {
-            return ($descending)
+            $greater = ($descending)
                 ? $x['size'] < $y['size']
                 : $x['size'] >= $y['size'];
         }
+        return $greater ? 1 : -1;
     }
 
     function extensionSort($x, $y)
@@ -906,12 +910,13 @@ if ($config['upload_files']) { ?>
         global $descending;
 
         if ($x['is_dir'] !== $y['is_dir']) {
-            return $y['is_dir'];
+            $greater = $y['is_dir'];
         } else {
-            return ($descending)
+            $greater = ($descending)
                 ? $x['extension'] < $y['extension']
                 : $x['extension'] >= $y['extension'];
         }
+        return $greater ? 1 : -1;
     }
 
     switch ($sort_by) {
@@ -1514,7 +1519,7 @@ if ($config['upload_files']) { ?>
                         $creation_thumb_path = $mini_src = $src_thumb = $thumbs_path . $file;
 
                         if (!file_exists($src_thumb)) {
-                            if (!create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config)) {
+                            if (create_img($file_path, $creation_thumb_path, 122, 91, 'crop', $config) !== true) {
                                 $src_thumb = $mini_src = "";
                             }
                         }
