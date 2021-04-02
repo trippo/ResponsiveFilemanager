@@ -50,6 +50,7 @@ Creator: info@albertoperipolli.com - tr1pp0
 - SWE [Jon Sten]
 - TUR [Ahmed Faruk Bora]
 - UKR [Sergey]
+- VNM [Chiendv]
 
 ### Development
 
