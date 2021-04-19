@@ -97,7 +97,7 @@ return array(
 	'Copy_Cut_Not_Allowed' => 'Nemáte oprávnění %s.', // %s(1) = cut or copy, %s(2) = files or folders
 	'Image_Editor_No_Save' => 'Obrázek nelze uložit',
 	'Image_Editor_Exit' => "Exit",
-    'Image_Editor_Save' => "Save",
+    'Image_Editor_Save' => "Uložit",
     'Zip_No_Extract' => 'Archív nelze rozbalit. Soubor může být poškozen.',
 	'Zip_Invalid' => 'Přípona není podporována. Povolené: zip, gz, tar.',
 	'Dir_No_Write' => 'Vybraná složka není zapisovatelná.',
@@ -124,7 +124,7 @@ return array(
 	'Upload_message' => "Pro nahrání přetáhněte soubor(y) sem",
 
 	'SERVER ERROR' => "CHYBA SERVERU",
-	'forbiden' => "Zakázáno",
+	'forbidden' => "Zakázáno",
 	'wrong path' => "Neplatná cesta",
 	'wrong name' => "Neplatná název",
 	'wrong extension' => "Neplatná přípona",
