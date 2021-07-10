@@ -1491,7 +1491,7 @@ if ($config['upload_files']) { ?>
                         if (strlen($file_array['extension']) === 0) {
                             $filename = $file1;
                         }
-                        rename_file($file_path, fix_filename($filename, $config), $ftp, $config);
+                        rename_file($file_path1, fix_filename($filename, $config), $ftp, $config);
                         $file = $file1;
                         $file_array['extension'] = fix_filename($file_array['extension'], $config);
                         $file_path = $file_path1;
