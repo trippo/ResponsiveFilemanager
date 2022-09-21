@@ -76,7 +76,7 @@ tinymce.PluginManager.add('filemanager', function(editor) {
 		}
 
 		window.addEventListener('message', function receiveMessage(event) {
-			window.removeEventListener('message', receiveMessage, false);
+			//window.removeEventListener('message', receiveMessage, false);
 			if (event.data.sender === 'responsivefilemanager') {
 				callback(event.data.url);
 			}
