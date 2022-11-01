@@ -2004,7 +2004,7 @@ var encodeURL,show_animation,hide_animation,apply,apply_none,apply_img,apply_any
 			{
 				windowParent.postMessage({
 						sender: 'responsivefilemanager',
-						url: urls[0],
+						url: res,
 						field_id: external
 					},
 					'*'
