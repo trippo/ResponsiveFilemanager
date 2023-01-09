@@ -7,5 +7,5 @@
     "ext-json": "*",
     "ext-sqlite3": "*",
     "phpstan/phpstan": "1.*"
-  },
+  }
 }
