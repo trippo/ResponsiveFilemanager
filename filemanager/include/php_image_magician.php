@@ -169,7 +169,7 @@ class imageLib {
     private   $heightOriginal;
     private   $width;         # Current width (width after resize)
     private   $height;
-    private   $imageSize;
+    public   $imageSize;
     private   $fileExtension;
 
     private $debug      = true;
@@ -625,6 +625,8 @@ class imageLib {
         #               4 = Resize the image as much as possible, then crop the
         #         remainder.
     {
+        $optimalWidth = 0;
+        $optimalHeight = 0;
 
         switch (strval($option))
         {
@@ -898,7 +900,7 @@ class imageLib {
     }
 
     ## --------------------------------------------------------
-
+/*
     private function sharpen2($level)
     {
         $sharpenMatrix = array(
@@ -908,7 +910,7 @@ class imageLib {
         );
 
     }
-
+*/
 ## --------------------------------------------------------
 
     private function findSharp($orig, $final)
@@ -1075,7 +1077,7 @@ class imageLib {
             imagefilter($this->imageResized, IMG_FILTER_GRAYSCALE);
             imagefilter($this->imageResized, IMG_FILTER_CONTRAST, -15);
             imagefilter($this->imageResized, IMG_FILTER_BRIGHTNESS, 2);
-            $this->sharpen($this->width);
+            $this->sharpen();
         }
     }
 
@@ -1173,7 +1175,7 @@ class imageLib {
                 $red = ($index["red"] * 0.393 + $index["green"] * 0.769 + $index["blue"] * 0.189) / 1.351;
                 $green = ($index["red"] * 0.349 + $index["green"] * 0.686 + $index["blue"] * 0.168) / 1.203;
                 $blue = ($index["red"] * 0.272 + $index["green"] * 0.534 + $index["blue"] * 0.131) / 2.140;
-                imagecolorset($this->imageResized, $i, $red, $green, $blue);
+                imagecolorset($this->imageResized, $i, (int) $red, (int) $green, (int) $blue);
             }
 
 
@@ -1409,7 +1411,7 @@ class imageLib {
     {
         if ($this->imageResized)
         {
-
+            $degrees = 0;
             if (is_integer($value))
             {
                 $degrees = $value;
