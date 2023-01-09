@@ -8,9 +8,4 @@
     "ext-sqlite3": "*",
     "phpstan/phpstan": "1.*"
   },
-  "autoload": {
-    "psr-4": {
-      "App\\": "filemanager"
-    }
-  }
 }
