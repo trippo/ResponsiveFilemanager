@@ -36,6 +36,7 @@
     "tui-code-snippet": "^1.5.1",
     "tui-color-picker": "^2.2.3",
     "tui-image-editor": "^3.5.2",
-    "vanilla-lazyload": "^10.14.0"
+    "vanilla-lazyload": "^10.14.0",
+    "chalk": "^4.1.0"
   }
 }
