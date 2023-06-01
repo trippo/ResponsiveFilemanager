@@ -247,7 +247,7 @@ class UploadHandler
     }
 
     protected function get_upload_path($file_name = null, $version = null) {
-        $file_name = $file_name ? $file_name : '';
+        $file_name = $file_name ?: '';
         if (empty($version)) {
             $version_path = '';
         } else {
@@ -1122,7 +1122,7 @@ class UploadHandler
                     $file->size = $this->get_file_size($file_path, true);
                 }
             } else {
-                $failed_versions[] = $version ? $version : 'original';
+                $failed_versions[] = $version ?: 'original';
             }
         }
         if (count($failed_versions)) {
@@ -1421,8 +1421,8 @@ class UploadHandler
                 foreach ($upload['tmp_name'] as $index => $value) {
                     $files[] = $this->handle_file_upload(
                         $upload['tmp_name'][$index],
-                        $file_name ? $file_name : $upload['name'][$index],
-                        $size ? $size : $upload['size'][$index],
+                        $file_name ?: $upload['name'][$index],
+                        $size ?: $upload['size'][$index],
                         $upload['type'][$index],
                         isset($upload['error']) ? $upload['error'][$index] : null,
                         $index,
@@ -1434,9 +1434,9 @@ class UploadHandler
                 // $upload is a one-dimensional array:
                 $files[] = $this->handle_file_upload(
                     isset($upload['tmp_name']) ? $upload['tmp_name'] : null,
-                    $file_name ? $file_name : (isset($upload['name']) ?
+                    $file_name ?: (isset($upload['name']) ?
                         $upload['name'] : null),
-                    $size ? $size : (isset($upload['size']) ?
+                    $size ?: (isset($upload['size']) ?
                         $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
                     isset($upload['type']) ?
                         $upload['type'] : $this->get_server_var('CONTENT_TYPE'),
@@ -1447,7 +1447,7 @@ class UploadHandler
             }
         }
         $response = [$this->options['param_name'] => $files];
-        $name = $file_name ? $file_name : $upload['name'][0];
+        $name = $file_name ?: $upload['name'][0];
         $res = $this->generate_response($response, $print_response);
         if(is_file($this->get_upload_path($name))){
             $uploaded_bytes =!empty($content_range[1]) ? $this->fix_integer_overflow((int)$content_range[1]) : 0;
