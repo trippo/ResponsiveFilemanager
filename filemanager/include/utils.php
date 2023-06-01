@@ -884,7 +884,7 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
             $image_channels = 0;
             if (isset($image_properties['bits'])) {
                 $image_bits = $image_properties['bits'];
-                $image_channels = isset($image_properties['channels']) ? $image_properties['channels'] : 1;
+                $image_channels = $image_properties['channels'] ?? 1;
             }
 
             if ($image_properties[2] == IMAGETYPE_GIF) {

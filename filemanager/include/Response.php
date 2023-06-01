@@ -244,7 +244,7 @@ class Response {
 		}
 
 		if (null === $text) {
-			$this->statusText = isset(self::$statusTexts[$code]) ? self::$statusTexts[$code] : '';
+			$this->statusText = self::$statusTexts[$code] ?? '';
 
 			return $this;
 		}

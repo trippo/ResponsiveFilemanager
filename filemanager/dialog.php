@@ -26,8 +26,8 @@ if (isset($_POST['submit'])) {
     list($preferred_language) = array_values(
         array_filter(
             [
-                isset($_GET['lang']) ? $_GET['lang'] : null,
-                isset($_SESSION['RF']['language']) ? $_SESSION['RF']['language'] : null,
+                $_GET['lang'] ?? null,
+                $_SESSION['RF']['language'] ?? null,
                 $config['default_language']
             ]
         )
@@ -314,7 +314,7 @@ $get_params = [
 ];
 if (isset($_GET['CKEditorFuncNum'])) {
     $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
-    $get_params['CKEditor'] = (isset($_GET['CKEditor']) ? $_GET['CKEditor'] : '');
+    $get_params['CKEditor'] = ($_GET['CKEditor'] ?? '');
 }
 $get_params['fldr'] = '';
 
