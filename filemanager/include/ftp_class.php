@@ -5,7 +5,7 @@ Class FTPClient
 	// *** Class variables
 	private $connectionId;
 	private $loginOk = false;
-	private $messageArray = array();
+	private $messageArray = [];
 
 	public function __construct() { }
 

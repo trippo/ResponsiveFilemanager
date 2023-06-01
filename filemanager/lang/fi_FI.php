@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Valitse',
     'Deselect_All' => 'Poista kaikki valinnat',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Raahaa ja pudota tiedostoja (modernit selaimet) tai klikkaa Lisää tiedosto(ja) ja Aloita lähetys. Kun lähetys on valmis, klikkaa 'Palaa tiedostolistaan' -painiketta.",
     'Upload_add_files' => 'Lisää tiedosto(ja)',
     'Upload_start' => 'Aloita lähetys',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'Lähetetty tiedosto ylittää upload_max_filesize-direktiivin php.ini:ssä',
         2 => 'Lähetetty tiedosto ylittää MAX_FILE_SIZE-direktiivin, joka määriteltiin HTML-lomakkeessa',
         3 => 'Tiedoston lähettäminen onnistui vain osittain',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Kuva vaatii minimikorkeuden',
         'abort' => 'Tiedoston lähettäminen keskeytetty',
         'image_resize' => 'Kuvan koon muuttaminen epäonnistui'
-    ),
+    ],
     'Upload_url' => 'URL:sta',
     'Type_dir' => 'hakemisto',
     'Type' => 'Tyyppi',
@@ -143,4 +143,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Koko yhteensä"
-);
+];

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Selecionar',
     'Deselect_All' => 'Desmarcar todos',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Drag & Drop files(modern browsers) or click in upper button to Add the file(s) and click on Start upload. When the upload is complete, click the 'Return to files list' button.",
     'Upload_add_files' => 'Add file(s)',
     'Upload_start' => 'Start upload',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'O arquivo carregado excede o upload_max_filesize definido em php.ini',
         2 => 'O arquivo carregado excede o MAX_FILE_SIZE que foi especificada no formulário HTML',
         3 => 'O arquivo enviado foi enviado apenas parcialmente',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'A imagem requer uma altura mínima',
         'abort' => 'Upload de arquivo abortado',
         'image_resize' => 'Falha ao redimensionar a imagem'
-    ),
+    ],
     'Upload_url' => 'De url',
     'Type_dir' => 'dir',
     'Type' => 'Tipo',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Tamanho total",
-);
+];

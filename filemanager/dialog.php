@@ -25,11 +25,11 @@ if (isset($_POST['submit'])) {
 
     list($preferred_language) = array_values(
         array_filter(
-            array(
+            [
                 isset($_GET['lang']) ? $_GET['lang'] : null,
                 isset($_SESSION['RF']['language']) ? $_SESSION['RF']['language'] : null,
                 $config['default_language']
-            )
+            ]
         )
     );
 
@@ -124,7 +124,7 @@ $parent = $rfm_subfolder . $subdir;
 if ($ftp) {
     $cur_dir = $config['ftp_base_folder'] . $cur_dir;
     $cur_dir_thumb = $config['ftp_base_folder'] . $cur_dir_thumb;
-    $thumbs_path = str_replace(array('/..', '..'), '', $cur_dir_thumb);
+    $thumbs_path = str_replace(['/..', '..'], '', $cur_dir_thumb);
     $parent = $config['ftp_base_folder'] . $parent;
 }
 
@@ -245,7 +245,7 @@ if (isset($_GET["descending"])) {
     $descending = $_SESSION['RF']['descending'];
 }
 
-$boolarray = array(false => 'false', true => 'true');
+$boolarray = [false => 'false', true => 'true'];
 
 $return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1";
 
@@ -256,7 +256,7 @@ if (!isset($_GET['type'])) {
 $extensions = null;
 if (isset($_GET['extensions'])) {
     $extensions = json_decode(urldecode($_GET['extensions']));
-    $ext_tmp = array();
+    $ext_tmp = [];
     foreach ($extensions as $extension) {
         $extension = fix_strtolower($extension);
         if (check_file_extension($extension, $config)) {
@@ -300,7 +300,7 @@ if (!$apply) {
     $apply = $apply_type;
 }
 
-$get_params = array(
+$get_params = [
     'editor' => $editor,
     'type' => $type_param,
     'lang' => $lang,
@@ -311,7 +311,7 @@ $get_params = array(
     'multiple' => $multiple,
     'relative_url' => $return_relative_url,
     'akey' => (isset($_GET['akey']) && $_GET['akey'] != '' ? $_GET['akey'] : 'key')
-);
+];
 if (isset($_GET['CKEditorFuncNum'])) {
     $get_params['CKEditorFuncNum'] = $_GET['CKEditorFuncNum'];
     $get_params['CKEditor'] = (isset($_GET['CKEditor']) ? $_GET['CKEditor'] : '');
@@ -478,8 +478,8 @@ echo $sort_by; ?>"/>
 echo $descending ? 1 : 0; ?>"/>
 <input type="hidden" id="current_url" value="<?php
 echo str_replace(
-    array('&filter=' . $filter, '&sort_by=' . $sort_by, '&descending=' . intval($descending)),
-    array(''),
+    ['&filter=' . $filter, '&sort_by=' . $sort_by, '&descending=' . intval($descending)],
+    [''],
     $config['base_url'] . htmlspecialchars($_SERVER['REQUEST_URI'])
 ); ?>"/>
 <input type="hidden" id="lang_show_url" value="<?php
@@ -772,7 +772,7 @@ if ($config['upload_files']) { ?>
     $n_files = count($files);
 
     //php sorting
-    $sorted = array();
+    $sorted = [];
     //$current_folder=array();
     //$prev_folder=array();
     $current_files_number = 0;
@@ -791,7 +791,7 @@ if ($config['upload_files']) { ?>
                 $file_ext = trans('Type_dir');
                 $is_dir = true;
             }
-            $sorted[$k] = array(
+            $sorted[$k] = [
                 'is_dir' => $is_dir,
                 'file' => $file['name'],
                 'file_lcase' => strtolower($file['name']),
@@ -799,7 +799,7 @@ if ($config['upload_files']) { ?>
                 'size' => $size,
                 'permissions' => $file['permissions'],
                 'extension' => fix_strtolower($file_ext)
-            );
+            ];
         } else {
             if ($file != "." && $file != "..") {
                 if (is_dir($config['current_path'] . $rfm_subfolder . $subdir . $file)) {
@@ -828,7 +828,7 @@ if ($config['upload_files']) { ?>
                         $size = 0;
                     }
                     $file_ext = trans('Type_dir');
-                    $sorted[$k] = array(
+                    $sorted[$k] = [
                         'is_dir' => true,
                         'file' => $file,
                         'file_lcase' => strtolower($file),
@@ -836,7 +836,7 @@ if ($config['upload_files']) { ?>
                         'size' => $size,
                         'permissions' => '',
                         'extension' => fix_strtolower($file_ext)
-                    );
+                    ];
 
                     if ($config['show_folder_size']) {
                         $sorted[$k]['nfiles'] = $nfiles;
@@ -848,7 +848,7 @@ if ($config['upload_files']) { ?>
                     $date = filemtime($file_path);
                     $size = filesize($file_path);
                     $file_ext = substr(strrchr($file, '.'), 1);
-                    $sorted[$k] = array(
+                    $sorted[$k] = [
                         'is_dir' => false,
                         'file' => $file,
                         'file_lcase' => strtolower($file),
@@ -856,7 +856,7 @@ if ($config['upload_files']) { ?>
                         'size' => $size,
                         'permissions' => '',
                         'extension' => strtolower($file_ext)
-                    );
+                    ];
                 }
             }
         }
@@ -914,7 +914,7 @@ if ($config['upload_files']) { ?>
     }
 
     if ($subdir != "") {
-        $sorted = array_merge(array(array('file' => '..')), $sorted);
+        $sorted = array_merge([['file' => '..']], $sorted);
     }
 
     $files = $sorted;
@@ -1421,7 +1421,7 @@ if ($config['upload_files']) { ?>
                 }
 
 
-                $files_prevent_duplicate = array();
+                $files_prevent_duplicate = [];
                 foreach ($files
 
                 as $nu => $file_array) {

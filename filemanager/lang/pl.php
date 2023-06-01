@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Wybierz',
     'Deselect_All' => 'Odznacz wszystkie',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Usuń zaznaczenie wszystkich plików przeciągnij i upuść (nowoczesne przeglądarki) lub kliknij górny przycisk, aby dodać plik (i) i kliknij Rozpocznij przesyłanie. Po zakończeniu przesyłania kliknij przycisk „Powrót do listy plików”.",
     'Upload_add_files' => 'Dodaj plik(i)',
     'Upload_start' => 'Rozpocznij wgrywanie',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 10MB', //upload_max_filesize
         2 => 'Przesyłany plik jest zbyt duży. Maksymalny rozmiar pliku to 10MB',//MAX_FILE_SIZE - takie coś można dodać w html w formie. Dodaje sie inputa typu hidden o name="MAX_FILE_SIZE" i w value podajesz maksymalna wartosc pliku w bitach
         3 => 'Przesłany plik został przesłany tylko częściowo',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Obraz ma zbyt małą wysokość',
         'abort' => 'Przesyłanie pliku przerwane',
         'image_resize' => 'Nie można zmienić rozmiaru obrazu'
-    ),
+    ],
     'Upload_url' => 'Z adresu URL',
     'Type_dir' => 'FLD',
     'Type' => 'Roz.',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Całkowity rozmiar",
-);
+];

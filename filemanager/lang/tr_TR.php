@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Seç',
     'Deselect_All' => 'Hiçbirini seçme',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Dosyaları sürükleyip bırakın (modern tarayıcılar) veya dosya ekleye tıklayarak dosyaları ekleyin ve Yüklemeyi başlat'a tıklayın. Yükleme tamamlandığında, 'Dosya listesine dön' düğmesini tıklayın.",
     'Upload_add_files' => 'Dosya(ları) Ekle',
     'Upload_start' => 'Yüklemeyi Başlat',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Resim minimum yükseklik gerektirir',
         'abort' => 'Dosya yükleme iptal edildi',
         'image_resize' => 'Resim yeniden boyutlandırılamadı'
-    ),
+    ],
     'Upload_url' => 'URL’den',
     'Type_dir' => 'Dizin',
     'Type' => 'Tür',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Total size",
-);
+];

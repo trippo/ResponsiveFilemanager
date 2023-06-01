@@ -280,7 +280,7 @@ class FtpClient implements Countable
             throw new FtpException('Unable to list directory');
         }
 
-        $result  = array();
+        $result  = [];
         $dir_len = strlen($directory);
 
         // if it's the current
@@ -660,7 +660,7 @@ class FtpClient implements Countable
         }
 
         $list  = $this->ftp->rawlist($directory);
-        $items = array();
+        $items = [];
 
         if (!$list) {
             return $items;
@@ -760,7 +760,7 @@ class FtpClient implements Countable
      */
     public function parseRawList(array $rawlist)
     {
-        $items = array();
+        $items = [];
         $path  = '';
 
         foreach ($rawlist as $key => $child) {

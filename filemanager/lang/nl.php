@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Selecteren',
     'Deselect_All' => 'Deselect All',
@@ -45,7 +45,7 @@ return array(
     'Upload_base_help' => "Drag & Drop bestanden (moderne browsers) of klik op de bovenste knop om het bestand (en) toe te voegen en klik op Begin uploaden. Wanneer het uploaden is voltooid, klikt u op de knop 'Terug naar bestanden'.",
     'Upload_add_files' => 'Voeg bestanden toe',
     'Upload_start' => 'Begin uploaden',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'Bestandsgrootte is te groot.',
         2 => 'Bestandsgrootte is te groot.',
         3 => 'Bestand is slechts gedeeltelijk geupload.',
@@ -64,7 +64,7 @@ return array(
         'min_height' => 'Afbeelding niet hoog genoeg.',
         'abort' => 'Uploaden onderbroken.',
         'image_resize' => 'Resizen is mislukt.'
-    ),
+    ],
     'Upload_url' => 'Van url',
     'Type_dir' => 'map',
     'Type' => 'Type',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Total size",
-);
+];

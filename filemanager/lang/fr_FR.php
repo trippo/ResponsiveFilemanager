@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Sélectionner',
     'Deselect_All' => 'Deselect All',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => 'Glisser-Déposer des fichiers (navigateurs récents) ou cliquer sur le bontons en haut pour ajouter des fichiers. Cliquer sur "Envoyer les fichiers". Lorsque le chargement est complet, cliquer sur "Revenir à la liste des fichiers".',
     'Upload_add_files' => 'Ajouter des fichiers',
     'Upload_start' => 'Envoyer les fichiers',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'La taille du fichier dépasse la limite fixée par le paramètre upload_max_filesize dans php.ini',
         2 => 'La taille du fichier dépasse la limite fixée par le paramètre MAX_FILE_SIZE du formulaire',
         3 => 'Le fichier n\'a pas été correctement téléchargé',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'La hauteur de l\'image est inférieure à la limite minimum autorisée',
         'abort' => 'Téléchargement des fichiers annulé',
         'image_resize' => 'Impossible de redimensionner l\'image'
-    ),
+    ],
     'Upload_url' => 'Depuis une URL',
     'Type_dir' => 'dir',
     'Type' => 'Type',
@@ -144,4 +144,4 @@ return array(
     'GB' => "Go",
     'TB' => "To",
     'total size' => "Taille totale",
-);
+];

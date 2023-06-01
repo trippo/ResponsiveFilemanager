@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Tallózás',
     'Deselect_All' => 'Kijelölés törlése',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Húzza ide a feltölteni kívánt fájlokat, vagy kattintson a 'Fájl(ok) hozzáadása gombra. Ha kiválasztotta a fájlokat kattintson a 'Feltöltés indítása' gomba. Miután elkészült a feltöltés kattintson a fenti 'Vissza a fájllistához' gombra.",
     'Upload_add_files' => 'Fájl(ok) hozzáadása',
     'Upload_start' => 'Feltöltés elindítása',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'A kép mérete nem éri el a minimális magasságot!',
         'abort' => 'File upload aborted',
         'image_resize' => 'A kép átméretézése sikertelen!'
-    ),
+    ],
     'Upload_url' => 'Feltöltés URL-ről',
     'Type_dir' => 'Mappa',
     'Type' => 'Típus',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Total size",
-);
+];
