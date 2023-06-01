@@ -1294,7 +1294,7 @@ function is_php($version = '5.0.0')
     $version = (string)$version;
 
     if (!isset($phpVer[$version])) {
-        $phpVer[$version] = (version_compare(PHP_VERSION, $version) < 0) ? false : true;
+        $phpVer[$version] = version_compare(PHP_VERSION, $version) >= 0;
     }
 
     return $phpVer[$version];

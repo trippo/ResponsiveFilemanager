@@ -491,7 +491,7 @@ class FtpClient implements Countable
      */
     public function isEmpty($directory)
     {
-        return $this->count($directory, null, false) === 0 ? true : false;
+        return $this->count($directory, null, false) === 0;
     }
 
     /**

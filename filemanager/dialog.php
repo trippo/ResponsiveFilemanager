@@ -247,7 +247,7 @@ if (isset($_GET["descending"])) {
 
 $boolarray = array(false => 'false', true => 'true');
 
-$return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1" ? true : false;
+$return_relative_url = isset($_GET['relative_url']) && $_GET['relative_url'] == "1";
 
 if (!isset($_GET['type'])) {
     $_GET['type'] = 0;
@@ -1019,7 +1019,7 @@ if ($config['upload_files']) { ?>
                                 <?php
                                 if ($_GET['type'] != 1 && $_GET['type'] != 3 && $config['show_filter_buttons']) { ?>
                                     <?php
-                                    if (count($config['ext_file']) > 0 or false) { ?>
+                                    if (count($config['ext_file']) > 0) { ?>
                                         <input id="select-type-1" name="radio-sort" type="radio"
                                                data-item="ff-item-type-1" checked="checked" class="hide"/>
                                         <label id="ff-item-type-1" title="<?php
@@ -1028,7 +1028,7 @@ if ($config['upload_files']) { ?>
                                     <?php
                                     } ?>
                                     <?php
-                                    if (count($config['ext_img']) > 0 or false) { ?>
+                                    if (count($config['ext_img']) > 0) { ?>
                                         <input id="select-type-2" name="radio-sort" type="radio"
                                                data-item="ff-item-type-2" class="hide"/>
                                         <label id="ff-item-type-2" title="<?php
@@ -1037,7 +1037,7 @@ if ($config['upload_files']) { ?>
                                     <?php
                                     } ?>
                                     <?php
-                                    if (count($config['ext_misc']) > 0 or false) { ?>
+                                    if (count($config['ext_misc']) > 0) { ?>
                                         <input id="select-type-3" name="radio-sort" type="radio"
                                                data-item="ff-item-type-3" class="hide"/>
                                         <label id="ff-item-type-3" title="<?php
@@ -1046,7 +1046,7 @@ if ($config['upload_files']) { ?>
                                     <?php
                                     } ?>
                                     <?php
-                                    if (count($config['ext_video']) > 0 or false) { ?>
+                                    if (count($config['ext_video']) > 0) { ?>
                                         <input id="select-type-4" name="radio-sort" type="radio"
                                                data-item="ff-item-type-4" class="hide"/>
                                         <label id="ff-item-type-4" title="<?php
@@ -1055,7 +1055,7 @@ if ($config['upload_files']) { ?>
                                     <?php
                                     } ?>
                                     <?php
-                                    if (count($config['ext_music']) > 0 or false) { ?>
+                                    if (count($config['ext_music']) > 0) { ?>
                                         <input id="select-type-5" name="radio-sort" type="radio"
                                                data-item="ff-item-type-5" class="hide"/>
                                         <label id="ff-item-type-5" title="<?php
@@ -1146,7 +1146,7 @@ if ($config['upload_files']) { ?>
                         <li class="text-center"><strong><?php
                                 echo trans('Sorting') ?></strong></li>
                         <li><a class="sorter sort-name <?php
-                            if ($sort_by == "name") {
+                            if ($sort_by === "name") {
                                 echo ($descending) ? "descending" : "ascending";
                             } ?>" href="javascript:void('')" data-sort="name"><?php
                                 echo trans('Filename'); ?></a></li>

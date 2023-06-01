@@ -837,7 +837,7 @@ class UploadHandler
             $image = new \Imagick();
             if (!empty($this->options['imagick_resource_limits'])) {
                 foreach ($this->options['imagick_resource_limits'] as $type => $limit) {
-                    $image->setResourceLimit($type, $limit);
+                    $image::setResourceLimit($type, $limit);
                 }
             }
             $image->readImage($file_path);

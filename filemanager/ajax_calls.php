@@ -4,7 +4,7 @@ $config = include 'config/config.php';
 
 require_once 'include/utils.php';
 
-if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
+if ($_SESSION['RF']["verify"] !== "RESPONSIVEfilemanager") {
     response(trans('forbidden').AddErrorLocation())->send();
     exit;
 }
