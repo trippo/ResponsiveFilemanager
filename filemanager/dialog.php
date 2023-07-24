@@ -870,8 +870,8 @@ if ($config['upload_files']) { ?>
                     return $y['is_dir'] ? 1 : -1;
                 } else {
                     return ($descending)
-                        ? $x['size'] < $y['size']
-                        : $x['size'] >= $y['size'];
+                        ?  $x['date'] <=> $y['date']
+                        :  $y['date'] <=> $x['date'];
                 }
             });
             break;
@@ -882,8 +882,8 @@ if ($config['upload_files']) { ?>
                     return $y['is_dir'] ? 1 : -1;
                 } else {
                     return ($descending)
-                        ? $x['date'] < $y['date']
-                        : $x['date'] >= $y['date'];
+                        ?  $x['size'] <=> $y['size']
+                        :  $y['size'] <=> $x['size'];
                 }
             });
             break;
@@ -894,8 +894,8 @@ if ($config['upload_files']) { ?>
                     return $y['is_dir'] ? 1 : -1;
                 } else {
                     return ($descending)
-                        ? ($x['extension'] < $y['extension'] ? 1 : 0)
-                        : ($x['extension'] >= $y['extension'] ? 1 : 0);
+                        ?  $x['extension'] <=> $y['extension']
+                        :  $y['extension'] <=> $x['extension'];
                 }
             });
             break;
