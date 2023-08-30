@@ -13,6 +13,8 @@
 class UploadHandler
 {
 
+    public $response = array();
+
     protected $options;
 
     // PHP File Upload error message codes:
@@ -44,9 +46,7 @@ class UploadHandler
     const IMAGETYPE_WEBP = 4;
 
     protected $image_objects = array();
-
     public function __construct($options = null, $initialize = true, $error_messages = null) {
-        $this->response = array();
         $this->options = array(
             'script_url' => $this->get_full_url().'/'.$this->basename($this->get_server_var('SCRIPT_NAME')),
             'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')).'/files/',
@@ -1614,7 +1614,7 @@ class UploadHandler
         return $this->generate_response($response, $print_response);
     }
 
-    protected function basename($filepath, $suffix = null) {
+    protected function basename($filepath, $suffix = '') {
         $splited = preg_split('/\//', rtrim ($filepath, '/ '));
         return substr(basename('X'.$splited[count($splited)-1], $suffix), 1);
     }
