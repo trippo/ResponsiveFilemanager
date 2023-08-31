@@ -1,5 +1,63 @@
 Responsive Filemanager Changelog 
 
+*********************************************************
+*  RFM 9.14.0
+*********************************************************
+- add support to tinymce 5 (thanks to mikolaj pich)
+- change image editor to Toast UI Image Editor (thanks to jack denning)
+- fix Critical Security (thanks to Fariskhi Vidyan for reporting)
+- add ckEditor on html file edit
+- update context menu (thanks to joshua schmidtke)
+- fix upload an image with malicius code inside
+- added compatibility with memory_limit expressed in G
+- fix relative url return
+- fix error on file duplication
+- fix error with memory usage (thanks to tim mclaughlin)
+- fix a vulnerability on url upload (thanks to donot-wong for reporting)
+- fix return on upload in same cases
+- other fixes (thanks to all for reporting)
+
+*********************************************************
+*  RFM 9.13.4
+*********************************************************
+- fix Directory Traversal Allows to Read Any File (thanks to Simon Uvarov for reporting)
+- fix Path Traversal While Upacking Archives (thanks to Simon Uvarov for reporting)
+- Fix foreach warning on URL upload
+- Fix http https URL upload
+- add toggle on config for extract_files
+- prevent image creation for broken links in URL upload (thanks to davodavodavo3)
+- Migrate to yarn on development (thanks to mklkj)
+- code refactoring
+
+
+
+*********************************************************
+*  RFM 9.13.3
+*********************************************************
+- support to files without extension
+- fix Path Traversal vulnerability and url validation
+- fix vulnerability that permits to see server files
+- fix double file and folder rename
+- refactoring
+- update Hungarian, German and Thai languages
+- fix nested php tags in download permission
+- change jPlayer script to cdn
+
+
+*********************************************************
+*  RFM 9.13.2
+*********************************************************
+- empty filename support (like .htaccess, .env,...)
+- fix download bug
+- refactoring check extension
+
+
+*********************************************************
+*  RFM 9.13.1
+*********************************************************
+- folder creation fix
+- blacklist fix
+- php < 5.6 compatibility fix
 
 *********************************************************
 *  RFM 9.13.0

@@ -7,12 +7,12 @@
  * เวลา: 2:52
  */
 
-return array(
+return [
 
     'Select' => 'เลือก',
     'Deselect_All' => 'Deselect All',
-	'Select_All' => 'Select All',
-	'Erase' => 'ลบ',
+    'Select_All' => 'Select All',
+    'Erase' => 'ลบ',
     'Open' => 'เปิด',
     'Confirm_del' => 'คุณต้องการลบไฟล์นี้ ใช่ หรือ ไม่ ?',
     'All' => 'ทั้งหมด',
@@ -49,10 +49,10 @@ return array(
     'Swipe_help' => 'Swipe the name of file/folder to show options',
     'Upload_base' => 'อัพโหลดแบบธรรมดา',
     'Upload_url' => 'อัพโหลดจาก URL',
-    'Upload_base_help' => "Drag & Drop files(modern browsers) or click in upper button to Add the file(s) and click on Start upload. When the upload is complete, click the 'Return to files list' button.",
-    'Upload_add_files' => 'Add file(s)',
-    'Upload_start' => 'Start upload',
-    'Upload_error_messages' =>array(
+    'Upload_base_help' => "สามารถอัพโหลดไฟล์แบบลากวางได้ หรือคลิกที่ปุ่มด้านบนเพื่อเพิ่มไฟล์และคลิกอัพโหลด เมื่อการอัปโหลดเสร็จสมบูรณ์คลิกปุ่ม \"กลับสู่หน้ารายการ\"",
+    'Upload_add_files' => 'เลือกไฟล์ (สามารเลือกได้หลายไฟล์)',
+    'Upload_start' => 'อัพโหลด',
+    'Upload_error_messages' => [
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -71,8 +71,7 @@ return array(
         'min_height' => 'Image requires a minimum height',
         'abort' => 'File upload aborted',
         'image_resize' => 'Failed to resize image'
-    ),
-    'Upload_url' => 'From url',
+    ],
     'Type_dir' => 'dir',
     'Type' => 'ชนิด',
     'Dimension' => 'Dimension',
@@ -94,16 +93,18 @@ return array(
     'Cut' => 'ตัด',
     'Paste' => 'วาง',
     'CB' => 'CB', // clipboard
-    'Paste_Here' => 'Paste to this directory',
+    'Paste_Here' => 'วางในโพลเดอร์นี้',
     'Paste_Confirm' => 'Are you sure you want to paste to this directory? This will overwrite existing files/folders if encountered any.',
     'Paste_Failed' => 'Failed to paste file(s)',
-    'Clear_Clipboard' => 'Clear clipboard',
+    'Clear_Clipboard' => 'ลบที่ก็อปปี้ไว้',
     'Clear_Clipboard_Confirm' => 'Are you sure you want to clear the clipboard?',
     'Files_ON_Clipboard' => 'There are files on the clipboard.',
     'Copy_Cut_Size_Limit' => 'The selected files/folders are too big to %1$s. Limit: %2$d MB/operation', // %1$s = cut or copy, %2$d = max size
     'Copy_Cut_Count_Limit' => 'You selected too many files/folders to %1$s. Limit: %2$d files/operation', // %1$s = cut or copy, %2$d = max count
     'Copy_Cut_Not_Allowed' => 'You are not allowed to %1$s %2$s.', // %12$s = cut or copy, %2$s = files or folders
-    'Aviary_No_Save' => 'Could not save image',
+    'Image_Editor_No_Save' => 'Could not save image',
+    'Image_Editor_Exit' => "Exit",
+    'Image_Editor_Save' => "Save",
     'Zip_No_Extract' => 'Could not extract. File might be corrupt.',
     'Zip_Invalid' => 'This extension is not supported. Valid: zip, gz, tar.',
     'Dir_No_Write' => 'The directory you selected is not writable.',
@@ -130,7 +131,7 @@ return array(
     'Upload_message' => "ลากไฟล์มาวางหรือคลิกที่นี่ เพื่ออัพโหลด",
 
     'SERVER ERROR' => "SERVER ERROR",
-    'forbiden' => "Forbiden",
+    'forbidden' => "Forbiden",
     'wrong path' => "Wrong path",
     'wrong name' => "Wrong name",
     'wrong extension' => "Wrong extension",
@@ -150,4 +151,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Total size",
-);
+];

@@ -1,13 +1,21 @@
+yarn-error.log
+npm-debug.log
+.DS_Store
+yarn.lock
+
 # Ignore the contents of the upload and thumbnail directories
 source/*
-!source/Source.txt
+!source/source.txt
 thumbs/*
 !thumbs/thumbs.txt
-bower_components
 node_modules
 
-#Exclude compiled scripts and styles from repository
+# Exclude compiled scripts and styles from repository
 filemanager/js/*
 filemanager/css/*
 resources/tmp/*
 filemanager/plugin.min.js
+tinymce/plugins/responsivefilemanager/plugin.min.js
+
+# PHPStormProject
+/.idea/
