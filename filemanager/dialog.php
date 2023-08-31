@@ -429,7 +429,7 @@ echo $view; ?>"/>
 <input type="hidden" id="subdir" value="<?php
 echo $subdir; ?>"/>
 <input type="hidden" id="field_id" value="<?php
-echo str_replace(['[', ']'], ['\[', '\]'], $field_id); ?>"/>
+echo ($field_id ? str_replace(['[', ']'], ['\[', '\]'], $field_id) : ''); ?>"/>
 <input type="hidden" id="multiple" value="<?php
 echo $multiple; ?>"/>
 <input type="hidden" id="type_param" value="<?php
