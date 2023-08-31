@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Chọn',
     'Deselect_All' => 'Bỏ chọn tất cả',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Kéo và Thả file hoặc click vào khu vực phía trên (modern browsers) và chọn file. Sau khi upload thành công, click vào nút 'Quay lại danh sách file'.",
     'Upload_add_files' => 'Tải file lên',
     'Upload_start' => 'Bắt đầu upload',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'Dung lượng file vượt quá giới hạn (upload_max_filesize trong php.ini)',
         2 => 'Dung lượng file vượt quá giới hạn (MAX_FILE_SIZE trong HTML form)',
         3 => 'The uploaded file was only partially uploaded',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Chiều cao ảnh quá bé',
         'abort' => 'Upload file bị gián đoạn',
         'image_resize' => 'Lỗi khi resize ảnh'
-    ),
+    ],
     'Upload_url' => 'Từ url',
     'Type_dir' => 'thư mục',
 	'Type' => 'Loại File',
@@ -143,4 +143,4 @@ return array(
 	'GB' => "GB",
 	'TB' => "TB",
     'total size' => "Tổng dung lượng",
-);
+];

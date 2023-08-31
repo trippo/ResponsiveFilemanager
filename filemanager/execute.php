@@ -78,11 +78,11 @@ function returnPaths($_path, $_name, $config)
             exit;
         }
     }
-    return array($path, $path_thumb, $name);
+    return [$path, $path_thumb, $name];
 }
 
 if(isset($_POST['paths'])){
-	$paths = $paths_thumb = $names = array();
+	$paths = $paths_thumb = $names = [];
 	foreach ($_POST['paths'] as $key => $path) {
 		if (!checkRelativePath($path))
 		{
@@ -209,7 +209,7 @@ if (isset($_GET['action'])) {
             }
 
             if (!isset($config['editable_text_file_exts']) || !is_array($config['editable_text_file_exts'])) {
-                $config['editable_text_file_exts'] = array();
+                $config['editable_text_file_exts'] = [];
             }
 
             // check if user supplied extension
@@ -439,7 +439,7 @@ if (isset($_GET['action'])) {
         case 'chmod':
             $mode = $_POST['new_mode'];
             $rec_option = $_POST['is_recursive'];
-            $valid_options = array('none', 'files', 'folders', 'both');
+            $valid_options = ['none', 'files', 'folders', 'both'];
             $chmod_perm = ($_POST['folder'] ? $config['chmod_dirs'] : $config['chmod_files']);
 
             // check perm

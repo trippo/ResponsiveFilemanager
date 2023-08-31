@@ -54,13 +54,13 @@ function get_png_imageinfo($file) {
     }
 
     $color = $info['color'];
-    $type = array(
+    $type = [
         0 => 'Greyscale',
         2 => 'Truecolour',
         3 => 'Indexed-colour',
         4 => 'Greyscale with alpha',
         6 => 'Truecolour with alpha'
-    );
+    ];
 
     if (empty($type[$color])) {
         return false; // invalid color value

@@ -16,7 +16,7 @@ if (!function_exists('response')) {
      *
      * @return \Response|\Illuminate\Http\Response
      */
-    function response($content = '', $statusCode = 200, $headers = array())
+    function response($content = '', $statusCode = 200, $headers = [])
     {
         $responseClass = class_exists('Illuminate\Http\Response') ? '\Illuminate\Http\Response' : 'Response';
 
@@ -80,7 +80,7 @@ if (!function_exists('trans')) {
     }
 
     if (!is_array($lang_vars)) {
-        $lang_vars = array();
+        $lang_vars = [];
     }
 }
 
@@ -415,7 +415,7 @@ function ftp_con($config)
  * @param array $config
  * @return bool
  */
-function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop", $config = array())
+function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option = "crop", $config = [])
 {
     $result = false;
     if (isset($config['ftp_host']) && $config['ftp_host']) {
@@ -464,7 +464,7 @@ function create_img($imgfile, $imgthumb, $newwidth, $newheight = null, $option =
  */
 function makeSize($size)
 {
-    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
     $u = 0;
     while ((round($size / 1024) > 0) && ($u < 4)) {
         $size = $size / 1024;
@@ -506,7 +506,7 @@ function folder_info($path, $count_hidden = true)
         }
     }
 
-    return array($total_size, $files_count, $folders_count);
+    return [$total_size, $files_count, $folders_count];
 }
 
 /**
@@ -747,7 +747,7 @@ function fix_filename($str, $config, $is_folder = false)
         $str = preg_replace("/[^a-zA-Z0-9\.\[\]_| -]/", '', $str);
     }
 
-    $str = str_replace(array('"', "'", "/", "\\"), "", $str);
+    $str = str_replace(['"', "'", "/", "\\"], "", $str);
     $str = strip_tags($str);
 
     // Empty or incorrectly transliterated filename.
@@ -859,10 +859,10 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
             $mem = ini_get('memory_limit');
             $memory_limit = 0;
             if (strpos($mem, 'M') !== false) {
-                $memory_limit = abs(intval(str_replace(array('M'), '', $mem) * 1024 * 1024));
+                $memory_limit = abs(intval(str_replace(['M'], '', $mem) * 1024 * 1024));
             }
             if (strpos($mem, 'G') !== false) {
-                $memory_limit = abs(intval(str_replace(array('G'), '', $mem) * 1024 * 1024 * 1024));
+                $memory_limit = abs(intval(str_replace(['G'], '', $mem) * 1024 * 1024 * 1024));
             }
 
             if (($image_properties = getimagesize($img)) === false) {
@@ -884,7 +884,7 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
             $image_channels = 0;
             if (isset($image_properties['bits'])) {
                 $image_bits = $image_properties['bits'];
-                $image_channels = isset($image_properties['channels']) ? $image_properties['channels'] : 1;
+                $image_channels = $image_properties['channels'] ?? 1;
             }
 
             if ($image_properties[2] == IMAGETYPE_GIF) {
@@ -1014,12 +1014,12 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
 function get_file_by_url($url)
 {
     if (ini_get('allow_url_fopen')) {
-        $arrContextOptions = array(
-            "ssl" => array(
+        $arrContextOptions = [
+            "ssl" => [
                 "verify_peer" => false,
                 "verify_peer_name" => false,
-            ),
-        );
+            ],
+        ];
         return file_get_contents($url, false, stream_context_create($arrContextOptions));
     }
     if (!function_exists('curl_version')) {
@@ -1294,7 +1294,7 @@ function is_php($version = '5.0.0')
     $version = (string)$version;
 
     if (!isset($phpVer[$version])) {
-        $phpVer[$version] = (version_compare(PHP_VERSION, $version) < 0) ? false : true;
+        $phpVer[$version] = version_compare(PHP_VERSION, $version) >= 0;
     }
 
     return $phpVer[$version];

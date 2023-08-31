@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Selectează',
     'Deselect_All' => 'Deselect All',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Adaugă fișiere (drag & drop - browsere moderne) sau click pe butonul Adaugă fișier(e), de mai sus apoi pe butonul Start upload. După ce upload-ul este finalizat, apăsați pe butonul Înapoi la lista de fișiere.",
     'Upload_add_files' => 'Adaugă fișier(e)',
     'Upload_start' => 'Start upload',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'Dimensiunea fișierului uploadat depășește valoarea din directiva upload_max_filesize din fișierul php.ini',
         2 => 'Dimensiunea fișierului uploadat depășește valoarea din directiva MAX_FILE_SIZE specificată în formularul HTML',
         3 => 'Fișierul uploadat a fost încărcat parțial ',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Rezoluția imaginii este mai mică decât înălțimea minimă necesară',
         'abort' => 'Procesul de upload a fost întrerupt',
         'image_resize' => 'Imaginea nu a putut fi redimensionată'
-    ),
+    ],
     'Upload_url' => 'Din url',
     'Type_dir' => 'dir',
     'Type' => 'Tip',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Dimensiune totală",
-);
+];

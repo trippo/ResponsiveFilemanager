@@ -56,7 +56,7 @@ define('DEBUG_ERROR_MESSAGE', false); // TRUE or FALSE
 |    |   |   |   |   |- plugin.min.js
 */
 
-$config = array(
+$config = [
 
     /*
     |--------------------------------------------------------------------------
@@ -186,7 +186,7 @@ $config = array(
     |
     */
 
-    'access_keys' => array(),
+    'access_keys' => [],
 
     //--------------------------------------------------------------------------------------------------------
     // YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS
@@ -353,21 +353,21 @@ $config = array(
     'download_files'			  => true, // allow download files or just preview
 
     // you can preview these type of files if $preview_text_files is true
-    'previewable_text_file_exts'              => array( "bsh", "c","css", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml","xsl",'txt', 'log','' ),
+    'previewable_text_file_exts'              => ["bsh", "c","css", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml","xsl",'txt', 'log',''],
 
     // you can edit these type of files if $edit_text_files is true (only text based files)
     // you can create these type of files if $config['create_text_files'] is true (only text based files)
     // if you want you can add html,css etc.
     // but for security reasons it's NOT RECOMMENDED!
-    'editable_text_file_exts'                 => array( 'txt', 'log', 'xml', 'html', 'css', 'htm', 'js','' ),
+    'editable_text_file_exts'                 => ['txt', 'log', 'xml', 'html', 'css', 'htm', 'js',''],
 
-    'jplayer_exts'                            => array("mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav"),
+    'jplayer_exts'                            => ["mp4","flv","webmv","webma","webm","m4a","m4v","ogv","oga","mp3","midi","mid","ogg","wav"],
 
-    'cad_exts'                                => array('dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'svg'),
+    'cad_exts'                                => ['dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'svg'],
 
     // Preview with Google Documents
     'googledoc_enabled'                       => true,
-    'googledoc_file_exts'                     => array( 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx' , 'pdf', 'odt', 'odp', 'ods'),
+    'googledoc_file_exts'                     => ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx' , 'pdf', 'odt', 'odp', 'ods'],
 
     // defines size limit for paste in MB / operation
     // set 'FALSE' for no limit
@@ -380,11 +380,11 @@ $config = array(
     //**********************
     //Allowed extensions (lowercase insert)
     //**********************
-    'ext_img'                                 => array( 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'ico', 'webp' ), //Images
-    'ext_file'                                => array( 'doc', 'docx', 'rtf', 'pdf', 'xls', 'xlsx', 'txt', 'csv', 'html', 'xhtml', 'psd', 'sql', 'log', 'fla', 'xml', 'ade', 'adp', 'mdb', 'accdb', 'ppt', 'pptx', 'odt', 'ots', 'ott', 'odb', 'odg', 'otp', 'otg', 'odf', 'ods', 'odp', 'css', 'ai', 'kmz','dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'tiff',''), //Files
-    'ext_video'                               => array( 'mov', 'mpeg', 'm4v', 'mp4', 'avi', 'mpg', 'wma', "flv", "webm" ), //Video
-    'ext_music'                               => array( 'mp3', 'mpga', 'm4a', 'ac3', 'aiff', 'mid', 'ogg', 'wav' ), //Audio
-    'ext_misc'                                => array( 'zip', 'rar', 'gz', 'tar', 'iso', 'dmg' ), //Archives
+    'ext_img'                                 => ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'ico', 'webp'], //Images
+    'ext_file'                                => ['doc', 'docx', 'rtf', 'pdf', 'xls', 'xlsx', 'txt', 'csv', 'html', 'xhtml', 'psd', 'sql', 'log', 'fla', 'xml', 'ade', 'adp', 'mdb', 'accdb', 'ppt', 'pptx', 'odt', 'ots', 'ott', 'odb', 'odg', 'otp', 'otg', 'odf', 'ods', 'odp', 'css', 'ai', 'kmz','dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'tiff',''], //Files
+    'ext_video'                               => ['mov', 'mpeg', 'm4v', 'mp4', 'avi', 'mpg', 'wma', "flv", "webm"], //Video
+    'ext_music'                               => ['mp3', 'mpga', 'm4a', 'ac3', 'aiff', 'mid', 'ogg', 'wav'], //Audio
+    'ext_misc'                                => ['zip', 'rar', 'gz', 'tar', 'iso', 'dmg'], //Archives
 
 
     //*********************
@@ -490,9 +490,9 @@ $config = array(
     // Hidden files and folders
     //**********************
     // set the names of any folders you want hidden (eg "hidden_folder1", "hidden_folder2" ) Remember all folders with these names will be hidden (you can set any exceptions in config.php files on folders)
-    'hidden_folders'                          => array(),
+    'hidden_folders'                          => [],
     // set the names of any files you want hidden. Remember these names will be hidden in all folders (eg "this_document.pdf", "that_image.jpg" )
-    'hidden_files'                            => array( 'config.php' ),
+    'hidden_files'                            => ['config.php'],
 
     /*******************
     * URL upload
@@ -513,11 +513,11 @@ $config = array(
     // PS if there isn't write permission in your destination folder you must set it
     //
     'fixed_image_creation'                    => false, //activate or not the creation of one or more image resized with fixed path from filemanager folder
-    'fixed_path_from_filemanager'             => array( '../test/', '../test1/' ), //fixed path of the image folder from the current position on upload folder
-    'fixed_image_creation_name_to_prepend'    => array( '', 'test_' ), //name to prepend on filename
-    'fixed_image_creation_to_append'          => array( '_test', '' ), //name to appendon filename
-    'fixed_image_creation_width'              => array( 300, 400 ), //width of image
-    'fixed_image_creation_height'             => array( 200, 300 ), //height of image
+    'fixed_path_from_filemanager'             => ['../test/', '../test1/'], //fixed path of the image folder from the current position on upload folder
+    'fixed_image_creation_name_to_prepend'    => ['', 'test_'], //name to prepend on filename
+    'fixed_image_creation_to_append'          => ['_test', ''], //name to appendon filename
+    'fixed_image_creation_width'              => [300, 400], //width of image
+    'fixed_image_creation_height'             => [200, 300], //height of image
     /*
     #             $option:     0 / exact = defined size;
     #                          1 / portrait = keep aspect set height;
@@ -525,7 +525,7 @@ $config = array(
     #                          3 / auto = auto;
     #                          4 / crop= resize and crop;
     */
-    'fixed_image_creation_option'             => array( 'crop', 'auto' ), //set the type of the crop
+    'fixed_image_creation_option'             => ['crop', 'auto'], //set the type of the crop
 
 
     // New image resized creation with relative path inside to upload folder after uploading (thumbnails in relative mode)
@@ -534,11 +534,11 @@ $config = array(
     // The image creation path is always relative so if i'm inside source/test/test1 and I upload an image, the path start from here
     //
     'relative_image_creation'                 => false, //activate or not the creation of one or more image resized with relative path from upload folder
-    'relative_path_from_current_pos'          => array( './', './' ), //relative path of the image folder from the current position on upload folder
-    'relative_image_creation_name_to_prepend' => array( '', '' ), //name to prepend on filename
-    'relative_image_creation_name_to_append'  => array( '_thumb', '_thumb1' ), //name to append on filename
-    'relative_image_creation_width'           => array( 300, 400 ), //width of image
-    'relative_image_creation_height'          => array( 200, 300 ), //height of image
+    'relative_path_from_current_pos'          => ['./', './'], //relative path of the image folder from the current position on upload folder
+    'relative_image_creation_name_to_prepend' => ['', ''], //name to prepend on filename
+    'relative_image_creation_name_to_append'  => ['_thumb', '_thumb1'], //name to append on filename
+    'relative_image_creation_width'           => [300, 400], //width of image
+    'relative_image_creation_height'          => [200, 300], //height of image
     /*
      * $option:     0 / exact = defined size;
      *              1 / portrait = keep aspect set height;
@@ -546,17 +546,17 @@ $config = array(
      *              3 / auto = auto;
      *              4 / crop= resize and crop;
      */
-    'relative_image_creation_option'          => array( 'crop', 'crop' ), //set the type of the crop
+    'relative_image_creation_option'          => ['crop', 'crop'], //set the type of the crop
 
 
     // Remember text filter after close filemanager for future session
     'remember_text_filter'                    => false,
 
-);
+];
 
 return array_merge(
     $config,
-    array(
+    [
         'ext' => array_merge(
             $config['ext_img'],
             $config['ext_file'],
@@ -564,7 +564,7 @@ return array_merge(
             $config['ext_video'],
             $config['ext_music']
         ),
-        'tui_defaults_config' => array(
+        'tui_defaults_config' => [
             //'common.bi.image'                   => $config['common.bi.image'],
             //'common.bisize.width'               => $config['common.bisize.width'],
             //'common.bisize.height'              => $config['common.bisize.height'], 
@@ -613,6 +613,6 @@ return array_merge(
             'range.title.fontWeight'            => $config['range.title.fontWeight'],
             'colorpicker.button.border'         => $config['colorpicker.button.border'],
             'colorpicker.title.color'           => $config['colorpicker.title.color']
-        ),
-    )
+        ],
+    ]
 );

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Vel',
     'Deselect_All' => 'Deselect All',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Dra og slepp filer (moderne nettlesarar) eller klikk på knappen «Legg til fil(er)» øvst og deretter på «Start opplasting». Når opplastinga er ferdig, klikk knappen «Tilbake til filoversikta».",
     'Upload_add_files' => 'Legg til fil(er)',
     'Upload_start' => 'Start opplasting',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'Fila enn større enn grensa upload_max_filesize i php.ini',
         2 => 'Fila er større enn direktivet MAX_FILE_SIZE i HTML-skjemaet',
         3 => 'Fila vart berre delvis opplasta',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Biletet er ikkje høgt nok',
         'abort' => 'Filopplasting avbroten',
         'image_resize' => 'Kunne ikkje endre storleik på biletet'
-    ),
+    ],
     'Upload_url' => 'URL for opplasting',
     'Type_dir' => 'Mappe',
     'Type' => 'Type',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Total storleik",
-);
+];

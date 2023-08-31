@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Odaberi',
     'Deselect_All' => 'Deselect All',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Drag & Drop files(modern browsers) or click in upper button to Add the file(s) and click on Start upload. When the upload is complete, click the 'Return to files list' button.",
     'Upload_add_files' => 'Add file(s)',
     'Upload_start' => 'Start upload',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => [
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Image requires a minimum height',
         'abort' => 'File upload aborted',
         'image_resize' => 'Failed to resize image'
-    ),
+    ],
     'Upload_url' => 'From url',
     'Type_dir' => 'mapa',
     'Type' => 'Tip',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Total size",
-);
+];

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	'Select' => 'Vybrat',
 	'Deselect_All' => 'Zrušit vše',
@@ -44,7 +44,7 @@ return array(
 	'Upload_base_help' => "Soubory přetáhněte (pouze moderní prohlížeče) nebo klikněte na horní tlačítko 'Přidat soubor(y)' a poté na tlačítko 'Spustit nahrávání'. Až bude nahrávání dokončeno, klikněte na 'Zpět k seznamu souborů'.",
 	'Upload_add_files' => 'Přidat soubor(y)',
 	'Upload_start' => 'Spustit nahrávání',
-	'Upload_error_messages' =>array(
+	'Upload_error_messages' => [
 		1 => 'Nahrávaný soubor má větší velikost, než co povoluje direktiva upload_max_filesize v php.ini',
 		2 => 'Nahrávaný soubor má větší velikost, než co povoluje direktiva MAX_FILE_SIZE uvedená v HTML formuláři',
 		3 => 'Soubor byl nahrán pouze z části',
@@ -63,7 +63,7 @@ return array(
 		'min_height' => 'Obrázek vyžaduje minimální výšku',
 		'abort' => 'Nahrávání souboru bylo přerušeno',
 		'image_resize' => 'Nepodařilo se změnit velikost obrázku'
-	),
+    ],
 	'Upload_url' => 'Z url adresy',
 	'Type_dir' => 'složka',
 	'Type' => 'Typ',
@@ -144,4 +144,4 @@ return array(
 	'GB' => "GB",
 	'TB' => "TB",
 	'total size' => "Celková velikost",
-);
+];

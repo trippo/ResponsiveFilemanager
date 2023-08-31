@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'Select' => 'Ausw&auml;hlen',
     'Deselect_All' => 'Alle abw&auml;hlen',
@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Ziehen Sie die Dateien per Drag & Drop auf die Fl&auml;che (moderne Browser) oder klicken Sie auf die obere Schaltfl&auml;che, um die Datei(en) hinzuzuf&uuml;gen und klicken Sie auf \"Hochladen beginnen\". Wenn das Hochladen abgeschlossen ist, klicken Sie auf die Schaltfl&auml;che \"Zur Dateiliste zur&uuml;ckkehren\".",
     'Upload_add_files' => 'Dateien hinzuf&uuml;gen',
     'Upload_start' => 'Hochladen beginnen',
-    'Upload_error_messages' => array(
+    'Upload_error_messages' => [
         1 => 'Die hochgeladene Datei &uuml;berschreitet die Anweisung \"upload_max_filesize\" in der php.ini',
         2 => 'Die hochgeladene Datei &uuml;berschreitet die Anweisung \"MAX_FILE_SIZE\", die im HTML-Formular angegeben wurde',
         3 => 'Die hochgeladene Datei wurde nur teilweise hochgeladen',
@@ -63,7 +63,7 @@ return array(
         'min_height' => 'Bild erfordert eine minimale H&ouml;he',
         'abort' => 'Hochladen abgebrochen',
         'image_resize' => 'Fehler beim &Auml;ndern der Bildgr&ouml;&szlig;e'
-    ),
+    ],
     'Upload_url' => 'Von URL',
     'Type_dir' => 'Verzeichnis',
     'Type' => 'Typ',
@@ -144,4 +144,4 @@ return array(
     'GB' => "GB",
     'TB' => "TB",
     'total size' => "Gesamtgr&ouml;&szlig;e",
-);
+];

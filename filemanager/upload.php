@@ -97,12 +97,12 @@ try {
                 curl_close($ch);
                 fclose($fp);
 
-                $_FILES['files'] = array(
-                    'name' => array(basename($_POST['url'])),
-                    'tmp_name' => array($temp),
-                    'size' => array(filesize($temp)),
+                $_FILES['files'] = [
+                    'name' => [basename($_POST['url'])],
+                    'tmp_name' => [$temp],
+                    'size' => [filesize($temp)],
                     'type' => null
-                );
+                ];
             } else {
                 throw new Exception('Is not a valid URL.');
             }
@@ -150,7 +150,7 @@ try {
         exit();
     }
 
-    $uploadConfig = array(
+    $uploadConfig = [
         'config' => $config,
         'storeFolder' => $storeFolder,
         'storeFolderThumb' => $storeFolderThumb,
@@ -161,7 +161,7 @@ try {
         'max_file_size' => $config['MaxSizeUpload'] * 1024 * 1024,
         'correct_image_extensions' => true,
         'print_response' => false
-    );
+    ];
 
     if (!$config['ext_blacklist']) {
         $uploadConfig['accept_file_types'] = '/\.(' . implode('|', $config['ext']) . ')$/i';
@@ -192,21 +192,21 @@ try {
     //print_r($_FILES);die();
     $upload_handler = new UploadHandler($uploadConfig, true, $messages);
 } catch (Exception $e) {
-    $return = array();
+    $return = [];
 
     if ($_FILES['files']) {
         foreach ($_FILES['files']['name'] as $i => $name) {
-            $return[] = array(
+            $return[] = [
                 'name' => $name,
                 'error' => $e->getMessage(),
                 'size' => $_FILES['files']['size'][$i],
                 'type' => $_FILES['files']['type'][$i]
-            );
+            ];
         }
 
-        echo json_encode(array("files" => $return));
+        echo json_encode(["files" => $return]);
         return;
     }
 
-    echo json_encode(array("error" => $e->getMessage()));
+    echo json_encode(["error" => $e->getMessage()]);
 }
