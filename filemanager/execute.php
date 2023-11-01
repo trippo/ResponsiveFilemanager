@@ -3,7 +3,7 @@ $config = include 'config/config.php';
 
 include 'include/utils.php';
 
-if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
+if ($_SESSION['RF']["verify"] !== "RESPONSIVEfilemanager") {
     response(trans('forbidden') . AddErrorLocation())->send();
     exit;
 }
@@ -108,9 +108,9 @@ if(isset($_POST['paths'])){
 }
 
 $info = pathinfo($path);
-if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action'] == 'delete_folder') &&
+if (isset($info['extension']) && !(isset($_GET['action']) && $_GET['action'] === 'delete_folder') &&
     !check_extension($info['extension'], $config)
-    && $_GET['action'] != 'create_file') {
+    && $_GET['action'] !== 'create_file') {
     response(trans('wrong extension') . AddErrorLocation())->send();
     exit;
 }
@@ -135,7 +135,7 @@ if (isset($_GET['action'])) {
 				if($ftp){
 					deleteDir($path,$ftp,$config);
 					deleteDir($path_thumb,$ftp,$config);
-				}else{
+				} else {
 					if (is_dir($path_thumb))
 					{
 						deleteDir($path_thumb,NULL,$config);
@@ -147,7 +147,7 @@ if (isset($_GET['action'])) {
 						if ($config['fixed_image_creation'])
 						{
 							foreach($config['fixed_path_from_filemanager'] as $k=>$paths){
-								if ($paths!="" && $paths[strlen($paths)-1] != "/") $paths.="/";
+								if (!empty($paths) && $paths[strlen($paths)-1] !== "/") $paths .= "/";
 
 								$base_dir=$paths.substr_replace($path, '', 0, strlen($config['current_path']));
 								if (is_dir($base_dir)) deleteDir($base_dir,NULL,$config);
@@ -187,7 +187,7 @@ if (isset($_GET['action'])) {
                     rename_folder($path_thumb, $name, $ftp, $config);
                     if (!$ftp && $config['fixed_image_creation']) {
                         foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
-                            if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                            if (!empty($paths) && $paths[strlen($paths) - 1] !== "/") {
                                 $paths .= "/";
                             }
 
@@ -281,7 +281,7 @@ if (isset($_GET['action'])) {
                         $info = pathinfo($path);
 
                         foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
-                            if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                            if (!empty($paths) && $paths[strlen($paths) - 1] !== "/") {
                                 $paths .= "/";
                             }
 
@@ -316,7 +316,7 @@ if (isset($_GET['action'])) {
                     if (!$ftp && $config['fixed_image_creation']) {
                         $info = pathinfo($path);
                         foreach ($config['fixed_path_from_filemanager'] as $k => $paths) {
-                            if ($paths != "" && $paths[strlen($paths) - 1] != "/") {
+                            if (!empty($paths)  && $paths[strlen($paths) - 1] !== "/") {
                                 $paths .= "/";
                             }
 
@@ -336,8 +336,8 @@ if (isset($_GET['action'])) {
 
         case 'paste_clipboard':
             if (!isset($_SESSION['RF']['clipboard_action'], $_SESSION['RF']['clipboard']['path'])
-                || $_SESSION['RF']['clipboard_action'] == ''
-                || $_SESSION['RF']['clipboard']['path'] == '') {
+                || empty($_SESSION['RF']['clipboard_action'])
+                || empty($_SESSION['RF']['clipboard']['path'])) {
                 response()->send();
                 exit;
             }
@@ -347,7 +347,7 @@ if (isset($_GET['action'])) {
 
 
             if ($ftp) {
-                if ($_POST['path'] != "") {
+                if (!empty($_POST['path'])) {
                     $path .= DIRECTORY_SEPARATOR;
                     $path_thumb .= DIRECTORY_SEPARATOR;
                 }
@@ -375,12 +375,12 @@ if (isset($_GET['action'])) {
             }
 
             // something terribly gone wrong
-            if ($action != 'copy' && $action != 'cut') {
+            if ($action !== 'copy' && $action !== 'cut') {
                 response(trans('wrong action') . AddErrorLocation())->send();
                 exit;
             }
             if ($ftp) {
-                if ($action == 'copy') {
+                if ($action === 'copy') {
                     $tmp = time() . basename($data['path']);
                     $ftp->get($tmp, $data['path'], FTP_BINARY);
                     $ftp->put(DIRECTORY_SEPARATOR . $path, $tmp, FTP_BINARY);
@@ -392,7 +392,7 @@ if (isset($_GET['action'])) {
                         @$ftp->put(DIRECTORY_SEPARATOR . $path_thumb, $tmp, FTP_BINARY);
                         unlink($tmp);
                     }
-                } elseif ($action == 'cut') {
+                } elseif ($action === 'cut') {
                     $ftp->rename($data['path'], DIRECTORY_SEPARATOR . $path);
                     if (url_exists($data['path_thumb'])) {
                         @$ftp->rename($data['path_thumb'], DIRECTORY_SEPARATOR . $path_thumb);
@@ -406,11 +406,11 @@ if (isset($_GET['action'])) {
                 }
 
                 // check if server disables copy or rename
-                if (is_function_callable(($action == 'copy' ? 'copy' : 'rename')) === false) {
-                    response(sprintf(trans('Function_Disabled'), ($action == 'copy' ? (trans('Copy')) : (trans('Cut')))) . AddErrorLocation())->send();
+                if (is_function_callable(($action === 'copy' ? 'copy' : 'rename')) === false) {
+                    response(sprintf(trans('Function_Disabled'), ($action === 'copy' ? (trans('Copy')) : (trans('Cut')))) . AddErrorLocation())->send();
                     exit;
                 }
-                if ($action == 'copy') {
+                if ($action === 'copy') {
                     list($sizeFolderToCopy, $fileNum, $foldersCount) = folder_info($path, false);
                     if (!checkresultingsize($sizeFolderToCopy)) {
                         response(sprintf(trans('max_size_reached'), $config['MaxSizeTotal']) . AddErrorLocation())->send();
@@ -418,7 +418,7 @@ if (isset($_GET['action'])) {
                     }
                     rcopy($data['path'], $path);
                     rcopy($data['path_thumb'], $path_thumb);
-                } elseif ($action == 'cut') {
+                } elseif ($action === 'cut') {
                     rrename($data['path'], $path);
                     rrename($data['path_thumb'], $path_thumb);
 

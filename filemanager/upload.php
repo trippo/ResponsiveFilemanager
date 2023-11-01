@@ -7,7 +7,7 @@ try {
 
     include 'include/utils.php';
 
-    if ($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
+    if ($_SESSION['RF']["verify"] !== "RESPONSIVEfilemanager") {
         response(trans('forbidden') . AddErrorLocation(), 403)->send();
         exit;
     }
@@ -123,7 +123,7 @@ try {
         }
         $extension = get_extension_from_mime($mime_type);
 
-        if ($extension == 'so' || $extension == '' || $mime_type == "text/troff") {
+        if ($extension === 'so' || empty($extension) || $mime_type === "text/troff") {
             $extension = $info['extension'];
         }
         $filename = $info['filename'] . "." . $extension;

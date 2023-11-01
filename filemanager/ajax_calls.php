@@ -207,11 +207,11 @@ if (isset($_GET['action'])) {
                             $FullFileName = $zip->statIndex($i);
 
                             if (checkRelativePath($FullFileName['name'])) {
-                                if (substr($FullFileName['name'], -1, 1) == "/") {
+                                if (substr($FullFileName['name'], -1, 1) === "/") {
                                     create_folder($base_folder . $FullFileName['name']);
                                 }
 
-                                if (! (substr($FullFileName['name'], -1, 1) == "/")) {
+                                if (! (substr($FullFileName['name'], -1, 1) === "/")) {
                                     $fileinfo = pathinfo($FullFileName['name']);
                                     if (in_array(strtolower($fileinfo['extension']), $config['ext'])) {
                                         copy('zip://' . $path . '#' . $FullFileName['name'], $base_folder . $FullFileName['name']);
@@ -265,7 +265,7 @@ if (isset($_GET['action'])) {
 			}
 			if($ftp){
 				$preview_file = $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'];
-			}else{
+			} else {
 				$preview_file = $config['current_path'] . $_GET["file"];
 			}
 			$info = pathinfo($preview_file);
@@ -375,17 +375,17 @@ if (isset($_GET['action'])) {
 
             break;
         case 'copy_cut':
-            if ($_POST['sub_action'] != 'copy' && $_POST['sub_action'] != 'cut') {
+            if ($_POST['sub_action'] !== 'copy' && $_POST['sub_action'] !== 'cut') {
                 response(trans('wrong sub-action').AddErrorLocation())->send();
                 exit;
             }
 
-            if (trim($_POST['path']) == '') {
+            if (trim($_POST['path']) === '') {
                 response(trans('no path').AddErrorLocation())->send();
                 exit;
             }
 
-            $msg_sub_action = ($_POST['sub_action'] == 'copy' ? trans('Copy') : trans('Cut'));
+            $msg_sub_action = ($_POST['sub_action'] === 'copy' ? trans('Copy') : trans('Cut'));
             $path = $config['current_path'] . $_POST['path'];
 
             if (is_dir($path)) {
@@ -435,8 +435,8 @@ if (isset($_GET['action'])) {
             if ($ftp) {
                 $path = $config['ftp_base_url'] . $config['upload_dir'] . $_POST['path'];
                 if (
-                    ($_POST['folder']==1 && $config['chmod_dirs'] === false)
-                    || ($_POST['folder']==0 && $config['chmod_files'] === false)
+                    ($_POST['folder'] == 1 && $config['chmod_dirs'] === false)
+                    || ($_POST['folder'] == 0 && $config['chmod_files'] === false)
                     || (is_function_callable("chmod") === false)) {
                     response(sprintf(trans('File_Permission_Not_Allowed'), (is_dir($path) ? trans('Folders') : trans('Files')), 403).AddErrorLocation())->send();
                     exit;
@@ -493,21 +493,21 @@ if (isset($_GET['action'])) {
                     <tbody>
                         <tr>
                             <td>'.trans('User').'</td>
-                            <td><input id="u_4" type="checkbox" data-value="4" data-group="user" '.(substr($info, 1, 1)=='r' ? " checked" : "").'></td>
-                            <td><input id="u_2" type="checkbox" data-value="2" data-group="user" '.(substr($info, 2, 1)=='w' ? " checked" : "").'></td>
-                            <td><input id="u_1" type="checkbox" data-value="1" data-group="user" '.(substr($info, 3, 1)=='x' ? " checked" : "").'></td>
+                            <td><input id="u_4" type="checkbox" data-value="4" data-group="user" '.(substr($info, 1, 1) === 'r' ? " checked" : "").'></td>
+                            <td><input id="u_2" type="checkbox" data-value="2" data-group="user" '.(substr($info, 2, 1) === 'w' ? " checked" : "").'></td>
+                            <td><input id="u_1" type="checkbox" data-value="1" data-group="user" '.(substr($info, 3, 1) === 'x' ? " checked" : "").'></td>
                         </tr>
                         <tr>
                             <td>'.trans('Group').'</td>
-                            <td><input id="g_4" type="checkbox" data-value="4" data-group="group" '.(substr($info, 4, 1)=='r' ? " checked" : "").'></td>
-                            <td><input id="g_2" type="checkbox" data-value="2" data-group="group" '.(substr($info, 5, 1)=='w' ? " checked" : "").'></td>
-                            <td><input id="g_1" type="checkbox" data-value="1" data-group="group" '.(substr($info, 6, 1)=='x' ? " checked" : "").'></td>
+                            <td><input id="g_4" type="checkbox" data-value="4" data-group="group" '.(substr($info, 4, 1) === 'r' ? " checked" : "").'></td>
+                            <td><input id="g_2" type="checkbox" data-value="2" data-group="group" '.(substr($info, 5, 1) === 'w' ? " checked" : "").'></td>
+                            <td><input id="g_1" type="checkbox" data-value="1" data-group="group" '.(substr($info, 6, 1) === 'x' ? " checked" : "").'></td>
                         </tr>
                         <tr>
                             <td>'.trans('All').'</td>
-                            <td><input id="a_4" type="checkbox" data-value="4" data-group="all" '.(substr($info, 7, 1)=='r' ? " checked" : "").'></td>
-                            <td><input id="a_2" type="checkbox" data-value="2" data-group="all" '.(substr($info, 8, 1)=='w' ? " checked" : "").'></td>
-                            <td><input id="a_1" type="checkbox" data-value="1" data-group="all" '.(substr($info, 9, 1)=='x' ? " checked" : "").'></td>
+                            <td><input id="a_4" type="checkbox" data-value="4" data-group="all" '.(substr($info, 7, 1) === 'r' ? " checked" : "").'></td>
+                            <td><input id="a_2" type="checkbox" data-value="2" data-group="all" '.(substr($info, 8, 1) === 'w' ? " checked" : "").'></td>
+                            <td><input id="a_1" type="checkbox" data-value="1" data-group="all" '.(substr($info, 9, 1) === 'x' ? " checked" : "").'></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -540,7 +540,7 @@ if (isset($_GET['action'])) {
             }
 
             $languages = include 'lang/languages.php';
-            if (! isset($languages) || ! is_array($languages)) {
+            if (!isset($languages) || !is_array($languages)) {
                 response(trans('Lang_Not_Found').AddErrorLocation())->send();
                 exit;
             }
@@ -596,15 +596,15 @@ if (isset($_GET['action'])) {
             $sub_action = $_GET['sub_action'];
             $preview_mode = $_GET["preview_mode"];
 
-            if ($sub_action != 'preview' && $sub_action != 'edit') {
+            if ($sub_action !== 'preview' && $sub_action !== 'edit') {
                 response(trans('wrong action').AddErrorLocation())->send();
                 exit;
             }
 
             if ($ftp) {
-                $selected_file = ($sub_action == 'preview' ? $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'] : $config['ftp_base_url'].$config['upload_dir'] . $_POST['path']);
+                $selected_file = ($sub_action === 'preview' ? $config['ftp_base_url'].$config['upload_dir'] . $_GET['file'] : $config['ftp_base_url'].$config['upload_dir'] . $_POST['path']);
             } else {
-                $selected_file = ($sub_action == 'preview' ? $config['current_path'] . $_GET['file'] : $config['current_path'] . $_POST['path']);
+                $selected_file = ($sub_action === 'preview' ? $config['current_path'] . $_GET['file'] : $config['current_path'] . $_POST['path']);
 
                 if (! file_exists($selected_file)) {
                     response(trans('File_Not_Found').AddErrorLocation())->send();
@@ -614,15 +614,15 @@ if (isset($_GET['action'])) {
 
             $info = pathinfo($selected_file);
 
-            if ($preview_mode == 'text') {
-                $is_allowed = ($sub_action == 'preview' ? $config['preview_text_files'] : $config['edit_text_files']);
-                $allowed_file_exts = ($sub_action == 'preview' ? $config['previewable_text_file_exts'] : $config['editable_text_file_exts']);
-            } elseif ($preview_mode == 'google') {
+            if ($preview_mode === 'text') {
+                $is_allowed = ($sub_action === 'preview' ? $config['preview_text_files'] : $config['edit_text_files']);
+                $allowed_file_exts = ($sub_action === 'preview' ? $config['previewable_text_file_exts'] : $config['editable_text_file_exts']);
+            } elseif ($preview_mode === 'google') {
                 $is_allowed = $config['googledoc_enabled'];
                 $allowed_file_exts = $config['googledoc_file_exts'];
             }
 
-            if (! isset($allowed_file_exts) || ! is_array($allowed_file_exts)) {
+            if (!isset($allowed_file_exts) || !is_array($allowed_file_exts)) {
                 $allowed_file_exts = [];
             }
 
@@ -630,23 +630,24 @@ if (isset($_GET['action'])) {
                 $info['extension']='';
             }
             if (! in_array($info['extension'], $allowed_file_exts)
-                || ! isset($is_allowed)
+                || !isset($is_allowed)
                 || $is_allowed === false
-                || (!$ftp && ! is_readable($selected_file))
+                || (!$ftp && !is_readable($selected_file))
             ) {
-                response(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action == 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))).AddErrorLocation())->send();
+                response(sprintf(trans('File_Open_Edit_Not_Allowed'), ($sub_action === 'preview' ? strtolower(trans('Open')) : strtolower(trans('Edit')))).AddErrorLocation())->send();
                 exit;
             }
-            if ($sub_action == 'preview') {
-                if ($preview_mode == 'text') {
+
+            $ret = '';
+            if ($sub_action === 'preview') {
+                if ($preview_mode === 'text') {
                     // get and sanities
                     $data = file_get_contents($selected_file);
                     $data = htmlspecialchars(htmlspecialchars_decode($data));
-                    $ret = '';
 
                     $ret .= '<script src="https://rawgit.com/google/code-prettify/master/loader/run_prettify.js?autoload=true&skin=sunburst"></script>';
                     $ret .= '<?prettify lang='.$info['extension'].' linenums=true?><pre class="prettyprint"><code class="language-'.$info['extension'].'">'.$data.'</code></pre>';
-                } elseif ($preview_mode == 'google') {
+                } elseif ($preview_mode === 'google') {
                     if ($ftp) {
                         $url_file = $selected_file;
                     } else {
@@ -656,11 +657,11 @@ if (isset($_GET['action'])) {
 					$googledoc_url = urlencode($url_file);
 					$ret = "<iframe src=\"https://docs.google.com/viewer?url=" . $url_file . "&embedded=true\" class=\"google-iframe\"></iframe>";
 				}
-			}else{
+			} else {
 				$data = stripslashes(htmlspecialchars(file_get_contents($selected_file)));
 				if(in_array($info['extension'], ['html','html'])){
 					$ret = '<script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/classic/ckeditor.js"></script><textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea><script>setTimeout(function(){ ClassicEditor.create( document.querySelector( "#textfile_edit_area" )).catch( function(error){ console.error( error ); } );  }, 500);</script>';
-				}else{
+				} else {
 					$ret = '<textarea id="textfile_edit_area" style="width:100%;height:300px;">'.$data.'</textarea>';
 				}
 

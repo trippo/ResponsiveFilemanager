@@ -1485,7 +1485,7 @@ class imageLib {
 
         // *** Check if the user wants transparency
         $isTransparent = false;
-        if ( ! is_array($bgColor))
+        if ( !is_array($bgColor))
         {
             if (fix_strtolower($bgColor) == 'transparent')
             {
@@ -2629,7 +2629,7 @@ class imageLib {
         #
     {
 
-        if ( ! isset($opacity))
+        if ( !isset($opacity))
         {
             return false;
         }
@@ -2792,7 +2792,7 @@ class imageLib {
     {
 
         // *** Perform a check or two.
-        if (! is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage)
+        if (!is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage)
         {
             if ($this->debug)
             {
@@ -2805,7 +2805,7 @@ class imageLib {
         }
         $fileInfoArray = pathInfo($savePath);
         clearstatcache();
-        if ( ! is_writable($fileInfoArray['dirname']))
+        if ( !is_writable($fileInfoArray['dirname']))
         {
             if ($this->debug)
             {
@@ -2914,7 +2914,7 @@ class imageLib {
         #
     {
 
-        if (! is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage)
+        if (!is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage)
         {
             if ($this->debug)
             {
@@ -3488,7 +3488,7 @@ class imageLib {
         # Notes:
         #
     {
-        if (! is_resource($img) && ! $img instanceof \GdImage)
+        if (!is_resource($img) && ! $img instanceof \GdImage)
         {
             return false;
         }

@@ -34,7 +34,7 @@ Class FTPClient
 		// *** Check connection
 		if ((!$this->connectionId) || (!$loginResult)) {
 			$this->logMessage('FTP connection has failed!');
-			$this->logMessage('Attempted to connect to ' . $server . ' for user ' . $ftpUser, true);
+			$this->logMessage('Attempted to connect to ' . $server . ' for user ' . $ftpUser);
 			return false;
 		} else {
 			$this->logMessage('Connected to ' . $server . ', for user ' . $ftpUser);
