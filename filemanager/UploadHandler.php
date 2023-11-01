@@ -13,7 +13,7 @@
 class UploadHandler
 {
 
-    public $response = array();
+    public array $response = [];
 
     protected $options;
 
@@ -436,6 +436,7 @@ class UploadHandler
         $max_height = @$this->options['max_height'];
         $min_width = @$this->options['min_width'];
         $min_height = @$this->options['min_height'];
+        $img_height = 0;
         if (($max_width || $max_height || $min_width || $min_height)
             && $this->is_valid_image_file($uploaded_file)) {
             list($img_width, $img_height) = $this->get_image_size($uploaded_file);
@@ -1448,11 +1449,11 @@ class UploadHandler
             $totalSize = $this->get_file_size($this->get_upload_path($name));
             if ($totalSize - $uploaded_bytes - $this->options['readfile_chunk_size'] < 0) {
                 $this->onUploadEnd($res);
-            }else{
+            } else {
                 $this->head();
                 $this->body(json_encode($res));
             }
-        }else{
+        } else {
             $this->head();
             $this->body(json_encode($res));
         }
@@ -1476,7 +1477,7 @@ class UploadHandler
                     chmod($targetFile, $this->options['config']['folderPermission']);
                 }
             }
-        }else{
+        } else {
             $targetFile = $this->options['config']['ftp_temp_folder'].$res['files'][0]->name;
             $targetFileThumb =  $this->options['config']['ftp_temp_folder']."thumbs/". $res['files'][0]->name;
         }
@@ -1506,7 +1507,7 @@ class UploadHandler
             {
                 if($thumbResult === false){
                     $res['files'][0]->error = trans("Not enough Memory");
-                }else{
+                } else {
                     $res['files'][0]->error = $thumbResult;
                 }
             }

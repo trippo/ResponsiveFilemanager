@@ -31,7 +31,7 @@
  * @return array|bool image information, FALSE on error
  */
 function get_png_imageinfo($file) {
-    if (! is_file($file)) {
+    if (!is_file($file)) {
         return false;
     }
 

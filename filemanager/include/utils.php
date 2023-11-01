@@ -1,6 +1,6 @@
 <?php
 
-if (!isset($_SESSION['RF']) || $_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") {
+if (!isset($_SESSION['RF']) || $_SESSION['RF']["verify"] !== "RESPONSIVEfilemanager") {
     die('forbidden');
 }
 
@@ -46,7 +46,7 @@ if (!function_exists('trans')) {
     ) {
         $lang = $config['default_language'];
 
-        if (isset($_GET['lang']) && $_GET['lang'] != 'undefined' && $_GET['lang'] != '') {
+        if (isset($_GET['lang']) && $_GET['lang'] !== 'undefined' && !empty($_GET['lang'])) {
             $lang = fix_get_params($_GET['lang']);
             $lang = trim($lang);
         }
@@ -171,7 +171,7 @@ function deleteFile($path, $path_thumb, $config)
         $info = pathinfo($path);
         if (!$ftp && $config['relative_image_creation']) {
             foreach ($config['relative_path_from_current_pos'] as $k => $path) {
-                if ($path != "" && $path[strlen($path) - 1] != "/") {
+                if (!empty($path) && $path[strlen($path) - 1] !== "/") {
                     $path .= "/";
                 }
 
@@ -187,7 +187,7 @@ function deleteFile($path, $path_thumb, $config)
 
         if (!$ftp && $config['fixed_image_creation']) {
             foreach ($config['fixed_path_from_filemanager'] as $k => $path) {
-                if ($path != "" && $path[strlen($path) - 1] != "/") {
+                if (!empty($path) && $path[strlen($path) - 1] !== "/") {
                     $path .= "/";
                 }
 
@@ -228,7 +228,7 @@ function deleteDir($dir, $ftp = null, $config = null)
             return unlink($dir);
         }
         foreach (scandir($dir) as $item) {
-            if ($item == '.' || $item == '..') {
+            if ($item === '.' || $item === '..') {
                 continue;
             }
             if (!deleteDir($dir . DIRECTORY_SEPARATOR . $item)) {
@@ -490,8 +490,8 @@ function folder_info($path, $count_hidden = true)
     $files_count = 0;
     $folders_count = 0;
     foreach ($files as $t) {
-        if ($t != "." && $t != "..") {
-            if ($count_hidden or !(in_array($t, $config['hidden_folders']) or in_array($t, $config['hidden_files']))) {
+        if ($t !== "." && $t !== "..") {
+            if ($count_hidden || !(in_array($t, $config['hidden_folders']) || in_array($t, $config['hidden_files']))) {
                 $currentFile = $cleanPath . $t;
                 if (is_dir($currentFile)) {
                     list($size, $tmp, $tmp1) = folder_info($currentFile);
@@ -524,8 +524,8 @@ function filescount($path, $count_hidden = true)
     $cleanPath = rtrim($path, '/') . '/';
 
     foreach ($files as $t) {
-        if ($t != "." && $t != "..") {
-            if ($count_hidden or !(in_array($t, $config['hidden_folders']) or in_array($t, $config['hidden_files']))) {
+        if ($t !== "." && $t !== "..") {
+            if ($count_hidden || !(in_array($t, $config['hidden_folders']) || in_array($t, $config['hidden_files']))) {
                 $currentFile = $cleanPath . $t;
                 if (is_dir($currentFile)) {
                     $size = filescount($currentFile);
@@ -641,7 +641,7 @@ function check_file_extension($extension, $config)
         }
     }
 
-    if ($config['files_without_extension'] && $extension == '') {
+    if ($config['files_without_extension'] && empty($extension)) {
         $check = true;
     }
 
@@ -814,7 +814,7 @@ function fix_path($path, $config)
     $info = pathinfo($path);
     $tmp_path = $info['dirname'];
     $str = fix_filename($info['filename'], $config);
-    if ($tmp_path != "") {
+    if (!empty($tmp_path)) {
         return $tmp_path . DIRECTORY_SEPARATOR . $str;
     }
     return $str;
@@ -834,7 +834,7 @@ function config_loading($current_path, $fld)
         return true;
     }
     echo "!!!!" . $parent = fix_dirname($fld);
-    if ($parent != "." && !empty($parent)) {
+    if ($parent !== "." && !empty($parent)) {
         config_loading($current_path, $parent);
     }
 
@@ -859,10 +859,10 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
             $mem = ini_get('memory_limit');
             $memory_limit = 0;
             if (strpos($mem, 'M') !== false) {
-                $memory_limit = abs(intval(str_replace(['M'], '', $mem) * 1024 * 1024));
+                $memory_limit = abs((int)(str_replace(['M'], '', $mem) * 1024 * 1024));
             }
             if (strpos($mem, 'G') !== false) {
-                $memory_limit = abs(intval(str_replace(['G'], '', $mem) * 1024 * 1024 * 1024));
+                $memory_limit = abs((int)(str_replace(['G'], '', $mem) * 1024 * 1024 * 1024));
             }
 
             if (($image_properties = getimagesize($img)) === false) {
@@ -898,7 +898,7 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 
             $image_memory_usage = $K64 + ($image_width * $image_height * ($image_bits * $image_channels / 8) * 2);
             $thumb_memory_usage = $K64 + ($max_breedte * $max_hoogte * ($image_bits * $image_channels / 8) * 2);
-            $memory_needed = abs(intval($memory_usage + $image_memory_usage + $thumb_memory_usage));
+            $memory_needed = abs((int)($memory_usage + $image_memory_usage + $thumb_memory_usage));
 
             if ($memory_needed > $memory_limit) {
                 return false;
@@ -920,7 +920,7 @@ function image_check_memory_usage($img, $max_breedte, $max_hoogte)
 if (!function_exists('ends_with')) {
     function ends_with($haystack, $needle)
     {
-        return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+        return empty($needle) || substr($haystack, -strlen($needle)) === $needle;
     }
 }
 
@@ -958,7 +958,7 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
     $info['filename'] = fix_filename($info['filename'], $config);
     if ($config['relative_image_creation']) {
         foreach ($config['relative_path_from_current_pos'] as $k => $path) {
-            if ($path != "" && $path[strlen($path) - 1] != "/") {
+            if (!empty($path) && $path[strlen($path) - 1] !== "/") {
                 $path .= "/";
             }
             if (!file_exists($targetPath . $path)) {
@@ -981,7 +981,7 @@ function new_thumbnails_creation($targetPath, $targetFile, $name, $current_path,
     //create fixed thumbs
     if ($config['fixed_image_creation']) {
         foreach ($config['fixed_path_from_filemanager'] as $k => $path) {
-            if ($path != "" && $path[strlen($path) - 1] != "/") {
+            if (!empty($path) && $path[strlen($path) - 1] !== "/") {
                 $path .= "/";
             }
             $base_dir = $path . substr_replace($targetPath, '', 0, strlen($current_path));
@@ -1049,7 +1049,7 @@ function is_really_writable($dir)
 {
     $dir = rtrim($dir, '/');
     // linux, safe off
-    if (DIRECTORY_SEPARATOR == '/' && @ini_get("safe_mode") == false) {
+    if (DIRECTORY_SEPARATOR === '/' && @ini_get("safe_mode") == false) {
         return is_writable($dir);
     }
 
@@ -1113,7 +1113,7 @@ function rcopy($source, $destination, $is_rec = false)
 
         $files = scandir($source);
         foreach ($files as $file) {
-            if ($file != "." && $file != "..") {
+            if ($file !== "." && $file !== "..") {
                 rcopy(
                     $source . DIRECTORY_SEPARATOR . $file,
                     rtrim($destination, '/') . DIRECTORY_SEPARATOR . $file,
@@ -1160,7 +1160,7 @@ function rrename($source, $destination, $is_rec = false)
 
         $files = scandir($source);
         foreach ($files as $file) {
-            if ($file != "." && $file != "..") {
+            if ($file !== "." && $file !== "..") {
                 rrename(
                     $source . DIRECTORY_SEPARATOR . $file,
                     rtrim($destination, '/') . DIRECTORY_SEPARATOR . $file,
@@ -1196,7 +1196,7 @@ function rrename_after_cleaner($source)
     $files = scandir($source);
 
     foreach ($files as $file) {
-        if ($file != "." && $file != "..") {
+        if ($file !== "." && $file !== "..") {
             if (is_dir($source . DIRECTORY_SEPARATOR . $file)) {
                 rrename_after_cleaner($source . DIRECTORY_SEPARATOR . $file);
             } else {
@@ -1217,7 +1217,7 @@ function rrename_after_cleaner($source)
  */
 function rchmod($source, $mode, $rec_option = "none", $is_rec = false)
 {
-    if ($rec_option == "none") {
+    if ($rec_option === "none") {
         chmod($source, $mode);
     } else {
         if ($is_rec === false) {
@@ -1227,14 +1227,14 @@ function rchmod($source, $mode, $rec_option = "none", $is_rec = false)
         $files = scandir($source);
 
         foreach ($files as $file) {
-            if ($file != "." && $file != "..") {
+            if ($file !== "." && $file !== "..") {
                 if (is_dir($source . DIRECTORY_SEPARATOR . $file)) {
-                    if ($rec_option == "folders" || $rec_option == "both") {
+                    if ($rec_option === "folders" || $rec_option === "both") {
                         chmod($source . DIRECTORY_SEPARATOR . $file, $mode);
                     }
                     rchmod($source . DIRECTORY_SEPARATOR . $file, $mode, $rec_option, true);
                 } else {
-                    if ($rec_option == "files" || $rec_option == "both") {
+                    if ($rec_option === "files" || $rec_option === "both") {
                         chmod($source . DIRECTORY_SEPARATOR . $file, $mode);
                     }
                 }
